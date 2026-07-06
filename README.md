@@ -13,8 +13,8 @@ A Claude Code plugin for globally-minded job seekers. Slash commands to discover
 3. Click the **Add** button under plugins and select **Add marketplace**.
 4. Paste this repository: `myowinthein/claude-compass`
 5. Once added, find **claude-compass** in the plugin browser and click **Install**.
-6. To **update**, find the **claude-compass-marketplace** entry and click **Update**.
-   To **uninstall**, open the plugin and click **Uninstall**.
+6. To **update**, find the **claude-compass** entry and click **Update**.
+7. To **uninstall**, find the **claude-compass** entry and click **Uninstall**.
 
 ## Commands
 
