@@ -58,4 +58,4 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 
 _(none yet)_
 
-<!-- last-reviewed: 10cd0935254b68157b7719fdb7780df3fbb2ab50 -->
+<!-- last-reviewed: c9c4903489645d2cc5b0bb680bdf412b31e716be -->
