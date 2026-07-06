@@ -28,12 +28,12 @@ After finishing each step below, update last_completed_step and updated_at in th
 
 ## Sequence
 
-1. Read prompts/country-finder/step1-prompt.md and follow it exactly.
-2. Read prompts/country-finder/step2-prompt.md and follow it exactly.
-3. Read prompts/country-finder/step3-prompt.md and follow it exactly.
-4. Read prompts/country-finder/step4-prompt.md and follow it exactly.
-5. Read prompts/country-finder/step5-prompt.md and follow it exactly.
-6. Ask me if I want to run prompts/country-finder/step6-prompt.md. Only run it if I say yes.
+1. Read prompts/country-finder/step1-criteria-intake.md and follow it exactly.
+2. Read prompts/country-finder/step2-candidate-discovery.md and follow it exactly.
+3. Read prompts/country-finder/step3-research-prompt-generator.md and follow it exactly.
+4. Read prompts/country-finder/step4-data-ingestion.md and follow it exactly.
+5. Read prompts/country-finder/step5-scoring.md and follow it exactly.
+6. Ask me if I want to run prompts/country-finder/step6-reality-check.md. Only run it if I say yes.
 
 ## Important
 
