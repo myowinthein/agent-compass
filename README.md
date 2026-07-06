@@ -8,36 +8,16 @@ A Claude Code plugin for globally-minded job seekers. Slash commands to discover
 
 ## Installation
 
-### Install
-
-1. Open Claude Desktop and switch to the Cowork tab.
-2. Open Customize (left sidebar), then the Plugins tab.
-3. Click the + button under Personal plugins, then select "Add marketplace."
-4. Paste this repository: myowinthein/claude-compass
-5. Once added, find claude-compass in the plugin browser and click Install.
-
-### Update
-
-1. Open Customize, then the Plugins tab.
-2. Find the claude-compass-marketplace entry and click "Update" to pull the latest version from this repository.
-3. If you've edited any plugin files locally, Cowork will warn you before an update overwrites those changes.
-
-### Uninstall
-
-1. Open Customize, then the Plugins tab.
-2. Open the installed claude-compass plugin.
-3. Click "Uninstall."
-
-### Usage
-
-Once installed, type / in a Cowork task. Both commands appear listed under the Claude Compass section:
-
-- country-finder
-- salary-calculator
-
-Select the one you want to run.
+1. Open **Claude Desktop** and switch to the **Cowork** tab.
+2. Open **Customize** (left sidebar), then the **Plugins** tab.
+3. Click the **Add** button under plugins.
+4. Paste this repository: `myowinthein/claude-compass`
+5. Once added, find **claude-compass** in the plugin browser and click **Install**.
+6. To **update**, find the **claude-compass-marketplace** entry and click **Update**. To **uninstall**, open the plugin and click **Uninstall**.
 
 ## Commands
+
+Once installed, type `/` in a **Cowork** task. Both commands appear listed under the **Claude Compass** section.
 
 | Command | What it does |
 |---|---|
