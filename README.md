@@ -10,10 +10,11 @@ A Claude Code plugin for globally-minded job seekers. Slash commands to discover
 
 1. Open **Claude Desktop** and switch to the **Cowork** tab.
 2. Open **Customize** (left sidebar), then the **Plugins** tab.
-3. Click the **Add** button under plugins.
+3. Click the **Add** button under plugins and select **Add marketplace**.
 4. Paste this repository: `myowinthein/claude-compass`
 5. Once added, find **claude-compass** in the plugin browser and click **Install**.
-6. To **update**, find the **claude-compass-marketplace** entry and click **Update**. To **uninstall**, open the plugin and click **Uninstall**.
+6. To **update**, find the **claude-compass-marketplace** entry and click **Update**.
+   To **uninstall**, open the plugin and click **Uninstall**.
 
 ## Commands
 
@@ -21,8 +22,8 @@ Once installed, type `/` in a **Cowork** task. Both commands appear listed under
 
 | Command | What it does |
 |---|---|
-| `/claude-compass:country-finder` | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
-| `/claude-compass:salary-calculator` | Calculate realistic local-market salaries for your target role. Runs standalone or scoped to a single country handed off from Country Finder. |
+| `/country-finder` | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
+| `/salary-calculator` | Calculate realistic local-market salaries for your target role. Runs standalone or scoped to a single country handed off from Country Finder. |
 
 ### Agents
 
