@@ -1,6 +1,8 @@
 # claude-compass
 
-Find your heading.
+Trust your compass.
+
+![claude-compass](1.png)
 
 A Claude Code plugin for globally-minded job seekers. Slash commands to discover countries for remote hire or visa sponsorship, calculate realistic local-market salaries, and ground every decision in real research — not guesswork.
 
