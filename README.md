@@ -6,30 +6,38 @@ Trust your compass.
 
 A Claude Code plugin for globally-minded job seekers. Slash commands to discover countries for remote hire or visa sponsorship, calculate realistic local-market salaries, and ground every decision in real research — not guesswork.
 
-## Install
+## Installation
 
-```bash
-# Register this repo as a marketplace on your machine. Runs once.
-/plugin marketplace add myowinthein/claude-compass
+### Install
 
-# Install the claude-compass plugin from the registered marketplace.
-/plugin install claude-compass@claude-compass
+1. Open Claude Desktop and switch to the Cowork tab.
+2. Open Customize (left sidebar), then the Plugins tab.
+3. Click the + button under Personal plugins, then select "Add marketplace."
+4. Paste this repository: myowinthein/claude-compass
+5. Once added, find claude-compass in the plugin browser and click Install.
 
-# Pull the latest version when a new release ships.
-/plugin update claude-compass@claude-compass
+### Update
 
-# Remove the plugin from your machine.
-/plugin uninstall claude-compass@claude-compass
+1. Open Customize, then the Plugins tab.
+2. Find the claude-compass-marketplace entry and click "Update" to pull the latest version from this repository.
+3. If you've edited any plugin files locally, Cowork will warn you before an update overwrites those changes.
 
-# Apply changes after install, update, or uninstall.
-/reload-plugins
-```
+### Uninstall
 
-## Usage
+1. Open Customize, then the Plugins tab.
+2. Open the installed claude-compass plugin.
+3. Click "Uninstall."
 
-Both commands require a resume. On first run, Claude prompts you to upload one and extracts it to `profile.md` in your workspace. This file is reused on all subsequent runs. Both pipelines resume from where they left off if interrupted.
+### Usage
 
-### Commands
+Once installed, type / in a Cowork task. Both commands appear listed under the Claude Compass section:
+
+- country-finder
+- salary-calculator
+
+Select the one you want to run.
+
+## Commands
 
 | Command | What it does |
 |---|---|
