@@ -1,6 +1,6 @@
 {
   "name": "claude-compass-marketplace",
-  "owner": "your-github-username",
+  "owner": "myowinthein",
   "plugins": [
     {
       "name": "claude-compass",
