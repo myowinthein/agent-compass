@@ -36,6 +36,15 @@ Both commands require a resume. On first run, Claude prompts you to upload one a
 | `/claude-compass:country-finder` | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
 | `/claude-compass:salary-calculator` | Calculate realistic local-market salaries for your target role. Runs standalone or scoped to a single country handed off from Country Finder. |
 
+### Agents
+
+Judgment-heavy and arithmetic-heavy steps are automatically routed to specialist subagents rather than running on the default model.
+
+| Agent | Model | Steps |
+|---|---|---|
+| `deep-reasoner` | Opus / high effort | Country scoring, international salary adjustment, reality checks |
+| `calculator` | Opus / max effort | Final salary table calculation |
+
 ## Contributing
 
 Issues and pull requests are welcome at [github.com/myowinthein/claude-compass/issues](https://github.com/myowinthein/claude-compass/issues).
