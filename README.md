@@ -12,18 +12,18 @@ A Claude Code plugin for globally-minded job seekers. Slash commands to discover
 
 1. Open **Claude Desktop** and switch to the **Cowork** tab.
 2. Open **Customize** (left sidebar), then the **Plugins** tab.
-3. Click the **Add** button under plugins and select **Add marketplace**.
+3. Click the **Add** button and select **Add marketplace**.
 4. Click **Add from a repository** and paste `myowinthein/claude-compass`.
 5. Once the marketplace is added, find the **claude-compass** card and click **+** to install.
 
 ### Update / Uninstall
 
 1. Open **Customize** (left sidebar), then the **Extensions** tab.
-2. Click **Browse extensions**, then navigate to **Plugins → Personal**. You'll see the marketplace entry at the top and your installed plugins as cards below.
+2. Click **Browse extensions**, then navigate to **Plugins → Personal** tab. _You'll see the marketplace entry at the top and your installed plugins as cards below._
 3. To **update**:
    - Click **...** on the marketplace entry and select **Check for updates** (or enable **Sync automatically**).
-   - Open the **claude-compass** card, click **Manage**, then click **Update**. The Update button only appears after the marketplace has been synced.
-4. To **uninstall**: open the **claude-compass** card, click **Manage**, and click **Uninstall**.
+   - Open the **claude-compass** card, click **Manage**, then click **Update**. _The Update button only appears after the marketplace has been synced._
+4. To **uninstall**: open the **claude-compass** card and click **Uninstall**.
 
 ## Commands
 
