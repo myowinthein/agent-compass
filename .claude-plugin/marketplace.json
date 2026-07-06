@@ -1,10 +1,15 @@
 {
   "name": "claude-compass-marketplace",
-  "owner": "myowinthein",
+  "owner": {
+    "name": "myowinthein"
+  },
   "plugins": [
     {
       "name": "claude-compass",
-      "source": "./",
+      "source": {
+        "source": "github",
+        "repo": "myowinthein/claude-compass"
+      },
       "description": "A Claude Cowork plugin pack for globally-minded job seekers. Slash commands to discover visa-sponsorship and remote-hire countries, calculate realistic salaries, and ground every decision in real evidence, not guesswork."
     }
   ]
