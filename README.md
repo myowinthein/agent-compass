@@ -20,8 +20,10 @@ A Claude Code plugin for globally-minded job seekers. Slash commands to discover
 
 1. Open **Customize** (left sidebar), then the **Extensions** tab.
 2. Click **Browse extensions**, then navigate to **Plugins → Personal**. You'll see the marketplace entry at the top and your installed plugins as cards below.
-3. To update: click **...** on the marketplace entry and select **Check for updates** (or enable **Sync automatically**). Then open the **claude-compass** card, click **Manage**, and click **Update** on the next screen. The Update button only appears after the marketplace has been synced.
-4. To uninstall: open the **claude-compass** card, click **Manage**, and click **Uninstall**.
+3. To **update**:
+   - Click **...** on the marketplace entry and select **Check for updates** (or enable **Sync automatically**).
+   - Open the **claude-compass** card, click **Manage**, then click **Update**. The Update button only appears after the marketplace has been synced.
+4. To **uninstall**: open the **claude-compass** card, click **Manage**, and click **Uninstall**.
 
 ## Commands
 
