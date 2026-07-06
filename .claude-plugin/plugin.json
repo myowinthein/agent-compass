@@ -1,0 +1,5 @@
+{
+  "name": "claude-compass",
+  "description": "A Claude Cowork plugin pack for globally-minded job seekers. Slash commands to discover visa-sponsorship and remote-hire countries, calculate realistic salaries, and ground every decision in real evidence, not guesswork.",
+  "version": "0.1.0"
+}
