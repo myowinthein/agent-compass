@@ -22,8 +22,8 @@ Once installed, type `/` in a **Cowork** task. Both commands appear listed under
 
 | Command | What it does |
 |---|---|
-| `/country-finder` | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
-| `/salary-calculator` | Calculate realistic local-market salaries for your target role. Runs standalone or scoped to a single country handed off from Country Finder. |
+| [`/country-finder`](docs/commands/country-finder.md) | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
+| [`/salary-calculator`](docs/commands/salary-calculator.md) | Calculate realistic local-market salaries for your target role. Runs standalone or scoped to a single country handed off from Country Finder. |
 
 ### Agents
 
