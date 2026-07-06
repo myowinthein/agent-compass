@@ -2,7 +2,7 @@
 
 Trust your compass.
 
-<img src="docs/images/banner.png" alt="claude-compass" width="600">
+<img src="docs/images/banner.jpg" alt="claude-compass" width="600">
 
 A Claude Code plugin for globally-minded job seekers. Slash commands to discover countries for remote hire or visa sponsorship, calculate realistic local-market salaries, and ground every decision in real research — not guesswork.
 
