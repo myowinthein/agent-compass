@@ -55,27 +55,27 @@ Checks for `situational-profile.md`. If absent, asks five questions: current loc
 
 Checks for `.country-finder-state.json`. If found, reads `last_completed_step` and informs the user which step will resume. If absent, creates the file with `last_completed_step: 0` and starts from Step 1. Updates the file after each step completes.
 
-### Step 1 — Criteria intake
+### [Step 1 — Criteria intake](country-finder/step1-criteria-intake.md)
 
 Collects hard requirements for both tracks separately. Remote track: minimum acceptable monthly salary (exact amount and currency) and maximum time zone difference (in hours). Sponsorship track: relocation openness, timeline, and dealbreakers. Exclusions: countries or regions to skip entirely. Vague answers such as "reasonable," "flexible," or "close" are rejected — exact numbers and clear yes/no answers are required before proceeding.
 
-### Step 2 — Candidate discovery
+### [Step 2 — Candidate discovery](country-finder/step2-candidate-discovery.md)
 
 Generates a grounded list of candidate countries for each track, based on the criteria from Step 1. Remote and sponsorship candidates are listed separately.
 
-### Step 3 — Research prompt generator
+### [Step 3 — Research prompt generator](country-finder/step3-research-prompt-generator.md)
 
 Generates ready-to-copy research prompts for each candidate country on each track. The user copies these prompts and runs them in separate research sessions to gather real-world data. Claude does not generate the research itself.
 
-### Step 4 — Data ingestion
+### [Step 4 — Data ingestion](country-finder/step4-data-ingestion.md)
 
 Accepts pasted research results one country at a time. Validates each message: one country per message, all required fields present, no silent overwrite if a country was already stored. Data is preserved verbatim — no analysis, scoring, or summarizing during ingestion.
 
-### Step 5 — Scoring
+### [Step 5 — Scoring](country-finder/step5-scoring.md)
 
 Routed to the **deep-reasoner** subagent (Opus, high effort). Scores each stored country against the criteria from Step 1, keeping remote hire and sponsorship tracks completely separate. Each country receives a fit classification (Strong / Moderate / Weak) and a confidence level (High / Medium / Low). Every excluded country requires a specific, evidence-based reason — vague dismissals are not accepted.
 
-### Step 6 — Reality check (optional)
+### [Step 6 — Reality check (optional)](country-finder/step6-reality-check.md)
 
 Claude asks before running. Routed to the **deep-reasoner** subagent. Applies a deeper audit of the scoring output. Skipped if the user declines.
 
