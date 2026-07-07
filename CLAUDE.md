@@ -62,4 +62,10 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 - **Sub-agent scope is fragile.** Steps 2 and 3 of country-finder spawn isolated sub-agents with strict single-task briefs. Broadening a sub-agent's brief — even slightly — causes it to freelance work outside its scope (e.g. the remote agent producing sponsorship output without the right context).
 - **`docs/commands/*.md` serves dual purpose.** These files are plugin documentation AND live GitHub Pages site pages. Editing them changes both the repo docs and the public site simultaneously.
 
-<!-- last-reviewed: 33f3c161a0dc3ca3a5dc708c2b5ff3f1e914b298 -->
+## Rules
+
+This project follows the rules shipped in claude-helm:
+- ~/.claude/plugins/marketplaces/claude-helm/rules/git.md
+- ~/.claude/plugins/marketplaces/claude-helm/rules/safety.md
+
+<!-- last-reviewed: 978fc7d75609cf2a9d4e1f779e05386b0db75c9f -->
