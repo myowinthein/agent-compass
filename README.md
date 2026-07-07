@@ -14,6 +14,20 @@ A Claude Cowork plugin for globally-minded job seekers: find remote-hire countri
 
 **[Documentation site](https://myowinthein.github.io/claude-compass)**
 
+## How it works
+
+Both commands follow a structured pipeline. Research steps are intentionally manual: Claude generates ready-to-copy prompts, you run them yourself (in a web search, a separate Claude session, or any research tool), then paste the results back. Claude ingests and processes what you provide.
+
+This design is deliberate. Job market conditions, visa policies, and salary data change faster than any model's training. Grounding every decision in research you supply — with real sources and dates — produces results that are accurate to now, not to whenever Claude was last trained.
+
+**What gets written to your workspace:**
+- `profile.md` — your extracted resume profile, reused across sessions
+- `situational-profile.md` — your location, citizenship, and language answers
+- `.country-finder-state.json` / `.salary-calculator-state.json` — pipeline progress, enables resume on interruption
+- `remote-candidates.md`, `sponsorship-candidates.md`, `country-research.md` — research you paste in
+
+All data stays in your Cowork workspace. No information is sent to any external service.
+
 ## Installation
 
 ### Install
