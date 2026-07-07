@@ -2,6 +2,7 @@
 title: /salary-calculator
 parent: Commands
 nav_order: 2
+has_children: true
 ---
 
 # /salary-calculator
@@ -49,23 +50,23 @@ If invoked with a single country (handed off from Country Finder), records it as
 
 Checks for `.salary-calculator-state.json`. If found, reads `last_completed_step` and informs the user which step will resume. If absent, creates the file with `last_completed_step: 0` and `target_country: null`, and starts from Step 1. Updates the file after each step completes.
 
-### Step 1 — Research prompt generator
+### [Step 1 — Research prompt generator](salary-calculator/step1-research-prompt-generator.md)
 
 Generates ready-to-copy research prompts for each target country, scoped to the candidate's role and profile from `profile.md`. Each prompt instructs the researcher to find realistic local-market annual base salary ranges — excluding expat, FAANG-only, US-skewed, contractor, and equity-heavy data. Prompts request two company tiers (mid-size local-market and premium/international), city-level breakdowns where relevant, and sourced, dated evidence.
 
-### Step 2 — Data ingestion
+### [Step 2 — Data ingestion](salary-calculator/step2-data-ingestion.md)
 
 Accepts pasted salary research results one country at a time. Validates each message: one country per message, required fields present, no silent overwrite if a country was already stored. Data is preserved verbatim — no analysis or adjustments during ingestion.
 
-### Step 3 — International adjustment
+### [Step 3 — International adjustment](salary-calculator/step3-international-adjustment.md)
 
 Routed to the **deep-reasoner** subagent (Opus, high effort). Estimates the international candidate adjustment for each country — the realistic hiring discount an overseas applicant may face compared to a local candidate, based on employer risk perception, visa complexity, remote interview logistics, and local talent availability. Shows reasoning for each adjustment.
 
-### Step 4 — Final table calculation
+### [Step 4 — Final table calculation](salary-calculator/step4-final-table-calculation.md)
 
 Routed to the **calculator** subagent (Opus, max effort). Reads all ingested salary data and adjustment figures, shows full arithmetic for every country before producing the final table, and double-checks each calculation before finalising. Precision takes priority over speed.
 
-### Step 5 — Reality check (optional)
+### [Step 5 — Reality check (optional)](salary-calculator/step5-reality-check.md)
 
 Claude asks before running. Routed to the **deep-reasoner** subagent. Audits the final table output for inconsistencies, outliers, or weak evidence. Skipped if the user declines.
 
