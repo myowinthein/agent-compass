@@ -9,6 +9,23 @@ nav_order: 6
 
 An independent audit of the Step 5 scoring output. Claude asks before running this step — it only proceeds if you confirm. Routed to the **deep-reasoner** subagent (Opus, high effort).
 
+## Flow
+
+```mermaid
+flowchart TD
+  Start([Step 6 begins — deep-reasoner]) --> C1[Check 1: Criteria consistency\nSame rules applied to all countries?]
+  C1 --> C2[Check 2: Confidence calibration\nHigh confidence backed by real evidence?]
+  C2 --> C3[Check 3: Exclusion reasoning\nEach exclusion cites specific evidence?]
+  C3 --> C4[Check 4: Cross-track contamination\nEach track scored independently?]
+  C4 --> C5[Check 5: Missing candidate check\nExpected absences are evidence-based?]
+  C5 --> C6[Check 6: Framework calibration\nStrong / Moderate / Weak meaningfully distributed?]
+  C6 --> Recal{Evidence supports\nrecalibration?}
+  Recal -->|yes| Revise[Revise classifications or\nexclusion status — explain each change]
+  Recal -->|no| Confirm[Confirm Step 5 results\nare appropriate — no changes]
+  Revise --> Offer([Offer /salary-calculator])
+  Confirm --> Offer
+```
+
 ## Purpose
 
 The reality check challenges the scoring results from Step 5. It does not automatically defend or attack them — it follows the evidence. Recalibration only happens if the evidence genuinely supports it.

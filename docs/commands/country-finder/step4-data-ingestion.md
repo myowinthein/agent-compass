@@ -9,6 +9,30 @@ nav_order: 4
 
 A strict silent-storage mode. Claude reads and stores research data you paste in, one country at a time, with no analysis until you explicitly request it.
 
+## Flow
+
+```mermaid
+flowchart TD
+  Start([Step 4 begins]) --> Receive[Receive pasted message]
+  Receive --> MultiCheck{Multiple countries\nor none?}
+  MultiCheck -->|yes| Err1[Stop — explain issue\nNothing stored]
+  Err1 --> Receive
+  MultiCheck -->|no| FieldCheck{Required fields\ncomplete?}
+  FieldCheck -->|no| Err2[Stop — state missing fields\nNothing stored]
+  Err2 --> Receive
+  FieldCheck -->|yes| ListCheck{Country on\nStep 2 candidate list?}
+  ListCheck -->|no| AskStore[Ask: store or reject?\nWait for answer]
+  AskStore --> Receive
+  ListCheck -->|yes| DupCheck{Already\nstored?}
+  DupCheck -->|yes| AskOver[Ask: overwrite or keep?\nWait for answer]
+  AskOver --> Receive
+  DupCheck -->|no| Store[Store verbatim\nReply: Received N]
+  Store --> Receive
+  Receive --> Done{User says\ndone?}
+  Done -->|no| Receive
+  Done -->|yes| End([Proceed to Step 5])
+```
+
 ## What it reads
 
 - Candidate lists from Step 2 (to validate that each pasted country was expected)

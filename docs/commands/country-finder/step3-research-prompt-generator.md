@@ -9,6 +9,27 @@ nav_order: 3
 
 Generates one ready-to-copy research prompt per candidate country, then runs each as an isolated sub-agent. Claude does not answer the research questions itself in this step.
 
+## Flow
+
+```mermaid
+flowchart TD
+  Start([Step 3 begins]) --> ForEach[For each candidate country]
+  ForEach --> TrackCheck{Appeared in\nwhich list?}
+  TrackCheck -->|Remote only| RemoteP[Remote Track\nprompt only]
+  TrackCheck -->|Sponsorship only| SponP[Sponsorship Track\nprompt only]
+  TrackCheck -->|Both| Combined[Combined prompt\nwith both sections]
+  RemoteP --> RunAgent[Run as isolated sub-agent\none country only]
+  SponP --> RunAgent
+  Combined --> RunAgent
+  RunAgent --> Isolate{Isolation\nguaranteed?}
+  Isolate -->|yes| Append[Append results to\ncountry-research.md]
+  Isolate -->|no| Manual[Show prompt\nWait for manual results]
+  Manual --> Append
+  Append --> More{More\ncountries?}
+  More -->|yes| ForEach
+  More -->|no| Done([All results in country-research.md\nProceed to Step 4])
+```
+
 ## What it reads
 
 - `remote-candidates.md` and `sponsorship-candidates.md` from Step 2

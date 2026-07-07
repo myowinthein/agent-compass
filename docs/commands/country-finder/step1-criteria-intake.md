@@ -9,6 +9,30 @@ nav_order: 1
 
 Collects your hard requirements for both tracks before any research begins. Claude stops and waits after this step — it does not proceed to discovery until you explicitly continue.
 
+## Flow
+
+```mermaid
+flowchart TD
+  Start([Step 1 begins]) --> SitCheck{situational-profile.md\nexists?}
+  SitCheck -->|yes| Reuse[Reuse existing profile]
+  SitCheck -->|no| SitQ[Ask 5 situational questions]
+  SitQ --> SaveSit[Save situational-profile.md]
+  SaveSit --> P1
+  Reuse --> P1
+
+  P1[Phase 1: Remote criteria\nmin salary · max timezone] --> Vague1{Vague answer?}
+  Vague1 -->|yes| Ask1[Reject — ask again\nfor exact value]
+  Ask1 --> Vague1
+  Vague1 -->|no| P2
+
+  P2[Phase 2: Sponsorship criteria\nrelocation · timeline · dealbreakers] --> Vague2{Vague answer?}
+  Vague2 -->|yes| Ask2[Reject — ask again\nfor exact value]
+  Ask2 --> Vague2
+  Vague2 -->|no| P3
+
+  P3[Phase 3: Exclusions\ncountries or regions to skip] --> Stop([Stop and wait\nfor instructions])
+```
+
 ## What it reads
 
 - `profile.md` — your resume profile (must exist before this step runs)

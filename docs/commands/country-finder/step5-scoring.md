@@ -9,6 +9,34 @@ nav_order: 5
 
 Scores every stored country against your criteria from Step 1, keeping Remote and Sponsorship tracks completely separate. Routed to the **deep-reasoner** subagent (Opus, high effort).
 
+## Flow
+
+```mermaid
+flowchart TD
+  Start([Step 5 begins — deep-reasoner]) --> Remote[Score all Remote-track countries first]
+  Remote --> RSalary{Salary meets\nStep 1 minimum?}
+  RSalary -->|no| RExclude[Exclude — state specific gap]
+  RSalary -->|yes| RClassify[Classify: Strong / Moderate / Weak\nAssign confidence: High / Medium / Low]
+  RClassify --> RVague{Evidence vague\nor unquantified?}
+  RVague -->|yes| RLower[Lower confidence\nstate reason]
+  RVague -->|no| RNext
+  RLower --> RNext
+  RExclude --> RNext{More Remote\ncountries?}
+  RNext -->|yes| RSalary
+  RNext -->|no| Spons[Score all Sponsorship-track countries]
+  Spons --> SDeal{Conflicts with\nStep 1 dealbreaker?}
+  SDeal -->|yes| SExclude[Exclude — state specific conflict]
+  SDeal -->|no| SClassify[Classify: Strong / Moderate / Weak\nAssign confidence: High / Medium / Low]
+  SClassify --> SVague{Evidence vague\nor unquantified?}
+  SVague -->|yes| SLower[Lower confidence\nstate reason]
+  SVague -->|no| SNext
+  SLower --> SNext
+  SExclude --> SNext{More Sponsorship\ncountries?}
+  SNext -->|yes| Spons
+  SNext -->|no| Output[Output results with\nfull exclusion list]
+  Output --> Offer([Offer /salary-calculator or Step 6])
+```
+
 ## What it reads
 
 - All country data stored in Step 4
