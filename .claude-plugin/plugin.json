@@ -1,6 +1,6 @@
 {
   "name": "claude-compass",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A Claude Cowork plugin pack for globally-minded job seekers. Slash commands to discover visa-sponsorship and remote-hire countries, calculate realistic salaries, and ground every decision in real evidence, not guesswork.",
   "author": {
     "name": "Myo Win Thein",
