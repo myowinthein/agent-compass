@@ -65,4 +65,4 @@ All data Claude Compass creates (profile.md, state files, research files) lives 
 
 ## Contact
 
-For questions about this policy, contact: **mwt.creative@gmail.com**
+For questions about this policy, open an issue at [github.com/myowinthein/claude-compass/issues](https://github.com/myowinthein/claude-compass/issues).

@@ -72,4 +72,4 @@ These terms are governed by the laws of Myanmar, without regard to conflict of l
 
 ## Contact
 
-For questions about these terms, contact: **mwt.creative@gmail.com**
+For questions about these terms, open an issue at [github.com/myowinthein/claude-compass/issues](https://github.com/myowinthein/claude-compass/issues).
