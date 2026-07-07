@@ -37,35 +37,35 @@ flowchart TD
 
 ## Steps
 
-### 1. Profile check
+### Profile check
 
 Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resume-extraction-prompt.md`, waits for the user to upload their resume, and waits for explicit confirmation of the extracted profile. The profile is reused on all subsequent runs without re-extraction.
 
-### 2. Handoff check
+### Handoff check
 
 If invoked with a single country (handed off from Country Finder), records it as `target_country` in the state file and skips the country list question in Step 1. If invoked standalone, asks for the target country list in Step 1.
 
-### 3. State check
+### State check
 
 Checks for `.salary-calculator-state.json`. If found, reads `last_completed_step` and informs the user which step will resume. If absent, creates the file with `last_completed_step: 0` and `target_country: null`, and starts from Step 1. Updates the file after each step completes.
 
-### 4. Step 1 — Research prompt generator
+### Step 1 — Research prompt generator
 
 Generates ready-to-copy research prompts for each target country, scoped to the candidate's role and profile from `profile.md`. Each prompt instructs the researcher to find realistic local-market annual base salary ranges — excluding expat, FAANG-only, US-skewed, contractor, and equity-heavy data. Prompts request two company tiers (mid-size local-market and premium/international), city-level breakdowns where relevant, and sourced, dated evidence.
 
-### 5. Step 2 — Data ingestion
+### Step 2 — Data ingestion
 
 Accepts pasted salary research results one country at a time. Validates each message: one country per message, required fields present, no silent overwrite if a country was already stored. Data is preserved verbatim — no analysis or adjustments during ingestion.
 
-### 6. Step 3 — International adjustment
+### Step 3 — International adjustment
 
-Routed to the **deep-reasoner** subagent (Opus, high effort). Estimates purchasing-power and cost-of-living adjustment factors for each country, producing an adjusted effective salary figure alongside the raw local-market figure. Shows reasoning for each adjustment.
+Routed to the **deep-reasoner** subagent (Opus, high effort). Estimates the international candidate adjustment for each country — the realistic hiring discount an overseas applicant may face compared to a local candidate, based on employer risk perception, visa complexity, remote interview logistics, and local talent availability. Shows reasoning for each adjustment.
 
-### 7. Step 4 — Final table calculation
+### Step 4 — Final table calculation
 
 Routed to the **calculator** subagent (Opus, max effort). Reads all ingested salary data and adjustment figures, shows full arithmetic for every country before producing the final table, and double-checks each calculation before finalising. Precision takes priority over speed.
 
-### 8. Step 5 — Reality check (optional)
+### Step 5 — Reality check (optional)
 
 Claude asks before running. Routed to the **deep-reasoner** subagent. Audits the final table output for inconsistencies, outliers, or weak evidence. Skipped if the user declines.
 
