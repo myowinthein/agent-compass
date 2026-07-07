@@ -1,9 +1,3 @@
----
-title: Terms of Service
-parent: Legal
-nav_order: 2
----
-
 # Terms of Service
 
 **Last updated:** 2026-07-07
