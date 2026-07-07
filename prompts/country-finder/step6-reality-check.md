@@ -68,4 +68,4 @@ Overall Principles
 - Do not attack the results.
 - Follow the evidence.
 
-After this, ask me: "Want salary data for any of these countries? I can run the Salary Calculator for just that one." If I say yes, read salary-calculator.md from the workspace and follow it, scoped to only the country I name.
+After this, ask me: "Want salary data for any of these countries? I can run the Salary Calculator for just that one." If I say yes, read commands/salary-calculator.md and follow it, scoped to only the country I name.
