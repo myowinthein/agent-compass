@@ -1,0 +1,57 @@
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #0d1b2a;
+    color: #cbd5e1;
+  }
+
+  h1, h2, h3, h4, h5, h6 { color: #e2e8f0; }
+
+  a { color: #22d3ee; }
+  a:hover { color: #67e8f9; }
+
+  .side-bar {
+    background-color: #070e18;
+    border-right-color: #1e293b;
+  }
+
+  .site-title { color: #e2e8f0 !important; }
+
+  .site-footer {
+    color: #4b6a8a;
+    border-top-color: #1e293b;
+  }
+  .site-footer a { color: #4b6a8a; }
+
+  .side-bar + .main .main-header { background-color: #0d1b2a; }
+
+  .search-input {
+    background-color: #162435;
+    color: #e2e8f0;
+    border-color: #1e293b;
+  }
+
+  .main-content-wrap { background-color: #0d1b2a; }
+
+  code {
+    background-color: #111f2e;
+    border-color: #1e293b;
+    color: #7dd3fc;
+  }
+
+  .highlight, pre.highlight {
+    background-color: #111f2e;
+    border-color: #1e293b;
+  }
+
+  table { background-color: #162435; }
+  th {
+    background-color: #0d1b2a;
+    border-color: #1e293b;
+    color: #94a3b8;
+  }
+  td { border-color: #1e293b; }
+
+  .nav-list-link { color: #7b9ec0 !important; }
+  .nav-list-link:hover { color: #22d3ee !important; }
+  .nav-list-link.active { color: #22d3ee !important; }
+}
