@@ -14,9 +14,6 @@ nav_external_links:
 # Footer
 footer_content: "Claude Compass &mdash; MIT License"
 
-custom_css:
-  - theme-toggle
-
 # Plugins
 plugins:
   - jekyll-seo-tag
