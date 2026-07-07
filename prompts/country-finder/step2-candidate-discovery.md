@@ -40,6 +40,11 @@ Output:
 - Two ready-to-copy research prompts, clearly labeled "Remote Discovery Research Prompt" and "Sponsorship Discovery Research Prompt"
 - Do not attempt to answer the research questions yourself in this step
 
-After generating these two prompts, run each one as a separate, isolated research task with no access to your own prior reasoning in this conversation, so the research is genuinely fresh rather than influenced by anything discussed so far. If you are able to run these as isolated sub-agent tasks, do so and bring back the real results. If not, tell me clearly that you cannot guarantee isolation, show me the two prompts, and wait for me to bring back real results myself before continuing.
+After generating these two prompts, run each one as a separate, isolated research task. If you are able to run these as isolated sub-agent tasks, do so with the following strict briefs:
 
-Save the results to remote-candidates.md and sponsorship-candidates.md in the workspace. Do not proceed to Step 3 until both files exist.
+- Agent 1 receives only the Remote Discovery Research Prompt. Its only job is to run that research and save the results to remote-candidates.md. It must not produce, draft, or save anything related to the Sponsorship track.
+- Agent 2 receives only the Sponsorship Discovery Research Prompt. Its only job is to run that research and save the results to sponsorship-candidates.md. It must not produce, draft, or save anything related to the Remote track.
+
+Each agent works from its own prompt only, with no access to your prior reasoning in this conversation. If you cannot guarantee that isolation, show me the two prompts and wait for me to bring back the results myself before continuing.
+
+Do not proceed to Step 3 until both remote-candidates.md and sponsorship-candidates.md exist in the workspace.
