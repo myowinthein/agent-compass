@@ -2,6 +2,7 @@
 title: /country-finder
 parent: Commands
 nav_order: 1
+has_children: true
 ---
 
 # /country-finder
