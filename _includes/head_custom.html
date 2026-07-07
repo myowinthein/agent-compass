@@ -6,7 +6,7 @@
       var div = document.createElement('div');
       div.className = 'mermaid';
       div.textContent = block.textContent;
-      block.closest('.highlight').replaceWith(div);
+      block.closest('.language-mermaid').replaceWith(div);
     });
     mermaid.run();
   });
