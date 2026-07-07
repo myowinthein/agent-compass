@@ -53,6 +53,11 @@ Output:
 - One ready-to-copy research prompt per country, clearly labeled with the country name and which track(s) it covers
 - Do not attempt to answer the research questions yourself in this step
 
-After generating these prompts, run each one as a separate, isolated research task with no access to your own prior reasoning in this conversation, and no access to conclusions reached for other countries, so each country's research is genuinely fresh. If you are able to run these as isolated sub-agent tasks, do so and bring back the real results. If not, tell me clearly that you cannot guarantee isolation, show me the prompts, and wait for me to bring back real results myself before continuing.
+After generating these prompts, run each one as a separate, isolated research task. If you are able to run these as isolated sub-agent tasks, do so with the following strict brief per agent:
 
-Save each country's results to country-research.md in the workspace, appending as each one completes. Do not proceed to Step 4 until all results are saved.
+- Each agent receives only one country's prompt. Its only job is to run that research and return the results for that one country. It must not answer, draft, or save results for any other country.
+- Each agent works from its own prompt only, with no access to your prior reasoning in this conversation and no access to research or conclusions reached for other countries.
+
+Append each country's results to country-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and wait for me to bring back the results myself before continuing.
+
+Do not proceed to Step 4 until all results are saved to country-research.md.
