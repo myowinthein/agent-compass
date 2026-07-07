@@ -47,4 +47,4 @@ By using Claude Compass, you accept that:
 
 ## Contact
 
-For questions about this disclaimer, contact: **mwt.creative@gmail.com**
+For questions about this disclaimer, open an issue at [github.com/myowinthein/claude-compass/issues](https://github.com/myowinthein/claude-compass/issues).
