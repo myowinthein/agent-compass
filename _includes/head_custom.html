@@ -1,13 +1,17 @@
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <script>
-  mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
   window.addEventListener('load', function () {
+    var nodes = [];
     document.querySelectorAll('.language-mermaid code').forEach(function (block) {
       var div = document.createElement('div');
       div.className = 'mermaid';
       div.textContent = block.textContent;
       block.closest('.language-mermaid').replaceWith(div);
+      nodes.push(div);
     });
-    mermaid.run();
+    if (nodes.length > 0) {
+      mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
+      mermaid.run({ nodes: nodes });
+    }
   });
 </script>
