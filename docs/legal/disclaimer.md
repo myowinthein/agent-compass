@@ -1,9 +1,3 @@
----
-title: Disclaimer
-parent: Legal
-nav_order: 3
----
-
 # Disclaimer
 
 **Last updated:** 2026-07-07

@@ -1,9 +1,3 @@
----
-title: Privacy Policy
-parent: Legal
-nav_order: 1
----
-
 # Privacy Policy
 
 **Last updated:** 2026-07-07
