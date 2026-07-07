@@ -1,17 +1,15 @@
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('load', function () {
-    var nodes = [];
-    document.querySelectorAll('.language-mermaid code').forEach(function (block) {
-      var div = document.createElement('div');
-      div.className = 'mermaid';
-      div.textContent = block.textContent;
-      block.closest('.language-mermaid').replaceWith(div);
-      nodes.push(div);
-    });
-    if (nodes.length > 0) {
-      mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
-      mermaid.run({ nodes: nodes });
-    }
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
+
+  const nodes = [];
+  document.querySelectorAll('.language-mermaid code').forEach(block => {
+    const div = document.createElement('div');
+    div.className = 'mermaid';
+    div.textContent = block.textContent;
+    block.closest('.language-mermaid').replaceWith(div);
+    nodes.push(div);
   });
+
+  if (nodes.length) await mermaid.run({ nodes });
 </script>
