@@ -3,7 +3,7 @@
 ## 1. Project Identity
 
 **Name:** claude-compass  
-**Version:** 0.1.0  
+**Version:** 0.2.1  
 **Type:** Claude Code plugin (no runtime code — pure markdown)  
 **Purpose:** Two slash commands for globally-minded job seekers: discover countries for remote hire or visa sponsorship, then calculate realistic local-market salaries. Grounded in user-provided research, never in Claude's assumptions.  
 **Blast radius:** Low. No external services, no databases, no code execution. Changes affect prompt behavior in consumer workspaces only.
@@ -31,6 +31,9 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 | `skills/data-validation-rules.md` | Cross-pipeline ingestion constraints (one item per message, no silent overwrites, no analysis during ingestion) |
 | `skills/evidence-quality-rules.md` | Confidence-lowering rules for vague or unsourced research claims |
 | `skills/exclusion-transparency-rules.md` | Every filtered-out item requires a specific, evidence-based reason |
+| `agents/deep-reasoner.md` | Routes scoring, international adjustment, and reality checks to Opus/high effort |
+| `agents/calculator.md` | Routes final salary table calculation to Opus/max effort |
+| `_config.yml` | Jekyll + just-the-docs GitHub Pages site config; also controls which plugin files Jekyll excludes |
 
 **Pipeline pattern:** Each command is a thin orchestrator. All logic lives in numbered prompt files under `prompts/`. State persists across sessions via JSON files written to the consumer's workspace (`.country-finder-state.json`, `.salary-calculator-state.json`). Profile data persists via `profile.md` and `situational-profile.md`.
 
@@ -56,6 +59,7 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 
 ## 7. Known Traps
 
-_(none yet)_
+- **Sub-agent scope is fragile.** Steps 2 and 3 of country-finder spawn isolated sub-agents with strict single-task briefs. Broadening a sub-agent's brief — even slightly — causes it to freelance work outside its scope (e.g. the remote agent producing sponsorship output without the right context).
+- **`docs/commands/*.md` serves dual purpose.** These files are plugin documentation AND live GitHub Pages site pages. Editing them changes both the repo docs and the public site simultaneously.
 
-<!-- last-reviewed: c9c4903489645d2cc5b0bb680bdf412b31e716be -->
+<!-- last-reviewed: 33f3c161a0dc3ca3a5dc708c2b5ff3f1e914b298 -->
