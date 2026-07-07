@@ -1,3 +1,9 @@
+---
+title: /salary-calculator
+parent: Commands
+nav_order: 2
+---
+
 # /salary-calculator
 
 Runs the full Salary Calculator pipeline. Generates ready-to-copy research prompts for local-market salary data, ingests your research results, applies international purchasing-power adjustments, and produces a final salary table with shown calculations. Runs standalone or scoped to a single country handed off from Country Finder. Resumes from the last completed step if interrupted.

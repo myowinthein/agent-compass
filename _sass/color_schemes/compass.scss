@@ -1,0 +1,24 @@
+// Compass — deep navy and teal, like a nautical chart
+
+$compass-navy:      #1a2e44;
+$compass-navy-dk:   #0f1e2e;
+$compass-teal:      #0e7490;
+$compass-teal-dim:  #ecfeff;
+$compass-bg:        #f0f4f8;
+$compass-surface:   #ffffff;
+$compass-text:      #1e3a5f;
+$compass-muted:     #64748b;
+
+$link-color:                    $compass-teal !default;
+$btn-primary-color:             $compass-teal !default;
+$base-button-color:             $compass-teal-dim !default;
+$sidebar-color:                 $compass-navy !default;
+$feedback-color:                $compass-navy-dk !default;
+$body-background-color:         $compass-bg !default;
+$search-background-color:       $compass-surface !default;
+$table-background-color:        $compass-surface !default;
+$code-background-color:         #f1f5f9 !default;
+$body-heading-color:            $compass-navy !default;
+$body-text-color:               $compass-text !default;
+$nav-child-link-color:          $compass-teal !default;
+$search-result-preview-color:   $compass-muted !default;

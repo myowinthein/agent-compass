@@ -1,3 +1,9 @@
+---
+title: /country-finder
+parent: Commands
+nav_order: 1
+---
+
 # /country-finder
 
 Runs the full Country Finder pipeline. Collects your criteria, discovers candidate countries for remote hire and visa sponsorship as two separate tracks, generates per-country research prompts, ingests your results, scores each country against your requirements, and offers an optional reality check. Resumes from the last completed step if interrupted.

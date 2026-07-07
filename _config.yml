@@ -1,0 +1,36 @@
+title: Claude Compass
+description: A Claude Cowork plugin for globally-minded job seekers.
+url: "https://myowinthein.github.io"
+baseurl: "/claude-compass"
+
+remote_theme: just-the-docs/just-the-docs@v0.10.0
+color_scheme: compass
+
+# Navigation
+nav_sort: order
+nav_external_links:
+  - title: GitHub
+    url: https://github.com/myowinthein/claude-compass
+    hide_icon: false
+
+# Footer
+footer_content: "Claude Compass &mdash; MIT License"
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+  - jekyll-remote-theme
+
+# Exclude non-site files from Jekyll processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - CLAUDE.md
+  - LICENSE
+  - .gitignore
+  - .DS_Store
+  - .claude/
+  - agents/
+  - commands/
+  - prompts/
+  - skills/
