@@ -43,4 +43,4 @@ Summary
 
 Do not rank countries against each other beyond the Strong/Moderate/Weak classification. Do not add recommendations, next steps, or commentary beyond what is asked here.
 
-If I do not ask you to run the Step 6 reality check next, ask me here instead: "Want salary data for any of these countries? I can run the Salary Calculator for just that one." If I say yes, read salary-calculator.md from the workspace and follow it, scoped to only the country I name.
+If I do not ask you to run the Step 6 reality check next, ask me here instead: "Want salary data for any of these countries? I can run the Salary Calculator for just that one." If I say yes, read commands/salary-calculator.md and follow it, scoped to only the country I name.
