@@ -40,4 +40,4 @@ Standing rule (applies for the rest of this conversation, not just this step):
 
 If I answer any question with a vague word instead of a number or a clear yes/no (examples: "close," "good," "high," "reasonable," "flexible"), do not accept it and do not continue. Ask me to restate it as an exact number, currency, or clear yes/no before proceeding.
 
-Once all phases are answered, proceed to the next step.
+Once all phases are answered, stop and wait for further instructions. Do not attempt country discovery, research, or scoring in this step.
