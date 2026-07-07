@@ -18,12 +18,14 @@ A Claude Code plugin for globally-minded job seekers. Slash commands to discover
 
 ### Update / Uninstall
 
-1. Open **Customize** (left sidebar), then the **Extensions** tab.
-2. Click **Browse extensions**, then navigate to **Plugins → Personal** tab. _You'll see the marketplace entry at the top and your installed plugins as cards below._
+1. Open **Customize** (left sidebar), then the **Plugins** tab.
+2. Click the **Browse** button, then navigate to **Plugins → Personal** tab.
+   _You'll see the marketplace entry at the top and your installed plugins as cards below._
 3. To **update**:
-   - Click **...** on the marketplace entry and select **Check for updates** (or enable **Sync automatically**).
-   - Open the **claude-compass** card, click **Manage**, then click **Update**. _The Update button only appears after the marketplace has been synced._
-4. To **uninstall**: open the **claude-compass** card and click **Uninstall**.
+   - Click **3 dots (…)** on the marketplace entry and select **Check for updates** (or enable **Sync automatically**).
+   - Click the settings icon on the **claude-compass** card, then click **Update**.
+     _The Update button only appears after the marketplace has been synced._
+4. To **uninstall**: click **3 dots (⋮)** on the **claude-compass** card and click **Uninstall**.
 
 ## Commands
 
