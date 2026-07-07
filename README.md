@@ -10,7 +10,9 @@ Trust your compass.
 
 <img src="docs/images/banner.jpg" alt="claude-compass" width="600">
 
-A Claude Code plugin for globally-minded job seekers. Slash commands to discover countries for remote hire or visa sponsorship, calculate realistic local-market salaries, and ground every decision in real research — not guesswork.
+A Claude Cowork plugin for globally-minded job seekers: find remote-hire countries, visa sponsors, and local-market salaries.
+
+**[Documentation site](https://myowinthein.github.io/claude-compass)**
 
 ## Installation
 
@@ -33,18 +35,16 @@ A Claude Code plugin for globally-minded job seekers. Slash commands to discover
      _The Update button only appears after the marketplace has been synced._
 4. To **uninstall**: click **3 dots (⋮)** on the **claude-compass** card and click **Uninstall**.
 
-## Commands
+## Usage
 
-Once installed, type `/` in a **Cowork** task. Both commands appear listed under the **Claude Compass** section.
+Type `/` in a **Cowork** task. Both commands appear listed under the **Claude Compass** section.
 
 | Command | What it does |
 |---|---|
 | [`/country-finder`](docs/commands/country-finder.md) | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
 | [`/salary-calculator`](docs/commands/salary-calculator.md) | Calculate realistic local-market salaries for your target role. Runs standalone or scoped to a single country handed off from Country Finder. |
 
-### Agents
-
-Judgment-heavy and arithmetic-heavy steps are automatically routed to specialist subagents rather than running on the default model.
+Judgment-heavy and arithmetic-heavy steps are automatically routed to specialist subagents.
 
 | Agent | Model | Steps |
 |---|---|---|
@@ -59,4 +59,4 @@ Issues and pull requests are welcome at [github.com/myowinthein/claude-compass/i
 
 [MIT](LICENSE)
 
-<!-- last-reviewed: 592aca1d6a71f53cc3273aa66d7602694bd92948 -->
+<!-- last-reviewed: f008d61141ce661602056e50383ef1f35474c424 -->
