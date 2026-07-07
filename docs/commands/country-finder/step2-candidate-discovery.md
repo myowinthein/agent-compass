@@ -9,6 +9,25 @@ nav_order: 2
 
 Builds a grounded candidate shortlist for each track and runs two isolated research sub-agents to populate it. No country is included based on reputation alone — every candidate must be traceable to a real, checkable source.
 
+## Flow
+
+```mermaid
+flowchart TD
+  Start([Step 2 begins]) --> FilterEx[Remove Step 1 exclusions\nfrom both tracks]
+  FilterEx --> FilterTZ[Remove countries outside\nmax timezone — Remote track only]
+  FilterTZ --> ShowLists[Show Remote candidate universe\nand Sponsorship candidate universe]
+  ShowLists --> GenPrompts[Generate Remote and\nSponsorship research prompts]
+  GenPrompts --> Isolate{Sub-agent\nisolation guaranteed?}
+  Isolate -->|yes| Agents[Spawn Agent 1: Remote\nSpawn Agent 2: Sponsorship]
+  Isolate -->|no| Manual[Show both prompts\nWait for manual results]
+  Agents --> Files[Agent 1 → remote-candidates.md\nAgent 2 → sponsorship-candidates.md]
+  Manual --> Files
+  Files --> BothDone{Both files\nexist?}
+  BothDone -->|no| Wait[Wait for remaining file]
+  Wait --> BothDone
+  BothDone -->|yes| Done([Proceed to Step 3])
+```
+
 ## What it reads
 
 - Criteria and exclusions from Step 1
