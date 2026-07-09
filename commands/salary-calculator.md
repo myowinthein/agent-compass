@@ -33,9 +33,9 @@ After finishing each step below, update last_completed_step and updated_at in th
 
 1. Read prompts/salary-calculator/step1-research-prompt-generator.md and follow it exactly.
 2. Read prompts/salary-calculator/step2-data-ingestion.md and follow it exactly.
-3. Use the deep-reasoner subagent to read prompts/salary-calculator/step3-international-adjustment.md and complete this step, using the data already gathered in the workspace.
-4. Use the calculator subagent to read prompts/salary-calculator/step4-final-table-calculation.md and complete this step, using the data already gathered in the workspace.
-5. Ask me if I want to run the reality check. If I say yes, use the deep-reasoner subagent to read prompts/salary-calculator/step5-reality-check.md and complete it.
+3. Before running this step, ask me: "Step 3 (international adjustment) can run on Claude Opus for higher reasoning accuracy, which may cost more. Use Opus for this step? (yes/no)" — If I say yes, use the deep-reasoner subagent. If I say no, read prompts/salary-calculator/step3-international-adjustment.md yourself and follow it exactly using your current model.
+4. Before running this step, ask me: "Step 4 (final table calculation) can run on Claude Opus for higher arithmetic precision, which may cost more. Use Opus for this step? (yes/no)" — If I say yes, use the calculator subagent. If I say no, read prompts/salary-calculator/step4-final-table-calculation.md yourself and follow it exactly using your current model.
+5. Ask me if I want to run the reality check. If I say yes, ask: "The reality check can also run on Claude Opus. Use Opus for this step? (yes/no)" — If I say yes, use the deep-reasoner subagent to read prompts/salary-calculator/step5-reality-check.md. If I say no, read it yourself and follow it exactly using your current model.
 
 ## Important
 

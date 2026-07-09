@@ -7,13 +7,17 @@ nav_order: 5
 
 # Step 5 — Scoring
 
-Scores every stored country against your criteria from Step 1, keeping Remote and Sponsorship tracks completely separate. Routed to the **deep-reasoner** subagent (Opus, high effort).
+Scores every stored country against your criteria from Step 1, keeping Remote and Sponsorship tracks completely separate. Before running, Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 5 begins — deep-reasoner]) --> Remote[Score all Remote-track countries first]
+  Start([Step 5 begins]) --> OpusQ{Use Opus for\nhigher accuracy?}
+  OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
+  OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
+  DeepReasoner --> Remote
+  CurrentModel --> Remote[Score all Remote-track countries first]
   Remote --> RSalary{Salary meets\nStep 1 minimum?}
   RSalary -->|no| RExclude[Exclude — state specific gap]
   RSalary -->|yes| RClassify[Classify: Strong / Moderate / Weak\nAssign confidence: High / Medium / Low]

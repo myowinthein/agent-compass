@@ -7,13 +7,19 @@ nav_order: 6
 
 # Step 6 — Reality check (optional)
 
-An independent audit of the Step 5 scoring output. Claude asks before running this step — it only proceeds if you confirm. Routed to the **deep-reasoner** subagent (Opus, high effort).
+An independent audit of the Step 5 scoring output. Claude asks before running this step — it only proceeds if you confirm. If you confirm, Claude then asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 6 begins — deep-reasoner]) --> C1[Check 1: Criteria consistency\nSame rules applied to all countries?]
+  Start([Step 6 begins]) --> RunQ{Run reality check?}
+  RunQ -->|no| Skip([Step skipped])
+  RunQ -->|yes| OpusQ{Use Opus for\nhigher accuracy?}
+  OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
+  OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
+  DeepReasoner --> C1
+  CurrentModel --> C1[Check 1: Criteria consistency\nSame rules applied to all countries?]
   C1 --> C2[Check 2: Confidence calibration\nHigh confidence backed by real evidence?]
   C2 --> C3[Check 3: Exclusion reasoning\nEach exclusion cites specific evidence?]
   C3 --> C4[Check 4: Cross-track contamination\nEach track scored independently?]

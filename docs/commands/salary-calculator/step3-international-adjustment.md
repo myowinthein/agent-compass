@@ -7,13 +7,17 @@ nav_order: 3
 
 # Step 3 — International adjustment
 
-Estimates the realistic hiring discount an overseas candidate may face when negotiating with local employers, compared to a local candidate at the same level. Routed to the **deep-reasoner** subagent (Opus, high effort).
+Estimates the realistic hiring discount an overseas candidate may face when negotiating with local employers, compared to a local candidate at the same level. Before running, Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 3 begins — deep-reasoner]) --> SitCheck{situational-profile.md\nexists?}
+  Start([Step 3 begins]) --> OpusQ{Use Opus for\nhigher accuracy?}
+  OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
+  OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
+  DeepReasoner --> SitCheck
+  CurrentModel --> SitCheck{situational-profile.md\nexists?}
   SitCheck -->|yes| ReuseSit[Reuse existing profile\nSkip Phase 1 questions]
   SitCheck -->|no| Phase1[Phase 1: Ask situational questions\nlocation · citizenship · friction\nlanguages · work language\nSave to situational-profile.md]
   ReuseSit --> Phase2
