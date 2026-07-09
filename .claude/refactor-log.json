@@ -14,11 +14,11 @@
       "file": "prompts/country-finder/step4-data-ingestion.md",
       "line": 1,
       "description": "Validation rules inlined verbatim in both data-ingestion prompts instead of referencing skills/data-validation-rules.md; evidence quality and exclusion transparency rules also inlined in step5-scoring.md instead of referencing their skill files. Skill files exist but are never read by any prompt.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "e3f5b2ddbf5f997bcd130f9f56af6bbf033b275f",
       "first_found_date": "2026-07-10",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "3505a03",
+      "resolved_date": "2026-07-10"
     },
     {
       "id": "f-0002",
@@ -30,11 +30,11 @@
       "file": "commands/country-finder.md",
       "line": 36,
       "description": "Salary handoff offer is lost when user declines the reality check: step5-scoring.md's salary offer is conditional on 'if user does not ask about step 6', but in orchestrated mode the orchestrator (not the user) issues that question. If user declines step 6, step6's salary offer never runs and step5's conditional is ambiguous.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "e3f5b2ddbf5f997bcd130f9f56af6bbf033b275f",
       "first_found_date": "2026-07-10",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "ec86205",
+      "resolved_date": "2026-07-10"
     },
     {
       "id": "f-0003",
@@ -46,11 +46,11 @@
       "file": "CLAUDE.md",
       "line": 3,
       "description": "Version field in CLAUDE.md shows 0.4.2 but plugin.json and the latest release commit (a4adafe) show 0.5.0.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "e3f5b2ddbf5f997bcd130f9f56af6bbf033b275f",
       "first_found_date": "2026-07-10",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "1e5f1a2",
+      "resolved_date": "2026-07-10"
     },
     {
       "id": "f-0004",
@@ -61,8 +61,8 @@
       "depends_on": [],
       "file": "README.md",
       "line": 14,
-      "description": "README, plugin.json, marketplace.json, and _config.yml describe this as a 'Claude Cowork plugin' while CLAUDE.md calls it a 'Claude Code plugin'. May be intentional if Cowork is the workspace product name.",
-      "status": "open",
+      "description": "README, plugin.json, marketplace.json, and _config.yml describe this as a 'Claude Cowork plugin' while CLAUDE.md calls it a 'Claude Code plugin'. Confirmed intentional — Cowork is the workspace product name.",
+      "status": "skipped-by-user",
       "first_found_commit": "e3f5b2ddbf5f997bcd130f9f56af6bbf033b275f",
       "first_found_date": "2026-07-10",
       "resolved_commit": null,
@@ -78,11 +78,11 @@
       "file": "README.md",
       "line": 47,
       "description": "README says subagents are 'automatically routed' but both commands ask the user at each step whether to use Opus. Misleads new users about expected interaction.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "e3f5b2ddbf5f997bcd130f9f56af6bbf033b275f",
       "first_found_date": "2026-07-10",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "1e5f1a2",
+      "resolved_date": "2026-07-10"
     }
   ]
 }
