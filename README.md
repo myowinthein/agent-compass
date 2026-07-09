@@ -59,4 +59,4 @@ Issues and pull requests are welcome at [github.com/myowinthein/claude-compass/i
 
 [MIT](LICENSE)
 
-<!-- last-reviewed: f008d61141ce661602056e50383ef1f35474c424 -->
+<!-- last-reviewed: acf5c6fdac137dde695059427afe67f65576bf51 -->
