@@ -14,7 +14,7 @@ An independent audit of the Step 5 scoring output. Claude asks before running th
 ```mermaid
 flowchart TD
   Start([Step 6 begins]) --> RunQ{Run reality check?}
-  RunQ -->|no| Skip([Step skipped])
+  RunQ -->|no| SCQ([Offer /salary-calculator\nscoped to one country])
   RunQ -->|yes| OpusQ{Use Opus for\nhigher accuracy?}
   OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
   OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
@@ -80,4 +80,4 @@ If recalibration is not supported, the Step 5 results are explicitly confirmed a
 
 ## After the reality check
 
-Claude asks whether you want salary data for any of the results and offers to run `/salary-calculator` scoped to a single named country.
+Claude asks whether you want salary data for any of the results and offers to run `/salary-calculator` scoped to a single named country. The same offer appears if you decline the reality check entirely — you are never left without the handoff option.
