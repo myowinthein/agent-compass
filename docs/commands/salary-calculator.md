@@ -60,15 +60,15 @@ Accepts pasted salary research results one country at a time. Validates each mes
 
 ### [Step 3 — International adjustment](salary-calculator/step3-international-adjustment.md)
 
-Routed to the **deep-reasoner** subagent (Opus, high effort). Estimates the international candidate adjustment for each country — the realistic hiring discount an overseas applicant may face compared to a local candidate, based on employer risk perception, visa complexity, remote interview logistics, and local talent availability. Shows reasoning for each adjustment.
+Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy — if declined, the step runs with your current model. Estimates the international candidate adjustment for each country — the realistic hiring discount an overseas applicant may face compared to a local candidate, based on employer risk perception, visa complexity, remote interview logistics, and local talent availability. Shows reasoning for each adjustment.
 
 ### [Step 4 — Final table calculation](salary-calculator/step4-final-table-calculation.md)
 
-Routed to the **calculator** subagent (Opus, max effort). Reads all ingested salary data and adjustment figures, shows full arithmetic for every country before producing the final table, and double-checks each calculation before finalising. Precision takes priority over speed.
+Claude asks whether to use the **calculator** subagent (Opus, max effort) for higher arithmetic precision — if declined, the step runs with your current model. Reads all ingested salary data and adjustment figures, shows full arithmetic for every country before producing the final table, and double-checks each calculation before finalising. Precision takes priority over speed.
 
 ### [Step 5 — Reality check (optional)](salary-calculator/step5-reality-check.md)
 
-Claude asks before running. Routed to the **deep-reasoner** subagent. Audits the final table output for inconsistencies, outliers, or weak evidence. Skipped if the user declines.
+Claude asks before running. If you confirm, Claude then asks whether to use the **deep-reasoner** subagent (Opus, high effort) — if declined, the step runs with your current model. Audits the final table output for inconsistencies, outliers, or weak evidence. Skipped if the user declines.
 
 ## Stop conditions
 

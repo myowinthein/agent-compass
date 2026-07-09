@@ -73,15 +73,15 @@ Accepts pasted research results one country at a time. Validates each message: o
 
 ### [Step 5 — Scoring](country-finder/step5-scoring.md)
 
-Routed to the **deep-reasoner** subagent (Opus, high effort). Scores each stored country against the criteria from Step 1, keeping remote hire and sponsorship tracks completely separate. Each country receives a fit classification (Strong / Moderate / Weak) and a confidence level (High / Medium / Low). Every excluded country requires a specific, evidence-based reason — vague dismissals are not accepted.
+Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy — if declined, the step runs with your current model. Scores each stored country against the criteria from Step 1, keeping remote hire and sponsorship tracks completely separate. Each country receives a fit classification (Strong / Moderate / Weak) and a confidence level (High / Medium / Low). Every excluded country requires a specific, evidence-based reason — vague dismissals are not accepted.
 
 ### [Step 6 — Reality check (optional)](country-finder/step6-reality-check.md)
 
-Claude asks before running. Routed to the **deep-reasoner** subagent. Applies a deeper audit of the scoring output. Skipped if the user declines.
+Claude asks before running. If you confirm, Claude then asks whether to use the **deep-reasoner** subagent (Opus, high effort) — if declined, the step runs with your current model. Applies a deeper audit of the scoring output. If you decline the reality check entirely, the salary handoff offer appears immediately.
 
 ### Handoff
 
-After scoring (and the optional reality check), Claude asks whether the user wants salary data for any of the results. If yes, it offers to run `/salary-calculator` scoped to a single named country.
+After Step 5 scoring — or after Step 6 if you ran it — Claude asks whether you want salary data for any of the results and offers to run `/salary-calculator` scoped to a single named country.
 
 ## Stop conditions
 
