@@ -2,6 +2,7 @@ I'm going to feed you research data country by country.
 
 Behavior rules:
 
+* Read and apply the cross-pipeline data validation rules in skills/data-validation-rules.md, then follow the additional rules below.
 * Read and silently store the data.
 * Each message is expected to contain data for exactly one country.
 * If a message contains multiple countries or no recognizable country, stop and explain the issue. Do not store anything from that message.
