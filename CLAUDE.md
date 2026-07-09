@@ -68,4 +68,8 @@ This project follows the rules shipped in claude-helm:
 - ~/.claude/plugins/marketplaces/claude-helm/rules/git.md
 - ~/.claude/plugins/marketplaces/claude-helm/rules/safety.md
 
+At the start of every session, check whether the paths above exist on this machine.
+If either is missing, inform the user: "helm rules are referenced in CLAUDE.md but the
+plugin is not installed on this machine. Install it with: /plugin install claude-helm"
+
 <!-- last-reviewed: 978fc7d75609cf2a9d4e1f779e05386b0db75c9f -->
