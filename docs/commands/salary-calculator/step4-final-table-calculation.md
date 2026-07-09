@@ -7,13 +7,17 @@ nav_order: 4
 
 # Step 4 — Final table calculation
 
-Applies the international adjustment to the salary data and produces a final table with shown calculations. Routed to the **calculator** subagent (Opus, max effort). Precision takes priority over speed.
+Applies the international adjustment to the salary data and produces a final table with shown calculations. Before running, Claude asks whether to use the **calculator** subagent (Opus, max effort) for higher arithmetic precision. If you decline, the step runs with your current model. Precision takes priority over speed.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 4 begins — calculator]) --> Check{Country has both\nsalary data and\nadjustment data?}
+  Start([Step 4 begins]) --> OpusQ{Use Opus for\nhigher precision?}
+  OpusQ -->|yes| CalcAgent[Route to calculator\nOpus / max effort]
+  OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
+  CalcAgent --> Check
+  CurrentModel --> Check{Country has both\nsalary data and\nadjustment data?}
   Check -->|no| Skip[Skip country\nnote reason]
   Check -->|yes| Midpoint[Market Midpoint =\nRealistic value from salary dataset\nDo not average or derive]
   Midpoint --> Calc[Apply adjustment independently\nto Safe and Stretch midpoints\nAdjusted = Midpoint x 1 minus Adj%]

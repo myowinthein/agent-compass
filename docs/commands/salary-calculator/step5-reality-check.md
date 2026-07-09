@@ -7,13 +7,19 @@ nav_order: 5
 
 # Step 5 — Reality check (optional)
 
-An independent audit of the final salary table from Step 4. Claude asks before running — it only proceeds if you confirm. Routed to the **deep-reasoner** subagent (Opus, high effort).
+An independent audit of the final salary table from Step 4. Claude asks before running — it only proceeds if you confirm. If you confirm, Claude then asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 5 begins — deep-reasoner]) --> C1[1. Candidate positioning\nDraft career ladder for this role\nWait for confirmation before proceeding]
+  Start([Step 5 begins]) --> RunQ{Run reality check?}
+  RunQ -->|no| Skip([Step skipped])
+  RunQ -->|yes| OpusQ{Use Opus for\nhigher accuracy?}
+  OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
+  OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
+  DeepReasoner --> C1
+  CurrentModel --> C1[1. Candidate positioning\nDraft career ladder for this role\nWait for confirmation before proceeding]
   C1 --> Confirm{Career ladder\nconfirmed?}
   Confirm -->|no| EditLadder[Adjust ladder per feedback]
   EditLadder --> Confirm
