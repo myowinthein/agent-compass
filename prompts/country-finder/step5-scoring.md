@@ -21,11 +21,11 @@ For Sponsorship Track, for each country with Sponsorship data stored:
 
 Evidence quality rule (applies to both tracks):
 
-If the stored research data itself uses vague or unquantified language (examples: "sometimes," "generally friendly," "fairly common"), do not treat this as strong evidence. Lower the confidence level accordingly and say why.
+Read and apply skills/evidence-quality-rules.md.
 
 Exclusion transparency rule:
 
-Every country that was on a Step 2 candidate list but does not appear in the final results for that track must be listed separately with a specific, evidence-based reason. "General reputation suggests it's not a good fit" is not an acceptable reason. If no data was ever stored for that country and track, say so plainly.
+Read and apply skills/exclusion-transparency-rules.md.
 
 Output format:
 
