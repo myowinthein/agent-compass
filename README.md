@@ -44,7 +44,7 @@ Type `/` in a **Cowork** task. Both commands appear listed under the **Claude Co
 | [`/country-finder`](docs/commands/country-finder.md) | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
 | [`/salary-calculator`](docs/commands/salary-calculator.md) | Calculate realistic local-market salaries for your target role. Runs standalone or scoped to a single country handed off from Country Finder. |
 
-Judgment-heavy and arithmetic-heavy steps are automatically routed to specialist subagents.
+Judgment-heavy and arithmetic-heavy steps can be routed to specialist subagents — Claude asks at each step whether to use Opus.
 
 | Agent | Model | Steps |
 |---|---|---|
