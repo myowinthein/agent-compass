@@ -7,13 +7,18 @@ nav_order: 4
 
 # Step 4 — Data ingestion
 
-A strict silent-storage mode. Claude reads and stores research data you paste in, one country at a time, with no analysis until you explicitly request it.
+A strict silent-storage mode. Claude reads and stores research data one country at a time, with no analysis until you explicitly request it.
+
+If `country-research.md` exists in the workspace (written by Step 3's sub-agents), Claude reads and processes it autonomously — no pasting required. If it does not exist, Claude waits for you to paste research data country by country.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 4 begins]) --> Receive[Receive pasted message]
+  Start([Step 4 begins]) --> FileCheck{country-research.md\nexists?}
+  FileCheck -->|yes| ReadFile[Read file — process\neach country in order]
+  FileCheck -->|no| Receive[Wait for pasted message]
+  ReadFile --> MultiCheck
   Receive --> MultiCheck{Multiple countries\nor none?}
   MultiCheck -->|yes| Err1[Stop — explain issue\nNothing stored]
   Err1 --> Receive
@@ -35,7 +40,8 @@ flowchart TD
 
 ## What it reads
 
-- Candidate lists from Step 2 (to validate that each pasted country was expected)
+- `country-research.md` in the workspace (if present — written by Step 3 sub-agents)
+- Candidate lists from Step 2 (to validate that each country was expected)
 
 ## Rules
 
@@ -65,4 +71,4 @@ Type `list countries` at any point and Claude replies with the country names sto
 
 ## Moving to Step 5
 
-Tell Claude you are done pasting data and want to proceed to scoring.
+If Claude processed `country-research.md` autonomously, it moves to Step 5 automatically once all countries are stored. If you were pasting manually, tell Claude you are done and want to proceed to scoring.

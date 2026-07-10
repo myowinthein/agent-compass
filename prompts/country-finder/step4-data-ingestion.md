@@ -1,3 +1,11 @@
+Check whether `country-research.md` exists in the workspace.
+
+If it exists, read it and process each country's data from that file sequentially — no user input is needed. Apply all the same behavior rules below to each country block in the file, in order, as if it had been pasted.
+
+If it does not exist, wait for me to feed you research data country by country.
+
+---
+
 I'm going to feed you research data country by country.
 
 Behavior rules:
