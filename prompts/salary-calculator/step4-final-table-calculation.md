@@ -23,16 +23,16 @@ Calculation Rules
 
 Adjusted Midpoint = Market Midpoint x (1 - Adjustment %)
 
-2. Range Calculation
+2. Fixed Value
 
-For each Adjusted Midpoint:
+Fixed = Adjusted Midpoint
+
+3. Range Calculation
+
+For each Fixed value:
 
 - Lower Range = Fixed x 0.95
 - Upper Range = Fixed x 1.10
-
-3. Fixed Value
-
-Fixed = Adjusted Midpoint
 
 4. Monthly Calculation
 
