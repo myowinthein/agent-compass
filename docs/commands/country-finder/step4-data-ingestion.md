@@ -7,13 +7,13 @@ nav_order: 4
 
 # Step 4 — Data ingestion
 
-A strict silent-storage mode. Claude reads `step3-country-research.md` written by Step 3 and processes each country's data autonomously — no pasting required. If the file is missing, Claude stops and reports it rather than waiting for manual input.
+A strict silent-storage mode. Claude reads `cf-step3-country-research.md` written by Step 3 and processes each country's data autonomously — no pasting required. If the file is missing, Claude stops and reports it rather than waiting for manual input.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 4 begins]) --> FileCheck{step3-country-research.md\nexists?}
+  Start([Step 4 begins]) --> FileCheck{cf-step3-country-research.md\nexists?}
   FileCheck -->|no| Error[Stop — report missing file\nAsk user to rerun Step 3]
   FileCheck -->|yes| ReadFile[Read file — process\neach country in order]
   ReadFile --> MultiCheck{Multiple countries\nor none in block?}
@@ -37,8 +37,8 @@ flowchart TD
 
 ## What it reads
 
-- `step3-country-research.md` — written by Step 3 sub-agents
-- `step2-remote-candidates.md` and `step2-sponsorship-candidates.md` — used to validate that each country was expected
+- `cf-step3-country-research.md` — written by Step 3 sub-agents
+- `cf-step2-remote-candidates.md` and `cf-step2-sponsorship-candidates.md` — used to validate that each country was expected
 
 ## Rules
 
@@ -63,4 +63,4 @@ Claude preserves all values, wording, and formatting exactly as provided. It doe
 
 ## Stop condition
 
-Once all countries from `step3-country-research.md` have been processed, Claude stops and waits for the main command. Any skipped duplicates are reported in a warning before stopping.
+Once all countries from `cf-step3-country-research.md` have been processed, Claude stops and waits for the main command. Any skipped duplicates are reported in a warning before stopping.

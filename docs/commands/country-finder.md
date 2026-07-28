@@ -65,7 +65,7 @@ Generates ready-to-copy research prompts for each candidate country on each trac
 
 ### [Step 4 — Data ingestion](country-finder/step4-data-ingestion.md)
 
-Accepts pasted research results one country at a time, or reads `step3-country-research.md` automatically if it was written by Step 3's sub-agents. Validates each message: one country per message, all required fields present, no silent overwrite if a country was already stored. Data is preserved verbatim — no analysis, scoring, or summarizing during ingestion.
+Accepts pasted research results one country at a time, or reads `cf-step3-country-research.md` automatically if it was written by Step 3's sub-agents. Validates each message: one country per message, all required fields present, no silent overwrite if a country was already stored. Data is preserved verbatim — no analysis, scoring, or summarizing during ingestion.
 
 ### [Step 5 — Scoring](country-finder/step5-scoring.md)
 

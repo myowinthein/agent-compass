@@ -1,6 +1,6 @@
-Check whether `step3-country-research.md` exists in the workspace.
+Check whether `cf-step3-country-research.md` exists in the workspace.
 
-If it does not exist, stop and tell me: "step3-country-research.md was not found. Please ensure Step 3 completed successfully before continuing."
+If it does not exist, stop and tell me: "cf-step3-country-research.md was not found. Please ensure Step 3 completed successfully before continuing."
 
 If it exists, read it and process each country's data from that file sequentially — no user input is needed. Apply all the behavior rules below to each country block in the file, in order, as if it had been pasted.
 
@@ -10,7 +10,7 @@ Behavior rules:
 * Read and silently store the data.
 * Each message is expected to contain data for exactly one country.
 * If a message contains multiple countries or no recognizable country, stop and explain the issue. Do not store anything from that message.
-* Check which track(s) this country was expected to cover, based on step2-remote-candidates.md and step2-sponsorship-candidates.md from the workspace.
+* Check which track(s) this country was expected to cover, based on cf-step2-remote-candidates.md and cf-step2-sponsorship-candidates.md from the workspace.
 * If the pasted data is missing a section or required field for a track this country was expected to cover, stop and state exactly what is missing. Do not store incomplete data.
 * If a country was not part of either Step 2 candidate list, stop and ask whether it should still be stored or whether it's a mistake. Do not store until I answer.
 * If a country has already been stored, skip it, keep the original, and note it in a warning at the end of processing.
@@ -33,6 +33,6 @@ Reply format for unexpected country:
 
 Not on either candidate list from Step 2. Store anyway, or is this a mistake?
 
-Once all countries from step3-country-research.md have been processed, write all successfully stored country datasets to step4-country-data.md in the workspace, preserving the original structure and content for each country. Any skipped duplicates are noted in a warning before stopping.
+Once all countries from cf-step3-country-research.md have been processed, write all successfully stored country datasets to cf-step4-country-data.md in the workspace, preserving the original structure and content for each country. Any skipped duplicates are noted in a warning before stopping.
 
 Step complete — stop here and wait for the main command.

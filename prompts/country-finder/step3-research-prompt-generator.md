@@ -1,4 +1,4 @@
-Read step2-remote-candidates.md and step2-sponsorship-candidates.md from the workspace. Using these two candidate lists, generate one ready-to-copy research prompt per country.
+Read cf-step2-remote-candidates.md and cf-step2-sponsorship-candidates.md from the workspace. Using these two candidate lists, generate one ready-to-copy research prompt per country.
 
 For each country, check which list(s) it appeared in:
 
@@ -58,6 +58,6 @@ After generating these prompts, run each one as a separate, isolated research ta
 - Each agent receives only one country's prompt. Its only job is to run that research and return the results for that one country. It must not answer, draft, or save results for any other country.
 - Each agent works from its own prompt only, with no access to your prior reasoning in this conversation and no access to research or conclusions reached for other countries.
 
-Append each country's results to step3-country-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and wait for me to bring back the results myself before continuing.
+Append each country's results to cf-step3-country-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and wait for me to bring back the results myself before continuing.
 
-Once all results are saved to step3-country-research.md, step complete — stop here and wait for the main command.
+Once all results are saved to cf-step3-country-research.md, step complete — stop here and wait for the main command.

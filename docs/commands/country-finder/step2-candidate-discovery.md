@@ -22,7 +22,7 @@ flowchart TD
   GenPrompts --> Isolate{Sub-agent\nisolation guaranteed?}
   Isolate -->|yes| Agents[Spawn Agent 1: Remote\nSpawn Agent 2: Sponsorship]
   Isolate -->|no| Manual[Show both prompts\nWait for manual results]
-  Agents --> Files[Agent 1 → step2-remote-candidates.md\nAgent 2 → step2-sponsorship-candidates.md]
+  Agents --> Files[Agent 1 → cf-step2-remote-candidates.md\nAgent 2 → cf-step2-sponsorship-candidates.md]
   Manual --> Files
   Files --> BothDone{Both files\nexist?}
   BothDone -->|no| Wait[Wait for remaining file]
@@ -52,8 +52,8 @@ Claude generates two ready-to-copy research prompts — one per track — then r
 
 | Agent | Task | Output file |
 |---|---|---|
-| Agent 1 | Remote Discovery Research | `step2-remote-candidates.md` |
-| Agent 2 | Sponsorship Discovery Research | `step2-sponsorship-candidates.md` |
+| Agent 1 | Remote Discovery Research | `cf-step2-remote-candidates.md` |
+| Agent 2 | Sponsorship Discovery Research | `cf-step2-sponsorship-candidates.md` |
 
 Each agent receives only its own prompt and has no access to the other track's reasoning. Agent 1 must not produce sponsorship output; Agent 2 must not produce remote output. If isolation cannot be guaranteed, Claude shows both prompts and waits for you to bring back the results manually.
 
@@ -63,7 +63,7 @@ Each agent receives only its own prompt and has no access to the other track's r
 
 ## Output
 
-- `step2-remote-candidates.md` — researched remote-hire candidates with sources and dates
-- `step2-sponsorship-candidates.md` — researched sponsorship candidates with sources and dates
+- `cf-step2-remote-candidates.md` — researched remote-hire candidates with sources and dates
+- `cf-step2-sponsorship-candidates.md` — researched sponsorship candidates with sources and dates
 
 Step 3 does not begin until both files exist in the workspace.
