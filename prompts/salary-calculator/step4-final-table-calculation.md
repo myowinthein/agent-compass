@@ -7,7 +7,7 @@ Only calculate countries that have BOTH:
 
 Skip countries with missing data.
 
-Keep the same country order as the imported salary dataset.
+Keep the same country order as the salary dataset from Step 2.
 
 Definitions
 
