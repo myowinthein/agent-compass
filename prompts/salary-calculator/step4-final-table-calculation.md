@@ -1,4 +1,6 @@
-Based on the salary data stored in Step 2 and the international candidate adjustment values from Step 3, calculate adjusted expected salary ranges for each country.
+Check whether step3-adjustment-values.md exists in the workspace. If it does not exist, stop and tell me: "step3-adjustment-values.md was not found. Please ensure Step 3 completed successfully before continuing."
+
+If it exists, read it. Using the adjustment values from step3-adjustment-values.md and the salary data stored in Step 2, calculate adjusted expected salary ranges for each country.
 
 Only calculate countries that have BOTH:
 
