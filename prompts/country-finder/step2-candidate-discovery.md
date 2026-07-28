@@ -1,6 +1,6 @@
-Check whether step1-criteria.md exists in the workspace. If it does not exist, stop and tell me: "step1-criteria.md was not found. Please ensure Step 1 completed successfully before continuing."
+Check whether cf-step1-criteria.md exists in the workspace. If it does not exist, stop and tell me: "cf-step1-criteria.md was not found. Please ensure Step 1 completed successfully before continuing."
 
-Read step1-criteria.md, profile.md, and situational-profile.md from the workspace. Using the candidate profile, situational profile, and criteria from step1-criteria.md, discover a candidate country shortlist for each track. Do not brainstorm countries from memory or general reputation. Every country included must be traceable to a real, checkable source.
+Read cf-step1-criteria.md, profile.md, and situational-profile.md from the workspace. Using the candidate profile, situational profile, and criteria from cf-step1-criteria.md, discover a candidate country shortlist for each track. Do not brainstorm countries from memory or general reputation. Every country included must be traceable to a real, checkable source.
 
 Part A — Direct filtering (no research needed, apply immediately)
 
@@ -44,9 +44,9 @@ Output:
 
 After generating these two prompts, run each one as a separate, isolated research task. If you are able to run these as isolated sub-agent tasks, do so with the following strict briefs:
 
-- Agent 1 receives only the Remote Discovery Research Prompt. Its only job is to run that research and save the results to step2-remote-candidates.md. It must not produce, draft, or save anything related to the Sponsorship track.
-- Agent 2 receives only the Sponsorship Discovery Research Prompt. Its only job is to run that research and save the results to step2-sponsorship-candidates.md. It must not produce, draft, or save anything related to the Remote track.
+- Agent 1 receives only the Remote Discovery Research Prompt. Its only job is to run that research and save the results to cf-step2-remote-candidates.md. It must not produce, draft, or save anything related to the Sponsorship track.
+- Agent 2 receives only the Sponsorship Discovery Research Prompt. Its only job is to run that research and save the results to cf-step2-sponsorship-candidates.md. It must not produce, draft, or save anything related to the Remote track.
 
 Each agent works from its own prompt only, with no access to your prior reasoning in this conversation. If you cannot guarantee that isolation, show me the two prompts and wait for me to bring back the results myself before continuing.
 
-Once both step2-remote-candidates.md and step2-sponsorship-candidates.md exist in the workspace, step complete — stop here and wait for the main command.
+Once both cf-step2-remote-candidates.md and cf-step2-sponsorship-candidates.md exist in the workspace, step complete — stop here and wait for the main command.

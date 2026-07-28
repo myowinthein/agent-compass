@@ -1,6 +1,6 @@
-Check whether step4-country-data.md exists in the workspace. If it does not exist, stop and tell me: "step4-country-data.md was not found. Please ensure Step 4 completed successfully before continuing."
+Check whether cf-step4-country-data.md exists in the workspace. If it does not exist, stop and tell me: "cf-step4-country-data.md was not found. Please ensure Step 4 completed successfully before continuing."
 
-Read step4-country-data.md, step1-criteria.md, and situational-profile.md from the workspace. Using all country data from step4-country-data.md and the criteria and situational profile, score each country.
+Read cf-step4-country-data.md, cf-step1-criteria.md, and situational-profile.md from the workspace. Using all country data from cf-step4-country-data.md and the criteria and situational profile, score each country.
 
 Keep Remote and Sponsorship scoring completely separate. Do not blend them into a single score.
 
@@ -44,6 +44,6 @@ Summary
 
 Do not rank countries against each other beyond the Strong/Moderate/Weak classification. Do not add recommendations, next steps, or commentary beyond what is asked here.
 
-Save the full scoring output to step5-scoring-results.md in the workspace.
+Save the full scoring output to cf-step5-scoring-results.md in the workspace.
 
 Step complete — stop here and wait for the main command.

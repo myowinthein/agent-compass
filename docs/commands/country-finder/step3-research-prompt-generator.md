@@ -22,7 +22,7 @@ flowchart TD
   SponP --> RunAgent
   Combined --> RunAgent
   RunAgent --> Isolate{Isolation\nguaranteed?}
-  Isolate -->|yes| Append[Append results to\nstep3-country-research.md]
+  Isolate -->|yes| Append[Append results to\ncf-step3-country-research.md]
   Isolate -->|no| Manual[Show prompt\nWait for manual results]
   Manual --> Append
   Append --> More{More\ncountries?}
@@ -32,7 +32,7 @@ flowchart TD
 
 ## What it reads
 
-- `step2-remote-candidates.md` and `step2-sponsorship-candidates.md` from Step 2
+- `cf-step2-remote-candidates.md` and `cf-step2-sponsorship-candidates.md` from Step 2
 - `profile.md` and `situational-profile.md`
 
 ## Prompt structure per country
@@ -66,12 +66,12 @@ Each prompt covers only the track(s) that country appeared in:
 Each country's prompt is run as a separate isolated sub-agent. Each agent:
 - Receives only its own country's prompt
 - Has no access to results for other countries
-- Returns results that are appended to `step3-country-research.md`
+- Returns results that are appended to `cf-step3-country-research.md`
 
 If isolation cannot be guaranteed, Claude shows all prompts and waits for you to bring back the results manually.
 
 ## Output
 
-- `step3-country-research.md` — per-country research results, appended as each agent completes
+- `cf-step3-country-research.md` — per-country research results, appended as each agent completes
 
-Step 4 does not begin until all results are saved to `step3-country-research.md`.
+Step 4 does not begin until all results are saved to `cf-step3-country-research.md`.

@@ -1,6 +1,6 @@
-Check whether step5-scoring-results.md exists in the workspace. If it does not exist, stop and tell me: "step5-scoring-results.md was not found. Please ensure Step 5 completed successfully before continuing."
+Check whether cf-step5-scoring-results.md exists in the workspace. If it does not exist, stop and tell me: "cf-step5-scoring-results.md was not found. Please ensure Step 5 completed successfully before continuing."
 
-Read step5-scoring-results.md from the workspace. Use it alongside all previously generated data and results from this conversation.
+Read cf-step5-scoring-results.md from the workspace. Use it alongside all previously generated data and results from this conversation.
 
 Goal
 

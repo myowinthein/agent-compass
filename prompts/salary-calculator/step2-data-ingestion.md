@@ -1,6 +1,6 @@
-Check whether step1-salary-research.md exists in the workspace.
+Check whether sc-step1-salary-research.md exists in the workspace.
 
-If it does not exist, stop and tell me: "step1-salary-research.md was not found. Please ensure Step 1 completed successfully before continuing."
+If it does not exist, stop and tell me: "sc-step1-salary-research.md was not found. Please ensure Step 1 completed successfully before continuing."
 
 If it exists, read it and process each country's data from that file sequentially — no user input is needed. Apply all the behavior rules below to each country block in the file, in order.
 
@@ -27,4 +27,4 @@ Reply format for missing fields:
 
 Missing: [specific field]. Country not stored.
 
-Once all countries from step1-salary-research.md have been processed, step complete — stop here and wait for the main command.
+Once all countries from sc-step1-salary-research.md have been processed, step complete — stop here and wait for the main command.

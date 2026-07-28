@@ -42,6 +42,6 @@ Important:
 
 Keep the output compact and present the results country by country.
 
-Save the full adjustment output to step3-adjustment-values.md in the workspace.
+Save the full adjustment output to sc-step3-adjustment-values.md in the workspace.
 
 Step complete — stop here and wait for the main command.

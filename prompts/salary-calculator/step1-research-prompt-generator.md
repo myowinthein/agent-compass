@@ -86,6 +86,6 @@ After generating these prompts, run each one as a separate, isolated research ta
 - Each agent receives only one country's prompt. Its only job is to run that research and return the results for that one country. It must not answer, draft, or save results for any other country.
 - Each agent works from its own prompt only, with no access to your prior reasoning in this conversation and no access to research or conclusions reached for other countries.
 
-Append each country's results to step1-salary-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and wait for me to bring back the results myself before continuing.
+Append each country's results to sc-step1-salary-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and wait for me to bring back the results myself before continuing.
 
-Once all results are saved to step1-salary-research.md, step complete — stop here and wait for the main command.
+Once all results are saved to sc-step1-salary-research.md, step complete — stop here and wait for the main command.
