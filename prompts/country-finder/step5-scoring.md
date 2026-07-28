@@ -1,4 +1,4 @@
-Using all country data stored in Step 4, along with the criteria and dealbreakers from Step 1, score each country.
+Using all country data stored in Step 4, along with the criteria from Step 1 and situational-profile.md from the workspace, score each country.
 
 Keep Remote and Sponsorship scoring completely separate. Do not blend them into a single score.
 
@@ -6,18 +6,17 @@ Batching rule: score every country's Remote fit first, all the way through, befo
 
 For Remote Track, for each country with Remote data stored:
 
-1. Check: does the confirmed salary meet or exceed the minimum from Step 1? If not, exclude this country from the Remote results and state the specific gap (e.g. "confirmed salary $X, below your minimum of $Y").
+1. If a minimum monthly salary was specified in the situational profile, check whether the confirmed salary meets or exceeds it. If not, exclude this country from the Remote results and state the specific gap (e.g. "confirmed salary $X, below your minimum of $Y"). If no minimum was specified, skip this check.
 2. If it passes, classify Remote fit as: Strong / Moderate / Weak.
 3. Assign a confidence level: High / Medium / Low.
 4. Give brief reasoning, referencing the actual stored evidence, not assumption.
 
 For Sponsorship Track, for each country with Sponsorship data stored:
 
-1. Check the stored dealbreakers from Step 1. If the country's data directly conflicts with a dealbreaker (e.g. no dependent sponsorship provisions when family relocation was required), exclude this country from the Sponsorship results and state the specific conflict.
-2. If a visa minimum salary threshold was reported, and Salary Calculator figures for this country already exist elsewhere in this conversation, note whether those figures clear the threshold. If no such figures exist, note the threshold as informational only, without judgment.
-3. If it passes the dealbreaker check, classify Sponsorship fit as: Strong / Moderate / Weak.
-4. Assign a confidence level: High / Medium / Low.
-5. Give brief reasoning, referencing the actual stored evidence, not assumption.
+1. If a visa minimum salary threshold was reported, and Salary Calculator figures for this country already exist elsewhere in this conversation, note whether those figures clear the threshold. If no such figures exist, note the threshold as informational only, without judgment.
+2. If it passes, classify Sponsorship fit as: Strong / Moderate / Weak.
+3. Assign a confidence level: High / Medium / Low.
+4. Give brief reasoning, referencing the actual stored evidence, not assumption. Consider citizenship-specific friction from the situational profile when assessing confidence.
 
 Evidence quality rule (applies to both tracks):
 
@@ -43,4 +42,4 @@ Summary
 
 Do not rank countries against each other beyond the Strong/Moderate/Weak classification. Do not add recommendations, next steps, or commentary beyond what is asked here.
 
-If I do not ask you to run the Step 6 reality check next, ask me here instead: "Want salary data for any of these countries? I can run the Salary Calculator for just that one." If I say yes, read commands/salary-calculator.md and follow it, scoped to only the country I name.
+Step complete — stop here and wait for the main command.

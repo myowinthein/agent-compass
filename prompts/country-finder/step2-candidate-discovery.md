@@ -2,8 +2,8 @@ Using the candidate profile, situational profile, and answers from Step 1, disco
 
 Part A — Direct filtering (no research needed, apply immediately)
 
-1. Remove any country listed under Exclusions in Step 1, from both tracks.
-2. For the Remote track only: calculate the UTC time difference between each remaining country and my current location. Remove any country outside the maximum hours I specified in Step 1. Do not apply this filter to the Sponsorship track, since relocation removes the timezone constraint.
+1. Apply country preferences from Step 1: remove any country listed as excluded from both tracks; ensure any country listed as preferred is added to the relevant candidate universe even if it would not otherwise qualify.
+2. For the Remote track only: if a maximum timezone difference was provided in Step 1, calculate the UTC time difference between each remaining country and my current location and remove any country outside that maximum. If no maximum was provided, skip this filter. Do not apply timezone filtering to the Sponsorship track — relocation removes the timezone constraint.
 
 Show the result of this filtering step as two lists before continuing: "Remote candidate universe" and "Sponsorship candidate universe."
 
@@ -14,7 +14,7 @@ Generate two separate ready-to-copy research prompts, one per track. Each must i
 Remote Discovery Research Prompt should ask the researcher to identify, from the Remote candidate universe, countries where:
 
 - remote hiring for this candidate's role and skillset is a common, well-established practice, not a rare exception
-- typical remote salary for this role realistically meets or exceeds the minimum monthly salary from Step 1
+- if a minimum monthly salary was specified in the situational profile, typical remote salary for this role realistically meets or exceeds that minimum; if no minimum was specified, omit this filter
 - evidence comes from remote job boards, remote hiring reports, salary surveys, or company remote-hiring policies
 
 Sponsorship Discovery Research Prompt should ask the researcher to identify, from the Sponsorship candidate universe, countries where:
@@ -42,9 +42,9 @@ Output:
 
 After generating these two prompts, run each one as a separate, isolated research task. If you are able to run these as isolated sub-agent tasks, do so with the following strict briefs:
 
-- Agent 1 receives only the Remote Discovery Research Prompt. Its only job is to run that research and save the results to remote-candidates.md. It must not produce, draft, or save anything related to the Sponsorship track.
-- Agent 2 receives only the Sponsorship Discovery Research Prompt. Its only job is to run that research and save the results to sponsorship-candidates.md. It must not produce, draft, or save anything related to the Remote track.
+- Agent 1 receives only the Remote Discovery Research Prompt. Its only job is to run that research and save the results to step2-remote-candidates.md. It must not produce, draft, or save anything related to the Sponsorship track.
+- Agent 2 receives only the Sponsorship Discovery Research Prompt. Its only job is to run that research and save the results to step2-sponsorship-candidates.md. It must not produce, draft, or save anything related to the Remote track.
 
 Each agent works from its own prompt only, with no access to your prior reasoning in this conversation. If you cannot guarantee that isolation, show me the two prompts and wait for me to bring back the results myself before continuing.
 
-Do not proceed to Step 3 until both remote-candidates.md and sponsorship-candidates.md exist in the workspace.
+Once both step2-remote-candidates.md and step2-sponsorship-candidates.md exist in the workspace, step complete — stop here and wait for the main command.

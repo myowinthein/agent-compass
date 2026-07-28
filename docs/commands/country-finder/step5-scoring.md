@@ -7,7 +7,7 @@ nav_order: 5
 
 # Step 5 — Scoring
 
-Scores every stored country against your criteria from Step 1, keeping Remote and Sponsorship tracks completely separate. Before running, Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
+Scores every stored country against your criteria, keeping Remote and Sponsorship tracks completely separate. Before running, Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
 
 ## Flow
 
@@ -18,7 +18,9 @@ flowchart TD
   OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
   DeepReasoner --> Remote
   CurrentModel --> Remote[Score all Remote-track countries first]
-  Remote --> RSalary{Salary meets\nStep 1 minimum?}
+  Remote --> SalCheck{Salary minimum\nspecified?}
+  SalCheck -->|yes| RSalary{Salary meets\nthe minimum?}
+  SalCheck -->|no| RClassify
   RSalary -->|no| RExclude[Exclude — state specific gap]
   RSalary -->|yes| RClassify[Classify: Strong / Moderate / Weak\nAssign confidence: High / Medium / Low]
   RClassify --> RVague{Evidence vague\nor unquantified?}
@@ -26,25 +28,25 @@ flowchart TD
   RVague -->|no| RNext
   RLower --> RNext
   RExclude --> RNext{More Remote\ncountries?}
-  RNext -->|yes| RSalary
+  RNext -->|yes| Remote
   RNext -->|no| Spons[Score all Sponsorship-track countries]
-  Spons --> SDeal{Conflicts with\nStep 1 dealbreaker?}
-  SDeal -->|yes| SExclude[Exclude — state specific conflict]
-  SDeal -->|no| SClassify[Classify: Strong / Moderate / Weak\nAssign confidence: High / Medium / Low]
+  Spons --> SClassify[Classify: Strong / Moderate / Weak\nAssign confidence: High / Medium / Low]
   SClassify --> SVague{Evidence vague\nor unquantified?}
   SVague -->|yes| SLower[Lower confidence\nstate reason]
   SVague -->|no| SNext
   SLower --> SNext
-  SExclude --> SNext{More Sponsorship\ncountries?}
+  SNext{More Sponsorship\ncountries?}
   SNext -->|yes| Spons
   SNext -->|no| Output[Output results with\nfull exclusion list]
-  Output --> Offer([Offer /salary-calculator or Step 6])
+  Output --> Done([Step complete\nWait for main command])
 ```
 
 ## What it reads
 
 - All country data stored in Step 4
-- Criteria, salary minimum, time zone limit, and dealbreakers from Step 1
+- Salary minimum from situational profile (optional — skipped if not specified)
+- Timezone limit from Step 1 (informational — already applied in Step 2)
+- Citizenship-specific friction from situational profile
 
 ## Batching rule
 
@@ -54,7 +56,7 @@ All Remote-track countries are scored first, all the way through, before Sponsor
 
 For each country with Remote data stored:
 
-1. Does the confirmed salary meet or exceed your Step 1 minimum? If not, the country is excluded with the specific gap stated (e.g. "confirmed salary $X, below your minimum of $Y").
+1. If a minimum monthly salary was specified in the situational profile, check whether the confirmed salary meets or exceeds it. If not, exclude with the specific gap stated (e.g. "confirmed salary $X, below your minimum of $Y"). If no minimum was specified, skip this check.
 2. If it passes: classify Remote fit as **Strong**, **Moderate**, or **Weak**.
 3. Assign confidence: **High**, **Medium**, or **Low**.
 4. Give brief reasoning referencing actual stored evidence, not assumption.
@@ -63,11 +65,10 @@ For each country with Remote data stored:
 
 For each country with Sponsorship data stored:
 
-1. Does the stored data directly conflict with any dealbreaker from Step 1? If yes, the country is excluded with the specific conflict stated.
-2. If a visa minimum salary threshold was reported and Salary Calculator figures exist, note whether they clear the threshold. If no figures exist, the threshold is noted as informational only.
-3. If it passes: classify Sponsorship fit as **Strong**, **Moderate**, or **Weak**.
-4. Assign confidence: **High**, **Medium**, or **Low**.
-5. Give brief reasoning referencing actual stored evidence, not assumption.
+1. If a visa minimum salary threshold was reported and Salary Calculator figures exist, note whether they clear the threshold. If no figures exist, note the threshold as informational only.
+2. Classify Sponsorship fit as **Strong**, **Moderate**, or **Weak**.
+3. Assign confidence: **High**, **Medium**, or **Low**.
+4. Give brief reasoning referencing actual stored evidence, including any citizenship-specific friction from the situational profile.
 
 ## Evidence quality rule
 
@@ -93,6 +94,6 @@ Summary
 - Sponsorship: [N] scored, [N] excluded
 ```
 
-## After scoring
+## Stop condition
 
-Claude asks whether you want salary data for any of the results. If yes, it offers to run `/salary-calculator` scoped to a single named country. If you want to run the optional reality check first, proceed to Step 6.
+After outputting results, Claude stops and waits for the main command. The main command then asks whether to run the Step 6 reality check.

@@ -7,77 +7,77 @@ nav_order: 6
 
 # Step 6 — Reality check (optional)
 
-An independent audit of the Step 5 scoring output. Claude asks before running this step — it only proceeds if you confirm. If you confirm, Claude then asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
+A focused audit of the Step 5 scoring output across two checks. Runs when the main command confirms you want it. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 6 begins]) --> RunQ{Run reality check?}
-  RunQ -->|no| SCQ([Offer /salary-calculator\nscoped to one country])
-  RunQ -->|yes| OpusQ{Use Opus for\nhigher accuracy?}
+  Start([Step 6 begins]) --> OpusQ{Use Opus for\nhigher accuracy?}
   OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
   OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
   DeepReasoner --> C1
-  CurrentModel --> C1[Check 1: Criteria consistency\nSame rules applied to all countries?]
-  C1 --> C2[Check 2: Confidence calibration\nHigh confidence backed by real evidence?]
-  C2 --> C3[Check 3: Exclusion reasoning\nEach exclusion cites specific evidence?]
-  C3 --> C4[Check 4: Cross-track contamination\nEach track scored independently?]
-  C4 --> C5[Check 5: Missing candidate check\nExpected absences are evidence-based?]
-  C5 --> C6[Check 6: Framework calibration\nStrong / Moderate / Weak meaningfully distributed?]
-  C6 --> Recal{Evidence supports\nrecalibration?}
-  Recal -->|yes| Revise[Revise classifications or\nexclusion status — explain each change]
+  CurrentModel --> C1[Check 1: Confidence calibration\nHigh confidence backed by real evidence?]
+  C1 --> C2[Check 2: Missing candidate check\nExpected absences are evidence-based?]
+  C2 --> Recal{Inflated confidence\nfound?}
+  Recal -->|yes| Revise[Revise confidence levels\nor classifications — explain each change]
   Recal -->|no| Confirm[Confirm Step 5 results\nare appropriate — no changes]
-  Revise --> Offer([Offer /salary-calculator])
-  Confirm --> Offer
+  Revise --> Summary[Summary: countries grouped\nby row, both tracks side by side]
+  Confirm --> Summary
+  Summary --> Done([Step complete\nWait for main command])
 ```
 
 ## Purpose
 
-The reality check challenges the scoring results from Step 5. It does not automatically defend or attack them — it follows the evidence. Recalibration only happens if the evidence genuinely supports it.
+Challenges the two aspects of Step 5 scoring that Step 5 cannot self-audit: whether high-confidence labels are genuinely earned, and whether any expected countries are absent due to process gaps rather than evidence-based elimination.
 
 ## What it reads
 
 - All data and results from Steps 1 through 5
 
-## The six checks
+## The two checks
 
-**1. Criteria consistency check**
+**1. Confidence calibration check**
 
-- Was your Step 1 salary minimum applied the same way to every Remote-track country?
-- Was the time zone limit applied only to Remote, never to Sponsorship?
-- Were your Step 1 dealbreakers applied consistently to every Sponsorship-track country?
+For every country marked High confidence: verifies that the underlying evidence is genuinely specific, sourced, and dated — not just confidently worded. Flags any confidence level that seems inflated relative to the actual evidence quality and explains why.
 
-Any inconsistency is stated explicitly.
+**2. Missing candidate check**
 
-**2. Confidence calibration check**
-
-For every country marked High confidence: verifies that the underlying evidence is genuinely specific, sourced, and dated — not just confidently worded. Flags any confidence level that seems inflated relative to the actual evidence quality.
-
-**3. Exclusion reasoning check**
-
-Re-examines every exclusion from Step 5. Confirms each one cites a specific fact from stored data, not a vague or reputation-based dismissal. Flags any generic dismissal that lacks real evidence.
-
-**4. Cross-track contamination check**
-
-For any country scored on both tracks: checks whether the Sponsorship reasoning was influenced by the Remote judgment or vice versa. Each track's score must stand on its own evidence independently.
-
-**5. Missing candidate check**
-
-Identifies any country that would commonly be expected to appear but is absent. For each one, states whether the absence was a genuine evidence-based elimination or a process gap (never researched, never pasted into Step 4).
-
-**6. Framework calibration check**
-
-Assesses whether the Strong / Moderate / Weak classification is meaningfully distinguishing between countries, or whether most countries clustered into a single bucket — which would indicate criteria that are too loose or too strict.
+Identifies any country that would commonly be expected to appear but is absent from either track's results. For each one, states whether the absence was a genuine evidence-based elimination (citing the reason from earlier steps) or a process gap — such as never being researched or never reaching Step 4.
 
 ## Recalibration
 
-Only if the evidence genuinely supports it:
-- Specific country classifications, confidence levels, or exclusion status may be revised
+Only if the confidence calibration check found inflated confidence levels:
+- The affected country's confidence level is revised
+- If inflated confidence was masking a genuinely weaker fit, the classification is revised too
 - Each change is explained with the evidence that caused it
 
-If recalibration is not supported, the Step 5 results are explicitly confirmed as appropriate and left unchanged.
+If recalibration is not supported, Step 5 results are explicitly confirmed as appropriate and left unchanged.
 
-## After the reality check
+## Summary
 
-Claude asks whether you want salary data for any of the results and offers to run `/salary-calculator` scoped to a single named country. The same offer appears if you decline the reality check entirely — you are never left without the handoff option.
+After the recalibration verdict, Claude outputs a Summary that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track — each country showing its Remote and Sponsorship fit side by side.
+
+| Country | Remote | Sponsorship |
+|---|---|---|
+| Example A | Strong — High | Moderate — Medium |
+| Example B | Excluded | Strong — High |
+| Example C | not scored (no data) | Weak — Low |
+
+Rules for the table:
+
+- **Excluded** — the country was actively eliminated on that track during Step 5. The reason is not restated here.
+- **not scored (no data)** — no research was ever ingested for that country on that track. This is distinct from Excluded.
+- If Step 6 revised a country's confidence level or classification, a short one-line note appears beneath it.
+
+Countries flagged by the Missing Candidate Check that were never researched on either track are listed separately under **"Flagged but not researched"** — they are not forced into the table.
+
+The section closes with counts:
+- Remote: [N] scored, [N] excluded, [N] not scored (no data)
+- Sponsorship: [N] scored, [N] excluded, [N] not scored (no data)
+
+No ranking, no recommendations, no interpretation.
+
+## Stop condition
+
+After the summary, Claude stops and waits for the main command.
