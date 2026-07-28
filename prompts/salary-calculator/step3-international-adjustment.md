@@ -1,4 +1,6 @@
-Using all salary data stored in Step 2, proceed with the international adjustment.
+Check whether sc-step2-salary-data.md exists in the workspace. If it does not exist, stop and tell me: "sc-step2-salary-data.md was not found. Please ensure Step 2 completed successfully before continuing."
+
+Read sc-step2-salary-data.md and proceed with the international adjustment.
 
 Read and apply skills/situational-profile-questions.md.
 
