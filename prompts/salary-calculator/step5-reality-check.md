@@ -191,18 +191,7 @@ Only if the evidence genuinely supports recalibration:
 
 If recalibration is not supported, explicitly state that the existing framework remains appropriate and do not generate a revised salary table.
 
-If recalibration is required, generate a revised table using exactly:
-
-| Country | Period | Safe (Range) | Safe (Fixed) | Stretch (Range) | Stretch (Fixed) |
-
-Formatting Rules
-
-- Include all revised countries in one combined table.
-- Annual and Monthly rows must remain grouped.
-- Country column must include the currency code.
-- Use local currency only.
-- Do not include currency symbols inside salary values.
-- Keep formatting compact and consistent.
+If recalibration is required, generate a revised table using the same format as Step 4.
 
 Overall Principles
 
