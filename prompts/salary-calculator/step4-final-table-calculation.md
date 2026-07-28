@@ -94,3 +94,5 @@ Summary
 If any countries are skipped, list them with the reason.
 
 Do not perform any additional analysis, ranking, recommendations, or commentary.
+
+Step complete — stop here and wait for the main command.

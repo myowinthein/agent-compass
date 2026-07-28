@@ -213,3 +213,5 @@ Overall Principles
 - Do not defend the framework.
 - Do not attack the framework.
 - Follow the evidence.
+
+Step complete — stop here and wait for the main command.

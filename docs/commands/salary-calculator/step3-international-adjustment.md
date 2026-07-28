@@ -19,7 +19,7 @@ flowchart TD
   DeepReasoner --> SitCheck
   CurrentModel --> SitCheck{situational-profile.md\nexists?}
   SitCheck -->|yes| ReuseSit[Reuse existing profile\nSkip Phase 1 questions]
-  SitCheck -->|no| Phase1[Phase 1: Ask situational questions\nlocation · citizenship · friction\nlanguages · work language\nSave to situational-profile.md]
+  SitCheck -->|no| Phase1[Phase 1: Ask situational questions\nlocation · citizenship · friction\nlanguages · work language · salary minimum\nSave to situational-profile.md]
   ReuseSit --> Phase2
   Phase1 --> Phase2
 
@@ -47,8 +47,9 @@ If `situational-profile.md` does not exist, Claude asks:
 3. Any known immigration friction or employer risk perception tied to your citizenship
 4. Languages spoken
 5. Required work environment language
+6. Minimum acceptable monthly salary and currency — or "not specified" to skip salary filtering
 
-Answers are saved to `situational-profile.md` and reused across sessions.
+Answers are saved to `situational-profile.md` and reused across sessions and pipelines.
 
 ## Phase 2 — Per-country questions
 
