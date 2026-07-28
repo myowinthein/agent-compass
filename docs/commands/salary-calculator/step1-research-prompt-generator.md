@@ -7,35 +7,33 @@ nav_order: 1
 
 # Step 1 — Research prompt generator
 
-Generates one ready-to-copy research prompt per target country, scoped to your role and profile. Claude does not estimate salaries itself — every number must come from research you supply.
+Generates one ready-to-copy research prompt per target country, runs each as an isolated sub-agent research task, and saves the results to `sc-step1-salary-research.md`. Claude does not estimate salaries itself — every number comes from real web research.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 1 begins]) --> Handoff{Single country\nhanded off from\nCountry Finder?}
-  Handoff -->|yes| UseCountry[Use that country\nSkip country list question]
-  Handoff -->|no| AskList[Ask for target\ncountry list]
-  UseCountry --> ReadProfile[Read profile.md\nfor role and seniority]
-  AskList --> ReadProfile
+  Start([Step 1 begins]) --> AskList[Ask for target\ncountry list]
+  AskList --> ReadProfile[Read profile.md\nfor role and seniority]
   ReadProfile --> ForEach[For each country:\ngenerate research prompt]
   ForEach --> Prompt[Prompt instructs researcher to find\nlocal-market salary only\nexcluding expat · FAANG · US-skewed\ncontractor · equity-heavy data]
   Prompt --> Tiers[Request two company tiers:\nMid-size / Mainstream Local-Market\nPremium / International / Remote-first]
   Tiers --> More{More\ncountries?}
   More -->|yes| ForEach
-  More -->|no| Done([Output ready-to-copy prompts\nWait for research results])
+  More -->|no| Agents[Run each prompt as\nan isolated sub-agent task]
+  Agents --> Append[Append each result to\nsc-step1-salary-research.md]
+  Append --> AllDone{All agents\ncomplete?}
+  AllDone -->|no| Append
+  AllDone -->|yes| Done([Step complete\nWait for main command])
 ```
 
 ## What it reads
 
 - `profile.md` — used to fill in your target role, seniority, and skills in each prompt
-- `target_country` from the state file — if set by a Country Finder handoff, the country list question is skipped
 
 ## Country list
 
-If invoked standalone (not handed off from Country Finder), Claude asks for your target country list before generating any prompts.
-
-If invoked with a single country handed off from Country Finder, that country is used directly and the question is skipped.
+Claude asks for your target country list before generating any prompts.
 
 ## Prompt content
 
@@ -58,6 +56,10 @@ Each generated prompt instructs the researcher to:
 - Contractor or freelance rates
 - Equity-heavy total compensation
 
+## Sub-agent isolation
+
+Each country's prompt is run as a separate, isolated research task. Each agent receives only one country's prompt and must not produce or save results for any other country. If isolation cannot be guaranteed, Claude shows the prompts and waits for you to bring back results manually before continuing.
+
 ## Output
 
-One ready-to-copy research prompt per country, clearly separated by country name. Claude waits for you to run the research and paste results back in Step 2.
+Results are appended to `sc-step1-salary-research.md` in the workspace as each agent completes. Step 2 reads this file automatically.

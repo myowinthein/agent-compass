@@ -27,13 +27,14 @@ flowchart TD
   More -->|yes| Check
   More -->|no| Table[Output all countries\nin one combined table]
   Table --> Summary[Summary: countries calculated\nand countries skipped with reasons]
-  Summary --> Done([Proceed to Step 5 or deliver results])
+  Summary --> Save[Save to sc-step4-salary-table.md]
+  Save --> Done([Proceed to Step 5 or deliver results])
 ```
 
 ## What it reads
 
-- All salary data stored in Step 2
-- All adjustment figures from Step 3
+- All salary data stored in Step 2 (in-session)
+- `sc-step3-adjustment-values.md` — adjustment figures from Step 3
 
 ## Definitions
 
@@ -81,3 +82,7 @@ One combined table covering all calculated countries:
 - No currency symbols inside salary values
 
 Countries missing either salary data or adjustment data are skipped and listed in the summary with the reason.
+
+## Output
+
+Results are saved to `sc-step4-salary-table.md` in the workspace. Step 5 reads this file directly.

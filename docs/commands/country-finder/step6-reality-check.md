@@ -33,7 +33,7 @@ Challenges the two aspects of Step 5 scoring that Step 5 cannot self-audit: whet
 
 ## What it reads
 
-- All data and results from Steps 1 through 5
+- `cf-step5-scoring-results.md` — full scoring output from Step 5
 
 ## The two checks
 

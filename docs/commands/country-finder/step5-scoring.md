@@ -43,10 +43,9 @@ flowchart TD
 
 ## What it reads
 
-- All country data stored in Step 4
-- Salary minimum from situational profile (optional — skipped if not specified)
-- Timezone limit from Step 1 (informational — already applied in Step 2)
-- Citizenship-specific friction from situational profile
+- `cf-step4-country-data.md` — all country data from Step 4
+- `cf-step1-criteria.md` — timezone limit (informational, already applied in Step 2)
+- `situational-profile.md` — salary minimum (optional, skipped if not specified) and citizenship-specific friction
 
 ## Batching rule
 
@@ -93,6 +92,10 @@ Summary
 - Remote: [N] scored, [N] excluded
 - Sponsorship: [N] scored, [N] excluded
 ```
+
+## Output
+
+Results are saved to `cf-step5-scoring-results.md` in the workspace. Step 6 reads this file directly.
 
 ## Stop condition
 
