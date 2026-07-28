@@ -18,27 +18,21 @@ flowchart TD
   OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
   DeepReasoner --> SitCheck
   CurrentModel --> SitCheck{situational-profile.md\nexists?}
-  SitCheck -->|yes| ReuseSit[Reuse existing profile\nSkip Phase 1 questions]
-  SitCheck -->|no| Phase1[Phase 1: Ask situational questions\nlocation · citizenship · friction\nlanguages · work language · salary minimum\nSave to situational-profile.md]
-  ReuseSit --> Phase2
-  Phase1 --> Phase2
-
-  Phase2[Phase 2: For each country — ask:\n1. Local work experience?\n2. Can attend in-person interviews?\n3. Applying from outside that country?] --> WaitAnswer[Wait for answers\nbefore moving to next country]
-  WaitAnswer --> More{More\ncountries?}
-  More -->|yes| Phase2
-  More -->|no| Estimate
-
+  SitCheck -->|yes| ReuseSit[Reuse existing profile\nSkip questions]
+  SitCheck -->|no| SitQ[Ask situational questions\nlocation · citizenship · friction\nlanguages · work language · salary minimum\nSave to situational-profile.md]
+  ReuseSit --> Estimate
+  SitQ --> Estimate
   Estimate[Estimate adjustment per country\nbased on hiring practices and\nmarket conditions] --> Output[For each country output:\nAdjustment range %\nTypical midpoint %\nLevel: Small / Moderate / Significant\nConfidence: High / Medium / Low\nBrief explanation]
-  Output --> Done([Proceed to Step 4])
+  Output --> Save[Save to sc-step3-adjustment-values.md]
+  Save --> Done([Step complete\nWait for main command])
 ```
 
 ## What it reads
 
 - All salary data stored in Step 2
-- `situational-profile.md` — if present, Phase 1 questions are skipped
-- Your per-country answers from Phase 2
+- `situational-profile.md` — if present, situational questions are skipped
 
-## Phase 1 — Situational questions (once, if not already saved)
+## Situational questions (once, if not already saved)
 
 If `situational-profile.md` does not exist, Claude asks:
 
@@ -50,14 +44,6 @@ If `situational-profile.md` does not exist, Claude asks:
 6. Minimum acceptable monthly salary and currency — or "not specified" to skip salary filtering
 
 Answers are saved to `situational-profile.md` and reused across sessions and pipelines.
-
-## Phase 2 — Per-country questions
-
-For each country in the salary dataset, Claude asks three questions and waits for your answers before moving to the next country:
-
-1. Do you have local work experience in this country?
-2. Can you attend in-person interviews or onsite meetings for roles there?
-3. Are you applying from outside that country?
 
 ## What the adjustment estimates
 
@@ -81,3 +67,5 @@ This is not about tax, cost of living, purchasing power, or permanent residence 
 - Adjustment level: Small, Moderate, or Significant
 - Confidence: High, Medium, or Low
 - Brief explanation
+
+Results are saved to `sc-step3-adjustment-values.md` in the workspace. Step 4 reads this file directly.

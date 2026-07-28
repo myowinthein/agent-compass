@@ -35,7 +35,7 @@ flowchart TD
 
 ## What it reads
 
-- All salary data, adjustment figures, and the final table from Steps 1 through 4
+- `sc-step4-salary-table.md` — the final salary table from Step 4
 - `profile.md` — used to assess candidate positioning and career level
 
 ## The four checks

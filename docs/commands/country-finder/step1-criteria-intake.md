@@ -27,7 +27,8 @@ flowchart TD
 
   P2[Phase 2: Sponsorship criteria\nrelocation timeline] --> P3
 
-  P3[Phase 3: Country preferences\nincluded and excluded] --> Stop([Step complete\nWait for main command])
+  P3[Phase 3: Country preferences\nincluded and excluded] --> Save[Save criteria to\ncf-step1-criteria.md]
+  Save --> Stop([Step complete\nWait for main command])
 ```
 
 ## What it reads
@@ -65,7 +66,8 @@ Relocation is assumed — Claude does not ask whether you are open to relocating
 
 ## Output
 
-No step-numbered files are written in this step. Answers are held in memory and referenced by all subsequent steps. `situational-profile.md` is written here if it did not already exist.
+- `cf-step1-criteria.md` — criteria answers (timezone limit, relocation timeline, country preferences) written after all phases are complete
+- `situational-profile.md` — written here if it did not already exist; reused by subsequent steps and the Salary Calculator pipeline
 
 ## Stop condition
 
