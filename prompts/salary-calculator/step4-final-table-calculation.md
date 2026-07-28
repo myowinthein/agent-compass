@@ -94,6 +94,8 @@ Summary
 
 If any countries are skipped, list them with the reason.
 
+Save the final table and summary to step4-salary-table.md in the workspace.
+
 Do not perform any additional analysis, ranking, recommendations, or commentary.
 
 Step complete — stop here and wait for the main command.
