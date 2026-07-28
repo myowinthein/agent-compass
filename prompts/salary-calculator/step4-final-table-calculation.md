@@ -80,9 +80,10 @@ Each country must contain exactly two rows:
 
 Example:
 
-Country                     Period   Safe (Range)      Safe (Fixed)  Stretch (Range)    Stretch (Fixed)
-United States (USD)         Annual   130,000-150,000   140,000       160,000-190,000    175,000
-                             Monthly  10,800-12,500     11,700        13,300-15,800      14,600
+| Country | Period | Safe (Range) | Safe (Fixed) | Stretch (Range) | Stretch (Fixed) |
+|---|---|---|---|---|---|
+| United States (USD) | Annual | 130,000–150,000 | 140,000 | 160,000–190,000 | 175,000 |
+| | Monthly | 10,800–12,500 | 11,700 | 13,300–15,800 | 14,600 |
 
 After the table, output:
 
