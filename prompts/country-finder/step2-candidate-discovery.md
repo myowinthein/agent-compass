@@ -1,4 +1,6 @@
-Using the candidate profile, situational profile, and answers from Step 1, discover a candidate country shortlist for each track. Do not brainstorm countries from memory or general reputation. Every country included must be traceable to a real, checkable source.
+Check whether step1-criteria.md exists in the workspace. If it does not exist, stop and tell me: "step1-criteria.md was not found. Please ensure Step 1 completed successfully before continuing."
+
+Read step1-criteria.md, profile.md, and situational-profile.md from the workspace. Using the candidate profile, situational profile, and criteria from step1-criteria.md, discover a candidate country shortlist for each track. Do not brainstorm countries from memory or general reputation. Every country included must be traceable to a real, checkable source.
 
 Part A — Direct filtering (no research needed, apply immediately)
 

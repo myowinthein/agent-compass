@@ -33,4 +33,6 @@ Reply format for unexpected country:
 
 Not on either candidate list from Step 2. Store anyway, or is this a mistake?
 
-Once all countries from step3-country-research.md have been processed, step complete — stop here and wait for the main command.
+Once all countries from step3-country-research.md have been processed, write all successfully stored country datasets to step4-country-data.md in the workspace, preserving the original structure and content for each country. Any skipped duplicates are noted in a warning before stopping.
+
+Step complete — stop here and wait for the main command.
