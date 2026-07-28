@@ -5,7 +5,7 @@
 **Name:** claude-compass  
 **Version:** 0.6.0  
 **Type:** Claude Code plugin (no runtime code — pure markdown)  
-**Purpose:** Two slash commands for globally-minded job seekers: discover countries for remote hire or visa sponsorship, then calculate realistic local-market salaries. Grounded in user-provided research, never in Claude's assumptions.  
+**Purpose:** Three slash commands for globally-minded job seekers: discover countries for remote hire or visa sponsorship, calculate realistic local-market salaries, and find verified job portals per country. Grounded in user-provided research, never in Claude's assumptions.  
 **Blast radius:** Low. No external services, no databases, no code execution. Changes affect prompt behavior in consumer workspaces only.
 
 ## 2. Project Config
@@ -28,7 +28,9 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 | `.claude-plugin/plugin.json` | Plugin identity and version |
 | `commands/country-finder.md` | Orchestrator for the 6-step Country Finder pipeline; owns state file and resume logic |
 | `commands/salary-calculator.md` | Orchestrator for the 5-step Salary Calculator pipeline; runs standalone after Country Finder |
-| `prompts/shared/resume-extraction-prompt.md` | Shared first step for both pipelines; produces `profile.md` in the consumer workspace |
+| `commands/portal-finder.md` | Orchestrator for the 1-step Portal Finder pipeline; no state file, no resume required |
+| `prompts/shared/resume-extraction-prompt.md` | Shared first step for Country Finder and Salary Calculator; produces `profile.md` in the consumer workspace |
+| `prompts/portal-finder/step1-portal-research.md` | Single step for Portal Finder; does live web research and outputs portal groups for a given country |
 | `skills/data-validation-rules.md` | Cross-pipeline ingestion constraints; referenced at runtime by both data-ingestion steps |
 | `skills/evidence-quality-rules.md` | Confidence-lowering rules for vague or unsourced research claims; referenced at runtime by the scoring step |
 | `skills/exclusion-transparency-rules.md` | Every filtered-out item requires a specific, evidence-based reason; referenced at runtime by the scoring step |

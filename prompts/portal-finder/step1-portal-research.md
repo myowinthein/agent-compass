@@ -27,4 +27,4 @@ Use ⚠️ to flag anything that does not fit the structure but is worth knowing
 
 Output all groups in one response, in order from group 1 to 5. Do not add advice, recommendations, or commentary beyond what is asked here.
 
-Your job is done — stop.
+Step complete — stop here and wait for the main command.

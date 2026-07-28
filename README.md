@@ -37,12 +37,13 @@ A Claude Cowork plugin for globally-minded job seekers: find remote-hire countri
 
 ## Usage
 
-Type `/` in a **Cowork** task. Both commands appear listed under the **Claude Compass** section.
+Type `/` in a **Cowork** task. All three commands appear listed under the **Claude Compass** section.
 
 | Command | What it does |
 |---|---|
 | [`/country-finder`](docs/commands/country-finder.md) | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
-| [`/salary-calculator`](docs/commands/salary-calculator.md) | Calculate realistic local-market salaries for your target role. Runs standalone or scoped to a single country handed off from Country Finder. |
+| [`/salary-calculator`](docs/commands/salary-calculator.md) | Calculate realistic local-market salaries for your target role. |
+| [`/portal-finder`](docs/commands/portal-finder.md) | Find verified job portals for IT/tech roles in a specific country, grouped and tagged. |
 
 Judgment-heavy and arithmetic-heavy steps can be routed to specialist subagents — Claude asks at each step whether to use Opus.
 

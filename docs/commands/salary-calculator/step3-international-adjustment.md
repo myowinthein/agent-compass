@@ -13,7 +13,10 @@ Estimates the realistic hiring discount an overseas candidate may face when nego
 
 ```mermaid
 flowchart TD
-  Start([Step 3 begins]) --> OpusQ{Use Opus for\nhigher accuracy?}
+  Start([Step 3 begins]) --> FileCheck{sc-step2-salary-data.md\nexists?}
+  FileCheck -->|no| Error[Stop — report missing file\nAsk user to rerun Step 2]
+  FileCheck -->|yes| ReadFile[Read sc-step2-salary-data.md]
+  ReadFile --> OpusQ{Use Opus for\nhigher accuracy?}
   OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
   OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
   DeepReasoner --> SitCheck
@@ -29,7 +32,7 @@ flowchart TD
 
 ## What it reads
 
-- All salary data stored in Step 2
+- `sc-step2-salary-data.md` — salary data from Step 2
 - `situational-profile.md` — if present, situational questions are skipped
 
 ## Situational questions (once, if not already saved)

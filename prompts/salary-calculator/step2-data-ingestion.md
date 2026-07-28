@@ -27,4 +27,6 @@ Reply format for missing fields:
 
 Missing: [specific field]. Country not stored.
 
-Once all countries from sc-step1-salary-research.md have been processed, step complete — stop here and wait for the main command.
+Once all countries from sc-step1-salary-research.md have been processed, write all successfully stored country datasets to sc-step2-salary-data.md in the workspace, preserving the original structure and content for each country. Any skipped duplicates are noted in a warning before stopping.
+
+Step complete — stop here and wait for the main command.

@@ -58,6 +58,10 @@ Each block must include both tiers:
 
 If either tier or its sources are missing, Claude stops and states what is missing before storing anything.
 
+## Output
+
+Stored salary data is written to `sc-step2-salary-data.md` in the workspace after all blocks are processed. Step 3 and Step 4 read from this file directly.
+
 ## Stop condition
 
 Once all countries from `sc-step1-salary-research.md` have been processed, Claude stops and waits for the main command. Any skipped duplicates are reported in a warning before stopping.

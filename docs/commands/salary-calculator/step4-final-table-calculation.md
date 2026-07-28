@@ -13,7 +13,12 @@ Applies the international adjustment to the salary data and produces a final tab
 
 ```mermaid
 flowchart TD
-  Start([Step 4 begins]) --> OpusQ{Use Opus for\nhigher precision?}
+  Start([Step 4 begins]) --> FC1{sc-step2-salary-data.md\nexists?}
+  FC1 -->|no| Err1[Stop — report missing file\nAsk user to rerun Step 2]
+  FC1 -->|yes| FC2{sc-step3-adjustment-values.md\nexists?}
+  FC2 -->|no| Err2[Stop — report missing file\nAsk user to rerun Step 3]
+  FC2 -->|yes| ReadFiles[Read both files]
+  ReadFiles --> OpusQ{Use Opus for\nhigher precision?}
   OpusQ -->|yes| CalcAgent[Route to calculator\nOpus / max effort]
   OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
   CalcAgent --> Check
@@ -33,7 +38,7 @@ flowchart TD
 
 ## What it reads
 
-- All salary data stored in Step 2 (in-session)
+- `sc-step2-salary-data.md` — salary data from Step 2
 - `sc-step3-adjustment-values.md` — adjustment figures from Step 3
 
 ## Definitions
