@@ -1,4 +1,4 @@
-Based on the salary data I provided and the international candidate adjustment values you estimated, calculate adjusted expected salary ranges for each country.
+Based on the salary data stored in Step 2 and the international candidate adjustment values from Step 3, calculate adjusted expected salary ranges for each country.
 
 Only calculate countries that have BOTH:
 
