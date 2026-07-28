@@ -27,11 +27,12 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 |------|----------------|
 | `.claude-plugin/plugin.json` | Plugin identity and version |
 | `commands/country-finder.md` | Orchestrator for the 6-step Country Finder pipeline; owns state file and resume logic |
-| `commands/salary-calculator.md` | Orchestrator for the 5-step Salary Calculator pipeline; accepts single-country handoff from Country Finder |
+| `commands/salary-calculator.md` | Orchestrator for the 5-step Salary Calculator pipeline; runs standalone after Country Finder |
 | `prompts/shared/resume-extraction-prompt.md` | Shared first step for both pipelines; produces `profile.md` in the consumer workspace |
 | `skills/data-validation-rules.md` | Cross-pipeline ingestion constraints; referenced at runtime by both data-ingestion steps |
 | `skills/evidence-quality-rules.md` | Confidence-lowering rules for vague or unsourced research claims; referenced at runtime by the scoring step |
 | `skills/exclusion-transparency-rules.md` | Every filtered-out item requires a specific, evidence-based reason; referenced at runtime by the scoring step |
+| `skills/situational-profile-questions.md` | Shared situational profile questions and save/reuse logic; referenced at runtime by CF step1 and SC step3 |
 | `agents/deep-reasoner.md` | Routes scoring, international adjustment, and reality checks to Opus/high effort |
 | `agents/calculator.md` | Routes final salary table calculation to Opus/max effort |
 | `_config.yml` | Jekyll + just-the-docs GitHub Pages site config; also controls which plugin files Jekyll excludes |
@@ -39,9 +40,7 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 
 **Pipeline pattern:** Each command is a thin orchestrator. All logic lives in numbered prompt files under `prompts/`. State persists across sessions via JSON files written to the consumer's workspace (`.country-finder-state.json`, `.salary-calculator-state.json`). Profile data persists via `profile.md` and `situational-profile.md`.
 
-**Skill file pattern:** Skill files are not auto-loaded — they are referenced explicitly by the prompt files that need them (`Read and apply skills/...`). This is the single-source-of-truth for shared rules; do not inline rule content in prompts.
-
-**Integration point:** After Country Finder step 5, Claude offers to hand off a single country to Salary Calculator. The same offer appears if the user declines the step 6 reality check. The salary-calculator command accepts this scoped invocation and skips the country-list question in step 1.
+**Skill file pattern:** Skill files are not auto-loaded — they are referenced explicitly by the prompt files that need them (`Read and apply skills/...`). This is the single-source-of-truth for shared rules and logic; do not inline skill content in prompts.
 
 **Reality check steps** (country-finder step 6, salary-calculator step 5) are optional — Claude must ask and wait for explicit user confirmation before running them.
 
