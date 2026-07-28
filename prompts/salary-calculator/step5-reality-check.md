@@ -1,8 +1,3 @@
-I already:
-1. Researched realistic local market salary data.
-2. Estimated international candidate adjustments.
-3. Generated final Safe and Stretch salary ranges.
-
 Read sc-step4-salary-table.md from the workspace. Use it alongside all previously generated salary data and calculations from this conversation.
 
 Goal
