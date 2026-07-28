@@ -29,4 +29,16 @@ Standing rule (applies for the rest of this conversation, not just this step):
 
 If I answer any question with a vague word instead of a specific value or clear answer (examples: "close," "good," "high," "reasonable," "flexible"), do not accept it and do not continue. Ask me to restate it as an exact number, currency, or clear answer before proceeding.
 
+Once all questions are answered, save the criteria to step1-criteria.md in the workspace:
+
+Remote track:
+- Maximum timezone difference: [answer or "no limit"]
+
+Sponsorship track:
+- Relocation timeline: [answer]
+
+Country preferences:
+- Include: [list or "none"]
+- Exclude: [list or "none"]
+
 Step complete — stop here and wait for the main command.

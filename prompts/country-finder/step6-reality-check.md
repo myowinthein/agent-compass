@@ -1,11 +1,6 @@
-I already:
-1. Gathered criteria and preferences (Step 1)
-2. Discovered candidate countries from real sources (Step 2)
-3. Generated deep research prompts per country (Step 3)
-4. Ingested real research data (Step 4)
-5. Scored countries by track (Step 5)
+Check whether step5-scoring-results.md exists in the workspace. If it does not exist, stop and tell me: "step5-scoring-results.md was not found. Please ensure Step 5 completed successfully before continuing."
 
-Use all previously generated data and results from this conversation.
+Read step5-scoring-results.md from the workspace. Use it alongside all previously generated data and results from this conversation.
 
 Goal
 
