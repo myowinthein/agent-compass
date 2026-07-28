@@ -1,6 +1,8 @@
+Check whether sc-step2-salary-data.md exists in the workspace. If it does not exist, stop and tell me: "sc-step2-salary-data.md was not found. Please ensure Step 2 completed successfully before continuing."
+
 Check whether sc-step3-adjustment-values.md exists in the workspace. If it does not exist, stop and tell me: "sc-step3-adjustment-values.md was not found. Please ensure Step 3 completed successfully before continuing."
 
-If it exists, read it. Using the adjustment values from sc-step3-adjustment-values.md and the salary data stored in Step 2, calculate adjusted expected salary ranges for each country.
+If both files exist, read them. Using the adjustment values from sc-step3-adjustment-values.md and the salary data from sc-step2-salary-data.md, calculate adjusted expected salary ranges for each country.
 
 Only calculate countries that have BOTH:
 
