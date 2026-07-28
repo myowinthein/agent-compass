@@ -1,6 +1,6 @@
 ---
 name: Salary Calculator
-description: Runs the full Salary Calculator pipeline — research prompt generation, data ingestion, international adjustment, final table calculation, and optional reality check. Can run standalone or scoped to a single country handed off from Country Finder.
+description: Runs the full Salary Calculator pipeline — research prompt generation, data ingestion, international adjustment, final table calculation, and optional reality check.
 ---
 
 # /claude-compass:salary-calculator
@@ -11,19 +11,16 @@ Run the full Salary Calculator pipeline, resuming from where it left off if a st
 
 Check if profile.md exists in the workspace. If it does not, read prompts/shared/resume-extraction-prompt.md and follow it first. Wait for my resume and my confirmation of the extracted profile before continuing.
 
-If this command was invoked with a single country already specified (for example, handed off from Country Finder), record it as target_country in the state file and skip asking for a country list in Step 1.
-
 ## State tracking
 
 Check for .salary-calculator-state.json in the workspace.
 
 - If it exists, read it to find the last completed step. Tell me which step you are resuming from, then continue from the next step.
-- If it does not exist, create it with last_completed_step set to 0 and target_country set to null, and start from Step 1.
+- If it does not exist, create it with last_completed_step set to 0 and start from Step 1.
 
 State file format:
 {
   "last_completed_step": 0,
-  "target_country": null,
   "updated_at": ""
 }
 

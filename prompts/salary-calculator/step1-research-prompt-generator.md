@@ -20,7 +20,7 @@ Exclude:
 - US-skewed compensation data
 
 Countries:
-If I was handed a single country from Country Finder, use only that one. Otherwise, ask me for my target country list.
+Ask me for my target country list.
 
 CANDIDATE PROFILE:
 Read profile.md from the workspace and use it as the candidate profile.
@@ -79,3 +79,13 @@ Notes: [anything relevant not covered above]
 Output format:
 - one ready-to-copy research prompt per country
 - clearly separated by country name
+- do not attempt to answer the research questions yourself in this step
+
+After generating these prompts, run each one as a separate, isolated research task. If you are able to run these as isolated sub-agent tasks, do so with the following strict brief per agent:
+
+- Each agent receives only one country's prompt. Its only job is to run that research and return the results for that one country. It must not answer, draft, or save results for any other country.
+- Each agent works from its own prompt only, with no access to your prior reasoning in this conversation and no access to research or conclusions reached for other countries.
+
+Append each country's results to step1-salary-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and wait for me to bring back the results myself before continuing.
+
+Once all results are saved to step1-salary-research.md, step complete — stop here and wait for the main command.
