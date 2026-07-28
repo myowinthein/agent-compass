@@ -1,5 +1,5 @@
 I already:
-1. Gathered criteria and dealbreakers (Step 1)
+1. Gathered criteria and preferences (Step 1)
 2. Discovered candidate countries from real sources (Step 2)
 3. Generated deep research prompts per country (Step 3)
 4. Ingested real research data (Step 4)
@@ -9,63 +9,42 @@ Use all previously generated data and results from this conversation.
 
 Goal
 
-Perform a strict reality check on the Step 5 results.
+Perform a focused audit on the Step 5 results across two checks.
 
-Challenge assumptions where warranted.
-
-Do NOT automatically defend the existing results.
-
-Do NOT automatically dismiss or downgrade results unless the evidence genuinely supports it.
-
-Follow the evidence.
-
-1. Criteria Consistency Check
-
-- Was the Step 1 minimum salary applied the same way to every Remote-track country, without exception?
-- Was the Step 1 timezone limit applied only to the Remote track, never the Sponsorship track?
-- Were the Step 1 dealbreakers applied consistently to every Sponsorship-track country?
-
-State any inconsistency found.
-
-2. Confidence Calibration Check
+1. Confidence Calibration Check
 
 For each country marked "High confidence," verify the underlying evidence is genuinely specific, sourced, and dated, not just confidently worded. Flag any confidence level that seems inflated relative to the actual evidence quality, and explain why.
 
-3. Exclusion Reasoning Check
+2. Missing Candidate Check
 
-Re-examine every exclusion from Step 5. Confirm each one cites a specific fact from the stored data, not a vague or reputation-based dismissal. Flag any exclusion that reads as a generic dismissal rather than genuine evidence, and explain why.
-
-4. Cross-Track Contamination Check
-
-For any country scored on both tracks, check whether the Sponsorship reasoning was influenced by the Remote judgment, or vice versa. Each track's score should stand on its own evidence. Flag any case where this does not appear to hold.
-
-5. Missing Candidate Check
-
-Identify any country that would commonly be expected to appear but is absent from either track's results. For each one, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap, such as never being researched or never being pasted into Step 4.
-
-6. Framework Calibration Check
-
-Assess whether the Strong / Moderate / Weak classification is meaningfully distinguishing between countries, or whether most countries clustered into a single bucket, which would suggest the criteria are too loose or too strict.
+Identify any country that would commonly be expected to appear but is absent from either track's results. For each one, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap — such as never being researched or never reaching Step 4.
 
 Recalibration
 
-Only if the evidence genuinely supports it:
-- Revise specific country classifications, confidence levels, or exclusion status
+Only if the confidence calibration check found inflated confidence levels:
+- Revise the affected country's confidence level
+- If the inflated confidence was masking a genuinely weaker fit, revise the classification too
 - Explain what evidence caused each change
 
 If recalibration is not supported, state explicitly that the Step 5 results remain appropriate, and do not alter them.
 
-Output
+Summary
 
-- A structured response following the six checks above, in order
-- A "Revised Results" section only if recalibration actually occurred
+Output a Summary section that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track.
 
-Overall Principles
+For each country that has data on at least one track, show one row with both its Remote fit and Sponsorship fit side by side:
 
-- Be evidence driven.
-- Challenge assumptions when warranted.
-- Do not defend the results.
-- Do not attack the results.
-- Follow the evidence.
+- Use the final classification (Strong / Moderate / Weak / Excluded / not scored (no data)) for each track.
+- "Excluded" means the country was actively eliminated on that track during Step 5 scoring. Do not restate the reason here.
+- "not scored (no data)" means no research was ever ingested for that country on that track. This is distinct from Excluded and must not be blurred with it.
+- If Step 6 revised a country's confidence level or classification, add a single short note beneath it.
 
-After this, ask me: "Want salary data for any of these countries? I can run the Salary Calculator for just that one." If I say yes, read commands/salary-calculator.md and follow it, scoped to only the country I name.
+If the Missing Candidate Check identified countries that were never researched on either track at all, list those separately under a "Flagged but not researched" heading.
+
+Close the Summary with counts:
+- Remote: [N] scored, [N] excluded, [N] not scored (no data)
+- Sponsorship: [N] scored, [N] excluded, [N] not scored (no data)
+
+No ranking, no recommendations, no interpretation.
+
+Step complete — stop here and wait for the main command.

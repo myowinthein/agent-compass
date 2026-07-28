@@ -9,7 +9,7 @@ Run the full Country Finder pipeline, resuming from where it left off if a state
 
 ## Before starting
 
-Check if profile.md exists in the workspace. If it does not, read prompts/shared/resume-extraction-prompt.md and follow it first. Wait for my resume and my confirmation of the extracted profile before continuing.
+Check if profile.md exists in the workspace. If it does not, read prompts/shared/resume-extraction-prompt.md and follow it. Wait until profile.md is output before continuing.
 
 ## State tracking
 
@@ -32,8 +32,8 @@ After finishing each step below, update last_completed_step and updated_at in th
 2. Read prompts/country-finder/step2-candidate-discovery.md and follow it exactly.
 3. Read prompts/country-finder/step3-research-prompt-generator.md and follow it exactly.
 4. Read prompts/country-finder/step4-data-ingestion.md and follow it exactly.
-5. Before running this step, ask me: "Step 5 (scoring) can run on Claude Opus for higher reasoning accuracy, which may cost more. Use Opus for this step? (yes/no)" — If I say yes, use the deep-reasoner subagent. If I say no, read prompts/country-finder/step5-scoring.md yourself and follow it exactly using your current model.
-6. Ask me if I want to run the reality check. If I say yes, ask: "The reality check can also run on Claude Opus. Use Opus for this step? (yes/no)" — If I say yes, use the deep-reasoner subagent to read prompts/country-finder/step6-reality-check.md. If I say no, read it yourself and follow it exactly using your current model. If I decline the reality check, ask: "Want salary data for any of these countries? I can run the Salary Calculator for just that one." If I say yes, read commands/salary-calculator.md and follow it, scoped to only the country I name.
+5. Before running this step, ask me: "Step 5 (scoring) can run on Claude Opus for higher reasoning accuracy, which may cost more. Use Opus for this step? (yes/no)" — If I say yes, use the deep-reasoner subagent. If I say no, read prompts/country-finder/step5-scoring.md yourself and follow it exactly using your current model. After Step 5 completes, ask me: "Would you like to run the Step 6 reality check on these results?"
+6. If I said yes to the reality check question in Step 5, ask: "The reality check can also run on Claude Opus. Use Opus for this step? (yes/no)" — If I say yes, use the deep-reasoner subagent to read prompts/country-finder/step6-reality-check.md. If I say no, read it yourself and follow it exactly using your current model.
 
 ## Important
 
