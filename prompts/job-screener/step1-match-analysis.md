@@ -35,14 +35,16 @@ Otherwise omit this section entirely.
 [CONS]
 
 - Bullet points only.
-- Use 🚫 only for objective hard blockers such as:
-  - required technology mismatch
-  - location or work authorization
-  - required language
-  - required years of experience (more experience than required is never a blocker unless the JD states a maximum)
-  - required certification
-  - required security clearance
-  - required timezone or working-hours overlap
+- Use 🚫 only for objective, non-negotiable hard blockers — things that disqualify regardless of other fit:
+  - missing work authorization for the job's location (cannot legally work there)
+  - a required security clearance the candidate does not hold
+  - a required working language the candidate does not speak
+  - a mandatory on-site location the candidate cannot be at, with no remote or relocation option stated
+  - a mandatory timezone or working-hours overlap the candidate cannot meet
+  - a legally or contractually mandatory certification the candidate does not hold
+  - the role's core technology or stack (the primary tool the whole role is built on) is one the candidate does not have — not merely one item missing from a longer required list
+- Years-of-experience gaps are not hard blockers. A shortfall is a normal con; mark 🚫 only if the JD states a hard minimum and the gap is large. More experience than required is never a blocker unless the JD states a maximum.
+- If it is unclear whether a requirement is truly mandatory, treat it as a con, not a 🚫 blocker.
 - Unmet preferred (not required) qualifications go here too, but must be labeled "preferred, not required" and never marked 🚫.
 - Unknown requirements are not blockers. Clearly mark them as unknown.
 
