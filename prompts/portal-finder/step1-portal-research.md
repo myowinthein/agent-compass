@@ -25,6 +25,6 @@ Within each group, put ⭐ before the 2–3 portals you would start with first.
 
 Use ⚠️ to flag anything that does not fit the structure but is worth knowing — for example: a portal that is dead or deprecated despite still ranking in searches, two portals in the list owned by the same parent company, a portal that is government-only or closed to foreign applicants, or any significant caveat affecting an international candidate.
 
-Output all groups in one response, in order from group 1 to 5. Do not add advice, recommendations, or commentary beyond what is asked here.
+Output the groups in one response, in order from group 1 to 5. If a group has no portal that verifies for this country, omit it (or leave it empty with a brief note) rather than inventing entries. Do not add advice, recommendations, or commentary beyond what is asked here.
 
-Step complete — stop here and wait for the main command.
+Step complete — stop here.
