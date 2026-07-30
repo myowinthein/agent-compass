@@ -13,27 +13,27 @@ Runs the full Country Finder pipeline. Collects your criteria, discovers candida
 
 ```mermaid
 flowchart TD
-  Start([User runs /country-finder]) --> Profile{profile.md<br/>exists?}
-  Profile -->|no| Extract[Resume extraction —<br/>wait for upload and confirmation]
+  Start([User runs /country-finder]) --> Profile{profile.md\nexists?}
+  Profile -->|no| Extract[Resume extraction —\nwait for upload and confirmation]
   Profile -->|yes| Sit
   Extract --> Sit
 
-  Sit{situational-profile.md<br/>exists?} -->|no| SitQ[Collect location, citizenship,<br/>language, optional salary minimum — save to file]
+  Sit{situational-profile.md\nexists?} -->|no| SitQ[Collect location, citizenship,\nlanguage, optional salary minimum — save to file]
   Sit -->|yes| State
   SitQ --> State
 
-  State{.country-finder-state.json<br/>exists?} -->|yes| Resume[Inform user: resuming from step N]
+  State{.country-finder-state.json\nexists?} -->|yes| Resume[Inform user: resuming from step N]
   State -->|no| S1
   Resume --> S1
 
-  S1[Step 1: Criteria intake<br/>timezone · timeline · preferences] --> S2
-  S2[Step 2: Candidate discovery<br/>conditional timezone filter · salary filter] --> S3
-  S3[Step 3: Research prompt generator<br/>ready-to-copy prompts per country] --> S4
-  S4[Step 4: Data ingestion<br/>one country at a time] --> S5
-  S5[Step 5: Scoring<br/>deep-reasoner agent] --> RCQ
+  S1[Step 1: Criteria intake\ntimezone · timeline · preferences] --> S2
+  S2[Step 2: Candidate discovery\nconditional timezone filter · salary filter] --> S3
+  S3[Step 3: Research prompt generator\nready-to-copy prompts per country] --> S4
+  S4[Step 4: Data ingestion\none country at a time] --> S5
+  S5[Step 5: Scoring\ndeep-reasoner agent] --> RCQ
 
-  RCQ{User wants<br/>reality check?} -->|no| Done
-  RCQ -->|yes| S6[Step 6: Reality check<br/>deep-reasoner agent]
+  RCQ{User wants\nreality check?} -->|no| Done
+  RCQ -->|yes| S6[Step 6: Reality check\ndeep-reasoner agent]
   S6 --> Done([Results delivered])
 ```
 
