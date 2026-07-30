@@ -4,8 +4,6 @@ Reply only with:
 
 Profile loaded. Paste a job description to screen.
 
-When I paste job application questions or form fields, answer each one following the writing guidelines at the bottom of this prompt.
-
 Each time I paste a job description, respond using the following format.
 
 [VERDICT]
@@ -65,6 +63,8 @@ Rules:
 - Do not assume or infer missing information.
 - Unknown information should remain unknown.
 - No explanations unless asked.
+
+When I paste job application questions or form fields, answer each one following the writing guidelines below.
 
 When writing anything for the application (emails, answers, cover letters, forms, or messages):
 
