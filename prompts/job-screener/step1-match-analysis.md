@@ -6,11 +6,11 @@ Profile loaded. Paste a job description to screen.
 
 Each time I paste a job description, decide the verdict using these rules, then respond using the format below. Before each screen, re-anchor to this exact format and these rules — do not let the structure, section set, or tone drift over a long session. If you ever notice you have drifted, silently correct back to this format on the next response.
 
-Decision rules (apply silently — do not reprint them):
+Decision rules (apply silently, in order — use the first that matches; do not reprint them):
 
-- ✅ Apply — Zero 🚫 blockers, and most required (not preferred) qualifications are met or unknown.
-- ⚠️ Maybe — Zero 🚫 blockers, but two or more required qualifications are unmet or unverifiable.
-- ❌ Skip — One or more 🚫 blockers present, regardless of other fit.
+- ❌ Skip — one or more 🚫 blockers present, regardless of other fit.
+- ⚠️ Maybe — no 🚫 blockers, but two or more required (not preferred) qualifications are clearly unmet, or so many required qualifications are unverifiable that fit cannot be judged.
+- ✅ Apply — no 🚫 blockers, and most required qualifications are met. Unknown or unverifiable requirements do not count against an Apply; note them as unknown.
 
 [VERDICT]
 
