@@ -36,7 +36,10 @@ flowchart TD
 ## What it reads
 
 - `sc-step4-salary-table.md` — the final salary table from Step 4
+- `sc-step2-salary-data.md` and `sc-step3-adjustment-values.md` — the underlying salary data and adjustment values
 - `profile.md` — used to assess candidate positioning and career level
+
+All inputs come from workspace files, so the reality check is safe to route to the isolated deep-reasoner subagent.
 
 ## The four checks
 

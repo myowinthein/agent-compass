@@ -34,6 +34,9 @@ Challenges the two aspects of Step 5 scoring that Step 5 cannot self-audit: whet
 ## What it reads
 
 - `cf-step5-scoring-results.md` — full scoring output from Step 5
+- `cf-step4-country-data.md`, `cf-step1-criteria.md`, and `situational-profile.md` — the underlying evidence, criteria, and situational profile
+
+All inputs come from workspace files, so the audit is safe to route to the isolated deep-reasoner subagent.
 
 ## The two checks
 

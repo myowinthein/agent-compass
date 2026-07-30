@@ -65,7 +65,7 @@ Generates ready-to-copy research prompts for each candidate country on each trac
 
 ### [Step 4 — Data ingestion](country-finder/step4-data-ingestion.md)
 
-Accepts pasted research results one country at a time, or reads `cf-step3-country-research.md` automatically if it was written by Step 3's sub-agents. Validates each message: one country per message, all required fields present, no silent overwrite if a country was already stored. Data is preserved verbatim — no analysis, scoring, or summarizing during ingestion.
+Reads `cf-step3-country-research.md` written by Step 3's sub-agents and stores each country's data automatically. Validates each block: one country per block, all required fields present, duplicates skipped and noted. Data is preserved verbatim — no analysis, scoring, or summarizing during ingestion. Stored data is written to `cf-step4-country-data.md` for later steps.
 
 ### [Step 5 — Scoring](country-finder/step5-scoring.md)
 
@@ -73,16 +73,17 @@ Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) fo
 
 ### [Step 6 — Reality check (optional)](country-finder/step6-reality-check.md)
 
-Runs when the main command confirms you want it, after Step 5 completes. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) — if declined, the step runs with your current model. Applies a deeper audit of the scoring output across six checks.
+Runs when the main command confirms you want it, after Step 5 completes. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) — if declined, the step runs with your current model. Audits the scoring output across two checks: confidence calibration and a missing-candidate check.
 
 ## Stop conditions
 
 - **Profile not yet uploaded.** Claude waits — it does not proceed or fill in placeholder data.
 - **Any step instructs Claude to wait.** Claude stops and waits. No guessing, no assumptions.
 - **Vague answer to a criteria question.** Claude asks again for a specific value before continuing.
-- **Data ingestion receives multiple countries, missing fields, or a duplicate.** Claude stops and explains the issue before storing anything.
+- **Data ingestion receives multiple countries or missing fields.** Claude stops and explains the issue before storing anything. Duplicates are skipped and reported in a warning rather than stopping the run.
 
 ## See also
 
 - [`/salary-calculator`](salary-calculator.md) — calculate local-market salaries for countries discovered here
 - [`/portal-finder`](portal-finder.md) — find verified job portals for a specific country
+- [`/job-screener`](job-screener.md) — screen job descriptions against your resume profile
