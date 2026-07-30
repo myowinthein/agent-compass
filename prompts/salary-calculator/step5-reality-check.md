@@ -60,7 +60,7 @@ First determine:
 
 Benchmark compensation primarily against the TARGET role being applied for, not the highest historical responsibility.
 
-Do not assume a level above Senior or Lead unless both the candidate profile and target role clearly support that level.
+Do not assume a level near the top of the ladder unless both the candidate profile and target role clearly support that level. Use the level names from the confirmed ladder for this field, not generic tech titles.
 
 ---
 
@@ -76,7 +76,7 @@ Determine whether the overall framework is:
 
 Evaluate whether the following legitimately increase compensation expectations:
 - years of experience
-- technical depth
+- technical or domain depth
 - leadership responsibility
 - ownership scope
 - business impact
