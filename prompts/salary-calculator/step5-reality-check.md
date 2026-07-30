@@ -12,39 +12,12 @@ Do NOT automatically lower the numbers unless the evidence genuinely supports do
 
 Follow the evidence.
 
-Framework Summary
-
-Research Phase — Local Market Salary Research
-
-Based on:
-- local employers
-- recruiter salary guides
-- employer postings
-- local job boards
-- LinkedIn market data
-
-Excluded:
-- FAANG only compensation
-- expat packages
-- inflated global remote salaries
-- levels.fyi
-- US skewed compensation
-
-Adjustment Phase — International Candidate Adjustment
-
-Adjustments considered:
-- overseas hiring friction
-- sponsorship complexity
-- no local experience
-- citizenship and visa complexity
-- work environment language mismatch
-- recruiter risk perception
-- remote interview logistics
-
-Calculation Phase — Salary Framework
+Framework Definitions (used by the checks below)
 
 - Safe = Market Midpoint (the "Realistic" value) from the Mid-size / Mainstream Local-Market tier
 - Stretch = Market Midpoint (the "Realistic" value) from the Premium / International / Remote-first tier
+
+The salary data (with its sources and exclusions) and the international adjustment values are already in the files you read above — work from those directly rather than from any assumed methodology.
 
 ---
 
