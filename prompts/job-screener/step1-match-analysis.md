@@ -50,7 +50,7 @@ Otherwise omit this section entirely.
 
 [MISSING INFORMATION]
 
-Always check against this fixed list and report which are unstated in the JD:
+From this fixed list, report only the items the JD does not explicitly state. If the JD states all of them, write "None — all covered."
 
 - salary
 - visa sponsorship
@@ -58,6 +58,9 @@ Always check against this fixed list and report which are unstated in the JD:
 - remote policy
 - work authorization
 - timezone or working-hours overlap
+- employment type (permanent / contract)
+
+An item that is unstated here is unknown, not a negative — it can never be a 🚫 blocker or a con on its own.
 
 Rules:
 
