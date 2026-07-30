@@ -41,7 +41,7 @@ For each role, in reverse chronological order:
 
 [SKILLS]
 
-Group into categories as they appear in the resume (example: Languages, Frameworks, Cloud, Tools). Do not invent categories not implied by the resume.
+Group into categories as they appear in the resume. Use whatever categories fit the candidate's IT role rather than assuming a software-developer resume — for example Languages, Frameworks, Cloud, Tools, Platforms, Methodologies, or Certifications for a developer; Security Tools and Compliance Frameworks for a security role; Methodologies and Tooling for a product or project role. Do not invent categories not implied by the resume.
 
 [EDUCATION]
 

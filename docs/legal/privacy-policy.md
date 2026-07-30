@@ -6,7 +6,7 @@
 
 ## Who We Are
 
-Claude Compass is a free, open-source plugin for Anthropic's Claude Cowork, maintained by Myo Win Thein. It provides two slash commands that help globally-minded job seekers research countries for remote employment or visa sponsorship and estimate realistic local-market salaries. The source code is available at [github.com/myowinthein/claude-compass](https://github.com/myowinthein/claude-compass).
+Claude Compass is a free, open-source plugin for Anthropic's Claude Cowork, maintained by Myo Win Thein. It provides four slash commands that help globally-minded IT/tech job seekers research countries for remote employment or visa sponsorship, estimate realistic local-market salaries, find verified job portals, and screen job descriptions against their resume. The source code is available at [github.com/myowinthein/claude-compass](https://github.com/myowinthein/claude-compass).
 
 ---
 

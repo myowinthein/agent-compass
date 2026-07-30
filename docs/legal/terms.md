@@ -12,10 +12,12 @@ By installing or using Claude Compass, you agree to these Terms of Service. If y
 
 ## Description of Service
 
-Claude Compass is a free, open-source plugin for Anthropic's Claude Cowork. It provides two slash commands:
+Claude Compass is a free, open-source plugin for Anthropic's Claude Cowork, biased toward IT/tech job seekers. It provides four slash commands:
 
 - **`/country-finder`** — a structured pipeline for discovering countries suitable for remote employment or visa sponsorship, scored against criteria you supply
 - **`/salary-calculator`** — a structured pipeline for estimating realistic local-market salary ranges for your target role, based on research you provide
+- **`/portal-finder`** — verified job portals for IT/tech roles in a given country, grouped by type and tagged
+- **`/job-screener`** — screens a job description against your resume and returns a structured apply / maybe / skip verdict
 
 Claude Compass does not provide legal, immigration, financial, or employment advice. See the [Disclaimer](disclaimer.md) for details.
 
