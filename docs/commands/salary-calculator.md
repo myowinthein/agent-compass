@@ -13,24 +13,24 @@ Runs the full Salary Calculator pipeline. Generates ready-to-copy research promp
 
 ```mermaid
 flowchart TD
-  Start([User runs /salary-calculator]) --> Profile{profile.md<br/>exists?}
-  Profile -->|no| Extract[Resume extraction —<br/>wait for upload and confirmation]
+  Start([User runs /salary-calculator]) --> Profile{profile.md\nexists?}
+  Profile -->|no| Extract[Resume extraction —\nwait for upload and confirmation]
   Profile -->|yes| State
   Extract --> State
 
-  State{.salary-calculator-state.json<br/>exists?} -->|yes| Resume[Inform user: resuming from step N]
+  State{.salary-calculator-state.json\nexists?} -->|yes| Resume[Inform user: resuming from step N]
   State -->|no| S1
   Resume --> S1
 
-  S1[Step 1: Research prompt generator<br/>local-market salary prompts per country] --> S2
-  S2[Step 2: Data ingestion<br/>reads sc-step1-salary-research.md] --> S3prep
-  S3prep[Collect situational profile<br/>on current model, before handoff] --> S3
-  S3[Step 3: International adjustment<br/>deep-reasoner agent] --> S4
-  S4[Step 4: Final table calculation<br/>calculator agent] --> RCQ
+  S1[Step 1: Research prompt generator\nlocal-market salary prompts per country] --> S2
+  S2[Step 2: Data ingestion\nreads sc-step1-salary-research.md] --> S3prep
+  S3prep[Collect situational profile\non current model, before handoff] --> S3
+  S3[Step 3: International adjustment\ndeep-reasoner agent] --> S4
+  S4[Step 4: Final table calculation\ncalculator agent] --> RCQ
 
-  RCQ{User wants<br/>reality check?} -->|no| Done([Results delivered])
-  RCQ -->|yes| Ladder[Confirm career ladder<br/>on current model, before handoff]
-  Ladder --> S5[Step 5: Reality check<br/>deep-reasoner agent]
+  RCQ{User wants\nreality check?} -->|no| Done([Results delivered])
+  RCQ -->|yes| Ladder[Confirm career ladder\non current model, before handoff]
+  Ladder --> S5[Step 5: Reality check\ndeep-reasoner agent]
   S5 --> Done
 ```
 

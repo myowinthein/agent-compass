@@ -23,11 +23,9 @@ If you provide a country argument, Claude uses it directly. If you omit it, Clau
 ```mermaid
 flowchart TD
   Start([User runs /portal-finder]) --> CountryCheck{Country argument\nprovided?}
-  CountryCheck -->|yes| WorkAuth
+  CountryCheck -->|yes| S1
   CountryCheck -->|no| AskCountry[Ask for country — wait]
-  AskCountry --> WorkAuth
-
-  S1
+  AskCountry --> S1
 
   S1[Step 1: Portal research\nOnline verification per portal] --> Output[Output grouped portal list\nwith tags and start-here flags]
   Output --> Done([Done])
