@@ -25,7 +25,7 @@ Ask me for my target country list.
 CANDIDATE PROFILE:
 Read profile.md from the workspace and use it as the candidate profile.
 
-[TARGET ROLE] above should be filled using the current or target job title from the candidate profile.
+[TARGET ROLE] above should be filled using the target or desired role from the candidate profile if one is stated; otherwise use the current or most recent title.
 
 For each country, create one ready-to-copy research prompt asking for:
 

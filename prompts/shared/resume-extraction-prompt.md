@@ -19,7 +19,9 @@ Output format:
 
 * Full name
 * Current or most recent title
+* Target or desired role (only if the resume states one, e.g. in an objective or headline; otherwise "Not stated")
 * Location (if stated)
+* Work authorization or citizenship (only if the resume states it, e.g. "authorized to work in the EU"; otherwise "Not stated")
 
 [POSITIONING SUMMARY]
 
@@ -41,7 +43,12 @@ For each role, in reverse chronological order:
 
 [SKILLS]
 
-Group into categories as they appear in the resume. Use whatever categories fit the candidate's IT role rather than assuming a software-developer resume — for example Languages, Frameworks, Cloud, Tools, Platforms, Methodologies, or Certifications for a developer; Security Tools and Compliance Frameworks for a security role; Methodologies and Tooling for a product or project role. Do not invent categories not implied by the resume.
+Group into categories as they appear in the resume. Use whatever categories fit the candidate's IT role rather than assuming a software-developer resume — for example Programming Languages, Frameworks, Cloud, Tools, Platforms, Methodologies, or Certifications for a developer; Security Tools and Compliance Frameworks for a security role; Methodologies and Tooling for a product or project role. Do not invent categories not implied by the resume. Keep this section to technical and professional skills — spoken languages go under [LANGUAGES], not here (even if the resume lists them under a "Languages" heading).
+
+[LANGUAGES]
+
+* Human/spoken languages with proficiency, exactly as stated (e.g. "English — native", "German — B2").
+* If none are stated, write "Not stated." Do not infer language ability from nationality, location, or where the candidate studied or worked.
 
 [EDUCATION]
 
