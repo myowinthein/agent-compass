@@ -58,7 +58,7 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 ## 6. Hard Safety Rules
 
 - Never infer, guess, or fill gaps in user-provided data.
-- Never silently overwrite or duplicate a stored item — always ask.
+- Never silently overwrite or duplicate a stored item. During automated ingestion, keep the original, skip the duplicate, and report it in a warning; in interactive steps, ask before overwriting.
 - Never treat vague or unsourced claims as strong evidence.
 - Never drop an item from a filtered list without a stated, evidence-based reason.
 - Do not create or modify `.claude/rules` files without explicit user instruction.
