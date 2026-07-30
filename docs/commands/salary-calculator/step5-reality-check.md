@@ -15,15 +15,16 @@ An independent audit of the final salary table from Step 4. Claude asks before r
 flowchart TD
   Start([Step 5 begins]) --> RunQ{Run reality check?}
   RunQ -->|no| Skip([Step skipped])
-  RunQ -->|yes| OpusQ{Use Opus for\nhigher accuracy?}
+  RunQ -->|yes| Ladder[Command drafts career ladder\non current model — wait for\nconfirmation, save to\nsc-step5-career-ladder.md]
+  Ladder --> Confirm{Career ladder\nconfirmed?}
+  Confirm -->|no| EditLadder[Adjust ladder per feedback]
+  EditLadder --> Confirm
+  Confirm -->|yes| OpusQ{Use Opus for\nhigher accuracy?}
   OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
   OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
   DeepReasoner --> C1
-  CurrentModel --> C1[1. Candidate positioning\nDraft career ladder for this role\nWait for confirmation before proceeding]
-  C1 --> Confirm{Career ladder\nconfirmed?}
-  Confirm -->|no| EditLadder[Adjust ladder per feedback]
-  EditLadder --> Confirm
-  Confirm -->|yes| C2[2. Framework calibration review\nIs the framework conservative · calibrated\nor inflated?]
+  CurrentModel --> C1[1. Candidate positioning\nUse the confirmed ladder from\nsc-step5-career-ladder.md]
+  C1 --> C2[2. Framework calibration review\nIs the framework conservative · calibrated\nor inflated?]
   C2 --> C3[3. Country-by-country reality check\nSafe positioning · Stretch positioning\nrecruiter comfort · overseas hiring realism]
   C3 --> C4[4. Framework recommendation\nIs Safe / Stretch philosophy still appropriate?]
   C4 --> Recal{Evidence supports\nrecalibration?}
@@ -38,14 +39,15 @@ flowchart TD
 - `sc-step4-salary-table.md` — the final salary table from Step 4
 - `sc-step2-salary-data.md` and `sc-step3-adjustment-values.md` — the underlying salary data and adjustment values
 - `profile.md` — used to assess candidate positioning and career level
+- `sc-step5-career-ladder.md` — the career ladder drafted and confirmed with you before the step runs
 
-All inputs come from workspace files, so the reality check is safe to route to the isolated deep-reasoner subagent.
+All inputs come from workspace files, so the reality check is safe to route to the isolated deep-reasoner subagent. The career ladder is confirmed on your current model before any Opus handoff, so the subagent never has to pause for interactive confirmation.
 
 ## The four checks
 
 **1. Candidate positioning**
 
-Claude drafts the realistic career ladder for your field (e.g. Mid, Senior, Lead, Staff, Principal) and determines your likely current level and target role level. It waits for your confirmation or edits before using the ladder in the analysis. Compensation is benchmarked against the target role, not the highest historical responsibility.
+The career ladder for your field (e.g. Mid, Senior, Lead, Staff, Principal) is drafted from `profile.md` and confirmed with you by the main command *before* the step runs, then saved to `sc-step5-career-ladder.md`. The step uses that confirmed ladder to determine your likely current level and target role level. Compensation is benchmarked against the target role, not the highest historical responsibility.
 
 **2. Framework calibration review**
 

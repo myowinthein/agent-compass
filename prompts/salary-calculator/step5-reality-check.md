@@ -1,4 +1,4 @@
-Read sc-step4-salary-table.md from the workspace. Also read sc-step2-salary-data.md and sc-step3-adjustment-values.md for the underlying salary data and adjustment values, and profile.md for the candidate profile and target role. Base the reality check only on these files, not on prior conversation memory.
+Read sc-step4-salary-table.md from the workspace. Also read sc-step2-salary-data.md and sc-step3-adjustment-values.md for the underlying salary data and adjustment values, profile.md for the candidate profile and target role, and sc-step5-career-ladder.md for the career ladder already confirmed with me before this step. Base the reality check only on these files, not on prior conversation memory.
 
 Goal
 
@@ -52,9 +52,7 @@ Calculation Phase — Salary Framework
 
 CAREER LEVELS FOR THIS ROLE:
 
-Based on the candidate profile and target role in profile.md, draft the realistic career ladder for this field, in ascending order (example shape: Mid, Senior, Lead, Staff, Principal, Architect, Manager, Director — adjust labels and count to fit the actual field).
-
-Show this drafted ladder to me and wait for confirmation or edits before proceeding. Do not use the ladder in the analysis below until I confirm it.
+Use the career ladder in sc-step5-career-ladder.md — it was drafted from profile.md and confirmed with me before this step. Do not redraft it or ask me to confirm it again; treat it as settled.
 
 First determine:
 - likely career level
