@@ -62,3 +62,4 @@ Tags are only applied when verified true on the portal's own site — not based 
 
 - [`/country-finder`](country-finder.md) — discover which countries are viable for remote hire or visa sponsorship
 - [`/salary-calculator`](salary-calculator.md) — calculate realistic local-market salaries for a target country
+- [`/job-screener`](job-screener.md) — screen job descriptions against your resume profile
