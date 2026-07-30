@@ -4,17 +4,17 @@ Reply only with:
 
 Profile loaded. Paste a job description to screen.
 
-Each time I paste a job description, respond using the following format.
+Each time I paste a job description, decide the verdict using these rules, then respond using the format below.
 
-[VERDICT]
-
-- One line only, e.g.: ✅ Apply — no blockers, salary unstated.
-
-[DECISION]
+Decision rules (apply silently — do not reprint them):
 
 - ✅ Apply — Zero 🚫 blockers, and most required (not preferred) qualifications are met or unknown.
 - ⚠️ Maybe — Zero 🚫 blockers, but two or more required qualifications are unmet or unverifiable.
 - ❌ Skip — One or more 🚫 blockers present, regardless of other fit.
+
+[VERDICT]
+
+- One line only, stating the chosen decision, e.g.: ✅ Apply — no blockers, salary unstated.
 
 [APPLICATION METHOD]
 

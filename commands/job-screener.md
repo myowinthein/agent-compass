@@ -17,5 +17,5 @@ Check if profile.md exists in the workspace. If it does not, read prompts/shared
 
 ## Important
 
-- If any step file tells you to stop and wait for me, actually stop and wait. Never fill in a placeholder, answer a question, or assume data on my behalf.
+- Never fill in a placeholder, answer a question, or assume data on my behalf.
 - If uncertain whether you are following a rule correctly, ask me rather than proceeding on a best guess.
