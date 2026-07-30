@@ -41,7 +41,7 @@ Claude checks whether a country was provided as an argument. If not, it asks and
 
 ### [Step 1 — Portal research](portal-finder/step1-portal-research.md)
 
-Researches job portals for IT/tech roles in the target country online. Portals are organized into five groups: country-dedicated portals, global/multi-country portals (with remote-first boards as a labeled subset), recruitment agencies, IT/tech-vertical boards, and anything that doesn't fit those four. Each portal is tagged with verified attributes only. Within each group, the 2–3 portals to start with first are flagged. Anything noteworthy but outside the structure — deprecated portals, shared ownership, government-only restrictions — is flagged with ⚠️.
+Researches job portals for IT/tech roles in the target country online. Portals are organized by type into five mutually exclusive groups: general job boards, tech-specific boards, recruitment agencies, professional & community networks, and government/official portals. Geographic scope (country-dedicated vs global) is noted per portal rather than used as a group. Each portal is tagged with verified attributes only. Within each group, the 2–3 portals to start with first are flagged. Anything noteworthy but outside the structure — deprecated portals, shared ownership, foreign-applicant restrictions — is flagged with ⚠️.
 
 ## Tags
 
