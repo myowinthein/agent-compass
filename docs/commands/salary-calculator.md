@@ -29,7 +29,8 @@ flowchart TD
   S4[Step 4: Final table calculation<br/>calculator agent] --> RCQ
 
   RCQ{User wants<br/>reality check?} -->|no| Done([Results delivered])
-  RCQ -->|yes| S5[Step 5: Reality check<br/>deep-reasoner agent]
+  RCQ -->|yes| Ladder[Confirm career ladder<br/>on current model, before handoff]
+  Ladder --> S5[Step 5: Reality check<br/>deep-reasoner agent]
   S5 --> Done
 ```
 
@@ -61,7 +62,7 @@ Claude asks whether to use the **calculator** subagent (Opus, max effort) for hi
 
 ### [Step 5 — Reality check (optional)](salary-calculator/step5-reality-check.md)
 
-Claude asks before running. If you confirm, Claude then asks whether to use the **deep-reasoner** subagent (Opus, high effort) — if declined, the step runs with your current model. Audits the final table output for inconsistencies, outliers, or weak evidence. Skipped if the user declines.
+Claude asks before running. If you confirm, it first drafts your career ladder on the current model and waits for your confirmation (saved to `sc-step5-career-ladder.md`) before any Opus handoff, then asks whether to use the **deep-reasoner** subagent (Opus, high effort) — if declined, the step runs with your current model. Audits the final table output for inconsistencies, outliers, or weak evidence. Skipped if the user declines.
 
 ## Stop conditions
 
