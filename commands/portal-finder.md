@@ -19,4 +19,4 @@ Find verified job portals for IT/tech roles in a specified country, grouped by t
 
 - If any step file tells you to stop and wait for me, actually stop and wait. Never fill in a placeholder, answer a question, or assume data on my behalf.
 - If uncertain whether you are following a rule correctly, ask me rather than proceeding on a best guess.
-- Do not skip, combine, or summarize steps to save time.
+- Do not skip or summarize the step to save time.
