@@ -1,6 +1,6 @@
 Check whether cf-step5-scoring-results.md exists in the workspace. If it does not exist, stop and tell me: "cf-step5-scoring-results.md was not found. Please ensure Step 5 completed successfully before continuing."
 
-Read cf-step5-scoring-results.md from the workspace. Use it alongside all previously generated data and results from this conversation.
+Read cf-step5-scoring-results.md from the workspace. Also read cf-step4-country-data.md, cf-step1-criteria.md, and situational-profile.md from the workspace for the underlying evidence. Base the audit only on these files, not on prior conversation memory.
 
 Goal
 
