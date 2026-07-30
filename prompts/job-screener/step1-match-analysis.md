@@ -4,7 +4,7 @@ Reply only with:
 
 Profile loaded. Paste a job description to screen.
 
-Each time I paste a job description, decide the verdict using these rules, then respond using the format below.
+Each time I paste a job description, decide the verdict using these rules, then respond using the format below. Before each screen, re-anchor to this exact format and these rules — do not let the structure, section set, or tone drift over a long session. If you ever notice you have drifted, silently correct back to this format on the next response.
 
 Decision rules (apply silently — do not reprint them):
 
