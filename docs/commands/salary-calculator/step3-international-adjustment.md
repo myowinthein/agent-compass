@@ -7,24 +7,25 @@ nav_order: 3
 
 # Step 3 — International adjustment
 
-Estimates the realistic hiring discount an overseas candidate may face when negotiating with local employers, compared to a local candidate at the same level. Before running, Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
+Estimates the realistic hiring discount an overseas candidate may face when negotiating with local employers, compared to a local candidate at the same level. Before running, the main command collects the situational profile (on your current model), then asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 3 begins]) --> FileCheck{sc-step2-salary-data.md\nexists?}
+  Start([Command: collect situational profile\non current model, before handoff]) --> SitCheck{situational-profile.md\nexists?}
+  SitCheck -->|yes| ReuseSit[Reuse existing profile\nSkip questions]
+  SitCheck -->|no| SitQ[Ask situational questions\nlocation · citizenship · friction\nlanguages · work language · salary minimum\nSave to situational-profile.md]
+  ReuseSit --> Begin
+  SitQ --> Begin
+  Begin([Step 3 begins]) --> FileCheck{sc-step2-salary-data.md\nexists?}
   FileCheck -->|no| Error[Stop — report missing file\nAsk user to rerun Step 2]
-  FileCheck -->|yes| ReadFile[Read sc-step2-salary-data.md]
+  FileCheck -->|yes| ReadFile[Read sc-step2-salary-data.md\nand situational-profile.md]
   ReadFile --> OpusQ{Use Opus for\nhigher accuracy?}
   OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
   OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
-  DeepReasoner --> SitCheck
-  CurrentModel --> SitCheck{situational-profile.md\nexists?}
-  SitCheck -->|yes| ReuseSit[Reuse existing profile\nSkip questions]
-  SitCheck -->|no| SitQ[Ask situational questions\nlocation · citizenship · friction\nlanguages · work language · salary minimum\nSave to situational-profile.md]
-  ReuseSit --> Estimate
-  SitQ --> Estimate
+  DeepReasoner --> Estimate
+  CurrentModel --> Estimate
   Estimate[Estimate adjustment per country\nbased on hiring practices and\nmarket conditions] --> Output[For each country output:\nAdjustment range %\nTypical midpoint %\nLevel: Small / Moderate / Significant\nConfidence: High / Medium / Low\nBrief explanation]
   Output --> Save[Save to sc-step3-adjustment-values.md]
   Save --> Done([Step complete\nWait for main command])
@@ -33,11 +34,11 @@ flowchart TD
 ## What it reads
 
 - `sc-step2-salary-data.md` — salary data from Step 2
-- `situational-profile.md` — if present, situational questions are skipped
+- `situational-profile.md` — collected by the main command before this step, so it always exists here
 
-## Situational questions (once, if not already saved)
+## Situational questions (collected before the step, once, if not already saved)
 
-If `situational-profile.md` does not exist, Claude asks:
+The main command collects these on your current model before any Opus handoff, so the subagent path never has to ask interactively. If `situational-profile.md` does not exist, Claude asks:
 
 1. Current location
 2. Citizenship
