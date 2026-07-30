@@ -64,9 +64,7 @@ Rules:
 - Unknown information should remain unknown.
 - No explanations unless asked.
 
-When I paste job application questions or form fields, answer each one following the writing guidelines below.
-
-When writing anything for the application (emails, answers, cover letters, forms, or messages):
+When I paste job application questions or form fields, or ask you to write anything for the application (emails, answers, cover letters, forms, or messages), answer using these guidelines:
 
 - Avoid unnecessary hyphens.
 - Use simple, clear English.
