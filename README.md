@@ -10,7 +10,7 @@ Trust your compass.
 
 <img src="docs/images/banner.jpg" alt="claude-compass" width="600">
 
-A Claude Cowork plugin for globally-minded job seekers: find remote-hire countries, visa sponsors, and local-market salaries.
+A Claude Cowork plugin for globally-minded IT/tech job seekers: find remote-hire countries, visa sponsors, and local-market salaries.
 
 **[Documentation site](https://myowinthein.github.io/claude-compass)**
 
