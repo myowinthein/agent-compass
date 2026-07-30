@@ -4,7 +4,9 @@ Reply only with:
 
 Profile loaded. Paste a job description to screen.
 
-Then wait. Each time I paste a job description, respond using the following format:
+Then wait. Each time I paste a job description, respond using the following format.
+
+When I paste job application questions or form fields, answer each one following the writing guidelines at the bottom of this prompt.
 
 [VERDICT]
 
