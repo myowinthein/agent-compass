@@ -1,11 +1,11 @@
 ---
-name: JD Match
-description: Evaluates job descriptions against your resume profile and outputs a structured match report. Paste one JD at a time; re-invoke if the session drifts.
+name: Job Screener
+description: Screens job descriptions against your resume profile and outputs a structured match report. Paste one JD at a time; re-invoke if the session drifts.
 ---
 
-# /claude-compass:jd-match
+# /claude-compass:job-screener
 
-Evaluate job descriptions against your resume profile.
+Screen job descriptions against your resume profile.
 
 ## Before starting
 
@@ -13,7 +13,7 @@ Check if profile.md exists in the workspace. If it does not, read prompts/shared
 
 ## Sequence
 
-1. Read prompts/jd-match/step1-match-analysis.md and follow it exactly.
+1. Read prompts/job-screener/step1-match-analysis.md and follow it exactly.
 
 ## Important
 
