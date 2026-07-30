@@ -1,6 +1,6 @@
 Check whether cf-step5-scoring-results.md exists in the workspace. If it does not exist, stop and tell me: "cf-step5-scoring-results.md was not found. Please ensure Step 5 completed successfully before continuing."
 
-Read cf-step5-scoring-results.md from the workspace. Also read cf-step4-country-data.md, cf-step1-criteria.md, and situational-profile.md from the workspace for the underlying evidence. Base the audit only on these files, not on prior conversation memory.
+Read cf-step5-scoring-results.md from the workspace. Also read cf-step2-remote-candidates.md, cf-step2-sponsorship-candidates.md, cf-step4-country-data.md, cf-step1-criteria.md, and situational-profile.md from the workspace. The two cf-step2 candidate lists are the full candidate universe — use them to detect any country that was a Step 2 candidate but never reached Step 4. Base the audit only on these files, not on prior conversation memory.
 
 Goal
 
@@ -12,7 +12,7 @@ For each country marked "High confidence," verify the underlying evidence is gen
 
 2. Missing Candidate Check
 
-Identify any country that would commonly be expected to appear but is absent from either track's results. For each one, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap — such as never being researched or never reaching Step 4.
+Compare the two cf-step2 candidate lists against the countries that actually reached Step 4 and Step 5, and also consider any country that would commonly be expected to appear but is absent. For each missing country, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap — such as being on a Step 2 candidate list but never researched or never reaching Step 4.
 
 Recalibration
 
