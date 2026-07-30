@@ -47,7 +47,7 @@ All inputs come from workspace files, so the reality check is safe to route to t
 
 **1. Candidate positioning**
 
-The career ladder for your field (e.g. Mid, Senior, Lead, Staff, Principal) is drafted from `profile.md` and confirmed with you by the main command *before* the step runs, then saved to `sc-step5-career-ladder.md`. The step uses that confirmed ladder to determine your likely current level and target role level. Compensation is benchmarked against the target role, not the highest historical responsibility.
+The career ladder for your field is drafted from `profile.md` and confirmed with you by the main command *before* the step runs, then saved to `sc-step5-career-ladder.md`. It is inferred from your actual profession — any field, not assumed to be software or tech — using that field's real progression and title conventions (a software ladder might run Mid → Senior → Lead → Staff, a culinary one Commis → Chef de Partie → Sous Chef → Head Chef). The step uses that confirmed ladder to determine your likely current level and target role level. Compensation is benchmarked against the target role, not the highest historical responsibility.
 
 **2. Framework calibration review**
 
