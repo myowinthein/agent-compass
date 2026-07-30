@@ -2,7 +2,7 @@ Read profile.md from the workspace and treat it as the canonical candidate profi
 
 Reply only with:
 
-done
+Profile loaded. Paste a job description to screen.
 
 Then wait. Each time I paste a job description, respond using the following format:
 
