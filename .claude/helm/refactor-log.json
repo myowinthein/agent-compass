@@ -462,12 +462,12 @@
       "depends_on": [],
       "file": "docs/commands/country-finder.md",
       "line": 1,
-      "description": "docs/commands/country-finder.md and docs/commands/salary-calculator.md lack the '## Usage' section that portal-finder.md and job-screener.md both include, making the four pipeline overview pages structurally inconsistent.",
-      "status": "open",
+      "description": "docs/commands/country-finder.md and docs/commands/salary-calculator.md lack the '## Usage' section that portal-finder.md and job-screener.md both include, making the four pipeline overview pages structurally inconsistent. While fixing this, also found and corrected both pages' Stop conditions ingestion description, left stale by this session's f-0011/f-0012/f-0016 fixes.",
+      "status": "fixed",
       "first_found_commit": "a24a4a2",
       "first_found_date": "2026-08-01",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "19e7624",
+      "resolved_date": "2026-08-01"
     },
     {
       "id": "f-0030",
