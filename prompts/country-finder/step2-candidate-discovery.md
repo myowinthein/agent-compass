@@ -35,10 +35,11 @@ Remote suitability:
 - Evidence must come from remote job boards, remote hiring reports, salary surveys, or company remote-hiring policies.
 
 Sponsorship suitability:
-- Does a real, named, documented work-visa sponsorship pathway exist for this candidate's role and skillset?
-- Does the candidate's occupation appear on any official shortage-occupation or in-demand skills list, if one exists?
+- Does a real, named, documented work-visa pathway exist where a local employer is the sponsor — a standard employer-sponsored work visa or work permit tied to a job offer? Digital-nomad, remote-worker, long-stay, or self-qualifying visas do not count, even if well-known or highly ranked in search results — they do not involve a local employer sponsoring the candidate, which is what this track requires. If a country has both an employer-sponsored route and a digital-nomad-style visa, evaluate only the employer-sponsored one.
+- Does the candidate's occupation appear on any official shortage-occupation or in-demand skills list, if one exists? Being listed is a positive factor (often easing salary thresholds or approval) and, for the minority of visas that make it an explicit legal requirement, check whether that applies to the pathway already identified. Absence from a shortage list does not by itself make Suitable "no" unless the identified pathway explicitly requires it.
 - Consider citizenship-specific visa reciprocity, restrictions, or friction, based on the situational profile.
 - Evidence must come from official government immigration sources, visa program pages, or recruiter sponsorship guides.
+- Do not determine Suitable by comparing a visa's salary threshold to the candidate's own stated minimum salary — that minimum reflects what the candidate would accept, not what a real employer would offer. If a salary threshold applies, note it in the Reason field as a fact for later steps to weigh against real market data; it must never by itself make Suitable "no."
 
 Important rule for every prompt:
 

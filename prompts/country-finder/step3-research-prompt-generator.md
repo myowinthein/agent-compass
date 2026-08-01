@@ -16,9 +16,9 @@ Remote Track section should ask for:
 - typical payment structure norms (local currency vs USD, contractor vs employee status)
 - sources with dates
 
-Sponsorship Track section should ask for:
+Sponsorship Track section should ask for a pathway where a local employer is the sponsor — a standard employer-sponsored work visa or work permit tied to a job offer, not a digital-nomad, remote-worker, long-stay, or self-qualifying visa (these do not involve a local employer sponsoring the candidate, even if prominent in search results). If the country has both an employer-sponsored route and a digital-nomad-style visa, research the employer-sponsored one only. Ask for:
 
-- full name of the specific work-visa or sponsorship pathway, and the official source describing it
+- full name of the specific employer-sponsored work-visa pathway, and the official source describing it
 - minimum salary threshold required by that visa, if any
 - realistic employer willingness to sponsor this specific role and skillset (based on recruiter behavior, hiring examples, not assumption)
 - realistic processing time for the visa
