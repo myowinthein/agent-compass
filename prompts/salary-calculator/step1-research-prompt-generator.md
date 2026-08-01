@@ -1,14 +1,13 @@
-Generate individual research prompts to estimate realistic local-market annual base salary ranges for a [TARGET ROLE] in each country below.
+CANDIDATE PROFILE:
+Read profile.md from the workspace and use it as the candidate profile. [TARGET ROLE] below should be filled using the target or desired role from the candidate profile if one is stated; otherwise use the current or most recent title.
 
-Do not estimate salaries directly. Only generate ready-to-copy research prompts.
+Countries:
+Ask me for my target country list.
+
+Generate individual research prompts to estimate realistic local-market annual base salary ranges for a [TARGET ROLE] in each country given above. Do not estimate salaries directly — only generate ready-to-copy research prompts. Estimate what a local candidate with a similar profile would realistically earn in that country — local-market salary only.
 
 Important:
 Each generated prompt must instruct the researcher to perform the analysis completely from scratch using current web research and real-world market conditions only, prioritizing sources from the last 12 months. Do not rely on previous conversations, memory, earlier country discussions, or assumed preferences.
-
-Goal:
-Estimate what a local candidate with a similar profile would realistically earn in that country.
-
-Estimate local-market salary only.
 
 Exclude from research:
 - expat salary and relocation premium
@@ -18,14 +17,6 @@ Exclude from research:
 - contractor or freelance rates
 - equity-heavy total compensation
 - US-skewed compensation data
-
-Countries:
-Ask me for my target country list.
-
-CANDIDATE PROFILE:
-Read profile.md from the workspace and use it as the candidate profile.
-
-[TARGET ROLE] above should be filled using the target or desired role from the candidate profile if one is stated; otherwise use the current or most recent title.
 
 For each country, create one ready-to-copy research prompt asking for:
 
