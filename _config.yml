@@ -23,6 +23,7 @@ plugins:
 exclude:
   - Gemfile
   - Gemfile.lock
+  - Rakefile
   - CLAUDE.md
   - LICENSE
   - .gitignore
