@@ -13,6 +13,7 @@
 ```
 git-strategy: solo
 git-auto-commit: true
+readme-style: custom
 ```
 
 ## 3. Dev Commands
