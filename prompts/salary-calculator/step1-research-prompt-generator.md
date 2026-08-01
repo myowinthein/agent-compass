@@ -10,11 +10,11 @@ Estimate what a local candidate with a similar profile would realistically earn 
 
 Estimate local-market salary only.
 
-Exclude:
-- expat salary
-- relocation premium
-- FAANG-only salary
-- inflated global remote salary
+Exclude from research:
+- expat salary and relocation premium
+- FAANG-only data (including levels.fyi)
+- Glassdoor US
+- inflated global or remote-first compensation
 - contractor or freelance rates
 - equity-heavy total compensation
 - US-skewed compensation data
@@ -41,13 +41,6 @@ For each country, create one ready-to-copy research prompt asking for:
   - premium, international, or remote-first companies
 - national range and major tech hub range if salary varies significantly by city (name the city used)
 - practical low, realistic, and strong ranges within each tier
-
-Exclude from research:
-- levels.fyi
-- FAANG-only data
-- Glassdoor US
-- US-skewed compensation data
-- inflated top-end global or remote compensation
 
 Prioritize:
 - realistic local-market compensation
