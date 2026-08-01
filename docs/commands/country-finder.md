@@ -35,7 +35,7 @@ flowchart TD
   Resume --> S1
 
   S1[Step 1: Criteria intake\ntimezone · timeline · preferences] --> S2
-  S2[Step 2: Candidate discovery\nconditional timezone filter · salary filter] --> S3
+  S2[Step 2: Candidate discovery\npreferred/wealth-tier universe · region-batch sub-agents · timezone mark] --> S3
   S3[Step 3: Research prompt generator\nready-to-copy prompts per country] --> S4
   S4[Step 4: Data ingestion\none country at a time] --> S5
   S5[Step 5: Scoring\ndeep-reasoner agent] --> RCQ
@@ -65,7 +65,7 @@ Collects requirements for both tracks. Remote track: maximum timezone difference
 
 ### [Step 2 — Candidate discovery](country-finder/step2-candidate-discovery.html)
 
-Generates a grounded list of candidate countries for each track. Timezone filtering is only applied if a limit was provided in Step 1. Salary filtering in the Remote research prompt is only applied if a minimum was specified in the situational profile. Remote and sponsorship candidates are listed separately.
+Builds a single candidate universe — your saved `data/preferred-countries.md` if it exists, otherwise your Step 1 Include list, otherwise the full `data/country-wealth-tiers.md` — then researches it in region-batched sub-agents that check each country for Remote and Sponsorship suitability together. A timezone limit from Step 1 marks (not removes) out-of-range countries as unsuitable for Remote only; a salary minimum from the situational profile is folded into the Remote check.
 
 ### [Step 3 — Research prompt generator](country-finder/step3-research-prompt-generator.html)
 

@@ -1,12 +1,11 @@
-Check whether cf-step2-remote-candidates.md and cf-step2-sponsorship-candidates.md exist in the workspace. If either does not exist, stop and tell me: "cf-step2 candidate lists were not found. Please ensure Step 2 completed successfully before continuing."
+Check whether cf-step2-candidates.md exists in the workspace. If it does not exist, stop and tell me: "cf-step2-candidates.md was not found. Please ensure Step 2 completed successfully before continuing."
 
-Read cf-step2-remote-candidates.md and cf-step2-sponsorship-candidates.md from the workspace. Using these two candidate lists, generate one ready-to-copy research prompt per country.
+Read cf-step2-candidates.md from the workspace. For each country recorded there, generate one ready-to-copy research prompt, based on its Remote and Sponsorship "Suitable" values from Step 2:
 
-For each country, check which list(s) it appeared in:
-
-- If it appeared only in the Remote candidate list, generate a prompt with the Remote Track section only.
-- If it appeared only in the Sponsorship candidate list, generate a prompt with the Sponsorship Track section only.
-- If it appeared in both lists, generate a single combined prompt with both sections.
+- If only Remote is "yes," generate a prompt with the Remote Track section only.
+- If only Sponsorship is "yes," generate a prompt with the Sponsorship Track section only.
+- If both are "yes," generate a single combined prompt with both sections.
+- If neither is "yes," skip this country — it did not survive Step 2.
 
 Each generated prompt must instruct the researcher to use current web research (prioritizing sources from the last 12 months), not memory or general reputation. Do not include a claim unless it is supported by a real, dated source.
 

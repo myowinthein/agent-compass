@@ -39,7 +39,7 @@ flowchart TD
 ## What it reads
 
 - `cf-step3-country-research.md` — written by Step 3 sub-agents
-- `cf-step2-remote-candidates.md` and `cf-step2-sponsorship-candidates.md` — used to validate that each country was expected
+- `cf-step2-candidates.md` — used to validate that each country was marked suitable for at least one track
 
 ## Rules
 
@@ -51,7 +51,7 @@ This runs fully automated, with no pause between countries — bad items are ski
 | Block contains multiple countries | Skips it and records the issue — nothing stored |
 | Block contains no recognizable country | Skips it and records the issue — nothing stored |
 | Required field or section missing | Skips it and records what's missing — nothing stored |
-| Country not on either Step 2 candidate list | Never stored automatically — skipped and recorded for manual review |
+| Country not marked suitable for any track in Step 2 | Never stored automatically — skipped and recorded for manual review |
 | Country already stored | Skips it, keeps original, records it as a duplicate |
 | Valid, complete data for one country | Stored silently |
 
@@ -66,4 +66,4 @@ Claude preserves all values, wording, and formatting exactly as provided. It doe
 
 ## Stop condition
 
-Once all countries from `cf-step3-country-research.md` have been processed, Claude writes all successfully stored countries to `cf-step4-country-data.md`, replies with one consolidated report (stored count, plus every skip grouped by reason — malformed, missing fields, duplicate, not on either candidate list), then stops and waits for the main command.
+Once all countries from `cf-step3-country-research.md` have been processed, Claude writes all successfully stored countries to `cf-step4-country-data.md`, replies with one consolidated report (stored count, plus every skip grouped by reason — malformed, missing fields, duplicate, not marked suitable for any track), then stops and waits for the main command.
