@@ -31,6 +31,5 @@ exclude:
   - .claude/
   - agents/
   - commands/
-  - data/
   - prompts/
   - skills/

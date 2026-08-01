@@ -13,8 +13,7 @@ Generates one ready-to-copy research prompt per target country, runs each as an 
 
 ```mermaid
 flowchart TD
-  Start([Step 1 begins]) --> OfferTiers[Offer data/country-wealth-tiers.md\nreference for ideas]
-  OfferTiers --> AskList[Ask for target\ncountry list]
+  Start([Step 1 begins]) --> AskList[Ask for target\ncountry list]
   AskList --> ReadProfile[Read profile.md\nfor role and seniority]
   ReadProfile --> ForEach[For each country:\ngenerate research prompt]
   ForEach --> Prompt[Prompt instructs researcher to find\nlocal-market salary only\nexcluding expat · FAANG · US-skewed\ncontractor · equity-heavy data]
@@ -31,11 +30,10 @@ flowchart TD
 ## What it reads
 
 - `profile.md` — used to fill in your target role, seniority, and skills in each prompt
-- `data/country-wealth-tiers.md` — copied into your workspace as `country-wealth-tiers.md` on first use, offered as a reference before asking for your country list
 
 ## Country list
 
-Before asking, Claude checks whether `country-wealth-tiers.md` already exists in your workspace; if not, it copies `data/country-wealth-tiers.md` there and points to it as a reference — countries grouped into 5 wealth tiers by GNI per capita, in case you want ideas. Claude then asks for your target country list before generating any prompts.
+Claude asks for your target country list before generating any prompts.
 
 ## Prompt content
 

@@ -24,8 +24,7 @@ If you provide a country argument, Claude uses it directly. If you omit it, Clau
 flowchart TD
   Start([User runs /portal-finder]) --> CountryCheck{Country argument\nprovided?}
   CountryCheck -->|yes| S1
-  CountryCheck -->|no| OfferTiers[Offer data/country-wealth-tiers.md\nreference for ideas]
-  OfferTiers --> AskCountry[Ask for country — wait]
+  CountryCheck -->|no| AskCountry[Ask for country — wait]
   AskCountry --> S1
 
   S1[Step 1: Portal research\nOnline verification per portal] --> Output[Output grouped portal list\nwith tags and start-here flags]
@@ -36,7 +35,7 @@ flowchart TD
 
 ### Country
 
-Claude checks whether a country was provided as an argument. If not, it offers the `data/country-wealth-tiers.md` reference (copied into your workspace as `country-wealth-tiers.md` on first use) for ideas, then asks and waits before proceeding.
+Claude checks whether a country was provided as an argument. If not, it asks and waits before proceeding.
 
 ### [Step 1 — Portal research](portal-finder/step1-portal-research.html)
 

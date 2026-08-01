@@ -25,15 +25,9 @@ flowchart TD
   Ask1 --> Vague1
   Vague1 -->|no| P2
 
-  P2[Phase 2: Sponsorship criteria\nrelocation timeline] --> PrefCheck
+  P2[Phase 2: Sponsorship criteria\nrelocation timeline] --> P3
 
-  PrefCheck{data/preferred-countries.md\nexists?} -->|yes| ShowPref[Show saved list back —\nuse as-is, add, or replace]
-  PrefCheck -->|no| OfferTiers[Offer data/country-wealth-tiers.md\nreference for ideas]
-  ShowPref --> P3
-  OfferTiers --> P3
-
-  P3[Phase 3: Country preferences\nincluded and excluded] --> SavePref[Save/update\ndata/preferred-countries.md]
-  SavePref --> Save[Save criteria to\ncf-step1-criteria.md]
+  P3[Phase 3: Country preferences\nincluded and excluded] --> Save[Save criteria to\ncf-step1-criteria.md]
   Save --> Stop([Step complete\nWait for main command])
 ```
 
@@ -41,7 +35,6 @@ flowchart TD
 
 - `profile.md` — your resume profile (must exist before this step runs)
 - `situational-profile.md` — if present, reused without re-asking; if absent, Claude collects it here
-- `data/preferred-countries.md` — if present, your saved include list is shown back for confirmation instead of asked from scratch
 
 ## Situational profile
 
@@ -70,15 +63,11 @@ Relocation is assumed — Claude does not ask whether you are open to relocating
 
 **Country preferences**
 - Countries or regions to include or exclude from both tracks
-- If `data/preferred-countries.md` already exists, Claude reads it and asks whether to use it as-is, add to it, or replace it, rather than asking cold
-- If it does not exist yet, Claude first offers `data/country-wealth-tiers.md` — a reference of countries grouped into 5 wealth tiers by GNI per capita — for ideas before asking
-- Any new or updated include list you give is saved back to `data/preferred-countries.md` for reuse on future runs
 
 ## Output
 
 - `cf-step1-criteria.md` — criteria answers (timezone limit, relocation timeline, country preferences) written after all phases are complete
 - `situational-profile.md` — written here if it did not already exist; reused by subsequent steps and the Salary Calculator pipeline
-- `data/preferred-countries.md` — written or updated here if you gave a new or changed include list
 
 ## Stop condition
 
