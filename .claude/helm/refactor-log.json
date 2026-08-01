@@ -271,11 +271,11 @@
       "file": "commands/salary-calculator.md",
       "line": 33,
       "description": "Step3/step4 Opus branches only say 'use the deep-reasoner/calculator subagent' with no mention of which prompt file to read, unlike step5 which explicitly names its file — subagents have no conversation access to infer it.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "a24a4a2",
       "first_found_date": "2026-08-01",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "a31b907",
+      "resolved_date": "2026-08-01"
     },
     {
       "id": "f-0018",
@@ -287,11 +287,11 @@
       "file": "commands/salary-calculator.md",
       "line": 35,
       "description": "Step5's career-ladder drafting logic is substantial business logic written directly into the orchestrator instead of a step file under prompts/salary-calculator/, breaking the 'thin orchestrator' convention followed everywhere else — even though the reason (must run before subagent handoff) is legitimate.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "a24a4a2",
       "first_found_date": "2026-08-01",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "a31b907",
+      "resolved_date": "2026-08-01"
     },
     {
       "id": "f-0019",
