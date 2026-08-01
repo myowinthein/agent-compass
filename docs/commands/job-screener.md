@@ -39,7 +39,7 @@ flowchart TD
 
 Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resume-extraction-prompt.md`, waits for the user to upload their resume, and waits until `profile.md` is produced. The profile is reused on all subsequent runs without re-extraction.
 
-### [Step 1 — Match analysis](job-screener/step1-match-analysis.html)
+### [Step 1 — Match analysis](job-screener/step1-match-analysis.md)
 
 Reads `profile.md` as the canonical candidate profile, replies "Profile loaded. Paste a job description to screen," then waits. Each pasted job description is screened against the profile using a fixed output format. Pasted form questions or writing tasks are answered using the writing guidelines instead.
 
@@ -54,6 +54,6 @@ Unlike Country Finder and Salary Calculator, this command keeps no state file an
 
 ## See also
 
-- [`/country-finder`](country-finder.html) — discover which countries are viable for remote hire or visa sponsorship
-- [`/salary-calculator`](salary-calculator.html) — calculate realistic local-market salaries for a target country
-- [`/portal-finder`](portal-finder.html) — find verified job portals for a specific country
+- [`/country-finder`](country-finder.md) — discover which countries are viable for remote hire or visa sponsorship
+- [`/salary-calculator`](salary-calculator.md) — calculate realistic local-market salaries for a target country
+- [`/portal-finder`](portal-finder.md) — find verified job portals for a specific country
