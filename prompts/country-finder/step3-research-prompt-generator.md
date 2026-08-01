@@ -1,3 +1,5 @@
+Check whether cf-step2-remote-candidates.md and cf-step2-sponsorship-candidates.md exist in the workspace. If either does not exist, stop and tell me: "cf-step2 candidate lists were not found. Please ensure Step 2 completed successfully before continuing."
+
 Read cf-step2-remote-candidates.md and cf-step2-sponsorship-candidates.md from the workspace. Using these two candidate lists, generate one ready-to-copy research prompt per country.
 
 For each country, check which list(s) it appeared in:
