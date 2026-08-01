@@ -335,11 +335,11 @@
       "file": "prompts/job-screener/step1-match-analysis.md",
       "line": 13,
       "description": "'Unknown/unverifiable requirements are not blockers' is restated four separate times (Apply criterion, CONS section, MISSING INFORMATION section, closing Rules block) instead of stated once.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "a24a4a2",
       "first_found_date": "2026-08-01",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "d68a475",
+      "resolved_date": "2026-08-01"
     },
     {
       "id": "f-0022",
