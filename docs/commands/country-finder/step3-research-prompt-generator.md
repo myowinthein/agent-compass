@@ -74,4 +74,6 @@ If isolation cannot be guaranteed, Claude shows all prompts and waits for you to
 
 - `cf-step3-country-research.md` — per-country research results, appended as each agent completes
 
-Step 4 does not begin until all results are saved to `cf-step3-country-research.md`.
+## Stop condition
+
+Once all results are saved to `cf-step3-country-research.md`, Claude stops and waits for the main command before continuing to Step 4.
