@@ -28,6 +28,6 @@ Within each group, put ⭐ before the 2–3 portals you would start with first.
 
 Use ⚠️ to flag anything that does not fit the structure but is worth knowing — for example: a portal that is dead or deprecated despite still ranking in searches, two portals in the list owned by the same parent company, a portal that is restricted to citizens or residents and not open to foreign applicants, or any significant caveat affecting an international candidate.
 
-Output the groups in one response, in order from group 1 to 5. If a group has no portal that verifies for this country, omit it (or leave it empty with a brief note) rather than inventing entries. Do not add advice, recommendations, or commentary beyond what is asked here.
+Output the groups in one response, in order from group 1 to 5. Any additional group created per the exception above (a portal that fits none of the five) is output last, after group 5. If a group has no portal that verifies for this country, omit it (or leave it empty with a brief note) rather than inventing entries. Do not add advice, recommendations, or commentary beyond what is asked here.
 
 Step complete — stop here.
