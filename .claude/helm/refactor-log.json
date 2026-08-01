@@ -415,11 +415,11 @@
       "file": "_config.yml",
       "line": 23,
       "description": "The exclude list omits Rakefile, unlike Gemfile/Gemfile.lock which are correctly excluded — confirmed by an actual build that Rakefile leaks into the public _site/ output.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "a24a4a2",
       "first_found_date": "2026-08-01",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "bfaa9e1",
+      "resolved_date": "2026-08-01"
     },
     {
       "id": "f-0027",
