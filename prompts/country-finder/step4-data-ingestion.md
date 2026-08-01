@@ -2,37 +2,30 @@ Check whether `cf-step3-country-research.md` exists in the workspace.
 
 If it does not exist, stop and tell me: "cf-step3-country-research.md was not found. Please ensure Step 3 completed successfully before continuing."
 
-If it exists, read it and process each country's data from that file sequentially — no user input is needed. Apply all the behavior rules below to each country block in the file, in order, as if it had been pasted.
+If it exists, read it and process each country's data from that file sequentially — this runs fully automated, with no pause for input between countries. Apply all the behavior rules below to each country block in the file, in order.
 
 Behavior rules:
 
 * Read and apply the cross-pipeline data validation rules in skills/data-validation-rules.md, then follow the additional rules below.
 * Read and silently store the data.
 * Each message is expected to contain data for exactly one country.
-* If a message contains multiple countries or no recognizable country, stop and explain the issue. Do not store anything from that message.
+* If a message contains multiple countries or no recognizable country, skip it and record the issue. Do not store anything from that message.
 * Check which track(s) this country was expected to cover, based on cf-step2-remote-candidates.md and cf-step2-sponsorship-candidates.md from the workspace.
-* If the pasted data is missing a section or required field for a track this country was expected to cover, stop and state exactly what is missing. Do not store incomplete data.
-* If a country was not part of either Step 2 candidate list, stop and ask whether it should still be stored or whether it's a mistake. Do not store until I answer.
-* If a country has already been stored, skip it, keep the original, and note it in a warning at the end of processing.
+* If the data is missing a section or required field for a track this country was expected to cover, skip it and record exactly what is missing. Do not store incomplete data.
+* If a country was not part of either Step 2 candidate list, never store it automatically — skip it and record it as unlisted, so it can be reviewed and manually added back if it wasn't a mistake.
+* If a country has already been stored, skip it, keep the original, and record it as a duplicate.
 * Preserve all values, wording, and formatting as provided.
 * Do not verify, correct, or critique the supplied data.
-* After each valid, complete message, reply ONLY with the running count of successfully stored country datasets.
-* Do NOT mention country names in the count reply.
 * Do NOT analyze, summarize, calculate, rank, interpret, or generate tables.
 * Do NOT give opinions, recommendations, or perform any additional actions unless explicitly instructed later.
 
-Reply format for valid data:
+Once all countries from cf-step3-country-research.md have been processed, write all successfully stored country datasets to cf-step4-country-data.md in the workspace, preserving the original structure and content for each country. Then reply with one consolidated report, not a per-country reply:
 
-Received: 5
+Stored: [count] countries.
 
-Reply format for missing fields:
-
-Missing: [specific field or section]. Country not stored.
-
-Reply format for unexpected country:
-
-Not on either candidate list from Step 2. Store anyway, or is this a mistake?
-
-Once all countries from cf-step3-country-research.md have been processed, write all successfully stored country datasets to cf-step4-country-data.md in the workspace, preserving the original structure and content for each country. Any skipped duplicates are noted in a warning before stopping.
+Skipped — malformed or unrecognizable: [country or "none"], with the issue for each.
+Skipped — missing required fields: [country or "none"], with what was missing for each.
+Skipped — duplicate: [country or "none"].
+Skipped — not on either candidate list: [country or "none"]. Review these and tell me if any should be added.
 
 Step complete — stop here and wait for the main command.

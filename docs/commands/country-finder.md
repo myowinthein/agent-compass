@@ -9,6 +9,14 @@ has_children: true
 
 Runs the full Country Finder pipeline. Collects your criteria, discovers candidate countries for remote hire and visa sponsorship as two separate tracks, generates per-country research prompts, ingests your results, scores each country against your requirements, and offers an optional reality check. Resumes from the last completed step if interrupted.
 
+## Usage
+
+```
+/claude-compass:country-finder
+```
+
+Run it once per session. Claude resumes automatically if a `.country-finder-state.json` file already exists.
+
 ## Flow
 
 ```mermaid
@@ -80,7 +88,7 @@ Runs when the main command confirms you want it, after Step 5 completes. Claude 
 - **Profile not yet uploaded.** Claude waits — it does not proceed or fill in placeholder data.
 - **Any step instructs Claude to wait.** Claude stops and waits. No guessing, no assumptions.
 - **Vague answer to a criteria question.** Claude asks again for a specific value before continuing.
-- **Data ingestion receives multiple countries or missing fields.** Claude stops and explains the issue before storing anything. Duplicates are skipped and reported in a warning rather than stopping the run.
+- **Data ingestion receives multiple countries, missing fields, or a country not on either Step 2 candidate list.** Claude never stops mid-batch — it skips the item and records the reason. Duplicates, malformed items, missing-field items, and unlisted candidates are all reported together in one consolidated report at the end of Step 4, rather than stopping the run.
 
 ## See also
 

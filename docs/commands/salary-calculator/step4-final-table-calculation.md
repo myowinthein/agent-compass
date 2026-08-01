@@ -91,3 +91,7 @@ Countries missing either salary data or adjustment data are skipped and listed i
 ## Output
 
 Results are saved to `sc-step4-salary-table.md` in the workspace. Step 5 reads this file directly.
+
+## Stop condition
+
+Once results are saved, Claude stops and waits for the main command, which then asks whether to run the optional Step 5 reality check.

@@ -43,6 +43,11 @@ Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resum
 
 Reads `profile.md` as the canonical candidate profile, replies "Profile loaded. Paste a job description to screen," then waits. Each pasted job description is screened against the profile using a fixed output format. Pasted form questions or writing tasks are answered using the writing guidelines instead.
 
+## Stop conditions
+
+- **Resume not yet provided.** Claude waits for the upload before profile.md can be created — the same resume-extraction step shared with Country Finder and Salary Calculator.
+- **Waiting for a paste.** After replying "Profile loaded," Claude waits for you to paste a job description or application question — it does not screen or answer anything until you paste something.
+
 ## No state file
 
 Unlike Country Finder and Salary Calculator, this command keeps no state file and nothing to resume. Each screen is independent. If the session drifts off the format over a long run, re-invoke the command — it reloads the profile and format cheaply, since `profile.md` already exists.

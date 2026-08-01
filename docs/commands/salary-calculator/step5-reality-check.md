@@ -79,3 +79,7 @@ Only if the evidence genuinely supports it:
 - Priority is given to recruiter comfort, interview conversion, sponsorship realism, and realistic overseas positioning
 
 If recalibration is not supported, the existing framework is explicitly confirmed as appropriate and no revised table is generated.
+
+## Stop condition
+
+Once the audit (and any recalibration) is complete, Claude stops and waits for the main command to deliver the final results — this is the last step in the pipeline.

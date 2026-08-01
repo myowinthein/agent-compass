@@ -9,6 +9,14 @@ has_children: true
 
 Runs the full Salary Calculator pipeline. Generates ready-to-copy research prompts for local-market salary data, ingests your research results, applies an international candidate adjustment, and produces a final salary table with shown calculations. Runs standalone after Country Finder. Resumes from the last completed step if interrupted.
 
+## Usage
+
+```
+/claude-compass:salary-calculator
+```
+
+Run it once per session. Claude resumes automatically if a `.salary-calculator-state.json` file already exists.
+
 ## Flow
 
 ```mermaid
@@ -68,7 +76,7 @@ Claude asks before running. If you confirm, it first drafts your career ladder o
 
 - **Profile not yet uploaded.** Claude waits — it does not proceed or fill in placeholder data.
 - **Any step instructs Claude to wait.** Claude stops and waits. No guessing, no assumptions.
-- **Data ingestion receives multiple countries or missing fields.** Claude stops and explains the issue before storing anything. Duplicates are skipped and reported in a warning rather than stopping the run.
+- **Data ingestion receives multiple countries or missing required tiers/sources.** Claude never stops mid-batch — it skips the item and records the reason. Duplicates and skipped items are all reported together in one consolidated report at the end of Step 2, rather than stopping the run.
 
 ## See also
 

@@ -46,6 +46,7 @@ flowchart TD
 - `cf-step4-country-data.md` — all country data from Step 4
 - `cf-step1-criteria.md` — timezone limit (informational, already applied in Step 2)
 - `situational-profile.md` — salary minimum (optional, skipped if not specified) and citizenship-specific friction
+- `sc-step4-salary-table.md` — Salary Calculator's final figures, if present, used to check Sponsorship-track visa salary thresholds
 
 ## Batching rule
 
@@ -64,7 +65,7 @@ For each country with Remote data stored:
 
 For each country with Sponsorship data stored:
 
-1. If a visa minimum salary threshold was reported and Salary Calculator figures exist, note whether they clear the threshold. If no figures exist, note the threshold as informational only.
+1. If a visa minimum salary threshold was reported, check whether `sc-step4-salary-table.md` exists and covers this country. If it does, note whether those figures clear the threshold. If it doesn't exist or doesn't cover this country, note the threshold as informational only.
 2. Classify Sponsorship fit as **Strong**, **Moderate**, or **Weak**.
 3. Assign confidence: **High**, **Medium**, or **Low**.
 4. Give brief reasoning referencing actual stored evidence, including any citizenship-specific friction from the situational profile.
