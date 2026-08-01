@@ -9,7 +9,7 @@ Rules:
 * Extract only what is explicitly stated in the resume. Do not guess, infer, or fill gaps.
 * If something is unclear, ambiguous, inconsistent, conflicting, or missing, do not silently resolve it. List it under [NEEDS CONFIRMATION]. If conflicting (e.g. two different end dates for the same role), list all versions — do not pick one.
 * Do not improve, rewrite, or embellish anything. This is extraction, not editing.
-* Do not calculate total years of experience unless the resume states it directly. If you must derive it from dates, show the calculation so it can be checked.
+* Do not state a total years of experience figure unless the resume states it directly or it can be derived from listed role dates. If deriving it from dates, show the calculation so it can be checked.
 * Preserve exact numbers, dates, titles, and technology names as written in the resume.
 * Always output in the exact format below, even if some sections are empty. Mark empty sections as "Not stated."
 
