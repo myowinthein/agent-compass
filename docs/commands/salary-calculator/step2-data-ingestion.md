@@ -17,19 +17,20 @@ flowchart TD
   FileCheck -->|no| Error[Stop — report missing file\nAsk user to rerun Step 1]
   FileCheck -->|yes| ReadFile[Read file — process\neach country block in order]
   ReadFile --> MultiCheck{Multiple countries\nor none in block?}
-  MultiCheck -->|yes| Err1[Stop — explain issue\nNothing stored]
+  MultiCheck -->|yes| Err1[Skip — record issue\nNothing stored]
   Err1 --> ReadFile
   MultiCheck -->|no| FieldCheck{Both tiers and\nsources present?}
-  FieldCheck -->|no| Err2[Stop — state missing fields\nNothing stored]
+  FieldCheck -->|no| Err2[Skip — record missing fields\nNothing stored]
   Err2 --> ReadFile
   FieldCheck -->|yes| DupCheck{Country already\nstored?}
-  DupCheck -->|yes| Skip[Skip — keep original\nNote in end-of-run warning]
-  DupCheck -->|no| Store[Store verbatim\nReply: Received N]
+  DupCheck -->|yes| Skip[Skip — keep original\nRecord as duplicate]
+  DupCheck -->|no| Store[Store verbatim]
   Skip --> ReadFile
   Store --> ReadFile
   ReadFile --> Done{File\nexhausted?}
   Done -->|no| ReadFile
-  Done -->|yes| End([Step complete\nWait for main command])
+  Done -->|yes| Report[Reply with one consolidated report:\nstored count + all skips by reason]
+  Report --> End([Step complete\nWait for main command])
 ```
 
 ## What it reads
@@ -38,14 +39,16 @@ flowchart TD
 
 ## Rules
 
+This runs fully automated, with no pause between countries — bad items are skipped and recorded, never halted on.
+
 | Situation | Claude's response |
 |---|---|
-| Valid, complete data for one country | `Received: N` (running count only, no names) |
 | File not found | Stops — reports missing file, asks user to ensure Step 1 completed |
-| Block contains multiple countries | Stops and explains — nothing stored |
-| Block contains no recognizable country | Stops and explains — nothing stored |
-| Missing tier or sources | States exactly what is missing — nothing stored |
-| Country already stored | Skips it, keeps original, notes it in a warning after processing |
+| Block contains multiple countries | Skips it and records the issue — nothing stored |
+| Block contains no recognizable country | Skips it and records the issue — nothing stored |
+| Missing tier or sources | Skips it and records what's missing — nothing stored |
+| Country already stored | Skips it, keeps original, records it as a duplicate |
+| Valid, complete data for one country | Stored silently |
 
 Claude preserves all values, wording, and formatting exactly as provided. It does not correct, improve, or reinterpret the data.
 
@@ -56,7 +59,7 @@ Each block must include both tiers:
 - **Mid-size / Mainstream Local-Market tier** — Low, Realistic, Strong figures, city used if applicable, sources with dates
 - **Premium / International / Remote-first tier** — Low, Realistic, Strong figures, city used if applicable, sources with dates
 
-If either tier or its sources are missing, Claude stops and states what is missing before storing anything.
+If either tier or its sources are missing, Claude skips that country and records what is missing — nothing is stored, and the run continues to the next country.
 
 ## Output
 
@@ -64,4 +67,4 @@ Stored salary data is written to `sc-step2-salary-data.md` in the workspace afte
 
 ## Stop condition
 
-Once all countries from `sc-step1-salary-research.md` have been processed, Claude stops and waits for the main command. Any skipped duplicates are reported in a warning before stopping.
+Once all countries from `sc-step1-salary-research.md` have been processed, Claude writes all successfully stored countries to `sc-step2-salary-data.md`, replies with one consolidated report (stored count, plus every skip grouped by reason — malformed, missing tier or sources, duplicate), then stops and waits for the main command.
