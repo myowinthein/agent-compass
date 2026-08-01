@@ -68,7 +68,7 @@ Before this step, the command collects the situational profile on your current m
 
 Claude asks whether to use the **calculator** subagent (Opus, max effort) for higher arithmetic precision — if declined, the step runs with your current model. Reads all ingested salary data and adjustment figures, shows full arithmetic for every country before producing the final table, and double-checks each calculation before finalising. Precision takes priority over speed.
 
-### [Step 5 — Reality check (optional)](salary-calculator/step5-reality-check.html)
+### [Step 5 — Reality check (optional)](salary-calculator/step5b-reality-check.html)
 
 Claude asks before running. If you confirm, it first drafts your career ladder on the current model and waits for your confirmation (saved to `sc-step5-career-ladder.md`) before any Opus handoff, then asks whether to use the **deep-reasoner** subagent (Opus, high effort) — if declined, the step runs with your current model. Audits the final table output for inconsistencies, outliers, or weak evidence. Skipped if the user declines.
 

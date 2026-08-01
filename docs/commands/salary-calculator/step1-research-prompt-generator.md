@@ -13,9 +13,9 @@ Generates one ready-to-copy research prompt per target country, runs each as an 
 
 ```mermaid
 flowchart TD
-  Start([Step 1 begins]) --> AskList[Ask for target\ncountry list]
-  AskList --> ReadProfile[Read profile.md\nfor role and seniority]
-  ReadProfile --> ForEach[For each country:\ngenerate research prompt]
+  Start([Step 1 begins]) --> ReadProfile[Read profile.md\nfor role and seniority]
+  ReadProfile --> AskList[Ask for target\ncountry list]
+  AskList --> ForEach[For each country:\ngenerate research prompt]
   ForEach --> Prompt[Prompt instructs researcher to find\nlocal-market salary only\nexcluding expat · FAANG · US-skewed\ncontractor · equity-heavy data]
   Prompt --> Tiers[Request two company tiers:\nMid-size / Mainstream Local-Market\nPremium / International / Remote-first]
   Tiers --> More{More\ncountries?}
