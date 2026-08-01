@@ -43,7 +43,7 @@ Otherwise omit this section entirely.
   - a mandatory timezone or working-hours overlap the candidate cannot meet
   - a legally or contractually mandatory certification the candidate does not hold
   - the role's core technology or stack (the primary tool the whole role is built on) is one the candidate does not have — not merely one item missing from a longer required list
-- Years-of-experience gaps are not hard blockers. A shortfall is a normal con; mark 🚫 only if the JD states a hard minimum and the gap is large. More experience than required is never a blocker unless the JD states a maximum.
+- Years-of-experience gaps are never hard blockers, regardless of the size of the gap or whether the JD states a hard minimum. A shortfall is a normal con. More experience than required is never a blocker unless the JD states a maximum.
 - If it is unclear whether a requirement is truly mandatory, treat it as a con, not a 🚫 blocker.
 - Unmet preferred (not required) qualifications go here too, but must be labeled "preferred, not required" and never marked 🚫.
 - Unknown requirements are not blockers. Clearly mark them as unknown.
