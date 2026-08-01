@@ -23,7 +23,11 @@ Phase 2 — Visa sponsorship track criteria:
 
 Phase 3 — Country preferences:
 
+Check if data/preferred-countries.md exists in the workspace. If it does, read it and show it back to me, then ask: "This is your saved preferred country list — use it as-is for included countries, add to it, or replace it? Also, is there anything you want excluded entirely?" If it does not exist, read and apply skills/country-reference-offer.md, then ask the question below.
+
 1. Are there any countries or regions you would particularly like included, or any you want excluded entirely? (list preferred, list excluded, or say "none" for either)
+
+If I give a new or updated include list in this step, save it to data/preferred-countries.md in the workspace, grouped by region as in the existing file, replacing its previous contents.
 
 Standing rule (applies for the rest of this conversation, not just this step):
 

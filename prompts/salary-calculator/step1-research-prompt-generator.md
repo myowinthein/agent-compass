@@ -20,7 +20,7 @@ Exclude from research:
 - US-skewed compensation data
 
 Countries:
-Ask me for my target country list.
+Read and apply skills/country-reference-offer.md, then ask me for my target country list.
 
 CANDIDATE PROFILE:
 Read profile.md from the workspace and use it as the candidate profile.

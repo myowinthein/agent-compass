@@ -4,3 +4,13 @@ _site/
 .jekyll-metadata
 Gemfile.lock
 .claude/settings.local.json
+
+# Consumer workspace files (personal pipeline data, not plugin source)
+/profile.md
+/situational-profile.md
+/country-wealth-tiers.md
+/.country-finder-state.json
+/.salary-calculator-state.json
+/cf-*.md
+/sc-*.md
+/data/preferred-countries.md

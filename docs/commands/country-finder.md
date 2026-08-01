@@ -61,7 +61,7 @@ Checks for `.country-finder-state.json`. If found, reads `last_completed_step` a
 
 ### [Step 1 — Criteria intake](country-finder/step1-criteria-intake.html)
 
-Collects requirements for both tracks. Remote track: maximum timezone difference (or "no limit" to skip). Sponsorship track: relocation timeline. Relocation is assumed — the question is not asked. Country preferences: any countries or regions to include or exclude from both tracks. Vague answers are rejected — specific values or explicit "no limit" / "not specified" are required.
+Collects requirements for both tracks. Remote track: maximum timezone difference (or "no limit" to skip). Sponsorship track: relocation timeline. Relocation is assumed — the question is not asked. Country preferences: any countries or regions to include or exclude from both tracks — reuses `data/preferred-countries.md` if you've saved one before, otherwise offers the `data/country-wealth-tiers.md` reference for ideas. Vague answers are rejected — specific values or explicit "no limit" / "not specified" are required.
 
 ### [Step 2 — Candidate discovery](country-finder/step2-candidate-discovery.html)
 
