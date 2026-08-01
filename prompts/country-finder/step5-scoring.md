@@ -15,7 +15,7 @@ For Remote Track, for each country with Remote data stored:
 
 For Sponsorship Track, for each country with Sponsorship data stored:
 
-1. If a visa minimum salary threshold was reported, and Salary Calculator figures for this country already exist elsewhere in this conversation, note whether those figures clear the threshold. If no such figures exist, note the threshold as informational only, without judgment.
+1. If a visa minimum salary threshold was reported, check whether sc-step4-salary-table.md exists in the workspace. If it does and contains figures for this country, note whether those figures clear the threshold. If it doesn't exist, or doesn't cover this country, note the threshold as informational only, without judgment.
 2. If it passes, classify Sponsorship fit as: Strong / Moderate / Weak.
 3. Assign a confidence level: High / Medium / Low.
 4. Give brief reasoning, referencing the actual stored evidence, not assumption. Consider citizenship-specific friction from the situational profile when assessing confidence.
