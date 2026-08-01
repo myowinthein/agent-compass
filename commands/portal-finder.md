@@ -9,7 +9,7 @@ Find verified job portals for IT/tech roles in a specified country, grouped by t
 
 ## Before starting
 
-**Country:** If a country was provided as an argument, use it. If not, ask: "Which country do you want to find job portals for?" and wait for my answer before continuing. If more than one country is named at any point, ask me to pick one before proceeding — this command runs for one country at a time.
+**Country:** If a country was provided as an argument, use it. If not, read and apply skills/country-reference-offer.md, then ask: "Which country do you want to find job portals for?" and wait for my answer before continuing. If more than one country is named at any point, ask me to pick one before proceeding — this command runs for one country at a time.
 
 ## Sequence
 

@@ -38,14 +38,19 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 | `skills/evidence-quality-rules.md` | Confidence-lowering rules for vague or unsourced research claims; referenced at runtime by the scoring step |
 | `skills/exclusion-transparency-rules.md` | Every filtered-out item requires a specific, evidence-based reason; referenced at runtime by the scoring step |
 | `skills/situational-profile-questions.md` | Shared situational profile questions and save/reuse logic; referenced at runtime by CF step1 and SC step3 |
+| `skills/country-reference-offer.md` | Copy-once-and-point-to logic for the wealth-tier dataset; referenced at runtime by CF step1, SC step1, and the portal-finder command wherever a country is asked for |
+| `data/country-wealth-tiers.md` | Shipped reference dataset — countries grouped into 5 wealth tiers by GNI per capita; single source of truth, committed to the plugin repo, copied into the consumer workspace by `country-reference-offer.md` |
+| `data/preferred-countries.md` | Personal, gitignored — the candidate's own saved include list for Country Finder step1, read back and offered for confirmation rather than re-asked from scratch |
 | `agents/deep-reasoner.md` | Routes scoring, international adjustment, and reality checks to Opus/high effort |
 | `agents/calculator.md` | Routes final salary table calculation to Opus/max effort |
-| `_config.yml` | Jekyll + just-the-docs GitHub Pages site config; excludes plugin dirs (`agents/`, `commands/`, `prompts/`, `skills/`, `.claude/`) from the public site |
+| `_config.yml` | Jekyll + just-the-docs GitHub Pages site config; excludes plugin dirs (`agents/`, `commands/`, `data/`, `prompts/`, `skills/`, `.claude/`) from the public site |
 | `.claude/helm/refactor-log.json` | Refactoring ledger — tracks open/fixed/skipped findings across runs; not source code |
 
-**Pipeline pattern:** Each command is a thin orchestrator. All logic lives in numbered prompt files under `prompts/`. Pipeline state persists across sessions via JSON files written to the consumer's workspace (`.country-finder-state.json`, `.salary-calculator-state.json`). Intermediate step outputs also persist to workspace files prefixed `cf-` or `sc-` (e.g. `cf-step5-scoring-results.md`, `sc-step3-adjustment-values.md`) so Opus subagents can read real data without relying on conversation memory. Profile data persists via `profile.md` and `situational-profile.md`.
+**Pipeline pattern:** Each command is a thin orchestrator. All logic lives in numbered prompt files under `prompts/`. Pipeline state persists across sessions via JSON files written to the consumer's workspace (`.country-finder-state.json`, `.salary-calculator-state.json`). Intermediate step outputs also persist to workspace files prefixed `cf-` or `sc-` (e.g. `cf-step5-scoring-results.md`, `sc-step3-adjustment-values.md`) so Opus subagents can read real data without relying on conversation memory. Profile data persists via `profile.md` and `situational-profile.md`. Country-finder's optional include list is reused the same way via `data/preferred-countries.md`, read and offered back for confirmation in step1 rather than re-asked from scratch.
 
 **Skill file pattern:** Skill files are not auto-loaded — they are referenced explicitly by the prompt files that need them (`Read and apply skills/...`). This is the single-source-of-truth for shared rules and logic; do not inline skill content in prompts.
+
+**Data file pattern:** `data/` holds inert data (not rules or logic — that's what `skills/` is for), of two kinds: shipped reference datasets committed to the plugin repo (e.g. `country-wealth-tiers.md`, read by a skill and copied into the consumer workspace on first use) and personal, gitignored consumer files (e.g. `preferred-countries.md`, unique per workspace, never committed). Never inline dataset content into prompts. The whole directory is excluded from the public site like `skills/`; git tracking is per-file via `.gitignore`, not per-directory.
 
 **Reality check steps** (country-finder step 6, salary-calculator step 5) are optional — Claude must ask and wait for explicit user confirmation before running them.
 
