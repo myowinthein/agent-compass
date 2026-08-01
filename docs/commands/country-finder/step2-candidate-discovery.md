@@ -63,7 +63,7 @@ Each agent checks **both** tracks for every country in its batch — not just on
 
 **Remote suitability** — is remote hiring for this role a common, well-established practice? If a salary minimum was specified, does typical remote pay meet it? Evidence from remote job boards, hiring reports, salary surveys, or company remote policies.
 
-**Sponsorship suitability** — does a real, named visa-sponsorship pathway exist for this role? Is the occupation on a shortage list? Citizenship-specific friction is factored in. Evidence from official immigration sources, visa program pages, or recruiter guides.
+**Sponsorship suitability** — does a real, named work-visa pathway exist *where a local employer is the sponsor* — a standard employer-sponsored visa or work permit tied to a job offer? Digital-nomad, remote-worker, long-stay, or self-qualifying visas don't count, even if prominent in search results — they don't involve a local employer sponsoring the candidate. Is the occupation on a shortage list? That's a positive factor (and a hard requirement only for the minority of visas that explicitly say so) — its absence alone doesn't disqualify a country unless the identified pathway requires it. Citizenship-specific friction is factored in. Evidence from official immigration sources, visa program pages, or recruiter guides. A visa's salary threshold is noted as a fact, never used by itself to decide suitability — that judgment against real market data happens later, in Step 5.
 
 Each country gets independent Suitable / Reason / Source / Date findings for each track — "no evidence found" is reported explicitly rather than guessed. If isolation can't be guaranteed, Claude shows all the batch prompts and waits for you to bring back the results manually.
 

@@ -53,8 +53,8 @@ Each prompt covers only the track(s) Step 2 marked "yes" for that country:
 - Typical payment structure (local currency vs USD, contractor vs employee)
 - Sources with dates
 
-**Sponsorship Track section asks for:**
-- Full name of the specific visa or sponsorship pathway and its official source
+**Sponsorship Track section asks for** a pathway where a local employer is the sponsor — not a digital-nomad, remote-worker, long-stay, or self-qualifying visa, even if prominent in search results, since those don't involve a local employer sponsoring you. It requests:
+- Full name of the specific employer-sponsored work-visa pathway and its official source
 - Minimum salary threshold required by that visa
 - Realistic employer willingness to sponsor your specific role
 - Realistic visa processing time
