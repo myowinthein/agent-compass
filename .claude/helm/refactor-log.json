@@ -207,11 +207,11 @@
       "file": "prompts/country-finder/step3-research-prompt-generator.md",
       "line": 1,
       "description": "Unlike steps 2, 4, 5, and 6 which all guard with 'check whether [prerequisite] exists, stop and tell me if not', step3 has no existence guard for cf-step2's candidate list outputs and would fail ungracefully if they're missing.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "a24a4a2",
       "first_found_date": "2026-08-01",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "a839b84",
+      "resolved_date": "2026-08-01"
     },
     {
       "id": "f-0014",
