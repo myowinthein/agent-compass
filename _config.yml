@@ -32,4 +32,3 @@ exclude:
   - commands/
   - prompts/
   - skills/
-  - docs/legal/
