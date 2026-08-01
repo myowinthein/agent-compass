@@ -7,8 +7,7 @@ task :test do
   HTMLProofer.check_directory(
     "./_site",
     disable_external: true,
-    checks: %w[Html Images Scripts Links],
-    swap_urls: { %r{^/claude-compass} => "" }
+    checks: %w[Html Images Scripts Links]
   ).run
 end
 

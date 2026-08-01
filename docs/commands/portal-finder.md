@@ -37,7 +37,7 @@ flowchart TD
 
 Claude checks whether a country was provided as an argument. If not, it asks and waits before proceeding.
 
-### [Step 1 — Portal research](portal-finder/step1-portal-research.md)
+### [Step 1 — Portal research](portal-finder/step1-portal-research.html)
 
 Researches job portals for IT/tech roles in the target country online. Portals are organized by type into five mutually exclusive groups: general job boards, tech-specific boards, recruitment agencies, professional & community networks, and government/official portals. Geographic scope (country-dedicated vs global) is noted per portal rather than used as a group. Each portal is tagged with verified attributes only. Within each group, the 2–3 portals to start with first are flagged. Anything noteworthy but outside the structure — deprecated portals, shared ownership, foreign-applicant restrictions — is flagged with ⚠️.
 
@@ -58,6 +58,6 @@ Tags are only applied when verified true on the portal's own site — not based 
 
 ## See also
 
-- [`/country-finder`](country-finder.md) — discover which countries are viable for remote hire or visa sponsorship
-- [`/salary-calculator`](salary-calculator.md) — calculate realistic local-market salaries for a target country
-- [`/job-screener`](job-screener.md) — screen job descriptions against your resume profile
+- [`/country-finder`](country-finder.html) — discover which countries are viable for remote hire or visa sponsorship
+- [`/salary-calculator`](salary-calculator.html) — calculate realistic local-market salaries for a target country
+- [`/job-screener`](job-screener.html) — screen job descriptions against your resume profile
