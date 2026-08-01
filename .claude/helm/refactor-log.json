@@ -447,11 +447,11 @@
       "file": "docs/commands/job-screener.md",
       "line": 46,
       "description": "Missing a '## Stop conditions' section that its three sibling overview pages (country-finder.md, salary-calculator.md, portal-finder.md) all have, despite job-screener having clear wait/stop behavior described in prose.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "a24a4a2",
       "first_found_date": "2026-08-01",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "bdf21e9",
+      "resolved_date": "2026-08-01"
     },
     {
       "id": "f-0029",
