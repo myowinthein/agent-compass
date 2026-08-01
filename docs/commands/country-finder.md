@@ -59,27 +59,27 @@ Checks for `situational-profile.md`. If absent, asks six questions: current loca
 
 Checks for `.country-finder-state.json`. If found, reads `last_completed_step` and informs the user which step will resume. If absent, creates the file with `last_completed_step: 0` and starts from Step 1. Updates the file after each step completes.
 
-### [Step 1 — Criteria intake](country-finder/step1-criteria-intake.md)
+### [Step 1 — Criteria intake](country-finder/step1-criteria-intake.html)
 
 Collects requirements for both tracks. Remote track: maximum timezone difference (or "no limit" to skip). Sponsorship track: relocation timeline. Relocation is assumed — the question is not asked. Country preferences: any countries or regions to include or exclude from both tracks. Vague answers are rejected — specific values or explicit "no limit" / "not specified" are required.
 
-### [Step 2 — Candidate discovery](country-finder/step2-candidate-discovery.md)
+### [Step 2 — Candidate discovery](country-finder/step2-candidate-discovery.html)
 
 Generates a grounded list of candidate countries for each track. Timezone filtering is only applied if a limit was provided in Step 1. Salary filtering in the Remote research prompt is only applied if a minimum was specified in the situational profile. Remote and sponsorship candidates are listed separately.
 
-### [Step 3 — Research prompt generator](country-finder/step3-research-prompt-generator.md)
+### [Step 3 — Research prompt generator](country-finder/step3-research-prompt-generator.html)
 
 Generates ready-to-copy research prompts for each candidate country on each track. The user copies these prompts and runs them in separate research sessions to gather real-world data. Claude does not generate the research itself.
 
-### [Step 4 — Data ingestion](country-finder/step4-data-ingestion.md)
+### [Step 4 — Data ingestion](country-finder/step4-data-ingestion.html)
 
 Reads `cf-step3-country-research.md` written by Step 3's sub-agents and stores each country's data automatically. Validates each block: one country per block, all required fields present, duplicates skipped and noted. Data is preserved verbatim — no analysis, scoring, or summarizing during ingestion. Stored data is written to `cf-step4-country-data.md` for later steps.
 
-### [Step 5 — Scoring](country-finder/step5-scoring.md)
+### [Step 5 — Scoring](country-finder/step5-scoring.html)
 
 Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy — if declined, the step runs with your current model. Scores each stored country against the criteria from Step 1, keeping remote hire and sponsorship tracks completely separate. Salary minimum check is only applied if a minimum was specified. Each country receives a fit classification (Strong / Moderate / Weak) and a confidence level (High / Medium / Low). Every excluded country requires a specific, evidence-based reason.
 
-### [Step 6 — Reality check (optional)](country-finder/step6-reality-check.md)
+### [Step 6 — Reality check (optional)](country-finder/step6-reality-check.html)
 
 Runs when the main command confirms you want it, after Step 5 completes. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) — if declined, the step runs with your current model. Audits the scoring output across two checks: confidence calibration and a missing-candidate check.
 
@@ -92,6 +92,6 @@ Runs when the main command confirms you want it, after Step 5 completes. Claude 
 
 ## See also
 
-- [`/salary-calculator`](salary-calculator.md) — calculate local-market salaries for countries discovered here
-- [`/portal-finder`](portal-finder.md) — find verified job portals for a specific country
-- [`/job-screener`](job-screener.md) — screen job descriptions against your resume profile
+- [`/salary-calculator`](salary-calculator.html) — calculate local-market salaries for countries discovered here
+- [`/portal-finder`](portal-finder.html) — find verified job portals for a specific country
+- [`/job-screener`](job-screener.html) — screen job descriptions against your resume profile
