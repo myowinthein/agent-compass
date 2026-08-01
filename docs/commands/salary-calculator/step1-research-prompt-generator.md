@@ -63,3 +63,7 @@ Each country's prompt is run as a separate, isolated research task. Each agent r
 ## Output
 
 Results are appended to `sc-step1-salary-research.md` in the workspace as each agent completes. Step 2 reads this file automatically.
+
+## Stop condition
+
+Once all results are saved, Claude stops and waits for the main command before continuing to Step 2.

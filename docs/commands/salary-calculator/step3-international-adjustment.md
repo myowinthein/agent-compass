@@ -73,3 +73,7 @@ This is not about tax, cost of living, purchasing power, or permanent residence 
 - Brief explanation
 
 Results are saved to `sc-step3-adjustment-values.md` in the workspace. Step 4 reads this file directly.
+
+## Stop condition
+
+Once results are saved, Claude stops and waits for the main command before continuing to Step 4.
