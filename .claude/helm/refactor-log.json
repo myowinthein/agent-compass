@@ -303,11 +303,11 @@
       "file": "prompts/salary-calculator/step1-research-prompt-generator.md",
       "line": 13,
       "description": "Two separate 'Exclude' lists in the same file partially overlap (both list FAANG-only and US-skewed data) — redundant, could be one list.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "a24a4a2",
       "first_found_date": "2026-08-01",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "0334e00",
+      "resolved_date": "2026-08-01"
     },
     {
       "id": "f-0020",
