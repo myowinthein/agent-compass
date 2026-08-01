@@ -367,11 +367,11 @@
       "file": "prompts/portal-finder/step1-portal-research.md",
       "line": 5,
       "description": "'Use exactly these group labels' is followed by an escape hatch for a portal fitting none of the five groups, but the output-order instruction ('in order from group 1 to 5') never says where that extra group belongs.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "a24a4a2",
       "first_found_date": "2026-08-01",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "9ee9312",
+      "resolved_date": "2026-08-01"
     },
     {
       "id": "f-0024",
