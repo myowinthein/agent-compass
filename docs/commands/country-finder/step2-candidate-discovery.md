@@ -66,4 +66,6 @@ Each agent receives only its own prompt and has no access to the other track's r
 - `cf-step2-remote-candidates.md` — researched remote-hire candidates with sources and dates
 - `cf-step2-sponsorship-candidates.md` — researched sponsorship candidates with sources and dates
 
-Step 3 does not begin until both files exist in the workspace.
+## Stop condition
+
+Once both output files exist in the workspace, Claude stops and waits for the main command before continuing to Step 3.
