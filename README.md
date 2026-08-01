@@ -41,10 +41,10 @@ Type `/` in a **Cowork** task. All four commands appear listed under the **Claud
 
 | Command | What it does |
 |---|---|
-| [`/country-finder`](docs/commands/country-finder.md) | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
-| [`/salary-calculator`](docs/commands/salary-calculator.md) | Calculate realistic local-market salaries for your target role. |
-| [`/portal-finder`](docs/commands/portal-finder.md) | Find verified job portals for IT/tech roles in a specific country, grouped and tagged. |
-| [`/job-screener`](docs/commands/job-screener.md) | Screen a job description against your resume and get a structured apply / maybe / skip verdict. |
+| [`/country-finder`](docs/commands/country-finder.html) | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
+| [`/salary-calculator`](docs/commands/salary-calculator.html) | Calculate realistic local-market salaries for your target role. |
+| [`/portal-finder`](docs/commands/portal-finder.html) | Find verified job portals for IT/tech roles in a specific country, grouped and tagged. |
+| [`/job-screener`](docs/commands/job-screener.html) | Screen a job description against your resume and get a structured apply / maybe / skip verdict. |
 
 Judgment-heavy and arithmetic-heavy steps can be routed to specialist subagents — Claude asks at each step whether to use Opus.
 
@@ -59,6 +59,6 @@ Issues and pull requests are welcome at [github.com/myowinthein/claude-compass/i
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/myowinthein/claude-compass/blob/main/LICENSE)
 
 <!-- last-reviewed: 9cfeae7f647a504b19797cb2064e6d49827a834b -->
