@@ -223,11 +223,11 @@
       "file": "prompts/country-finder/step5-scoring.md",
       "line": 18,
       "description": "Sponsorship scoring checks whether 'Salary Calculator figures... already exist elsewhere in this conversation' — relies on conversation memory instead of a persisted workspace file, contradicting step6's explicit 'not conversation memory' rule and the pipeline's own file-based state convention. Silently no-ops on a resumed session.",
-      "status": "open",
+      "status": "fixed",
       "first_found_commit": "a24a4a2",
       "first_found_date": "2026-08-01",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "fde756f",
+      "resolved_date": "2026-08-01"
     },
     {
       "id": "f-0015",
