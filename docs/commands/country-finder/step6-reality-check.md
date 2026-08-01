@@ -34,7 +34,7 @@ Challenges the two aspects of Step 5 scoring that Step 5 cannot self-audit: whet
 ## What it reads
 
 - `cf-step5-scoring-results.md` — full scoring output from Step 5
-- `cf-step2-remote-candidates.md` and `cf-step2-sponsorship-candidates.md` — the full candidate universe, used to detect countries that were candidates but never reached Step 4
+- `cf-step2-candidates.md` — the full candidate universe, used to detect countries that were candidates but never reached Step 4
 - `cf-step4-country-data.md`, `cf-step1-criteria.md`, and `situational-profile.md` — the underlying evidence, criteria, and situational profile
 
 All inputs come from workspace files, so the audit is safe to route to the isolated deep-reasoner subagent.
@@ -47,7 +47,7 @@ For every country marked High confidence: verifies that the underlying evidence 
 
 **2. Missing candidate check**
 
-Compares the Step 2 candidate lists against the countries that reached Steps 4 and 5 (and also considers any commonly expected country that is absent). For each missing country, states whether the absence was a genuine evidence-based elimination (citing the reason from earlier steps) or a process gap — such as being a Step 2 candidate that was never researched or never reached Step 4.
+Compares the Step 2 candidate list against the countries that reached Steps 4 and 5 (and also considers any commonly expected country that is absent). For each missing country, states whether the absence was a genuine evidence-based elimination (citing the reason from earlier steps) or a process gap — such as being a Step 2 candidate that was never researched or never reached Step 4.
 
 ## Recalibration
 

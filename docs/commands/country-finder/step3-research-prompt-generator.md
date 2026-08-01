@@ -13,11 +13,12 @@ Generates one ready-to-copy research prompt per candidate country, then runs eac
 
 ```mermaid
 flowchart TD
-  Start([Step 3 begins]) --> ForEach[For each candidate country]
-  ForEach --> TrackCheck{Appeared in\nwhich list?}
-  TrackCheck -->|Remote only| RemoteP[Remote Track\nprompt only]
-  TrackCheck -->|Sponsorship only| SponP[Sponsorship Track\nprompt only]
-  TrackCheck -->|Both| Combined[Combined prompt\nwith both sections]
+  Start([Step 3 begins]) --> ForEach[For each country in\ncf-step2-candidates.md]
+  ForEach --> TrackCheck{Remote and Sponsorship\nSuitable values?}
+  TrackCheck -->|Remote yes only| RemoteP[Remote Track\nprompt only]
+  TrackCheck -->|Sponsorship yes only| SponP[Sponsorship Track\nprompt only]
+  TrackCheck -->|Both yes| Combined[Combined prompt\nwith both sections]
+  TrackCheck -->|Neither yes| SkipCountry[Skip — did not\nsurvive Step 2]
   RemoteP --> RunAgent[Run as isolated sub-agent\none country only]
   SponP --> RunAgent
   Combined --> RunAgent
@@ -32,18 +33,19 @@ flowchart TD
 
 ## What it reads
 
-- `cf-step2-remote-candidates.md` and `cf-step2-sponsorship-candidates.md` from Step 2
+- `cf-step2-candidates.md` from Step 2
 - `profile.md` and `situational-profile.md`
 
 ## Prompt structure per country
 
-Each prompt covers only the track(s) that country appeared in:
+Each prompt covers only the track(s) Step 2 marked "yes" for that country:
 
-| Country appeared in | Prompt contains |
+| Step 2 Suitable values | Prompt contains |
 |---|---|
-| Remote list only | Remote Track section only |
-| Sponsorship list only | Sponsorship Track section only |
-| Both lists | Both sections in one combined prompt |
+| Remote yes, Sponsorship not yes | Remote Track section only |
+| Sponsorship yes, Remote not yes | Sponsorship Track section only |
+| Both yes | Both sections in one combined prompt |
+| Neither yes | Skipped — no prompt generated |
 
 **Remote Track section asks for:**
 - Confirmed realistic remote salary range for your role and seniority, in local currency

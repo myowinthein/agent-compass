@@ -7,65 +7,74 @@ nav_order: 2
 
 # Step 2 — Candidate discovery
 
-Builds a grounded candidate shortlist for each track and runs two isolated research sub-agents to populate it. No country is included based on reputation alone — every candidate must be traceable to a real, checkable source.
+Builds a single candidate universe, then runs isolated research sub-agents — one per region batch — to check each country for both Remote and Sponsorship suitability together. No country is included based on reputation alone — every finding must be traceable to a real, checkable source.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 2 begins]) --> FilterPref[Apply Step 1 preferences\ninclude preferred · exclude excluded]
-  FilterPref --> TZCheck{Timezone limit\nprovided?}
-  TZCheck -->|yes| FilterTZ[Remove countries outside\nmax timezone — Remote track only]
-  TZCheck -->|no| ShowLists
-  FilterTZ --> ShowLists[Show Remote candidate universe\nand Sponsorship candidate universe]
-  ShowLists --> GenPrompts[Generate Remote and\nSponsorship research prompts]
-  GenPrompts --> Isolate{Sub-agent\nisolation guaranteed?}
-  Isolate -->|yes| Agents[Spawn Agent 1: Remote\nSpawn Agent 2: Sponsorship]
-  Isolate -->|no| Manual[Show both prompts\nWait for manual results]
-  Agents --> Files[Agent 1 → cf-step2-remote-candidates.md\nAgent 2 → cf-step2-sponsorship-candidates.md]
-  Manual --> Files
-  Files --> BothDone{Both files\nexist?}
-  BothDone -->|no| Wait[Wait for remaining file]
-  Wait --> BothDone
-  BothDone -->|yes| Done([Step complete\nWait for main command])
+  Start([Step 2 begins]) --> BaseCheck{data/preferred-countries.md\nexists?}
+  BaseCheck -->|yes| BasePref[Base = preferred-countries.md]
+  BaseCheck -->|no| IncludeCheck{Include list\ngiven in Step 1?}
+  IncludeCheck -->|yes| BaseInclude[Base = Include list]
+  IncludeCheck -->|no| BaseTiers[Base = data/country-wealth-tiers.md]
+
+  BasePref --> AddInclude{Include list\nalso given?}
+  AddInclude -->|yes| UnionInclude[Add Include countries\nnot already in base]
+  AddInclude -->|no| ExcludeStep
+  UnionInclude --> ExcludeStep
+  BaseInclude --> ExcludeStep
+  BaseTiers --> ExcludeStep
+
+  ExcludeStep[Remove Exclude list\nfrom base] --> ShowList[Show final country list]
+  ShowList --> Batch[Batch by region\nor by ~15 countries if unbatched]
+  Batch --> Agents[One isolated sub-agent per batch —\nresearches Remote AND Sponsorship together]
+  Agents --> Append[Append results to\ncf-step2-candidates.md]
+  Append --> TZCheck{Max timezone\nprovided?}
+  TZCheck -->|yes| MarkTZ[Mark out-of-range countries'\nRemote suitability as not suitable]
+  TZCheck -->|no| Done
+  MarkTZ --> Done([Step complete\nWait for main command])
 ```
 
 ## What it reads
 
-- Criteria and preferences from Step 1
+- Criteria and preferences from Step 1 (`cf-step1-criteria.md`)
 - `profile.md` and `situational-profile.md`
+- `data/preferred-countries.md`, if it exists
+- `data/country-wealth-tiers.md`, if no preferred list and no Include exist
 
-## Part A — Direct filtering
+## Part A — Build the candidate universe
 
-Applied immediately without research:
+No research needed — pure filtering logic, applied immediately:
 
-1. Apply country preferences from Step 1: remove excluded countries from both tracks; add preferred countries to the relevant candidate universe even if they would not otherwise qualify.
-2. For the Remote track only: if a maximum timezone limit was provided in Step 1, calculate the UTC time zone difference between each candidate country and your current location and remove any country outside that maximum. If no limit was provided, skip this filter. Timezone filtering never applies to the Sponsorship track.
+1. **Base list**, in priority order: `data/preferred-countries.md` if it exists; otherwise the Step 1 Include list if one was given; otherwise every country in `data/country-wealth-tiers.md`.
+2. If the base came from `data/preferred-countries.md` **and** an Include list was also given, the Include countries are added on top (union), even if they weren't already present.
+3. If an Exclude list was given, those countries are removed from the resulting base, regardless of which source it came from.
 
-The filtered lists are shown before research begins:
-- **Remote candidate universe**
-- **Sponsorship candidate universe**
+The resulting final country list is shown before research begins.
 
 ## Part B — Research sub-agents
 
-Claude generates two ready-to-copy research prompts — one per track — then runs each as an isolated sub-agent:
+The final list is batched — by region, if the source data is region-organized (as both `data/preferred-countries.md` and `data/country-wealth-tiers.md` are), or into groups of roughly 15 countries if not. One isolated sub-agent is spawned per batch.
 
-| Agent | Task | Output file |
-|---|---|---|
-| Agent 1 | Remote Discovery Research | `cf-step2-remote-candidates.md` |
-| Agent 2 | Sponsorship Discovery Research | `cf-step2-sponsorship-candidates.md` |
+Each sub-agent's prompt embeds, as literal text (never by reference), the exact countries in its batch, the candidate's target role and skillset from `profile.md`, the minimum monthly salary from `situational-profile.md` (if specified), and the candidate's citizenship and any noted immigration friction. This keeps the prompt self-contained, since sub-agents have no access to the conversation that computed these values.
 
-Each agent receives only its own prompt and has no access to the other track's reasoning. Agent 1 must not produce sponsorship output; Agent 2 must not produce remote output. If isolation cannot be guaranteed, Claude shows both prompts and waits for you to bring back the results manually.
+Each agent checks **both** tracks for every country in its batch — not just one track:
 
-**Remote research looks for** countries where remote hiring for your role is common practice. If a minimum salary was specified in the situational profile, it is included as a filter — countries where typical salary does not meet that minimum are excluded. If no minimum was specified, this filter is omitted.
+**Remote suitability** — is remote hiring for this role a common, well-established practice? If a salary minimum was specified, does typical remote pay meet it? Evidence from remote job boards, hiring reports, salary surveys, or company remote policies.
 
-**Sponsorship research looks for** countries with a documented visa pathway for your role, your occupation on any shortage or in-demand list, and any citizenship-specific friction based on your situational profile.
+**Sponsorship suitability** — does a real, named visa-sponsorship pathway exist for this role? Is the occupation on a shortage list? Citizenship-specific friction is factored in. Evidence from official immigration sources, visa program pages, or recruiter guides.
+
+Each country gets independent Suitable / Reason / Source / Date findings for each track — "no evidence found" is reported explicitly rather than guessed. If isolation can't be guaranteed, Claude shows all the batch prompts and waits for you to bring back the results manually.
+
+## Part C — Timezone marking
+
+If a maximum timezone difference was provided in Step 1, Claude calculates each country's UTC distance from your current location (from `situational-profile.md`) and overwrites the Remote "Suitable" value for any out-of-range country with a stated reason — it does not remove the country from the list, and Sponsorship suitability is never affected by timezone. Skipped entirely if no limit was given.
 
 ## Output
 
-- `cf-step2-remote-candidates.md` — researched remote-hire candidates with sources and dates
-- `cf-step2-sponsorship-candidates.md` — researched sponsorship candidates with sources and dates
+- `cf-step2-candidates.md` — every researched country, with independent Remote and Sponsorship findings (suitability, reasoning, source, date)
 
 ## Stop condition
 
-Once both output files exist in the workspace, Claude stops and waits for the main command before continuing to Step 3.
+Once `cf-step2-candidates.md` exists (and Part C has run, if applicable), Claude stops and waits for the main command before continuing to Step 3.

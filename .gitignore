@@ -4,3 +4,8 @@ _site/
 .jekyll-metadata
 Gemfile.lock
 .claude/settings.local.json
+
+# Personal / consumer-workspace copies (not plugin source)
+/country-wealth-tiers.md
+/preferred-countries.md
+/data/preferred-countries.md

@@ -10,9 +10,9 @@ Behavior rules:
 * Read and silently store the data.
 * Each message is expected to contain data for exactly one country.
 * If a message contains multiple countries or no recognizable country, skip it and record the issue. Do not store anything from that message.
-* Check which track(s) this country was expected to cover, based on cf-step2-remote-candidates.md and cf-step2-sponsorship-candidates.md from the workspace.
+* Check which track(s) this country was marked suitable for ("yes") in cf-step2-candidates.md from the workspace.
 * If the data is missing a section or required field for a track this country was expected to cover, skip it and record exactly what is missing. Do not store incomplete data.
-* If a country was not part of either Step 2 candidate list, never store it automatically — skip it and record it as unlisted, so it can be reviewed and manually added back if it wasn't a mistake.
+* If a country was not marked suitable for at least one track in cf-step2-candidates.md, never store it automatically — skip it and record it as unlisted, so it can be reviewed and manually added back if it wasn't a mistake.
 * If a country has already been stored, skip it, keep the original, and record it as a duplicate.
 * Preserve all values, wording, and formatting as provided.
 * Do not verify, correct, or critique the supplied data.

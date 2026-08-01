@@ -38,6 +38,7 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 | `skills/evidence-quality-rules.md` | Confidence-lowering rules for vague or unsourced research claims; referenced at runtime by the scoring step |
 | `skills/exclusion-transparency-rules.md` | Every filtered-out item requires a specific, evidence-based reason; referenced at runtime by the scoring step |
 | `skills/situational-profile-questions.md` | Shared situational profile questions and save/reuse logic; referenced at runtime by CF step1 and SC step3 |
+| `skills/country-data-files.md` | Standalone, invoke-on-demand logic — copies `data/country-wealth-tiers.md` (shipped) and `data/preferred-countries.md` (personal, gitignored) into the workspace root if missing. Not referenced by any command or prompt. |
 | `agents/deep-reasoner.md` | Routes scoring, international adjustment, and reality checks to Opus/high effort |
 | `agents/calculator.md` | Routes final salary table calculation to Opus/max effort |
 | `_config.yml` | Jekyll + just-the-docs GitHub Pages site config; excludes plugin dirs (`agents/`, `commands/`, `prompts/`, `skills/`, `.claude/`) from the public site |
@@ -56,7 +57,7 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 - Portal Finder groups portals by type only (general, tech-specific, agency, network, government); scope (country-dedicated vs global) is a per-portal note, never a grouping axis, and each portal belongs to exactly one group.
 - Situational profile (`situational-profile.md`) is asked once and reused across Country Finder step1 and Salary Calculator step3 — never re-asked if the file already exists.
 - Salary Calculator's step5 career ladder must be drafted and confirmed by the user on the calling model before any Opus handoff — confirmation cannot happen inside a subagent, since the subagent has no access to prior conversation turns.
-- Country Finder step6's missing-candidate check compares Step 5 results against the full Step 2 candidate lists (both remote and sponsorship), not just what reached later steps, so a candidate dropped silently between steps is caught.
+- Country Finder step6's missing-candidate check compares Step 5 results against the full Step 2 candidate list (`cf-step2-candidates.md`, covering both tracks), not just what reached later steps, so a candidate dropped silently between steps is caught.
 
 ## 6. Behavior Rules
 
@@ -77,7 +78,7 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 
 ## 8. Known Traps
 
-- **Sub-agent scope is fragile.** Steps 2 and 3 of country-finder spawn isolated sub-agents with strict single-task briefs. Broadening a sub-agent's brief — even slightly — causes it to freelance work outside its scope (e.g. the remote agent producing sponsorship output without the right context). Subagents also do not inherit prior conversation turns, so any step routed to `deep-reasoner` or `calculator` must read its inputs from workspace files (`cf-`/`sc-` prefixed outputs, `profile.md`, `situational-profile.md`), never from "what was discussed earlier."
+- **Sub-agent scope is fragile.** Steps 2 and 3 of country-finder spawn isolated sub-agents with strict single-task briefs — step2's agents are batched by region and each checks both Remote and Sponsorship for its own countries only; step3's agents are one per country. Broadening a sub-agent's brief — even slightly — causes it to freelance work outside its scope (e.g. a region-batch agent producing results for a country outside its batch). Subagents also do not inherit prior conversation turns, so any step routed to `deep-reasoner` or `calculator` must read its inputs from workspace files (`cf-`/`sc-` prefixed outputs, `profile.md`, `situational-profile.md`), never from "what was discussed earlier."
 - **`docs/commands/*.md` serves dual purpose.** These files are plugin documentation AND live GitHub Pages site pages. Editing them changes both the repo docs and the public site simultaneously. Step detail pages live under `docs/commands/country-finder/` and `docs/commands/salary-calculator/`.
 - **`.claude/helm/refactor-log.json` is not source code.** It is the refactor command's memory ledger (moved here from `.claude/refactor-log.json`). Do not include it in any scan, analysis, or refactoring pass.
 
