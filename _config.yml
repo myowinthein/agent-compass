@@ -18,6 +18,7 @@ footer_content: "Claude Compass &mdash; MIT License"
 plugins:
   - jekyll-seo-tag
   - jekyll-remote-theme
+  - jekyll-relative-links
 
 # Exclude non-site files from Jekyll processing
 exclude:
