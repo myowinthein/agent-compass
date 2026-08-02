@@ -61,8 +61,9 @@ Claude asks all questions before proceeding. Vague answers are rejected — Clau
 
 Relocation is assumed — Claude does not ask whether you are open to relocating.
 
-**Country preferences**
-- Countries or regions to include or exclude from both tracks
+**Country preferences** — asked as two separate questions, not one combined free-text answer, so there's no ambiguity in classifying your reply
+- Countries or regions to include
+- Countries or regions to exclude
 
 ## Output
 

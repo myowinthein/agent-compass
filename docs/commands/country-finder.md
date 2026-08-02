@@ -65,7 +65,7 @@ Collects requirements for both tracks. Remote track: maximum timezone difference
 
 ### [Step 2 — Candidate discovery](country-finder/step2-candidate-discovery.html)
 
-Builds a single candidate universe — your saved `data/preferred-countries.md` if it exists, otherwise your Step 1 Include list, otherwise the full `data/country-wealth-tiers.md` — then researches it in region-batched sub-agents that check each country for Remote and Sponsorship suitability together. A timezone limit from Step 1 marks (not removes) out-of-range countries as unsuitable for Remote only; a salary minimum from the situational profile is folded into the Remote check.
+Builds a single candidate universe — your saved `data/preferred-countries.md` if it exists, otherwise your Step 1 Include list, otherwise Claude stops and asks you to list the countries you want considered — then researches it in region-batched sub-agents that check each country for Remote and Sponsorship suitability together. A timezone limit from Step 1 marks (not removes) out-of-range countries as unsuitable for Remote only; a salary minimum from the situational profile is folded into the Remote check.
 
 ### [Step 3 — Research prompt generator](country-finder/step3-research-prompt-generator.html)
 
