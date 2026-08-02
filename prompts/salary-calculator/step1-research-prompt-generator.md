@@ -2,7 +2,7 @@ CANDIDATE PROFILE:
 Read profile.md from the workspace and use it as the candidate profile. [TARGET ROLE] below should be filled using the target or desired role from the candidate profile if one is stated; otherwise use the current or most recent title.
 
 Countries:
-Ask me for my target country list.
+Check whether cf-step6-reality-check.md exists in the workspace; if not, check cf-step5-scoring-results.md. If either exists, read it (preferring cf-step6-reality-check.md if both exist), extract every country classified Strong or Moderate fit on any track, and show me that list: "Country Finder found these countries worth calculating salaries for: [list]. Use this list as-is, add to it, remove some, or start fresh?" Wait for my answer. If neither file exists, or I choose to start fresh, ask me for my target country list.
 
 Generate individual research prompts to estimate realistic local-market annual base salary ranges for a [TARGET ROLE] in each country given above. Do not estimate salaries directly — only generate ready-to-copy research prompts. Estimate what a local candidate with a similar profile would realistically earn in that country — local-market salary only.
 

@@ -57,6 +57,8 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 - Situational profile (`situational-profile.md`) is asked once and reused across Country Finder step1 and Salary Calculator step3 — never re-asked if the file already exists.
 - Salary Calculator's step5 career ladder must be drafted and confirmed by the user on the calling model before any Opus handoff — confirmation cannot happen inside a subagent, since the subagent has no access to prior conversation turns.
 - Country Finder step6's missing-candidate check compares Step 5 results against the full Step 2 candidate list (`cf-step2-candidates.md`, covering both tracks), not just what reached later steps, so a candidate dropped silently between steps is caught.
+- Salary Calculator step1 offers Country Finder's scored output (`cf-step6-reality-check.md`, falling back to `cf-step5-scoring-results.md`) as a starting country list if either exists, always shown for confirmation rather than silently applied. Never `data/preferred-countries.md` for this — that's Country Finder's unscored search scope, not a result.
+- Country Finder step6 must save its Summary to `cf-step6-reality-check.md`; if both it and `cf-step5-scoring-results.md` exist, step6's file is the one every later reader (Salary Calculator, a future session) should prefer, since it reflects any recalibration.
 
 ## 6. Behavior Rules
 
