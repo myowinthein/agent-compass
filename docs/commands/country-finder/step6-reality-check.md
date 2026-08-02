@@ -24,7 +24,9 @@ flowchart TD
   Recal -->|no| Confirm[Confirm Step 5 results\nare appropriate — no changes]
   Revise --> Summary[Summary: countries grouped\nby row, both tracks side by side]
   Confirm --> Summary
-  Summary --> Done([Step complete\nWait for main command])
+  Summary --> Priority[Priority Table: word + medal\nper country, holistic ranking]
+  Priority --> Save[Save Summary and Priority Table\nto cf-step6-reality-check.md]
+  Save --> Done([Step complete\nWait for main command])
 ```
 
 ## Purpose
@@ -33,9 +35,9 @@ Challenges the two aspects of Step 5 scoring that Step 5 cannot self-audit: whet
 
 ## What it reads
 
-- `cf-step5-scoring-results.md` — full scoring output from Step 5
+- `cf-step5-scoring-results.md` — full scoring output from Step 5, and the sole authoritative source for the Priority Table's Remote Fit / Sponsorship Fit columns
 - `cf-step2-candidates.md` — the full candidate universe, used to detect countries that were candidates but never reached Step 4
-- `cf-step4-country-data.md`, `cf-step1-criteria.md`, and `situational-profile.md` — the underlying evidence, criteria, and situational profile
+- `cf-step4-country-data.md`, `cf-step1-criteria.md`, `situational-profile.md`, and `profile.md` — the underlying evidence, criteria, situational profile, and candidate profile (the last used for the Priority Table's medal assignment)
 
 All inputs come from workspace files, so the audit is safe to route to the isolated deep-reasoner subagent.
 
@@ -82,6 +84,34 @@ The section closes with counts:
 
 No ranking, no recommendations, no interpretation.
 
+## Priority Table
+
+A second table, appended after the Summary, using the same final classifications. Each row's Tier has two independent parts:
+
+**Word** — which application track is usable, derived from that country's Remote/Sponsorship fit values as recorded in `cf-step5-scoring-results.md` — Step 5 is the authoritative source here. Even if the Summary above revised a country's classification during recalibration, the Priority Table's Fit columns still trace back to Step 5's original ratings, never Step 6's:
+
+| Word | Condition |
+|---|---|
+| Both | Remote Fit and Sponsorship Fit each Strong or Moderate |
+| Remote | Remote Fit Strong or Moderate; Sponsorship Fit Weak or unavailable |
+| Sponsorship | Sponsorship Fit Strong or Moderate; Remote Fit Weak or unavailable |
+| Limited | Neither track reaches Moderate |
+
+**Medal** (🥇 / 🥈 / 🥉 / 🎗️) — a holistic judgment of expected application priority for this specific candidate, deliberately *not* calculated mechanically from the two fit values or from confidence alone. This is where Step 6's own audit work comes in: its evidence-quality and confidence-calibration findings inform how much the underlying evidence is trusted, without ever changing the Fit values themselves. Weighed against seniority/skills/industry match (from `profile.md`), job opportunity volume and recency, remote-location acceptance, sponsorship evidence for the specific profession, salary compatibility, visa practicality, language/citizenship barriers, and evidence strength (as informed by the Confidence Calibration Check). There's no fixed quota per medal — a Moderate/Moderate "Both" country can still land 🥉 if conversion factors (hiring volume, evidence strength, language barriers) are weak.
+
+| Country | Tier | Remote Fit | Sponsorship Fit |
+|---|---|---|---|
+| Example Country 🏳️ | 🥇 Both | Strong | Moderate |
+| Example Country 🏳️ | 🥈 Remote | Strong | Weak |
+| Example Country 🏳️ | 🥉 Sponsorship | Weak | Moderate |
+| Example Country 🏳️ | 🎗️ Limited | Weak | Weak |
+
+Sorted by medal first (🥇 → 🎗️), then within the same medal by expected chance of landing a job there (same factors as above, never alphabetical as a first pass) — with alphabetical order only as the last-resort tie-breaker, after domain/industry match, named-employer evidence, accessibility/sponsorship willingness, salary/timeline, and evidence confidence have all been weighed. Remote Fit and Sponsorship Fit values are restricted to Strong / Moderate / Weak / — (em dash, covering unavailable, excluded, and unresearched alike). No notes, citations, or footnotes in this table — every country from the Summary appears exactly once.
+
+## Output
+
+- `cf-step6-reality-check.md` — the Summary table and the Priority Table, saved together after both are output. This is the final, post-audit classification — later steps or pipelines (e.g. Salary Calculator) should prefer it over `cf-step5-scoring-results.md` if both exist.
+
 ## Stop condition
 
-After the summary, Claude stops and waits for the main command.
+After the summary is saved, Claude stops and waits for the main command.

@@ -54,7 +54,7 @@ Checks for `.salary-calculator-state.json`. If found, reads `last_completed_step
 
 ### [Step 1 — Research prompt generator](salary-calculator/step1-research-prompt-generator.html)
 
-Generates ready-to-copy research prompts for each target country, scoped to the candidate's role and profile from `profile.md`. Each prompt instructs the researcher to find realistic local-market annual base salary ranges — excluding expat, FAANG-only, US-skewed, contractor, and equity-heavy data. Prompts request two company tiers (mid-size local-market and premium/international), city-level breakdowns where relevant, and sourced, dated evidence.
+If Country Finder's output exists (`cf-step6-reality-check.md` or `cf-step5-scoring-results.md`), offers its Strong/Moderate-fit countries as a starting point before asking. Generates ready-to-copy research prompts for each target country, scoped to the candidate's role and profile from `profile.md`. Each prompt instructs the researcher to find realistic local-market annual base salary ranges — excluding expat, FAANG-only, US-skewed, contractor, and equity-heavy data. Prompts request two company tiers (mid-size local-market and premium/international), city-level breakdowns where relevant, and sourced, dated evidence.
 
 ### [Step 2 — Data ingestion](salary-calculator/step2-data-ingestion.html)
 

@@ -14,7 +14,11 @@ Generates one ready-to-copy research prompt per target country, runs each as an 
 ```mermaid
 flowchart TD
   Start([Step 1 begins]) --> ReadProfile[Read profile.md\nfor role and seniority]
-  ReadProfile --> AskList[Ask for target\ncountry list]
+  ReadProfile --> CFCheck{cf-step6-reality-check.md or\ncf-step5-scoring-results.md exist?}
+  CFCheck -->|yes| Offer[Show Strong/Moderate countries\nfrom that file — use, add, remove, or start fresh?]
+  CFCheck -->|no| AskList[Ask for target\ncountry list]
+  Offer -->|start fresh| AskList
+  Offer -->|use/adjust| ForEach
   AskList --> ForEach[For each country:\ngenerate research prompt]
   ForEach --> Prompt[Prompt instructs researcher to find\nlocal-market salary only\nexcluding expat · FAANG · US-skewed\ncontractor · equity-heavy data]
   Prompt --> Tiers[Request two company tiers:\nMid-size / Mainstream Local-Market\nPremium / International / Remote-first]
@@ -30,10 +34,11 @@ flowchart TD
 ## What it reads
 
 - `profile.md` — used to fill in your target role, seniority, and skills in each prompt
+- `cf-step6-reality-check.md` or `cf-step5-scoring-results.md`, if either exists — see Country list below
 
 ## Country list
 
-Claude asks for your target country list before generating any prompts.
+Before asking cold, Claude checks for Country Finder's output: `cf-step6-reality-check.md` if it exists (preferred, since it's the post-audit result), otherwise `cf-step5-scoring-results.md`. If either is found, Claude extracts every country classified Strong or Moderate fit on any track and shows you that list, asking whether to use it as-is, add to it, remove countries, or start fresh. If neither file exists, or you choose to start fresh, Claude asks for your target country list directly.
 
 ## Prompt content
 
