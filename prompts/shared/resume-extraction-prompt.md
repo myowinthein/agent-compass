@@ -74,4 +74,6 @@ Group into categories as they appear in the resume. Use whatever categories fit 
 * List every ambiguity, inconsistency, outdated detail, or unclear item found during extraction.
 * If nothing needs confirmation, write "None found."
 
-After extraction, save the full output to profile.md in the workspace and output it. Your job is done — stop.
+After extraction, output the full profile in the format above and ask: "Does this look correct, or would you like to make any changes before I save it?" Wait for my answer.
+
+Once I confirm, or after applying any corrections I request and showing the updated profile back to me, save the full output to profile.md in the workspace. Your job is done — stop.

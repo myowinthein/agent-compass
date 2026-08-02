@@ -3,7 +3,7 @@
 ## 1. Project Identity
 
 **Name:** claude-compass  
-**Version:** 1.5.1  
+**Version:** 1.7.1  
 **Type:** Claude Code plugin (no runtime code — pure markdown)  
 **Purpose:** Four slash commands for globally-minded IT/tech job seekers: discover countries for remote hire or visa sponsorship, calculate realistic local-market salaries, find verified job portals per country, and screen job descriptions against the candidate's resume. Biased toward the IT/tech industry (the target audience) but not toward any single IT role. Grounded in user-provided research, never in Claude's assumptions.  
 **Blast radius:** Low. No external services, no databases, no code execution. Changes affect prompt behavior in consumer workspaces only.
@@ -18,9 +18,9 @@ readme-style: custom
 
 ## 3. Dev Commands
 
-No build, test, or install steps. This is a markdown-only plugin.
+No build or install steps for the plugin itself — it is markdown-only. The repo does have one test command, for the GitHub Pages docs site: `bundle exec rake test` builds the Jekyll site and validates it with HTML-Proofer (broken links, images, scripts). Run it after any change under `docs/` or to `_config.yml`.
 
-To use locally, install the plugin from the repo root in a Claude Code workspace.
+To use the plugin locally, install it from the repo root in a Claude Code workspace.
 
 ## 4. Architecture Pointers
 
@@ -38,7 +38,7 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 | `skills/evidence-quality-rules.md` | Confidence-lowering rules for vague or unsourced research claims; referenced at runtime by the scoring step |
 | `skills/exclusion-transparency-rules.md` | Every filtered-out item requires a specific, evidence-based reason; referenced at runtime by the scoring step |
 | `skills/situational-profile-questions.md` | Shared situational profile questions and save/reuse logic; referenced at runtime by CF step1 and SC step3 |
-| `skills/country-data-files.md` | Standalone, invoke-on-demand logic — copies `data/country-wealth-tiers.md` (shipped) and `data/preferred-countries.md` (personal, gitignored) into the workspace root if missing. Not referenced by any command or prompt. |
+| `skills/country-data-files.md` | Standalone, invoke-on-demand logic — copies `data/country-wealth-tiers.md` (shipped) to the workspace root if missing, and `data/preferred-countries.md` (personal, gitignored) to that same `data/` path if missing, matching where country-finder step2 reads it. Not referenced by any command or prompt. |
 | `agents/deep-reasoner.md` | Routes scoring, international adjustment, and reality checks to Opus/high effort |
 | `agents/calculator.md` | Routes final salary table calculation to Opus/max effort |
 | `_config.yml` | Jekyll + just-the-docs GitHub Pages site config; excludes plugin dirs (`agents/`, `commands/`, `prompts/`, `skills/`, `.claude/`) from the public site |
@@ -80,6 +80,7 @@ To use locally, install the plugin from the repo root in a Claude Code workspace
 
 - **Sub-agent scope is fragile.** Steps 2 and 3 of country-finder spawn isolated sub-agents with strict single-task briefs — step2's agents are batched by region and each checks both Remote and Sponsorship for its own countries only; step3's agents are one per country. Broadening a sub-agent's brief — even slightly — causes it to freelance work outside its scope (e.g. a region-batch agent producing results for a country outside its batch). Subagents also do not inherit prior conversation turns, so any step routed to `deep-reasoner` or `calculator` must read its inputs from workspace files (`cf-`/`sc-` prefixed outputs, `profile.md`, `situational-profile.md`), never from "what was discussed earlier."
 - **`docs/commands/*.md` serves dual purpose.** These files are plugin documentation AND live GitHub Pages site pages. Editing them changes both the repo docs and the public site simultaneously. Step detail pages live under `docs/commands/country-finder/` and `docs/commands/salary-calculator/`.
+- **Docs and prompts drift with no automated check.** `docs/commands/*.md` describes what a `prompts/*.md` file does, but nothing enforces that they stay in sync — editing one without the other is a silent, easy mistake (e.g. a doc page claiming a step reads a file the actual prompt never instructs it to read). Whenever a prompt's behavior changes, grep for its filename and any file paths it reads/writes across `docs/`, `commands/`, and other `prompts/` files in the same change, and update every match.
 - **`.claude/helm/refactor-log.json` is not source code.** It is the refactor command's memory ledger (moved here from `.claude/refactor-log.json`). Do not include it in any scan, analysis, or refactoring pass.
 
 ## Rules

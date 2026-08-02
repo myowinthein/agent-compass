@@ -1,11 +1,13 @@
 Check whether cf-step2-candidates.md exists in the workspace. If it does not exist, stop and tell me: "cf-step2-candidates.md was not found. Please ensure Step 2 completed successfully before continuing."
 
-Read cf-step2-candidates.md from the workspace. For each country recorded there, generate one ready-to-copy research prompt, based on its Remote and Sponsorship "Suitable" values from Step 2:
+Read cf-step2-candidates.md, profile.md, and situational-profile.md from the workspace. For each country recorded in cf-step2-candidates.md, generate one ready-to-copy research prompt, based on its Remote and Sponsorship "Suitable" values from Step 2:
 
 - If only Remote is "yes," generate a prompt with the Remote Track section only.
 - If only Sponsorship is "yes," generate a prompt with the Sponsorship Track section only.
 - If both are "yes," generate a single combined prompt with both sections.
 - If neither is "yes," skip this country — it did not survive Step 2.
+
+Each generated prompt must embed directly as literal text — never by reference to "the candidate" or "the situational profile" — the candidate's target role and skillset from profile.md, and, for any Sponsorship Track section, the candidate's citizenship and any noted immigration friction from situational-profile.md. This keeps each prompt self-contained, since the isolated sub-agent running it has no access to this conversation or to either file.
 
 Each generated prompt must instruct the researcher to use current web research (prioritizing sources from the last 12 months), not memory or general reputation. Do not include a claim unless it is supported by a real, dated source.
 

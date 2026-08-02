@@ -34,7 +34,7 @@ flowchart TD
 ## What it reads
 
 - `cf-step2-candidates.md` from Step 2
-- `profile.md` and `situational-profile.md`
+- `profile.md` and `situational-profile.md` — target role/skillset and citizenship/immigration friction are embedded as literal text into each generated prompt, since the isolated sub-agent running it has no access to these files or this conversation
 
 ## Prompt structure per country
 
