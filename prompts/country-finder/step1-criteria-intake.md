@@ -23,7 +23,8 @@ Phase 2 — Visa sponsorship track criteria:
 
 Phase 3 — Country preferences:
 
-1. Are there any countries or regions you would particularly like included, or any you want excluded entirely? (list preferred, list excluded, or say "none" for either)
+1. Are there any countries or regions you would particularly like included? (list them, or say "none")
+2. Are there any countries or regions you want excluded entirely? (list them, or say "none")
 
 Standing rule (applies for the rest of this conversation, not just this step):
 

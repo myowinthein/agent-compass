@@ -14,17 +14,16 @@ Builds a single candidate universe, then runs isolated research sub-agents — o
 ```mermaid
 flowchart TD
   Start([Step 2 begins]) --> BaseCheck{data/preferred-countries.md\nexists?}
-  BaseCheck -->|yes| BasePref[Base = preferred-countries.md]
+  BaseCheck -->|yes| Base[Base = preferred-countries.md]
   BaseCheck -->|no| IncludeCheck{Include list\ngiven in Step 1?}
   IncludeCheck -->|yes| BaseInclude[Base = Include list]
-  IncludeCheck -->|no| BaseTiers[Base = data/country-wealth-tiers.md]
+  IncludeCheck -->|no| AskStop([Stop — ask user\nto list countries])
 
-  BasePref --> AddInclude{Include list\nalso given?}
+  Base --> AddInclude{Include list\ngiven in Step 1?}
   AddInclude -->|yes| UnionInclude[Add Include countries\nnot already in base]
   AddInclude -->|no| ExcludeStep
   UnionInclude --> ExcludeStep
   BaseInclude --> ExcludeStep
-  BaseTiers --> ExcludeStep
 
   ExcludeStep[Remove Exclude list\nfrom base] --> ShowList[Show final country list]
   ShowList --> Batch[Batch by region\nor by ~15 countries if unbatched]
@@ -41,21 +40,20 @@ flowchart TD
 - Criteria and preferences from Step 1 (`cf-step1-criteria.md`)
 - `profile.md` and `situational-profile.md`
 - `data/preferred-countries.md`, if it exists
-- `data/country-wealth-tiers.md`, if no preferred list and no Include exist
 
 ## Part A — Build the candidate universe
 
 No research needed — pure filtering logic, applied immediately:
 
-1. **Base list**, in priority order: `data/preferred-countries.md` if it exists; otherwise the Step 1 Include list if one was given; otherwise every country in `data/country-wealth-tiers.md`.
-2. If the base came from `data/preferred-countries.md` **and** an Include list was also given, the Include countries are added on top (union), even if they weren't already present.
-3. If an Exclude list was given, those countries are removed from the resulting base, regardless of which source it came from.
+1. **Base list**: `data/preferred-countries.md` if it exists; otherwise the Step 1 Include list if one was given; otherwise Step 2 stops and asks you to list the countries you want considered.
+2. If the base came from `data/preferred-countries.md` **and** an Include list was also given, the Include countries are added on top (union), even if they weren't already present — placed under their matching region heading so Part B batches them correctly.
+3. If an Exclude list was given, those countries are removed from the resulting base.
 
-The resulting final country list is shown before research begins.
+Other than the stop condition above, this all happens silently — Claude never announces which source it's using as the base or asks whether to use it. The resulting final country list is shown before research begins.
 
 ## Part B — Research sub-agents
 
-The final list is batched — by region, if the source data is region-organized (as both `data/preferred-countries.md` and `data/country-wealth-tiers.md` are), or into groups of roughly 15 countries if not. One isolated sub-agent is spawned per batch.
+The final list is batched by region, since `data/preferred-countries.md` is organized under region headings — one sub-agent per region present in the final list. If, for some reason, the list has no usable region grouping, it falls back to groups of roughly 15 countries. One isolated sub-agent is spawned per batch.
 
 Each sub-agent's prompt embeds, as literal text (never by reference), the exact countries in its batch, the candidate's target role and skillset from `profile.md`, the minimum monthly salary from `situational-profile.md` (if specified), and the candidate's citizenship and any noted immigration friction. This keeps the prompt self-contained, since sub-agents have no access to the conversation that computed these values.
 

@@ -4,21 +4,21 @@ Read cf-step1-criteria.md, profile.md, and situational-profile.md from the works
 
 Part A — Build the candidate universe (no research needed, apply immediately)
 
-1. Determine the base country list, in this priority order:
+1. Determine the base:
    - If data/preferred-countries.md exists in the workspace, the base is every country listed there.
    - Else if cf-step1-criteria.md has an Include list (not "none"), the base is that Include list.
-   - Else, the base is every country listed in data/country-wealth-tiers.md.
-2. If the base came from data/preferred-countries.md AND cf-step1-criteria.md also has an Include list, add every country from that Include list to the base that isn't already present.
-3. If cf-step1-criteria.md has an Exclude list (not "none"), remove every listed country from the base, regardless of which source it came from.
+   - Else, stop and tell me: "No Include list was provided in Step 1. Please list the countries you want considered." Wait for my answer, then use it as the base.
+2. If the base came from data/preferred-countries.md AND cf-step1-criteria.md also has an Include list, add every country from that Include list to the base that isn't already present — place each one under its matching `##` region heading so it batches correctly in Part B.
+3. If cf-step1-criteria.md has an Exclude list (not "none"), remove every listed country from the base.
 
-Show the resulting final country list before continuing.
+Other than the stop condition above, do this without telling me which source the base came from or asking whether to use it — apply it silently. Show the resulting final country list before continuing.
 
 Part B — Research each country for both tracks together
 
 Batch the final country list for parallel research:
 
-- If the source of the base list is organized by region (as data/preferred-countries.md and data/country-wealth-tiers.md both are, under `##` region headings), use those regions as the batches — one sub-agent per region present in the final list.
-- If the final list has no region grouping to use (for example, a flat Include-only base with no region source), split it into batches of roughly 15 countries each, capped at 8 batches total.
+- data/preferred-countries.md is organized under `##` region headings — use those regions as the batches, one sub-agent per region present in the final list.
+- If, for some reason, the final list has no usable region grouping, split it into batches of roughly 15 countries each, capped at 8 batches total.
 
 For each batch, generate one ready-to-copy research prompt. Each prompt must embed directly as literal text — never by reference to a label like "the candidate universe" — all of the following, since the sub-agent running it has no access to this conversation:
 
