@@ -38,7 +38,6 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 | `skills/evidence-quality-rules.md` | Confidence-lowering rules for vague or unsourced research claims; referenced at runtime by the scoring step |
 | `skills/exclusion-transparency-rules.md` | Every filtered-out item requires a specific, evidence-based reason; referenced at runtime by the scoring step |
 | `skills/situational-profile-questions.md` | Shared situational profile questions and save/reuse logic; referenced at runtime by CF step1 and SC step3 |
-| `skills/country-data-files.md` | Standalone, invoke-on-demand logic — copies `data/country-wealth-tiers.md` (shipped) to the workspace root if missing, and `data/preferred-countries.md` (personal, gitignored) to that same `data/` path if missing, matching where country-finder step2 reads it. Not referenced by any command or prompt. |
 | `agents/deep-reasoner.md` | Routes scoring, international adjustment, and reality checks to Opus/high effort |
 | `agents/calculator.md` | Routes final salary table calculation to Opus/max effort |
 | `_config.yml` | Jekyll + just-the-docs GitHub Pages site config; excludes plugin dirs (`agents/`, `commands/`, `prompts/`, `skills/`, `.claude/`) from the public site |
