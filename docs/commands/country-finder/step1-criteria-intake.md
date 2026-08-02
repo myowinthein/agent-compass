@@ -67,7 +67,7 @@ Relocation is assumed — Claude does not ask whether you are open to relocating
 
 ## Output
 
-- `cf-step1-criteria.md` — criteria answers (timezone limit, relocation timeline, country preferences) written after all phases are complete
+- `cf-step1-criteria.md` — criteria answers (timezone limit, relocation timeline, country preferences) written after all phases are complete. Claude confirms the save in one line rather than repeating the criteria back — you just gave them, so there's nothing new to show.
 - `situational-profile.md` — written here if it did not already exist; reused by subsequent steps and the Salary Calculator pipeline
 
 ## Stop condition

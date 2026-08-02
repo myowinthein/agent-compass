@@ -74,7 +74,7 @@ If isolation cannot be guaranteed, Claude shows all prompts and waits for you to
 
 ## Output
 
-- `cf-step3-country-research.md` — per-country research results, appended as each agent completes
+- `cf-step3-country-research.md` — per-country research results, appended as each agent completes. Claude does not reproduce these findings in chat — only a brief summary (countries researched) and confirmation that the file is saved for Step 4 to validate and store.
 
 ## Stop condition
 

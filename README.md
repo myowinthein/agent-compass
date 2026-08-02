@@ -50,7 +50,7 @@ Judgment-heavy and arithmetic-heavy steps can be routed to specialist subagents 
 
 | Agent | Model | Steps |
 |---|---|---|
-| `deep-reasoner` | Opus / high effort | Country scoring, international salary adjustment, reality checks |
+| `deep-reasoner` | Opus / high effort | Country scoring, final ranking, international salary adjustment, reality checks |
 | `calculator` | Opus / max effort | Final salary table calculation |
 
 ## Contributing

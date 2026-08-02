@@ -63,4 +63,6 @@ After generating these prompts, run each one as a separate, isolated research ta
 
 Append each country's results to cf-step3-country-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and wait for me to bring back the results myself before continuing.
 
-Once all results are saved to cf-step3-country-research.md, step complete — stop here and wait for the main command.
+Once all results are saved to cf-step3-country-research.md, tell me in a few lines how many countries were researched and that the full per-country findings are saved there for Step 4 to validate and store. Do not reproduce the per-country research findings in this summary.
+
+Step complete — stop here and wait for the main command.

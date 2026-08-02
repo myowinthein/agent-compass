@@ -28,7 +28,7 @@ Exclusion transparency rule:
 
 Read and apply skills/exclusion-transparency-rules.md.
 
-Output format:
+File format (write this structure to cf-step5-scoring-results.md — this is not what you show in chat, see below):
 
 Remote Track Results
 - List each scored country: fit classification, confidence, brief reasoning
@@ -45,5 +45,7 @@ Summary
 Do not rank countries against each other beyond the Strong/Moderate/Weak classification. Do not add recommendations, next steps, or commentary beyond what is asked here.
 
 Save the full scoring output to cf-step5-scoring-results.md in the workspace.
+
+In your chat response, do not reproduce this detailed breakdown — Step 6 always runs next and produces the curated, human-facing result. Instead, tell me in a few lines: how many countries were scored and excluded on each track, and that the full results are saved to cf-step5-scoring-results.md.
 
 Step complete — stop here and wait for the main command.

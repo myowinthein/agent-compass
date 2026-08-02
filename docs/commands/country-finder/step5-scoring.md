@@ -37,8 +37,9 @@ flowchart TD
   SLower --> SNext
   SNext{More Sponsorship\ncountries?}
   SNext -->|yes| Spons
-  SNext -->|no| Output[Output results with\nfull exclusion list]
-  Output --> Done([Step complete\nWait for main command])
+  SNext -->|no| Save[Save full results\nto cf-step5-scoring-results.md]
+  Save --> Brief[Tell user a brief\nscored/excluded count per track]
+  Brief --> Done([Step complete\nWait for main command])
 ```
 
 ## What it reads
@@ -78,7 +79,9 @@ If the stored research uses vague or unquantified language ("sometimes," "genera
 
 Every country that was on a Step 2 candidate list but does not appear in the final results must be listed separately with a specific, evidence-based reason. "General reputation" is not an acceptable reason. If no data was ever stored for that country and track, that is stated plainly.
 
-## Output format
+## File format
+
+This structure is written to `cf-step5-scoring-results.md` — it is not what Claude shows in chat (see Output below):
 
 ```
 Remote Track Results
@@ -96,8 +99,8 @@ Summary
 
 ## Output
 
-Results are saved to `cf-step5-scoring-results.md` in the workspace. Step 6 reads this file directly.
+Full results are saved to `cf-step5-scoring-results.md` in the workspace. Step 6 reads this file directly and always runs next to produce the curated, human-facing result — so Claude does not reproduce this detailed breakdown in chat. Instead, it tells you in a few lines how many countries were scored and excluded on each track, and confirms the file is saved.
 
 ## Stop condition
 
-After outputting results, Claude stops and waits for the main command. The main command then asks whether to run the Step 6 reality check.
+After outputting results, Claude stops and waits for the main command, which then proceeds to Step 6 (Final Ranking) — it always runs and is never asked about.
