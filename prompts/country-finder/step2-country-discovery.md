@@ -77,4 +77,6 @@ Part C — Mark timezone suitability
 
 If cf-step1-criteria.md has a maximum timezone difference, calculate the UTC time difference between each country in cf-step2-candidates.md and my current location (from situational-profile.md). For any country outside that maximum, overwrite its Remote "Suitable" value with "no — outside your max timezone of [N] hours," replacing whatever Part B found for Remote. Never touch Sponsorship suitability this way — relocation removes the timezone constraint. If no maximum was provided, skip this part entirely.
 
-Once cf-step2-candidates.md exists in the workspace, and Part C has been applied if applicable, step complete — stop here and wait for the main command.
+Once cf-step2-candidates.md exists in the workspace, and Part C has been applied if applicable, tell me in a few lines: how many countries were researched, how many came back Suitable on each track, and that the full per-country findings are saved to cf-step2-candidates.md for Step 3 to use. Do not reproduce the per-country Suitable/Reason/Source/Date findings in this summary.
+
+Step complete — stop here and wait for the main command.

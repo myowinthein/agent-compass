@@ -38,7 +38,7 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 | `skills/evidence-quality-rules.md` | Confidence-lowering rules for vague or unsourced research claims; referenced at runtime by the scoring step |
 | `skills/exclusion-transparency-rules.md` | Every filtered-out item requires a specific, evidence-based reason; referenced at runtime by the scoring step |
 | `skills/situational-profile-questions.md` | Shared situational profile questions and save/reuse logic; referenced at runtime by CF step1 and SC step3 |
-| `agents/deep-reasoner.md` | Routes scoring, international adjustment, and reality checks to Opus/high effort |
+| `agents/deep-reasoner.md` | Routes scoring, final ranking, international adjustment, and reality checks to Opus/high effort |
 | `agents/calculator.md` | Routes final salary table calculation to Opus/max effort |
 | `_config.yml` | Jekyll + just-the-docs GitHub Pages site config; excludes plugin dirs (`agents/`, `commands/`, `prompts/`, `skills/`, `.claude/`) from the public site |
 | `.claude/helm/refactor-log.json` | Refactoring ledger — tracks open/fixed/skipped findings across runs; not source code |
@@ -47,7 +47,7 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 
 **Skill file pattern:** Skill files are not auto-loaded — they are referenced explicitly by the prompt files that need them (`Read and apply skills/...`). This is the single-source-of-truth for shared rules and logic; do not inline skill content in prompts.
 
-**Reality check steps** (country-finder step 6, salary-calculator step 5) are optional — Claude must ask and wait for explicit user confirmation before running them.
+**Country Finder step6 (Final Ranking) always runs** — unlike every other optional Opus-routable step, it is never skipped, since it produces the pipeline's final result (the Priority Table). Only its Opus routing is a user choice. **Salary Calculator's step5 reality check remains fully optional** — Claude must ask and wait for explicit user confirmation before running it at all.
 
 ## 5. Domain Rules
 
@@ -57,8 +57,8 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 - Situational profile (`situational-profile.md`) is asked once and reused across Country Finder step1 and Salary Calculator step3 — never re-asked if the file already exists.
 - Salary Calculator's step5 career ladder must be drafted and confirmed by the user on the calling model before any Opus handoff — confirmation cannot happen inside a subagent, since the subagent has no access to prior conversation turns.
 - Country Finder step6's missing-candidate check compares Step 5 results against the full Step 2 candidate list (`cf-step2-candidates.md`, covering both tracks), not just what reached later steps, so a candidate dropped silently between steps is caught.
-- Salary Calculator step1 offers Country Finder's scored output (`cf-step6-reality-check.md`, falling back to `cf-step5-scoring-results.md`) as a starting country list if either exists, always shown for confirmation rather than silently applied. Never `data/preferred-countries.md` for this — that's Country Finder's unscored search scope, not a result.
-- Country Finder step6 must save its Summary to `cf-step6-reality-check.md`; if both it and `cf-step5-scoring-results.md` exist, step6's file is the one every later reader (Salary Calculator, a future session) should prefer, since it reflects any recalibration.
+- Salary Calculator step1 offers Country Finder's scored output (`cf-step6-final-ranking.md`, falling back to `cf-step5-scoring-results.md`) as a starting country list if either exists, always shown for confirmation rather than silently applied. Never `data/preferred-countries.md` for this — that's Country Finder's unscored search scope, not a result.
+- Country Finder step6 must save its Summary and Priority Table to `cf-step6-final-ranking.md`; if both it and `cf-step5-scoring-results.md` exist, step6's file is the one every later reader (Salary Calculator, a future session) should prefer, since it reflects any recalibration and carries the priority ranking.
 
 ## 6. Behavior Rules
 
@@ -67,7 +67,7 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 - Vague answers to criteria questions (e.g. "good," "reasonable," "flexible") are not accepted. Claude must ask for an exact number, currency, or clear yes/no before continuing.
 - Remote hire and visa sponsorship are separate tracks throughout Country Finder. Never blend them.
 - Salary research targets local-market compensation only. Exclude expat, FAANG-only, US-skewed, contractor, and equity-heavy data.
-- Opus routing for judgment-heavy steps (scoring, international adjustment, reality checks) is user opt-in at each step — never assume automatic routing.
+- Opus routing for judgment-heavy steps (scoring, final ranking, international adjustment, reality checks) is user opt-in at each step — never assume automatic routing. This is separate from whether the step itself runs: Country Finder step6 always runs regardless of the Opus choice.
 
 ## 7. Hard Safety Rules
 

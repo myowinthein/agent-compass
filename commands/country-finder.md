@@ -1,6 +1,6 @@
 ---
 name: Country Finder
-description: Runs the full Country Finder pipeline — criteria intake, grounded country discovery, per-country research, scoring, and optional reality check.
+description: Runs the full Country Finder pipeline — criteria intake, grounded country discovery, per-country research, scoring, and a final priority ranking.
 ---
 
 # /claude-compass:country-finder
@@ -29,11 +29,11 @@ After finishing each step below, update last_completed_step and updated_at in th
 ## Sequence
 
 1. Read prompts/country-finder/step1-criteria-intake.md and follow it exactly.
-2. Read prompts/country-finder/step2-candidate-discovery.md and follow it exactly.
+2. Read prompts/country-finder/step2-country-discovery.md and follow it exactly.
 3. Read prompts/country-finder/step3-research-prompt-generator.md and follow it exactly.
-4. Read prompts/country-finder/step4-data-ingestion.md and follow it exactly.
-5. Before running this step, ask me: "Step 5 (scoring) can run on Claude Opus for higher reasoning accuracy, which may cost more. Use Opus for this step? (yes/no)" — If I say yes, use the deep-reasoner subagent. If I say no, read prompts/country-finder/step5-scoring.md yourself and follow it exactly using your current model. After Step 5 completes, ask me: "Would you like to run the Step 6 reality check on these results?"
-6. If I said yes to the reality check question in Step 5, ask: "The reality check can also run on Claude Opus. Use Opus for this step? (yes/no)" — If I say yes, use the deep-reasoner subagent to read prompts/country-finder/step6-reality-check.md. If I say no, read it yourself and follow it exactly using your current model.
+4. Read prompts/country-finder/step4-data-validation.md and follow it exactly.
+5. Before running this step, ask me: "Step 5 (scoring) can run on Claude Opus for higher reasoning accuracy, which may cost more. Use Opus for this step? (yes/no)" — If I say yes, use the deep-reasoner subagent. If I say no, read prompts/country-finder/step5-scoring.md yourself and follow it exactly using your current model.
+6. Step 6 (final ranking) always runs — it produces the pipeline's final result, so it is never skipped. Before running it, ask me: "Step 6 (final ranking) can run on Claude Opus for higher reasoning accuracy, which may cost more. Use Opus for this step? (yes/no)" — If I say yes, use the deep-reasoner subagent to read prompts/country-finder/step6-final-ranking.md. If I say no, read it yourself and follow it exactly using your current model.
 
 ## Important
 

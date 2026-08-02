@@ -1,11 +1,11 @@
 ---
-title: Step 2 — Candidate discovery
+title: Step 2 — Country discovery
 parent: /country-finder
 grand_parent: Commands
 nav_order: 2
 ---
 
-# Step 2 — Candidate discovery
+# Step 2 — Country discovery
 
 Builds a single candidate universe, then runs isolated research sub-agents — one per region batch — to check each country for both Remote and Sponsorship suitability together. No country is included based on reputation alone — every finding must be traceable to a real, checkable source.
 
@@ -71,7 +71,7 @@ If a maximum timezone difference was provided in Step 1, Claude calculates each 
 
 ## Output
 
-- `cf-step2-candidates.md` — every researched country, with independent Remote and Sponsorship findings (suitability, reasoning, source, date)
+- `cf-step2-candidates.md` — every researched country, with independent Remote and Sponsorship findings (suitability, reasoning, source, date). Claude does not reproduce these per-country findings in chat — only a brief summary (countries researched, Suitable counts per track) and confirmation that the file is saved for Step 3.
 
 ## Stop condition
 

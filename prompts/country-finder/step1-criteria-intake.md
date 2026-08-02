@@ -42,4 +42,6 @@ Country preferences:
 - Include: [list or "none"]
 - Exclude: [list or "none"]
 
+Tell me in one line that this was saved to cf-step1-criteria.md — no need to repeat the criteria back, since I just gave them to you.
+
 Step complete — stop here and wait for the main command.

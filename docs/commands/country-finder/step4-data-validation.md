@@ -1,11 +1,11 @@
 ---
-title: Step 4 — Data ingestion
+title: Step 4 — Data validation
 parent: /country-finder
 grand_parent: Commands
 nav_order: 4
 ---
 
-# Step 4 — Data ingestion
+# Step 4 — Data validation
 
 A strict silent-storage mode. Claude reads `cf-step3-country-research.md` written by Step 3 and processes each country's data autonomously — no pasting required. If the file is missing, Claude stops and reports it rather than waiting for manual input.
 
@@ -66,4 +66,4 @@ Claude preserves all values, wording, and formatting exactly as provided. It doe
 
 ## Stop condition
 
-Once all countries from `cf-step3-country-research.md` have been processed, Claude writes all successfully stored countries to `cf-step4-country-data.md`, replies with one consolidated report (stored count, plus every skip grouped by reason — malformed, missing fields, duplicate, not marked suitable for any track), then stops and waits for the main command.
+Once all countries from `cf-step3-country-research.md` have been processed, Claude writes all successfully stored countries to `cf-step4-country-data.md` (which Step 5 scores next), replies with one consolidated report (stored count, plus every skip grouped by reason — malformed, missing fields, duplicate, not marked suitable for any track), then stops and waits for the main command.

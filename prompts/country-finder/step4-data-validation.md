@@ -28,4 +28,6 @@ Skipped — missing required fields: [country or "none"], with what was missing 
 Skipped — duplicate: [country or "none"].
 Skipped — not on either candidate list: [country or "none"]. Review these and tell me if any should be added.
 
+This data is saved to cf-step4-country-data.md, which Step 5 will score next.
+
 Step complete — stop here and wait for the main command.

@@ -1,13 +1,13 @@
 ---
-title: Step 6 — Reality check (optional)
+title: Step 6 — Final Ranking
 parent: /country-finder
 grand_parent: Commands
 nav_order: 6
 ---
 
-# Step 6 — Reality check (optional)
+# Step 6 — Final Ranking
 
-A focused audit of the Step 5 scoring output across two checks. Runs when the main command confirms you want it. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
+A focused audit of the Step 5 scoring output, followed by a prioritized Country Finder result — the Priority Table. Always runs; unlike the rest of the pipeline this is the only step with no skip option, since it's what produces the final result. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy on the audit itself. If you decline, the step runs with your current model.
 
 ## Flow
 
@@ -25,7 +25,7 @@ flowchart TD
   Revise --> Summary[Summary: countries grouped\nby row, both tracks side by side]
   Confirm --> Summary
   Summary --> Priority[Priority Table: word + medal\nper country, holistic ranking]
-  Priority --> Save[Save Summary and Priority Table\nto cf-step6-reality-check.md]
+  Priority --> Save[Save Summary and Priority Table\nto cf-step6-final-ranking.md]
   Save --> Done([Step complete\nWait for main command])
 ```
 
@@ -62,7 +62,7 @@ If recalibration is not supported, Step 5 results are explicitly confirmed as ap
 
 ## Summary
 
-After the recalibration verdict, Claude outputs a Summary that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track — each country showing its Remote and Sponsorship fit side by side.
+After the recalibration verdict, Claude shows a Summary directly in chat — not just in the saved file — that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track, each country showing its Remote and Sponsorship fit side by side. This is the one step in the pipeline where Claude does show full output in chat, since it's the final, human-facing result.
 
 | Country | Remote | Sponsorship |
 |---|---|---|
@@ -82,11 +82,11 @@ The section closes with counts:
 - Remote: [N] scored, [N] excluded, [N] not scored (no data)
 - Sponsorship: [N] scored, [N] excluded, [N] not scored (no data)
 
-No ranking, no recommendations, no interpretation.
+The Summary itself contains no ranking, recommendations, or interpretation beyond the classifications above — ranking is reserved for the Priority Table below.
 
 ## Priority Table
 
-A second table, appended after the Summary, using the same final classifications. Each row's Tier has two independent parts:
+A second table, shown directly in chat right after the Summary, using the same final classifications. Each row's Tier has two independent parts:
 
 **Word** — which application track is usable, derived from that country's Remote/Sponsorship fit values as recorded in `cf-step5-scoring-results.md` — Step 5 is the authoritative source here. Even if the Summary above revised a country's classification during recalibration, the Priority Table's Fit columns still trace back to Step 5's original ratings, never Step 6's:
 
@@ -101,17 +101,21 @@ A second table, appended after the Summary, using the same final classifications
 
 | Country | Tier | Remote Fit | Sponsorship Fit |
 |---|---|---|---|
-| Example Country 🏳️ | 🥇 Both | Strong | Moderate |
-| Example Country 🏳️ | 🥈 Remote | Strong | Weak |
-| Example Country 🏳️ | 🥉 Sponsorship | Weak | Moderate |
-| Example Country 🏳️ | 🎗️ Limited | Weak | Weak |
+| 🏳️ Example Country | 🥇 Both | Strong | Moderate |
+| 🏳️ Example Country | 🥈 Remote | Strong | Weak |
+| 🏳️ Example Country | 🥉 Sponsorship | Weak | Moderate |
+| 🏳️ Example Country | 🎗️ Limited | Weak | Weak |
 
 Sorted by medal first (🥇 → 🎗️), then within the same medal by expected chance of landing a job there (same factors as above, never alphabetical as a first pass) — with alphabetical order only as the last-resort tie-breaker, after domain/industry match, named-employer evidence, accessibility/sponsorship willingness, salary/timeline, and evidence confidence have all been weighed. Remote Fit and Sponsorship Fit values are restricted to Strong / Moderate / Weak / — (em dash, covering unavailable, excluded, and unresearched alike). No notes, citations, or footnotes in this table — every country from the Summary appears exactly once.
 
 ## Output
 
-- `cf-step6-reality-check.md` — the Summary table and the Priority Table, saved together after both are output. This is the final, post-audit classification — later steps or pipelines (e.g. Salary Calculator) should prefer it over `cf-step5-scoring-results.md` if both exist.
+- `cf-step6-final-ranking.md` — the Summary table and the Priority Table, saved together after both are output. This is the final, post-audit classification — later steps or pipelines (e.g. Salary Calculator) should prefer it over `cf-step5-scoring-results.md` if both exist.
+
+## Completion message
+
+After saving, Claude tells you the pipeline is complete and where the results live, so the conversation doesn't just trail off after the table: *"Country Finder is complete. Results are saved to `cf-step6-final-ranking.md` if you want to revisit them later without re-running the pipeline — start with your 🥇 countries above."*
 
 ## Stop condition
 
-After the summary is saved, Claude stops and waits for the main command.
+After the completion message, Claude stops and waits for the main command.

@@ -25,7 +25,7 @@ If recalibration is not supported, state explicitly that the Step 5 results rema
 
 Summary
 
-Output a Summary section that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track.
+Show a Summary section directly in your chat response — not just in the saved file — that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track.
 
 For each country that has data on at least one track, show one row with both its Remote fit and Sponsorship fit side by side:
 
@@ -40,11 +40,11 @@ Close the Summary with counts:
 - Remote: [N] scored, [N] excluded, [N] not scored (no data)
 - Sponsorship: [N] scored, [N] excluded, [N] not scored (no data)
 
-No ranking, no recommendations, no interpretation.
+The Summary itself contains no ranking, recommendations, or interpretation beyond the classifications above — ranking is reserved for the Priority Table below.
 
 Priority Table
 
-After the Summary above, produce one additional Markdown table.
+After the Summary above, show one additional Markdown table directly in your chat response — not just in the saved file.
 
 Columns: Country | Tier | Remote Fit | Sponsorship Fit
 
@@ -85,7 +85,7 @@ Sort the table by medal first (🥇, then 🥈, then 🥉, then 🎗️). Within
 6. Alphabetical order, only as the final tie-breaker.
 
 Formatting rules:
-- Place the country's flag emoji directly after its name.
+- Place the country's flag emoji directly before its name (e.g., "🇭🇰 Hong Kong").
 - Remote Fit and Sponsorship Fit may contain only: Strong, Moderate, Weak, or — (Unicode em dash, for unavailable, excluded, or unresearched data).
 - Do not add notes, asterisks, citations, explanations, or footnotes to this table.
 - Include every country from the Summary above exactly once.
@@ -96,6 +96,8 @@ Use this exact header:
 | Country | Tier | Remote Fit | Sponsorship Fit |
 |---|---|---|---|
 
-Save the Summary and the Priority Table to cf-step6-reality-check.md in the workspace — this is the final, post-audit classification, and later steps or pipelines should prefer it over cf-step5-scoring-results.md if both exist.
+Save the Summary and the Priority Table to cf-step6-final-ranking.md in the workspace — this is the final, post-audit classification, and later steps or pipelines should prefer it over cf-step5-scoring-results.md if both exist.
+
+After saving, tell me the pipeline is complete: "Country Finder is complete. Results are saved to cf-step6-final-ranking.md if you want to revisit them later without re-running the pipeline — start with your 🥇 countries above."
 
 Step complete — stop here and wait for the main command.
