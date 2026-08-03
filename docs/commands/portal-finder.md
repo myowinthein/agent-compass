@@ -7,7 +7,7 @@ has_children: true
 
 # /portal-finder
 
-Finds verified job portals for IT/tech roles in a specified country. Accepts the country as an optional argument — if omitted, Claude asks before doing anything. Researches portals online rather than relying on general knowledge, and verifies each tag attribute directly on the portal's own site.
+Finds verified job portals for IT/tech roles in a specified country. Accepts the country as an optional argument — if omitted, Claude asks before doing anything. Researches portals online rather than relying on general knowledge, confirming each one actually exists and is active on its own site.
 
 ## Usage
 
@@ -27,7 +27,7 @@ flowchart TD
   CountryCheck -->|no| AskCountry[Ask for country — wait]
   AskCountry --> S1
 
-  S1[Step 1: Portal research\nOnline verification per portal] --> Output[Output grouped portal list\nwith tags and start-here flags]
+  S1[Step 1: Portal research\nOnline verification per portal] --> Output[Output grouped portal list\nwith start-here flags]
   Output --> Done([Done])
 ```
 
@@ -39,17 +39,7 @@ Claude checks whether a country was provided as an argument. If not, it asks and
 
 ### [Step 1 — Portal research](portal-finder/step1-portal-research.html)
 
-Researches job portals for IT/tech roles in the target country online. Portals are organized by type into five mutually exclusive groups: general job boards, tech-specific boards, recruitment agencies, professional & community networks, and government/official portals. Geographic scope (country-dedicated vs global) is noted per portal rather than used as a group. Each portal is tagged with verified attributes only. Within each group, the 2–3 portals to start with first are flagged. Anything noteworthy but outside the structure — deprecated portals, shared ownership, foreign-applicant restrictions — is flagged with ⚠️.
-
-## Tags
-
-Tags are only applied when verified true on the portal's own site — not based on blog posts or list articles.
-
-| Tag | Meaning |
-|-----|---------|
-| 🌍 Remote | Dedicated remote-jobs filter or tag, or remote-only portal |
-| 🛂 Sponsorship | Dedicated visa-sponsorship filter or tag for eligible roles |
-| 🔓 No account needed | Browse and apply without registering at any point in the flow |
+Researches job portals for IT/tech roles in the target country online. Portals are organized by type into three mutually exclusive groups: general job boards, tech-specific boards, and professional & community networks. Government and official employment-service portals are deliberately excluded — they tend to be citizen/PR-oriented or geared toward expat/relocation information rather than reliable third-party job listings. Geographic scope (country-dedicated vs global) is noted per portal rather than used as a group. Within each group, the 2–3 portals to start with first are flagged. Anything noteworthy but outside the structure — deprecated portals, shared ownership, foreign-applicant restrictions — is flagged with ⚠️.
 
 ## Stop conditions
 
