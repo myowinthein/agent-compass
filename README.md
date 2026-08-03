@@ -50,8 +50,8 @@ Judgment-heavy and arithmetic-heavy steps can be routed to specialist subagents 
 
 | Agent | Model | Steps |
 |---|---|---|
-| `deep-reasoner` | Opus / high effort | Country scoring, final ranking, international salary adjustment, reality checks |
-| `calculator` | Opus / max effort | Final salary table calculation |
+| `deep-reasoner` | Opus / high effort | Country scoring, final ranking, international salary adjustment, final verification |
+| `calculator` | Opus / max effort | Salary table calculation |
 
 ## Contributing
 
@@ -61,4 +61,4 @@ Issues and pull requests are welcome at [github.com/myowinthein/claude-compass/i
 
 [MIT](https://github.com/myowinthein/claude-compass/blob/main/LICENSE)
 
-<!-- last-reviewed: 9cfeae7f647a504b19797cb2064e6d49827a834b -->
+<!-- last-reviewed: df9b354442e3e01790ae59f7c6eda2757e6008bf -->
