@@ -11,6 +11,7 @@ Behavior rules:
 * Each block is expected to contain salary data for exactly one country.
 * If a block contains multiple countries or no recognizable country, skip it and record the issue. Do not store anything from that block.
 * Each country's data is expected to contain both tiers (Mid-size/Mainstream Local-Market, and Premium/International/Remote-first) along with sources for each. If a required tier or its sources are missing, skip it and record exactly what is missing. Do not store incomplete data.
+* Store the sponsorship salary threshold field as provided, including "not applicable." This field is never required — a missing or absent threshold never causes a country to be skipped.
 * If a country has already been stored, skip it, keep the original, and record it as a duplicate.
 * Preserve all values, wording, and formatting as provided.
 * Do not verify, correct, or critique the supplied data.

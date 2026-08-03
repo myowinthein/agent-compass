@@ -1,8 +1,8 @@
-Read sc-step4-salary-table.md from the workspace. Also read sc-step2-salary-data.md and sc-step3-adjustment-values.md for the underlying salary data and adjustment values, profile.md for the candidate profile and target role, and sc-step5-career-ladder.md for the career ladder already confirmed with me before this step. Base the reality check only on these files, not on prior conversation memory.
+Read sc-step4-salary-table.md from the workspace. Also read sc-step2-salary-data.md and sc-step3-adjustment-values.md for the underlying salary data and adjustment values, profile.md for the candidate profile and target role, and sc-step5a-career-ladder.md for the career ladder already confirmed with me before this step. Base the audit only on these files, not on prior conversation memory.
 
 Goal
 
-Perform a strict recruiter market reality check on the FINAL salary framework.
+Perform a strict recruiter market audit of the FINAL salary framework.
 
 Challenge assumptions where warranted.
 
@@ -19,13 +19,15 @@ Framework Definitions (used by the checks below)
 
 The salary data (with its sources and exclusions) and the international adjustment values are already in the files you read above — work from those directly rather than from any assumed methodology.
 
+Show all four checks below, and the recalibration verdict, directly in your chat response — not just in whatever gets saved to file. This is the pipeline's final step, so this audit is the actual human-facing result, not an intermediate artifact. Also show the resulting final table directly in your chat response — whether that's the unchanged sc-step4-salary-table.md or a revised table — since Step 4's own output is file-only and this is the one point where the actual numbers are surfaced to me.
+
 ---
 
 1. Candidate Positioning
 
 CAREER LEVELS FOR THIS ROLE:
 
-Use the career ladder in sc-step5-career-ladder.md — it was drafted from profile.md and confirmed with me before this step. Do not redraft it or ask me to confirm it again; treat it as settled.
+Use the career ladder in sc-step5a-career-ladder.md — it was drafted from profile.md and confirmed with me before this step. Do not redraft it or ask me to confirm it again; treat it as settled.
 
 First determine:
 - likely career level
@@ -79,7 +81,7 @@ B. Potential inflation sources
 
 ---
 
-3. Country by Country Reality Check
+3. Country by Country Verification
 
 For each country:
 
@@ -87,7 +89,7 @@ Evaluate:
 - Safe positioning
 - Stretch positioning
 - recruiter comfort
-- sponsorship realism
+- sponsorship realism — if this country has a Legal Requirement flag from Step 4, factor that concrete result in rather than judging realism independently of it
 - overseas hiring realism
 - interview conversion impact
 
@@ -155,9 +157,13 @@ Only if the evidence genuinely supports recalibration:
 - prioritize broad market achievability
 - prioritize realistic overseas positioning
 
-If recalibration is not supported, explicitly state that the existing framework remains appropriate and do not generate a revised salary table.
+If recalibration is not supported, explicitly state that the existing framework remains appropriate and do not generate a revised salary table. Show the table from sc-step4-salary-table.md directly in your chat response as the confirmed final result — do not create a new file, since sc-step4-salary-table.md already contains it.
 
-If recalibration is required, generate a revised table using the same format as Step 4.
+If recalibration is required, generate a revised table using the same format and country order as Step 4 — including the Legal Requirement column. Read and apply skills/sponsorship-threshold-rules.md and recompute that column against the revised Safe and Stretch Fixed values, using the same threshold data from Step 1. A country's Legal Requirement result from Step 4 does not carry forward automatically — recalibration can push a figure below a threshold it previously cleared, or above one it previously missed, so it must be re-evaluated against whatever the revised figures actually are. Show this revised table directly in your chat response, then save it to sc-step5b-salary-table.md in the workspace — this becomes the final table, superseding sc-step4-salary-table.md; do not overwrite that file, since it's the pre-audit record.
+
+Always save the full audit — all four checks and the recalibration verdict, whichever way it went — to sc-step5b-final-verification.md in the workspace. This happens regardless of whether recalibration occurred; it is the permanent record of the audit itself, separate from whichever salary table ends up being final.
+
+After saving (or after confirming no revision was needed), tell me the pipeline is complete: if revised, "Salary Calculator is complete. The audit is saved to sc-step5b-final-verification.md, and the revised table is saved to sc-step5b-salary-table.md — this supersedes the earlier one from Step 4." If not revised, "Salary Calculator is complete. The audit is saved to sc-step5b-final-verification.md. sc-step4-salary-table.md remains the final table."
 
 Overall Principles
 

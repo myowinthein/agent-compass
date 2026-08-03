@@ -15,12 +15,12 @@ Estimates the realistic hiring discount an overseas candidate may face when nego
 flowchart TD
   Start([Command: collect situational profile\non current model, before handoff]) --> SitCheck{situational-profile.md\nexists?}
   SitCheck -->|yes| ReuseSit[Reuse existing profile\nSkip questions]
-  SitCheck -->|no| SitQ[Ask situational questions\nlocation · citizenship · friction\nlanguages · work language · salary minimum\nSave to situational-profile.md]
+  SitCheck -->|no| SitQ[Ask situational questions\nlocation · citizenship · friction\nlanguages · work language · salary minimum\nexisting work authorization\nSave to situational-profile.md]
   ReuseSit --> Begin
   SitQ --> Begin
   Begin([Step 3 begins]) --> FileCheck{sc-step2-salary-data.md\nexists?}
   FileCheck -->|no| Error[Stop — report missing file\nAsk user to rerun Step 2]
-  FileCheck -->|yes| ReadFile[Read sc-step2-salary-data.md\nand situational-profile.md]
+  FileCheck -->|yes| ReadFile[Read sc-step2-salary-data.md\nsituational-profile.md, and profile.md]
   ReadFile --> OpusQ{Use Opus for\nhigher accuracy?}
   OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
   OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
@@ -35,6 +35,7 @@ flowchart TD
 
 - `sc-step2-salary-data.md` — salary data from Step 2
 - `situational-profile.md` — collected by the main command before this step, so it always exists here
+- `profile.md` — the candidate's actual education and experience, checked before treating any visa education requirement as a friction factor (see below)
 
 ## Situational questions (collected before the step, once, if not already saved)
 
@@ -46,6 +47,7 @@ The main command collects these on your current model before any Opus handoff, s
 4. Languages spoken
 5. Required work environment language
 6. Minimum acceptable monthly salary and currency — or "not specified" to skip salary filtering
+7. Existing residency or work authorization in any target country, and status there — or "not applicable"
 
 Answers are saved to `situational-profile.md` and reused across sessions and pipelines.
 
@@ -63,6 +65,10 @@ The adjustment reflects practical recruiter and employer behaviour for overseas 
 - Current hiring market conditions (last 12 months)
 
 This is not about tax, cost of living, purchasing power, or permanent residence pathways.
+
+**Degree relevance vs. formal recognition:** if a country's visa route has an education requirement, Claude checks it against the candidate's actual degree(s) in `profile.md` rather than assuming a mismatch based on generic assumptions about the occupation — any one relevant degree is enough, even if the candidate also holds unrelated ones. Formal recognition of a specific degree or institution is a different question that can't be verified through research (it requires a country's actual credential-assessment body) — Claude never asserts pass/fail on this. If a route has a named formal-recognition requirement, it's noted as a plain process caveat in that country's Brief explanation, never as a factor in the adjustment percentage.
+
+**Already resident in a target country:** if the situational profile states you already live in, or already have some form of work authorization for, a country being calculated, relocation friction, remote interview logistics, and perceived hiring risk are weighed much lighter for that country specifically — you aren't relocating and can interview locally. This is independent of sponsorship: if your status there would still require employer sponsorship to take the job, employer willingness to sponsor and visa complexity are still weighed normally. Being already resident reduces relocation-driven friction, not sponsorship-driven friction.
 
 ## Output per country
 

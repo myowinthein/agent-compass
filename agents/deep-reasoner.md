@@ -1,6 +1,6 @@
 ---
 name: deep-reasoner
-description: Handles judgment-heavy synthesis steps in claude-compass pipelines — international salary adjustment estimation, country scoring, final ranking, and reality checks. Reads the specified prompt file and follows it exactly.
+description: Handles judgment-heavy synthesis steps in claude-compass pipelines — international salary adjustment estimation, country scoring, final ranking, and final verification. Reads the specified prompt file and follows it exactly.
 model: opus
 effort: high
 ---
