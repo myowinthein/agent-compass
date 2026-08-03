@@ -6,6 +6,8 @@ Check whether cf-step6-final-ranking.md exists in the workspace; if not, check c
 
 Generate individual research prompts to estimate realistic local-market annual base salary ranges for a [TARGET ROLE] in each country given above. Do not estimate salaries directly — only generate ready-to-copy research prompts. Estimate what a local candidate with a similar profile would realistically earn in that country — local-market salary only.
 
+Read and apply skills/sponsorship-threshold-rules.md — each generated prompt must also ask for the country's government-mandated minimum salary threshold for employer-sponsored work-visa relocation, following that skill's rules for what counts as a usable figure.
+
 Important:
 Each generated prompt must instruct the researcher to perform the analysis completely from scratch using current web research and real-world market conditions only, prioritizing sources from the last 12 months. Do not rely on previous conversations, memory, earlier country discussions, or assumed preferences.
 
@@ -32,6 +34,7 @@ For each country, create one ready-to-copy research prompt asking for:
   - premium, international, or remote-first companies
 - national range and major tech hub range if salary varies significantly by city (name the city used)
 - practical low, realistic, and strong ranges within each tier
+- government-mandated minimum salary threshold for employer-sponsored work-visa relocation, if one exists and is a usable figure per skills/sponsorship-threshold-rules.md — not applicable to remote or independent-contractor arrangements
 
 Prioritize:
 - realistic local-market compensation
@@ -57,6 +60,8 @@ Premium / International / Remote-first tier:
 - Strong: [amount] [currency]
 - City used (if applicable): [city]
 - Sources: [list with dates]
+
+Sponsorship salary threshold: [amount] [currency], [annual or monthly], or "not applicable"
 
 Notes: [anything relevant not covered above]
 

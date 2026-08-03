@@ -53,6 +53,7 @@ Each generated prompt instructs the researcher to:
 - Provide a national range and major tech hub range if salary varies significantly by city
 - Include practical Low, Realistic, and Strong figures within each tier
 - Cite sources with dates
+- Report the country's government-mandated minimum salary threshold for employer-sponsored work-visa relocation, if one exists and is a usable figure (see `skills/sponsorship-threshold-rules.md`) — not applicable to remote or contractor arrangements, so most countries and roles will have none to report
 
 **Excluded from research:**
 - levels.fyi and FAANG-only data

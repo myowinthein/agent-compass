@@ -2,6 +2,6 @@ Draft the realistic career ladder for my role as stated in profile.md. Assume I 
 
 Show it to me, and wait for my confirmation or edits.
 
-Once confirmed, save it to sc-step5-career-ladder.md in the workspace.
+Once confirmed, save it to sc-step5a-career-ladder.md in the workspace.
 
 Step complete — stop here and wait for the main command.

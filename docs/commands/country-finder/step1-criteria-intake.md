@@ -15,7 +15,7 @@ Collects your hard requirements for both tracks before any research begins. Clau
 flowchart TD
   Start([Step 1 begins]) --> SitCheck{situational-profile.md\nexists?}
   SitCheck -->|yes| Reuse[Reuse existing profile]
-  SitCheck -->|no| SitQ[Ask 6 situational questions\nincluding optional salary minimum]
+  SitCheck -->|no| SitQ[Ask 7 situational questions\nincluding optional salary minimum\nand existing work authorization]
   SitQ --> SaveSit[Save situational-profile.md]
   SaveSit --> P1
   Reuse --> P1
@@ -38,7 +38,7 @@ flowchart TD
 
 ## Situational profile
 
-If `situational-profile.md` does not exist, Claude asks six questions and saves the answers to that file:
+If `situational-profile.md` does not exist, Claude asks seven questions and saves the answers to that file:
 
 1. Current location
 2. Citizenship
@@ -46,8 +46,9 @@ If `situational-profile.md` does not exist, Claude asks six questions and saves 
 4. Languages spoken
 5. Required work environment language
 6. Minimum acceptable monthly salary and currency — or "not specified" to skip salary filtering
+7. Existing residency or work authorization in any target country, and status there (independent work rights, a visa requiring sponsorship to change jobs, student visa, etc.) — or "not applicable"
 
-These answers persist across sessions and are reused by both pipelines. The salary minimum, if provided, is used as a filter in Steps 2 and 5. If not provided, salary filtering is skipped.
+These answers persist across sessions and are reused by both pipelines. The salary minimum, if provided, is used as a filter in Steps 2 and 5. Existing residency/work authorization, if provided, is used by Salary Calculator step3 to weigh relocation-related friction lighter for a matching country. If not provided, both are skipped.
 
 ## Criteria questions
 

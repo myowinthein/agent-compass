@@ -1,11 +1,11 @@
 ---
-title: Step 2 — Data ingestion
+title: Step 2 — Data validation
 parent: /salary-calculator
 grand_parent: Commands
 nav_order: 2
 ---
 
-# Step 2 — Data ingestion
+# Step 2 — Data validation
 
 A strict silent-storage mode. Claude reads `sc-step1-salary-research.md` written by Step 1 and processes each country's data automatically — no pasting required. If the file is missing, Claude stops and reports it rather than waiting for manual input.
 
