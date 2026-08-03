@@ -34,12 +34,13 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 | `prompts/shared/resume-extraction-prompt.md` | Shared first step for Country Finder, Salary Calculator, and Job Screener; produces `profile.md` in the consumer workspace |
 | `prompts/portal-finder/step1-portal-research.md` | Single step for Portal Finder; does live web research and groups portals by type (not scope) for a given country |
 | `prompts/job-screener/step1-match-analysis.md` | Single step for Job Screener; screens pasted JDs against `profile.md` with a deterministic decision waterfall, then drafts application writing |
-| `skills/data-validation-rules.md` | Cross-pipeline ingestion constraints; referenced at runtime by both data-ingestion steps |
+| `skills/data-validation-rules.md` | Cross-pipeline ingestion constraints; referenced at runtime by both data-validation steps |
 | `skills/evidence-quality-rules.md` | Confidence-lowering rules for vague or unsourced research claims; referenced at runtime by the scoring step |
 | `skills/exclusion-transparency-rules.md` | Every filtered-out item requires a specific, evidence-based reason; referenced at runtime by the scoring step |
-| `skills/situational-profile-questions.md` | Shared situational profile questions and save/reuse logic; referenced at runtime by CF step1 and SC step3 |
-| `agents/deep-reasoner.md` | Routes scoring, final ranking, international adjustment, and reality checks to Opus/high effort |
-| `agents/calculator.md` | Routes final salary table calculation to Opus/max effort |
+| `skills/situational-profile-questions.md` | Shared situational profile questions (location, citizenship, language, salary minimum, existing work authorization) and save/reuse logic; referenced at runtime by CF step1 and SC step3 |
+| `skills/sponsorship-threshold-rules.md` | Governs sponsorship salary threshold collection and comparison; referenced at runtime by SC steps 1, 4, and 5b |
+| `agents/deep-reasoner.md` | Routes scoring, final ranking, international adjustment, and final verification to Opus/high effort |
+| `agents/calculator.md` | Routes salary table calculation to Opus/max effort |
 | `_config.yml` | Jekyll + just-the-docs GitHub Pages site config; excludes plugin dirs (`agents/`, `commands/`, `prompts/`, `skills/`, `.claude/`) from the public site |
 | `.claude/helm/refactor-log.json` | Refactoring ledger — tracks open/fixed/skipped findings across runs; not source code |
 
@@ -47,7 +48,7 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 
 **Skill file pattern:** Skill files are not auto-loaded — they are referenced explicitly by the prompt files that need them (`Read and apply skills/...`). This is the single-source-of-truth for shared rules and logic; do not inline skill content in prompts.
 
-**Country Finder step6 (Final Ranking) always runs** — unlike every other optional Opus-routable step, it is never skipped, since it produces the pipeline's final result (the Priority Table). Only its Opus routing is a user choice. **Salary Calculator's step5 reality check remains fully optional** — Claude must ask and wait for explicit user confirmation before running it at all.
+**Country Finder step6 (Final Ranking) and Salary Calculator step5 (career ladder + final verification) both always run** — unlike every other optional Opus-routable step, neither is ever skipped or asked about, since each produces its pipeline's actual final result (the Priority Table; the audited/possibly-revised salary table). Only their Opus routing remains a user choice at each step.
 
 ## 5. Domain Rules
 
@@ -59,6 +60,10 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 - Country Finder step6's missing-candidate check compares Step 5 results against the full Step 2 candidate list (`cf-step2-candidates.md`, covering both tracks), not just what reached later steps, so a candidate dropped silently between steps is caught.
 - Salary Calculator step1 offers Country Finder's scored output (`cf-step6-final-ranking.md`, falling back to `cf-step5-scoring-results.md`) as a starting country list if either exists, always shown for confirmation rather than silently applied. Never `data/preferred-countries.md` for this — that's Country Finder's unscored search scope, not a result.
 - Country Finder step6 must save its Summary and Priority Table to `cf-step6-final-ranking.md`; if both it and `cf-step5-scoring-results.md` exist, step6's file is the one every later reader (Salary Calculator, a future session) should prefer, since it reflects any recalibration and carries the priority ranking.
+- Sponsorship salary thresholds (government-mandated minimums for employer-sponsored work-visa relocation) are handled entirely within Salary Calculator (step1 collects, step4 applies), not Country Finder. They are a hard eligibility flag, never folded into step3's international-candidate discount (a market-negotiation estimate) and never used to silently raise Safe or Stretch — the two facts are always shown side by side. Not applicable to remote/contractor arrangements, so this is scoped to sponsorship-relevant research only. If step5b recalibrates the table, the Legal Requirement column must be recomputed against the revised figures, not carried forward from step4. The column always shows both Annual and Monthly threshold equivalents in one cell (deriving whichever period wasn't originally reported via ×12/÷12), never just the reported figure.
+- Salary Calculator step4 (Table Calculation) saves its output file-only, with only a brief count shown in chat; step5b (Final Verification) is the sole point where the final table is actually shown, reprinting step4's unchanged table when it doesn't recalibrate — mirroring Country Finder's step5-file-only / step6-always-visible pattern. Step4 also orders its table to match `cf-step6-final-ranking.md`'s Priority Table when that file exists, falling back to alphabetical order otherwise.
+- Salary Calculator step3 reads `profile.md` and checks a visa route's education requirement against the candidate's actual degree(s) before treating it as a friction factor — never a generic assumption about the occupation as a class. Formal recognition of a specific degree or institution is a different, unverifiable-by-research question; it's noted as a process caveat in the per-country explanation, never asserted as pass/fail and never folded into the adjustment percentage.
+- The situational profile's 7th question (existing residency/work authorization) is never guessed — if a candidate's status for a given country isn't stated, Salary Calculator step3 treats her as not already resident there. When it is stated and matches a country being calculated, relocation friction, remote interview logistics, and perceived hiring risk are weighed lighter for that country, but sponsorship-specific friction (visa complexity, employer willingness to sponsor) is not — the two are independent, and being already resident only reduces the former.
 
 ## 6. Behavior Rules
 
@@ -67,7 +72,7 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 - Vague answers to criteria questions (e.g. "good," "reasonable," "flexible") are not accepted. Claude must ask for an exact number, currency, or clear yes/no before continuing.
 - Remote hire and visa sponsorship are separate tracks throughout Country Finder. Never blend them.
 - Salary research targets local-market compensation only. Exclude expat, FAANG-only, US-skewed, contractor, and equity-heavy data.
-- Opus routing for judgment-heavy steps (scoring, final ranking, international adjustment, reality checks) is user opt-in at each step — never assume automatic routing. This is separate from whether the step itself runs: Country Finder step6 always runs regardless of the Opus choice.
+- Opus routing for judgment-heavy steps (scoring, final ranking, international adjustment, final verification) is user opt-in at each step — never assume automatic routing. This is separate from whether the step itself runs: Country Finder step6 always runs regardless of the Opus choice.
 
 ## 7. Hard Safety Rules
 
@@ -83,6 +88,7 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 - **`docs/commands/*.md` serves dual purpose.** These files are plugin documentation AND live GitHub Pages site pages. Editing them changes both the repo docs and the public site simultaneously. Step detail pages live under `docs/commands/country-finder/` and `docs/commands/salary-calculator/`.
 - **Docs and prompts drift with no automated check.** `docs/commands/*.md` describes what a `prompts/*.md` file does, but nothing enforces that they stay in sync — editing one without the other is a silent, easy mistake (e.g. a doc page claiming a step reads a file the actual prompt never instructs it to read). Whenever a prompt's behavior changes, grep for its filename and any file paths it reads/writes across `docs/`, `commands/`, and other `prompts/` files in the same change, and update every match.
 - **`.claude/helm/refactor-log.json` is not source code.** It is the refactor command's memory ledger (moved here from `.claude/refactor-log.json`). Do not include it in any scan, analysis, or refactoring pass.
+- **`data/country-wealth-tiers.md` is currently unreferenced.** It's a tracked, shipped plugin dataset, but no prompt or skill reads it anymore — Country Finder step2's base-logic simplification dropped its fallback role. Confirm with the user before removing it; they may still be using it manually or intend to reintroduce it.
 
 ## Rules
 
@@ -94,4 +100,4 @@ At the start of every session, check whether the paths above exist on this machi
 If either is missing, inform the user: "helm rules are referenced in CLAUDE.md but the
 plugin is not installed on this machine. Install it with: /plugin install claude-helm"
 
-<!-- last-reviewed: 80901f83131fc363d1ca02f341f75f6b28b30c99 -->
+<!-- last-reviewed: df9b354442e3e01790ae59f7c6eda2757e6008bf -->
