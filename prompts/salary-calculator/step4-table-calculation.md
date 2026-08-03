@@ -4,6 +4,8 @@ Check whether sc-step3-adjustment-values.md exists in the workspace. If it does 
 
 If both files exist, read them. Using the adjustment values from sc-step3-adjustment-values.md and the salary data from sc-step2-salary-data.md, calculate adjusted expected salary ranges for each country.
 
+Read and apply skills/sponsorship-threshold-rules.md for the Legal Requirement column described below.
+
 Only calculate countries that have BOTH:
 
 - salary data
@@ -11,7 +13,9 @@ Only calculate countries that have BOTH:
 
 Skip countries with missing data.
 
-Keep the same country order as the salary dataset from Step 2.
+Ordering: check whether cf-step6-final-ranking.md exists in the workspace.
+- If it exists, read its Priority Table and order the countries in this step's output to match that table's order, top to bottom.
+- If it does not exist, order countries alphabetically by country name (A→Z).
 
 Definitions
 
@@ -31,40 +35,49 @@ Adjusted Midpoint = Market Midpoint x (1 - Adjustment %)
 
 Fixed = Adjusted Midpoint
 
-3. Range Calculation
+3. Range Calculation (Annual only)
 
-For each Fixed value:
+For each Annual Fixed value:
 
 - Lower Range = Fixed x 0.95
 - Upper Range = Fixed x 1.10
 
 4. Monthly Calculation
 
-Monthly = Annual / 12
+Monthly = Annual Fixed / 12 — a single reference value, not a range. Monthly values are a reference only and may not represent actual monthly payslips in countries using 13th or 14th salary payments.
+
+5. Legal Requirement Comparison
+
+For each country with a usable sponsorship salary threshold (per skills/sponsorship-threshold-rules.md), compare it against the unrounded Fixed values for both Safe and Stretch — this comparison happens before the display rounding in the Formatting Rules below, never after, since rounding could flip a borderline result. Convert the threshold to match whichever period (Annual or Monthly) the comparison needs.
+
+File format (write this structure to sc-step4-salary-table.md — this is not what you show in chat, see below):
 
 Show Your Work
 
-Before producing the final table, show the calculation for each country: Market Midpoint, Adjustment % applied, and resulting Adjusted Midpoint, for both Safe and Stretch. This lets me verify the math before you finalize the table.
+Before producing the table, work through the calculation for each country: Market Midpoint, Adjustment % applied, and resulting Adjusted Midpoint, for both Safe and Stretch.
 
 Formatting Rules
 
-- After showing the calculations, output ALL countries in ONE combined table.
-- Group Annual and Monthly rows together for each country.
-- Use ONLY these columns:
+- After showing the calculations, format the final salary data as ONE Markdown table with ONE row per country.
+- Use ONLY these columns, in this exact order:
 
-| Country | Period | Safe (Range) | Safe (Fixed) | Stretch (Range) | Stretch (Fixed) |
+| Country | Legal Requirement | 🛡️ Safe Annual | 🚀 Stretch Annual | 🛡️ Safe Monthly | 🚀 Stretch Monthly |
 
-Country column must include the currency code.
+- Place the country's flag emoji before its name, and include the currency code. Example: `🇩🇪 Germany (EUR)`.
+- In each Annual column, show the Fixed target first, then its Range in parentheses. Example: `65,500 (62,000–72,000)`.
+- Each Monthly column shows only the single Monthly value (Annual Fixed ÷ 12) — no range.
+- Right-align the Legal Requirement, Safe Annual, Stretch Annual, Safe Monthly, and Stretch Monthly columns.
+- Do not add footnotes, revision markers, notes, explanations, or additional columns.
 
-Examples:
-
-- United States (USD)
-- Australia (AUD)
-- Germany (EUR)
+Legal Requirement column:
+- Em dash (—) if there is no usable sponsorship salary threshold for this country (per skills/sponsorship-threshold-rules.md — this covers both "no threshold exists" and "could not confirm one").
+- Otherwise, show both period equivalents in one cell: the Annual figure first, then the Monthly figure in parentheses with a "/mo" suffix — e.g. `45,300 (3,775/mo)`. Neither figure is rounded.
+- If either Safe or Stretch Fixed value falls short of the threshold (at either period), append a single ⚠️ at the end of the cell — the warning applies to the country as a whole, not to one period only.
+- Never adjust Safe or Stretch because of this column — the two facts are shown side by side, never merged.
 
 Do NOT repeat currency symbols or currency codes inside salary values.
 
-Salary values must:
+Safe and Stretch salary values must:
 
 - use local currency only
 - contain plain formatted numbers only
@@ -74,20 +87,16 @@ Salary values must:
 
 Recommended rounding:
 
-- Annual: nearest 500
+- Annual (Fixed and Range): nearest 500
 - Monthly: nearest 50
-
-Each country must contain exactly two rows:
-
-- Row 1 = Annual
-- Row 2 = Monthly
 
 Example:
 
-| Country | Period | Safe (Range) | Safe (Fixed) | Stretch (Range) | Stretch (Fixed) |
-|---|---|---|---|---|---|
-| United States (USD) | Annual | 130,000–150,000 | 140,000 | 160,000–190,000 | 175,000 |
-| | Monthly | 10,800–12,500 | 11,700 | 13,300–15,800 | 14,600 |
+| Country | Legal Requirement | 🛡️ Safe Annual | 🚀 Stretch Annual | 🛡️ Safe Monthly | 🚀 Stretch Monthly |
+|---|---:|---:|---:|---:|---:|
+| 🇩🇪 Germany (EUR) | 45,300 (3,775/mo) | 59,500 (56,500–65,500) | 74,500 (71,000–82,000) | 4,950 | 6,200 |
+| 🇳🇱 Netherlands (EUR) | 63,972 (5,331/mo) ⚠️ | 56,500 (53,500–62,000) | 70,000 (66,500–77,000) | 4,700 | 5,850 |
+| 🇺🇸 United States (USD) | — | 140,000 (133,000–154,000) | 175,000 (166,500–192,500) | 11,650 | 14,600 |
 
 After the table, output:
 
@@ -98,7 +107,9 @@ Summary
 
 If any countries are skipped, list them with the reason.
 
-Save the final table and summary to sc-step4-salary-table.md in the workspace.
+Save the shown work, table, and summary to sc-step4-salary-table.md in the workspace.
+
+In your chat response, do not reproduce the shown calculations or the table — Step 5 always runs next and is the point where the final table is presented to me. Instead, tell me in a few lines: how many countries were calculated and skipped, and that the full results are saved to sc-step4-salary-table.md.
 
 Do not perform any additional analysis, ranking, recommendations, or commentary.
 

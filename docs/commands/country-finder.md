@@ -23,19 +23,15 @@ Run it once per session. Claude resumes automatically if a `.country-finder-stat
 flowchart TD
   Start([User runs /country-finder]) --> Profile{profile.md\nexists?}
   Profile -->|no| Extract[Resume extraction —\nwait for upload and confirmation]
-  Profile -->|yes| Sit
-  Extract --> Sit
-
-  Sit{situational-profile.md\nexists?} -->|no| SitQ[Collect location, citizenship,\nlanguage, optional salary minimum — save to file]
-  Sit -->|yes| State
-  SitQ --> State
+  Profile -->|yes| State
+  Extract --> State
 
   State{.country-finder-state.json\nexists?} -->|yes| Resume[Inform user: resuming from step N]
   State -->|no| S1
   Resume --> S1
 
-  S1[Step 1: Criteria intake\ntimezone · timeline · preferences] --> S2
-  S2[Step 2: Country discovery\npreferred/wealth-tier universe · region-batch sub-agents · timezone mark] --> S3
+  S1[Step 1: Criteria intake\ntimezone · timeline · preferences\nAlso collects situational profile\nif not already saved] --> S2
+  S2[Step 2: Country discovery\npreferred-countries or Include list · region-batch sub-agents · timezone mark] --> S3
   S3[Step 3: Research prompt generator\nready-to-copy prompts per country] --> S4
   S4[Step 4: Data validation\none country at a time] --> S5
   S5[Step 5: Scoring\ndeep-reasoner agent] --> S6
@@ -49,17 +45,13 @@ flowchart TD
 
 Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resume-extraction-prompt.md`, waits for the user to upload their resume, and waits for explicit confirmation of the extracted profile before continuing. The profile is reused on all subsequent runs without re-extraction.
 
-### Situational profile
-
-Checks for `situational-profile.md`. If absent, asks six questions: current location, citizenship, any known immigration friction tied to that citizenship, languages spoken, required work language, and minimum acceptable monthly salary (or "not specified"). Saves answers to `situational-profile.md` for reuse across sessions and pipelines.
-
 ### State check
 
 Checks for `.country-finder-state.json`. If found, reads `last_completed_step` and informs the user which step will resume. If absent, creates the file with `last_completed_step: 0` and starts from Step 1. Updates the file after each step completes.
 
 ### [Step 1 — Criteria intake](country-finder/step1-criteria-intake.html)
 
-Collects requirements for both tracks. Remote track: maximum timezone difference (or "no limit" to skip). Sponsorship track: relocation timeline. Relocation is assumed — the question is not asked. Country preferences: any countries or regions to include or exclude from both tracks. Vague answers are rejected — specific values or explicit "no limit" / "not specified" are required.
+Collects requirements for both tracks. Remote track: maximum timezone difference (or "no limit" to skip). Sponsorship track: relocation timeline. Relocation is assumed — the question is not asked. Country preferences: any countries or regions to include or exclude from both tracks. Vague answers are rejected — specific values or explicit "no limit" / "not specified" are required. Also checks for `situational-profile.md` and, if it doesn't exist yet, asks seven questions (current location, citizenship, any known immigration friction tied to that citizenship, languages spoken, required work language, minimum acceptable monthly salary, and existing residency or work authorization for any target country) and saves the answers for reuse across sessions and pipelines — never re-asked if the file already exists.
 
 ### [Step 2 — Country discovery](country-finder/step2-country-discovery.html)
 

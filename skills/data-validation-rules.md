@@ -1,6 +1,6 @@
 ---
 name: Data Validation Rules
-description: Governs data ingestion behavior across Country Finder and Salary Calculator — duplicate detection, missing-field detection, and rejection handling whenever real research data is being stored.
+description: Governs data validation behavior across Country Finder and Salary Calculator — duplicate detection, missing-field detection, and rejection handling whenever real research data is being stored.
 ---
 
 # Data Validation Rules
