@@ -3,7 +3,7 @@
 ## 1. Project Identity
 
 **Name:** claude-compass  
-**Version:** 1.9.0  
+**Version:** 1.10.0  
 **Type:** Claude Code plugin (no runtime code — pure markdown)  
 **Purpose:** Four slash commands for globally-minded IT/tech job seekers: discover countries for remote hire or visa sponsorship, calculate realistic local-market salaries, find verified job portals per country, and screen job descriptions against the candidate's resume. Biased toward the IT/tech industry (the target audience) but not toward any single IT role. Grounded in user-provided research, never in Claude's assumptions.  
 **Blast radius:** Low. No external services, no databases, no code execution. Changes affect prompt behavior in consumer workspaces only.
