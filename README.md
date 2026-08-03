@@ -43,7 +43,7 @@ Type `/` in a **Cowork** task. All four commands appear listed under the **Claud
 |---|---|
 | [`/country-finder`](https://myowinthein.github.io/claude-compass/docs/commands/country-finder.html) | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
 | [`/salary-calculator`](https://myowinthein.github.io/claude-compass/docs/commands/salary-calculator.html) | Calculate realistic local-market salaries for your target role. |
-| [`/portal-finder`](https://myowinthein.github.io/claude-compass/docs/commands/portal-finder.html) | Find verified job portals for IT/tech roles in a specific country, grouped and tagged. |
+| [`/portal-finder`](https://myowinthein.github.io/claude-compass/docs/commands/portal-finder.html) | Find verified job portals for IT/tech roles in a specific country, grouped by type. |
 | [`/job-screener`](https://myowinthein.github.io/claude-compass/docs/commands/job-screener.html) | Screen a job description against your resume and get a structured apply / maybe / skip verdict. |
 
 Judgment-heavy and arithmetic-heavy steps can be routed to specialist subagents — Claude asks at each step whether to use Opus.

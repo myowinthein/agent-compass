@@ -1,11 +1,11 @@
 ---
 name: Portal Finder
-description: Finds verified, reliable job portals for IT/tech roles in a specified country. Grouped by type and tagged with verified remote, sponsorship, and no-account attributes. Accepts an optional country argument; asks if omitted.
+description: Finds verified, reliable job portals for IT/tech roles in a specified country. Grouped by type. Accepts an optional country argument; asks if omitted.
 ---
 
 # /claude-compass:portal-finder [country]
 
-Find verified job portals for IT/tech roles in a specified country, grouped by type and tagged with verified attributes.
+Find verified job portals for IT/tech roles in a specified country, grouped by type.
 
 ## Before starting
 
