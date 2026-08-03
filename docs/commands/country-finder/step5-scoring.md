@@ -77,7 +77,7 @@ If the stored research uses vague or unquantified language ("sometimes," "genera
 
 ## Exclusion transparency rule
 
-Every country that was on a Step 2 candidate list but does not appear in the final results must be listed separately with a specific, evidence-based reason. "General reputation" is not an acceptable reason. If no data was ever stored for that country and track, that is stated plainly.
+Every country actually scored on a track but excluded from the results must be listed separately with a specific, evidence-based reason. "General reputation" is not an acceptable reason. If no data was ever stored for that country and track, that is stated plainly. Checking the full Step 2 candidate list for countries that never reached scoring at all is Step 6's Missing Candidate Check, not this rule — Step 5 never reads `cf-step2-candidates.md`.
 
 ## File format
 

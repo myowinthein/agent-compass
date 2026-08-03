@@ -61,7 +61,7 @@ Each job description is screened into these sections:
 - a legally or contractually mandatory certification the candidate does not hold
 - the role's core technology or stack is one the candidate does not have — not merely one item missing from a longer required list
 
-Years-of-experience gaps are not hard blockers unless the JD states a hard minimum and the gap is large. Unclear-if-mandatory requirements are treated as cons, not blockers. Unmet preferred qualifications are labeled "preferred, not required" and never marked 🚫.
+Years-of-experience gaps are never hard blockers, regardless of the size of the gap or whether the JD states a hard minimum — a shortfall is always a normal con instead. More experience than required is likewise never a blocker unless the JD states a maximum. Unclear-if-mandatory requirements are treated as cons, not blockers. Unmet preferred qualifications are labeled "preferred, not required" and never marked 🚫.
 
 ## Missing information checklist
 
@@ -79,7 +79,7 @@ An item unstated here is unknown, not a negative — it can never be a 🚫 bloc
 
 ## Form questions and application writing
 
-When you paste application form questions or ask Claude to write anything for the application (emails, answers, cover letters, forms, or messages), Claude answers using a fixed set of writing guidelines: plain English, short and compact, a calm and slightly detached tone, no unnecessary hyphens, and no overpraising the company.
+When you paste application form questions or ask Claude to write anything for the application (emails, answers, cover letters, forms, or messages), Claude answers using a fixed set of writing guidelines: plain English, short and compact, a calm and slightly detached tone, no unnecessary hyphens, no overpraising the company, and writing as someone capable of doing the job who is also comfortable if the opportunity doesn't proceed.
 
 ## Drift resistance
 
