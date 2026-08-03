@@ -1,5 +1,5 @@
 title: Claude Compass
-description: A Claude Cowork plugin for globally-minded job seekers.
+description: A Claude Cowork plugin for globally-minded IT/tech job seekers.
 url: "https://myowinthein.github.io"
 baseurl: "/claude-compass"
 
@@ -31,5 +31,6 @@ exclude:
   - .claude/
   - agents/
   - commands/
+  - data/
   - prompts/
   - skills/
