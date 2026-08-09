@@ -31,7 +31,7 @@ flowchart TD
   Resume --> S1
 
   S1[Step 1: Criteria intake\ntimezone · timeline · preferences\nAlso collects situational profile\nif not already saved] --> S2
-  S2[Step 2: Country discovery\npreferred-countries or Include list · region-batch sub-agents · timezone mark] --> S3
+  S2[Step 2: Country discovery\nInclude list or shipped default · region-batch sub-agents · timezone mark] --> S3
   S3[Step 3: Research prompt generator\nready-to-copy prompts per country] --> S4
   S4[Step 4: Data validation\none country at a time] --> S5
   S5[Step 5: Scoring\ndeep-reasoner agent] --> S6
@@ -55,7 +55,7 @@ Collects requirements for both tracks. Remote track: maximum timezone difference
 
 ### [Step 2 — Country discovery](country-finder/step2-country-discovery.html)
 
-Builds a single candidate universe — your saved `data/preferred-countries.md` if it exists, otherwise your Step 1 Include list, otherwise Claude stops and asks you to list the countries you want considered — then researches it in region-batched sub-agents that check each country for Remote and Sponsorship suitability together. A timezone limit from Step 1 marks (not removes) out-of-range countries as unsuitable for Remote only; a salary minimum from the situational profile is folded into the Remote check.
+Builds a single candidate universe — your Step 1 Include list if one was given, otherwise the shipped `data/default-preferred-countries.md` (Claude shows it grouped by continent and asks whether to proceed with it or provide your own countries, then waits) — then researches it in region-batched sub-agents that check each country for Remote and Sponsorship suitability together. A timezone limit from Step 1 marks (not removes) out-of-range countries as unsuitable for Remote only; a salary minimum from the situational profile is folded into the Remote check.
 
 ### [Step 3 — Research prompt generator](country-finder/step3-research-prompt-generator.html)
 
