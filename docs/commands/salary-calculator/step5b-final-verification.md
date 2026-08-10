@@ -7,7 +7,7 @@ nav_order: 5
 
 # Step 5 — Final Verification
 
-An independent audit of the salary table from Step 4. Always runs — this is the only step in the pipeline with no skip option, since it produces the pipeline's final, human-facing result. Step 4's own output is file-only, so this is the one point where the actual salary numbers are shown to you. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
+An independent audit of the salary table from Step 4. Always runs — this is the only step in the pipeline with no skip option, since it produces the pipeline's final result. The four detailed checks are file-only, like Step 4's own work — but the resulting final table is the one thing this step does show you, copied from the file into chat, table only with no surrounding commentary. Whether recalibration happened is stated as a plain fact in the completion message afterward, not as commentary attached to the table. Everything (checks, verdict, and table) is written to a single file, `sc-step5b-final-verification.md` — this step never creates more than one file. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
 
 ## Flow
 
@@ -26,11 +26,12 @@ flowchart TD
   C2 --> C3[3. Country-by-country verification\nSafe positioning · Stretch positioning\nrecruiter comfort · overseas hiring realism]
   C3 --> C4[4. Framework recommendation\nIs Safe / Stretch philosophy still appropriate?]
   C4 --> Recal{Evidence supports\nrecalibration?}
-  Recal -->|yes| Revise[5. Recalibrate — revise affected countries\nRecompute Legal Requirement column\nShow revised table in chat\nSave to sc-step5b-salary-table.md]
-  Recal -->|no| Confirm2[Confirm existing framework is appropriate\nShow sc-step4-salary-table.md's table\nin chat as the final result — no new file]
-  Revise --> SaveAudit[Save full audit to\nsc-step5b-final-verification.md — always]
-  Confirm2 --> SaveAudit
-  SaveAudit --> Done([Completion message —\nresults delivered])
+  Recal -->|yes| Revise[5. Recalibrate — revise affected countries\nRecompute Legal Requirement column\nRevised table becomes the final table]
+  Recal -->|no| Confirm2[Confirm existing framework is appropriate\nCopy Step 4's table in unchanged\nas the final table]
+  Revise --> SaveAll[Write checks, verdict, and\nfinal table into ONE file —\nsc-step5b-final-verification.md]
+  Confirm2 --> SaveAll
+  SaveAll --> ShowTable[Show final table in chat\ncopied from the file —\ntable only, no commentary]
+  ShowTable --> Done([Completion message])
 ```
 
 ## What it reads
@@ -42,9 +43,11 @@ flowchart TD
 
 All inputs come from workspace files, so the audit is safe to route to the isolated deep-reasoner subagent. The career ladder is confirmed on your current model before any Opus handoff, so the subagent never has to pause for interactive confirmation.
 
-All four checks below, the recalibration verdict, and the resulting final table (whether unchanged or revised) are shown directly in chat, not just saved to file — this is the pipeline's final step, so the audit itself, and the numbers it confirms, are the human-facing result.
+All four checks and the recalibration verdict are saved to file only — not reproduced in chat, since the raw reasoning would overwhelm rather than help. The resulting final table (whether unchanged or revised) is written into that same file, then also shown directly in chat, copied from what was just saved — table only, no surrounding commentary.
 
 ## The four checks
+
+_(File-only — written to `sc-step5b-final-verification.md`, not shown in chat. The final table further down is the exception.)_
 
 **1. Candidate positioning**
 
@@ -72,54 +75,23 @@ Uses approximate percentile bands (50–60%, 60–70%, etc.) — no false precis
 
 Determines whether the Safe/Stretch philosophy, employer segmentation, and percentile assumptions remain appropriate. If improvements are recommended, explains what assumption caused the issue and what structural change is recommended.
 
-## Table format
-
-Whether it's the unchanged table from Step 4 or a revised one, the table shown to you follows this format — one Markdown table with one row per country:
-
-| Country | Legal Requirement | 🛡️ Safe Annual | 🚀 Stretch Annual | 🛡️ Safe Monthly | 🚀 Stretch Monthly |
-|---|---:|---:|---:|---:|---:|
-| 🇩🇪 Germany (EUR) | 45,300 (3,775/mo) | 59,500 (56,500–65,500) | 74,500 (71,000–82,000) | 4,950 | 6,200 |
-| 🇳🇱 Netherlands (EUR) | 63,972 (5,331/mo) ⚠️ | 56,500 (53,500–62,000) | 70,000 (66,500–77,000) | 4,700 | 5,850 |
-| 🇺🇸 United States (USD) | — | 140,000 (133,000–154,000) | 175,000 (166,500–192,500) | 11,650 | 14,600 |
-
-- The country's flag emoji is placed before its name, and the currency code is included, e.g. `🇩🇪 Germany (EUR)`.
-- Each Annual column shows the Fixed target first, then its Range in parentheses.
-- Each Monthly column shows only the single Monthly value (Annual Fixed ÷ 12) — no range. Monthly values are a reference only and may not represent actual monthly payslips in countries using 13th or 14th salary payments.
-- Values in local currency only — no USD conversion.
-- Annual (Fixed and Range) rounded to nearest 500, Monthly to nearest 50.
-- No currency symbols inside salary values.
-- Legal Requirement, Safe Annual, Stretch Annual, Safe Monthly, and Stretch Monthly are right-aligned.
-- No footnotes, revision markers, notes, explanations, or additional columns.
-- Countries appear in the same order as Step 4's table (matching `cf-step6-final-ranking.md`'s Priority Table if it exists, otherwise alphabetical).
-
-**Legal Requirement column:**
-
-| State | Shown as |
-|---|---|
-| No usable threshold (none exists, or couldn't be confirmed as a comparable number) | — (em dash) |
-| Threshold exists, both Safe and Stretch clear it | Both period equivalents in one cell — Annual figure first, Monthly in parentheses with a "/mo" suffix, e.g. `45,300 (3,775/mo)`. Neither figure is rounded. |
-| Threshold exists, either Safe or Stretch falls short | Same combined format, with a single ⚠️ appended once at the end of the cell |
-
-Safe and Stretch are never adjusted because of this column — it's shown alongside them as a separate fact, not merged into the calculation.
-
 ## Recalibration
 
 Only if the evidence genuinely supports it:
 - Affected countries are revised upward or downward
-- A revised table is generated using the format above, **including the Legal Requirement column** — it is recomputed against the revised Safe and Stretch figures, not carried forward from Step 4. Recalibration can push a country below a threshold it previously cleared, or above one it previously missed.
+- A revised table is generated using the same format as [Step 4](step4-table-calculation.html#table-format), **including the Legal Requirement column** — it is recomputed against the revised Safe and Stretch figures, not carried forward from Step 4. Recalibration can push a country below a threshold it previously cleared, or above one it previously missed.
 - Priority is given to recruiter comfort, interview conversion, sponsorship realism, and realistic overseas positioning
-- The revised table is shown directly in chat, then saved to `sc-step5b-salary-table.md` — this becomes the final table, superseding Step 4's. `sc-step4-salary-table.md` is left untouched as the pre-audit record.
+- This revised table becomes the final table.
 
-If recalibration is not supported, the existing framework is explicitly confirmed as appropriate and no revised table is generated — but the table from `sc-step4-salary-table.md` is still shown directly in chat as the confirmed final result. No new file is created.
+If recalibration is not supported, the existing framework is explicitly confirmed as appropriate — Step 4's table is copied in unchanged as the final table, no separate revision is drafted.
 
-Regardless of whether recalibration happened, the full audit (all four checks plus the recalibration verdict) is always saved to `sc-step5b-final-verification.md` — this is the permanent record of the audit itself, distinct from whichever salary table ends up being final.
+Either way, the resulting final table — unchanged or revised — is written into `sc-step5b-final-verification.md`, in the same file as the four checks and the recalibration verdict. `sc-step4-salary-table.md` is left untouched as the pre-audit record. This step never creates a second file.
 
 ## Output
 
-- `sc-step5b-final-verification.md` — always created; the full audit and recalibration verdict.
-- Salary table: `sc-step4-salary-table.md` if no recalibration, or `sc-step5b-salary-table.md` if recalibrated (superseding Step 4's file).
+- `sc-step5b-final-verification.md` — the only file this step writes. Always contains the full audit (all four checks, file-only) plus the recalibration verdict and the resulting final table (unchanged or revised).
 
-Either way, Claude closes with a completion message confirming the pipeline is done and naming both files.
+The final table is also shown directly in chat, copied from the file — table only, no surrounding commentary. The four checks themselves are not reproduced in chat. Claude closes with a completion message naming how many countries were audited, whether recalibration occurred, and confirming where the full audit is saved.
 
 ## Stop condition
 
