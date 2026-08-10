@@ -28,7 +28,7 @@ flowchart TD
   Agents --> Append[Append each result to\nsc-step1-salary-research.md]
   Append --> AllDone{All agents\ncomplete?}
   AllDone -->|no| Append
-  AllDone -->|yes| Done([Step complete\nWait for main command])
+  AllDone -->|yes| Done([Continue automatically\ninto Step 2])
 ```
 
 ## What it reads
@@ -72,4 +72,4 @@ Results are appended to `sc-step1-salary-research.md` in the workspace as each a
 
 ## Stop condition
 
-Once all results are saved, Claude stops and waits for the main command before continuing to Step 2.
+Claude stops and waits at two points: the country-list question (if Country Finder's output exists or none was given cold) and the manual-research fallback (if isolated sub-agents aren't available). Otherwise, once all results are saved, Claude continues automatically into Step 2 within the same response, without waiting for a new message.

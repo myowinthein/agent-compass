@@ -38,5 +38,6 @@ After finishing each step below, update last_completed_step and updated_at in th
 ## Important
 
 - If any step file tells you to stop and wait for me, actually stop and wait. Never fill in a placeholder, answer a question, or assume data on my behalf.
+- If a step file tells you to continue automatically into the next step, do exactly that — within the same response, without stopping for a new message. Only steps 1, 2 (conditionally), and 3 (conditionally, on the manual-research fallback) genuinely need to stop and wait; every other step chains straight into the next.
 - If uncertain whether you are following a rule correctly, ask me rather than proceeding on a best guess.
 - Do not skip, combine, or summarize steps to save time.

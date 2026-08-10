@@ -7,7 +7,7 @@ nav_order: 1
 
 # Step 1 — Criteria intake
 
-Collects your hard requirements for both tracks before any research begins. Claude stops and waits after this step — it does not proceed to discovery until the main command continues.
+Collects your hard requirements for both tracks before any research begins. Claude stops and waits only while asking questions — once everything is answered and saved, it continues straight into Step 2 within the same response, without waiting for a new message.
 
 ## Flow
 
@@ -28,7 +28,7 @@ flowchart TD
   P2[Phase 2: Sponsorship criteria\nrelocation timeline] --> P3
 
   P3[Phase 3: Country preferences\nincluded and excluded] --> Save[Save criteria to\ncf-step1-criteria.md]
-  Save --> Stop([Step complete\nWait for main command])
+  Save --> Continue([Continue automatically\ninto Step 2])
 ```
 
 ## What it reads
@@ -73,4 +73,4 @@ Relocation is assumed — Claude does not ask whether you are open to relocating
 
 ## Stop condition
 
-Claude stops after all phases are answered and waits for the main command before continuing to Step 2.
+Claude only stops while the situational-profile and criteria questions are still being asked — vague answers are rejected and re-asked. Once every phase is answered and the criteria file is saved, Claude continues automatically into Step 2 within the same response, without waiting for a new message.

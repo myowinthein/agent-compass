@@ -26,4 +26,4 @@ Skipped — malformed or unrecognizable: [country or "none"], with the issue for
 Skipped — missing required tier or sources: [country or "none"], with what was missing for each.
 Skipped — duplicate: [country or "none"].
 
-Step complete — stop here and wait for the main command.
+This data is saved to sc-step2-salary-data.md, which Step 3 will use next. Continue automatically into Step 3 now, in this same response — do not stop and wait here.

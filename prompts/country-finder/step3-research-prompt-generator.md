@@ -61,8 +61,6 @@ After generating these prompts, run each one as a separate, isolated research ta
 - Each agent receives only one country's prompt. Its only job is to run that research and return the results for that one country. It must not answer, draft, or save results for any other country.
 - Each agent works from its own prompt only, with no access to your prior reasoning in this conversation and no access to research or conclusions reached for other countries.
 
-Append each country's results to cf-step3-country-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and wait for me to bring back the results myself before continuing.
+Append each country's results to cf-step3-country-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and stop here — wait for me to bring back the results myself before continuing.
 
-Once all results are saved to cf-step3-country-research.md, tell me in a few lines how many countries were researched and that the full per-country findings are saved there for Step 4 to validate and store. Do not reproduce the per-country research findings in this summary.
-
-Step complete — stop here and wait for the main command.
+Once all results are saved to cf-step3-country-research.md, tell me in a few lines how many countries were researched and that the full per-country findings are saved there for Step 4 to validate and store. Do not reproduce the per-country research findings in this summary. Then continue automatically into Step 4 now, in this same response — do not stop and wait here.
