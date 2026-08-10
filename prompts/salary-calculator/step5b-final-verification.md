@@ -19,7 +19,9 @@ Framework Definitions (used by the checks below)
 
 The salary data (with its sources and exclusions) and the international adjustment values are already in the files you read above — work from those directly rather than from any assumed methodology.
 
-Show all four checks below, and the recalibration verdict, directly in your chat response — not just in whatever gets saved to file. This is the pipeline's final step, so this audit is the actual human-facing result, not an intermediate artifact. Also show the resulting final table directly in your chat response — whether that's the unchanged sc-step4-salary-table.md or a revised table — since Step 4's own output is file-only and this is the one point where the actual numbers are surfaced to me.
+Save all four checks below and the recalibration verdict to file only — do not reproduce that detailed reasoning in your chat response, since it would overwhelm rather than help. The resulting final table is different: show it directly in your chat response too, copied from what you save to file — table only, no surrounding commentary. This is the one thing in this step you do show me — the four checks themselves stay file-only, and whether recalibration happened is stated as a plain fact in the completion message, not as extra commentary around the table.
+
+File format (write the following structure, including the final table, to sc-step5b-final-verification.md — this is the only file this step writes; the four checks are file-only, see below for what also goes in chat):
 
 ---
 
@@ -157,13 +159,15 @@ Only if the evidence genuinely supports recalibration:
 - prioritize broad market achievability
 - prioritize realistic overseas positioning
 
-If recalibration is not supported, explicitly state that the existing framework remains appropriate and do not generate a revised salary table. Show the table from sc-step4-salary-table.md directly in your chat response as the confirmed final result — do not create a new file, since sc-step4-salary-table.md already contains it.
+If recalibration is not supported, explicitly state that the existing framework remains appropriate and do not generate a revised salary table. Copy the table from sc-step4-salary-table.md into this file as the final table, unchanged.
 
-If recalibration is required, generate a revised table using the same format and country order as Step 4 — including the Legal Requirement column. Read and apply skills/sponsorship-threshold-rules.md and recompute that column against the revised Safe and Stretch Fixed values, using the same threshold data from Step 1. A country's Legal Requirement result from Step 4 does not carry forward automatically — recalibration can push a figure below a threshold it previously cleared, or above one it previously missed, so it must be re-evaluated against whatever the revised figures actually are. Show this revised table directly in your chat response, then save it to sc-step5b-salary-table.md in the workspace — this becomes the final table, superseding sc-step4-salary-table.md; do not overwrite that file, since it's the pre-audit record.
+If recalibration is required, generate a revised table using the same format and country order as Step 4 — including the Legal Requirement column. Read and apply skills/sponsorship-threshold-rules.md and recompute that column against the revised Safe and Stretch Fixed values, using the same threshold data from Step 1. A country's Legal Requirement result from Step 4 does not carry forward automatically — recalibration can push a figure below a threshold it previously cleared, or above one it previously missed, so it must be re-evaluated against whatever the revised figures actually are. This revised table becomes the final table.
 
-Always save the full audit — all four checks and the recalibration verdict, whichever way it went — to sc-step5b-final-verification.md in the workspace. This happens regardless of whether recalibration occurred; it is the permanent record of the audit itself, separate from whichever salary table ends up being final.
+Either way — unchanged or revised — write the resulting final table into sc-step5b-final-verification.md, in the same file as the four checks and the recalibration verdict. sc-step4-salary-table.md is left untouched as the pre-audit record; this step never creates any other file. sc-step5b-final-verification.md is the only file this step writes.
 
-After saving (or after confirming no revision was needed), tell me the pipeline is complete: if revised, "Salary Calculator is complete. The audit is saved to sc-step5b-final-verification.md, and the revised table is saved to sc-step5b-salary-table.md — this supersedes the earlier one from Step 4." If not revised, "Salary Calculator is complete. The audit is saved to sc-step5b-final-verification.md. sc-step4-salary-table.md remains the final table."
+After saving, show the final table directly in your chat response — copied from what you just wrote to the file, same format. Output only the table — no surrounding commentary, and do not reproduce the four detailed checks themselves in chat.
+
+Then tell me the pipeline is complete: if revised, "Salary Calculator is complete. [N] countries audited, recalibration applied — see the table above. Full audit saved to sc-step5b-final-verification.md." If not revised, "Salary Calculator is complete. [N] countries audited, no recalibration needed — see the table above. Full audit saved to sc-step5b-final-verification.md."
 
 Overall Principles
 

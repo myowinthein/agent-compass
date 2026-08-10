@@ -77,4 +77,4 @@ After generating these prompts, run each one as a separate, isolated research ta
 
 Append each country's results to sc-step1-salary-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and stop here — wait for me to bring back the results myself before continuing.
 
-Once all results are saved to sc-step1-salary-research.md, continue automatically into Step 2 now, in this same response — do not stop and wait here.
+Once all results are saved to sc-step1-salary-research.md, tell me in a few lines: how many countries were researched, and that the full results are saved for Step 2 to validate and store. Do not reproduce the per-country research findings in this summary. Then continue automatically into Step 2 now, in this same response — do not stop and wait here.
