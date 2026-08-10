@@ -61,4 +61,4 @@ Issues and pull requests are welcome at [github.com/myowinthein/claude-compass/i
 
 [MIT](https://github.com/myowinthein/claude-compass/blob/main/LICENSE)
 
-<!-- last-reviewed: df9b354442e3e01790ae59f7c6eda2757e6008bf -->
+<!-- last-reviewed: 0db57abc536b929c52e12ed4aa460d700b71c8c7 -->
