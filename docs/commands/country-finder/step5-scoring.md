@@ -39,7 +39,7 @@ flowchart TD
   SNext -->|yes| Spons
   SNext -->|no| Save[Save full results\nto cf-step5-scoring-results.md]
   Save --> Brief[Tell user a brief\nscored/excluded count per track]
-  Brief --> Done([Step complete\nWait for main command])
+  Brief --> Done([Continue automatically\ninto Step 6])
 ```
 
 ## What it reads
@@ -103,4 +103,4 @@ Full results are saved to `cf-step5-scoring-results.md` in the workspace. Step 6
 
 ## Stop condition
 
-After outputting results, Claude stops and waits for the main command, which then proceeds to Step 6 (Final Ranking) — it always runs and is never asked about.
+There is no interactive checkpoint in this step. After outputting results, Claude continues automatically into Step 6 (Final Ranking) within the same response, without waiting for a new message — it always runs and is never asked about.

@@ -48,4 +48,4 @@ Save the full scoring output to cf-step5-scoring-results.md in the workspace.
 
 In your chat response, do not reproduce this detailed breakdown — Step 6 always runs next and produces the curated, human-facing result. Instead, tell me in a few lines: how many countries were scored and excluded on each track, and that the full results are saved to cf-step5-scoring-results.md.
 
-Step complete — stop here and wait for the main command.
+Continue automatically into Step 6 now, in this same response — do not stop and wait here.

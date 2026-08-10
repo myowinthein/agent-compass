@@ -33,7 +33,7 @@ flowchart TD
   ReadFile --> Done{File\nexhausted?}
   Done -->|no| ReadFile
   Done -->|yes| Report[Reply with one consolidated report:\nstored count + all skips by reason]
-  Report --> End([Step complete\nWait for main command])
+  Report --> End([Continue automatically\ninto Step 5])
 ```
 
 ## What it reads
@@ -66,4 +66,4 @@ Claude preserves all values, wording, and formatting exactly as provided. It doe
 
 ## Stop condition
 
-Once all countries from `cf-step3-country-research.md` have been processed, Claude writes all successfully stored countries to `cf-step4-country-data.md` (which Step 5 scores next), replies with one consolidated report (stored count, plus every skip grouped by reason — malformed, missing fields, duplicate, not marked suitable for any track), then stops and waits for the main command.
+Once all countries from `cf-step3-country-research.md` have been processed, Claude writes all successfully stored countries to `cf-step4-country-data.md` (which Step 5 scores next), replies with one consolidated report (stored count, plus every skip grouped by reason — malformed, missing fields, duplicate, not marked suitable for any track), then continues automatically into Step 5 within the same response, without waiting for a new message. There is no interactive checkpoint in this step.

@@ -113,4 +113,4 @@ In your chat response, do not reproduce the shown calculations or the table — 
 
 Do not perform any additional analysis, ranking, recommendations, or commentary.
 
-Step complete — stop here and wait for the main command.
+Continue automatically into Step 5 now, in this same response — do not stop and wait here.

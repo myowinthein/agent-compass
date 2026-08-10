@@ -70,7 +70,7 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 ## 6. Behavior Rules
 
 - Never skip, combine, or summarize pipeline steps.
-- If a step instructs Claude to stop and wait, it must stop and wait. No placeholder answers, no assumptions on the user's behalf.
+- If a step instructs Claude to stop and wait, it must stop and wait. No placeholder answers, no assumptions on the user's behalf. Steps only stop when they're actually asking something — every other step chains automatically into the next within the same response, with no new user message required. Genuine checkpoints: CF step1's criteria questions, CF step2's conditional default-list confirmation, CF step3's/SC step1's conditional manual-research fallback, SC step1's conditional country-list confirmation, SC step5a's career-ladder confirmation, and every Opus-routing yes/no question.
 - Vague answers to criteria questions (e.g. "good," "reasonable," "flexible") are not accepted. Claude must ask for an exact number, currency, or clear yes/no before continuing.
 - Remote hire and visa sponsorship are separate tracks throughout Country Finder. Never blend them.
 - Salary research targets local-market compensation only. Exclude expat, FAANG-only, US-skewed, contractor, and equity-heavy data.

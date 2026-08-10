@@ -30,4 +30,4 @@ Skipped — not on either candidate list: [country or "none"]. Review these and 
 
 This data is saved to cf-step4-country-data.md, which Step 5 will score next.
 
-Step complete — stop here and wait for the main command.
+Continue automatically into Step 5 now, in this same response — do not stop and wait here.

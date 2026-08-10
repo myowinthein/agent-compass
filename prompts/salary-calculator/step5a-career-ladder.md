@@ -4,4 +4,4 @@ Show it to me, and wait for my confirmation or edits.
 
 Once confirmed, save it to sc-step5a-career-ladder.md in the workspace.
 
-Step complete — stop here and wait for the main command.
+You already have everything needed for the Step 5 Opus routing question — continue automatically into it now, in this same response. Do not stop and wait here.

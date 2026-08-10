@@ -28,7 +28,7 @@ flowchart TD
   CurrentModel --> Estimate
   Estimate[Estimate adjustment per country\nbased on hiring practices and\nmarket conditions] --> Output[For each country output:\nAdjustment range %\nTypical midpoint %\nLevel: Small / Moderate / Significant\nConfidence: High / Medium / Low\nBrief explanation]
   Output --> Save[Save to sc-step3-adjustment-values.md]
-  Save --> Done([Step complete\nWait for main command])
+  Save --> Done([Continue automatically\ninto Step 4])
 ```
 
 ## What it reads
@@ -82,4 +82,4 @@ Results are saved to `sc-step3-adjustment-values.md` in the workspace. Step 4 re
 
 ## Stop condition
 
-Once results are saved, Claude stops and waits for the main command before continuing to Step 4.
+There is no interactive checkpoint in this step itself (the situational-profile questions, if needed, are asked by the main command beforehand). Once results are saved, Claude continues automatically into Step 4 within the same response, without waiting for a new message.

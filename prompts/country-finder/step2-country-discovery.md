@@ -79,4 +79,4 @@ If cf-step1-criteria.md has a maximum timezone difference, calculate the UTC tim
 
 Once cf-step2-candidates.md exists in the workspace, and Part C has been applied if applicable, tell me in a few lines: how many countries were researched, how many came back Suitable on each track, and that the full per-country findings are saved to cf-step2-candidates.md for Step 3 to use. Do not reproduce the per-country Suitable/Reason/Source/Date findings in this summary.
 
-Step complete — stop here and wait for the main command.
+Continue automatically into Step 3 now, in this same response — do not stop and wait here.

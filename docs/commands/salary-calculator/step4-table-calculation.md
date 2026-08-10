@@ -40,7 +40,7 @@ flowchart TD
   More -->|no| Table[One row per country\nAnnual: Fixed and Range\nMonthly: single value]
   Table --> Summary[Summary: countries calculated\nand countries skipped with reasons]
   Summary --> Save[Save to sc-step4-salary-table.md]
-  Save --> Done([Step complete\nWait for main command])
+  Save --> Done([Continue automatically\ninto Step 5])
 ```
 
 ## What it reads
@@ -100,4 +100,4 @@ Claude does not reproduce the calculations or the table in chat — instead, it 
 
 ## Stop condition
 
-Once results are saved, Claude stops and waits for the main command, which then proceeds to Step 5 (final verification) — it always runs and is never asked about.
+There is no interactive checkpoint in this step. Once results are saved, Claude continues automatically into Step 5 (final verification) within the same response, without waiting for a new message — it always runs and is never asked about.

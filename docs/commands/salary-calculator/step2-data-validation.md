@@ -30,7 +30,7 @@ flowchart TD
   ReadFile --> Done{File\nexhausted?}
   Done -->|no| ReadFile
   Done -->|yes| Report[Reply with one consolidated report:\nstored count + all skips by reason]
-  Report --> End([Step complete\nWait for main command])
+  Report --> End([Continue automatically\ninto Step 3])
 ```
 
 ## What it reads
@@ -67,4 +67,4 @@ Stored salary data is written to `sc-step2-salary-data.md` in the workspace afte
 
 ## Stop condition
 
-Once all countries from `sc-step1-salary-research.md` have been processed, Claude writes all successfully stored countries to `sc-step2-salary-data.md`, replies with one consolidated report (stored count, plus every skip grouped by reason — malformed, missing tier or sources, duplicate), then stops and waits for the main command.
+There is no interactive checkpoint in this step. Once all countries from `sc-step1-salary-research.md` have been processed, Claude writes all successfully stored countries to `sc-step2-salary-data.md`, replies with one consolidated report (stored count, plus every skip grouped by reason — malformed, missing tier or sources, duplicate), then continues automatically into Step 3 within the same response, without waiting for a new message.

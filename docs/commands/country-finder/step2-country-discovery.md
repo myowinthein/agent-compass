@@ -30,7 +30,7 @@ flowchart TD
   Append --> TZCheck{Max timezone\nprovided?}
   TZCheck -->|yes| MarkTZ[Mark out-of-range countries'\nRemote suitability as not suitable]
   TZCheck -->|no| Done
-  MarkTZ --> Done([Step complete\nWait for main command])
+  MarkTZ --> Done([Continue automatically\ninto Step 3])
 ```
 
 ## What it reads
@@ -72,4 +72,4 @@ If a maximum timezone difference was provided in Step 1, Claude calculates each 
 
 ## Stop condition
 
-Once `cf-step2-candidates.md` exists (and Part C has run, if applicable), Claude stops and waits for the main command before continuing to Step 3.
+Claude only stops here if Part A's default-list question was triggered (no Include list given) — it waits for you to confirm the default or provide your own countries. Otherwise, once `cf-step2-candidates.md` exists (and Part C has run, if applicable), Claude continues automatically into Step 3 within the same response, without waiting for a new message.

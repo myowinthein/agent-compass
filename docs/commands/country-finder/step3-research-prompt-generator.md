@@ -28,7 +28,7 @@ flowchart TD
   Manual --> Append
   Append --> More{More\ncountries?}
   More -->|yes| ForEach
-  More -->|no| Done([Step complete\nWait for main command])
+  More -->|no| Done([Continue automatically\ninto Step 4])
 ```
 
 ## What it reads
@@ -78,4 +78,4 @@ If isolation cannot be guaranteed, Claude shows all prompts and waits for you to
 
 ## Stop condition
 
-Once all results are saved to `cf-step3-country-research.md`, Claude stops and waits for the main command before continuing to Step 4.
+Claude only stops here if isolated sub-agents aren't available — it shows the prompts and waits for you to bring back results manually. In the normal, automated case, once all results are saved to `cf-step3-country-research.md`, Claude continues automatically into Step 4 within the same response, without waiting for a new message.
