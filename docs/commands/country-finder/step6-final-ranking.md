@@ -7,7 +7,7 @@ nav_order: 6
 
 # Step 6 — Final Ranking
 
-A focused audit of the Step 5 scoring output, followed by a prioritized Country Finder result — the Priority Table. Always runs; unlike the rest of the pipeline this is the only step with no skip option, since it's what produces the final result. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy on the audit itself. If you decline, the step runs with your current model.
+A focused audit of the Step 5 scoring output, followed by a prioritized Country Finder result — the Priority Table. Always runs; unlike the rest of the pipeline this is the only step with no skip option, since it's what produces the final result. The two checks and the Summary are file-only; the Priority Table is the one thing this step shows directly in chat. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy on the audit itself. If you decline, the step runs with your current model.
 
 ## Flow
 
@@ -22,11 +22,12 @@ flowchart TD
   C2 --> Recal{Inflated confidence\nfound?}
   Recal -->|yes| Revise[Revise confidence levels\nor classifications — explain each change]
   Recal -->|no| Confirm[Confirm Step 5 results\nare appropriate — no changes]
-  Revise --> Summary[Summary: countries grouped\nby row, both tracks side by side]
+  Revise --> Summary[Summary: countries grouped\nby row, both tracks side by side\nfile-only]
   Confirm --> Summary
   Summary --> Priority[Priority Table: word + medal\nper country, holistic ranking]
   Priority --> Save[Save Summary and Priority Table\nto cf-step6-final-ranking.md]
-  Save --> Done([Step complete\nWait for main command])
+  Save --> ShowTable[Show Priority Table in chat\nSummary stays file-only]
+  ShowTable --> Done([Step complete\nWait for main command])
 ```
 
 ## Purpose
@@ -62,7 +63,7 @@ If recalibration is not supported, Step 5 results are explicitly confirmed as ap
 
 ## Summary
 
-After the recalibration verdict, Claude shows a Summary directly in chat — not just in the saved file — that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track, each country showing its Remote and Sponsorship fit side by side. This is the one step in the pipeline where Claude does show full output in chat, since it's the final, human-facing result.
+After the recalibration verdict, Claude writes a Summary into the file (not shown in chat — the Priority Table below is the only thing from this step shown in chat) that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track, each country showing its Remote and Sponsorship fit side by side.
 
 | Country | Remote | Sponsorship |
 |---|---|---|
@@ -86,9 +87,9 @@ The Summary itself contains no ranking, recommendations, or interpretation beyon
 
 ## Priority Table
 
-A second table, shown directly in chat right after the Summary, using the same final classifications. Each row's Tier has two independent parts:
+A second table, written into the file right after the Summary and using the same final classifications — but unlike the Summary, this one is also shown directly in chat, since it's this step's actual deliverable. Each row's Tier has two independent parts:
 
-**Word** — which application track is usable, derived from that country's Remote/Sponsorship fit values as recorded in `cf-step5-scoring-results.md` — Step 5 is the authoritative source here. Even if the Summary above revised a country's classification during recalibration, the Priority Table's Fit columns still trace back to Step 5's original ratings, never Step 6's:
+**Word** — which application track is usable, derived from that country's Remote/Sponsorship fit values as recorded in `cf-step5-scoring-results.md` — Step 5 is the authoritative source here. Even if the Summary revised a country's classification during recalibration, the Priority Table's Fit columns still trace back to Step 5's original ratings, never Step 6's:
 
 | Word | Condition |
 |---|---|
@@ -111,6 +112,8 @@ Sorted by medal first (🥇 → 🎗️), then within the same medal by expected
 ## Output
 
 - `cf-step6-final-ranking.md` — the Summary table and the Priority Table, saved together after both are output. This is the final, post-audit classification — later steps or pipelines (e.g. Salary Calculator) should prefer it over `cf-step5-scoring-results.md` if both exist.
+
+Of the two, only the Priority Table is also shown directly in chat — the Summary stays file-only, since the Priority Table alone is the step's actual deliverable.
 
 ## Completion message
 

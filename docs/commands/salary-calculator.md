@@ -36,7 +36,7 @@ flowchart TD
   S3[Step 3: International adjustment\ndeep-reasoner agent] --> S4
   S4[Step 4: Table calculation\ncalculator agent — file-only,\nbrief note in chat] --> Ladder
 
-  Ladder[Confirm career ladder\non current model, before handoff] --> S5[Step 5: Final Verification\ndeep-reasoner agent — always runs\nShows final table in chat\nSaves audit to sc-step5b-final-verification.md]
+  Ladder[Confirm career ladder\non current model, before handoff] --> S5[Step 5: Final Verification\ndeep-reasoner agent — always runs\nChecks file-only, final table\nshown in chat\nOne file: sc-step5b-final-verification.md]
   S5 --> Done([Results delivered])
 ```
 
@@ -64,11 +64,11 @@ Before this step, the command collects the situational profile on your current m
 
 ### [Step 4 — Table calculation](salary-calculator/step4-table-calculation.html)
 
-Claude asks whether to use the **calculator** subagent (Opus, max effort) for higher arithmetic precision — if declined, the step runs with your current model. Reads all ingested salary data and adjustment figures, works through full arithmetic for every country, and double-checks each calculation before finalising. Precision takes priority over speed. Countries with a reported sponsorship salary threshold get a Legal Requirement column flagging whether Safe or Stretch falls short — the figures themselves are never adjusted to meet it. This is the raw, pre-audit calculation — the shown work and table are saved to file only, with just a brief scored/skipped count in chat, since Step 5 always runs next and is where the actual final table is presented.
+Claude asks whether to use the **calculator** subagent (Opus, max effort) for higher arithmetic precision — if declined, the step runs with your current model. Reads all ingested salary data and adjustment figures, works through full arithmetic for every country, and double-checks each calculation before finalising. Precision takes priority over speed. Countries with a reported sponsorship salary threshold get a Legal Requirement column flagging whether Safe or Stretch falls short — the figures themselves are never adjusted to meet it. This is the raw, pre-audit calculation — the shown work and table are saved to file only, with just a brief calculated/skipped count in chat.
 
 ### [Step 5 — Final Verification](salary-calculator/step5b-final-verification.html)
 
-Always runs after Step 4 completes — this is the only step in the pipeline with no skip option, since it produces the final result. It first drafts your career ladder on the current model and waits for your confirmation (saved to `sc-step5a-career-ladder.md`) before any Opus handoff, then asks whether to use the **deep-reasoner** subagent (Opus, high effort) — if declined, the step runs with your current model. Audits the table output for inconsistencies, outliers, or weak evidence, and revises it if the evidence supports doing so. Since Step 4's output is file-only, this step always shows the final table directly in chat — whether that's the unchanged Step 4 table or a revised one — making it the one point in the pipeline where you actually see the numbers.
+Always runs after Step 4 completes — this is the only step in the pipeline with no skip option, since it produces the final result. It first drafts your career ladder on the current model and waits for your confirmation (saved to `sc-step5a-career-ladder.md`) before any Opus handoff, then asks whether to use the **deep-reasoner** subagent (Opus, high effort) — if declined, the step runs with your current model. Audits the table output for inconsistencies, outliers, or weak evidence, and revises it if the evidence supports doing so. The four detailed checks and the recalibration verdict are file-only, but the resulting final table (unchanged or revised) is shown directly in chat — copied from the file, table only with no surrounding commentary. The completion message afterward states whether recalibration occurred. Everything from this step, including the table, is written to a single file, `sc-step5b-final-verification.md`.
 
 ## Stop conditions
 

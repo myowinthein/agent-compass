@@ -78,7 +78,7 @@ This is not about tax, cost of living, purchasing power, or permanent residence 
 - Confidence: High, Medium, or Low
 - Brief explanation
 
-Results are saved to `sc-step3-adjustment-values.md` in the workspace. Step 4 reads this file directly.
+Results are saved to `sc-step3-adjustment-values.md` in the workspace. Step 4 reads this file directly. Claude does not reproduce the per-country adjustment reasoning in chat — only a brief summary (how many countries received an adjustment) and confirmation that the file is saved.
 
 ## Stop condition
 

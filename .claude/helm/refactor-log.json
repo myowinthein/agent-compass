@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "last_scanned_commit": "7303ddd",
-  "last_mode": "deep",
-  "last_scan_date": "2026-08-03",
-  "consecutive_quick_count": 0,
+  "last_scanned_commit": "6885d0d",
+  "last_mode": "quick",
+  "last_scan_date": "2026-08-10",
+  "consecutive_quick_count": 1,
   "findings": [
     {
       "id": "f-0001",
@@ -591,11 +591,11 @@
       "file": "data/country-wealth-tiers.md",
       "line": 19,
       "description": "Hong Kong is absent from every tier despite being a very-high-income economy present in data/preferred-countries.md. User declined — low value given the file is already unreferenced by any prompt (see f-0031-era Known Trap in CLAUDE.md).",
-      "status": "skipped-by-user",
+      "status": "auto-resolved",
       "first_found_commit": "5480f30",
       "first_found_date": "2026-08-03",
-      "resolved_commit": null,
-      "resolved_date": null
+      "resolved_commit": "cd411bc",
+      "resolved_date": "2026-08-10"
     },
     {
       "id": "f-0038",
@@ -772,6 +772,22 @@
       "first_found_date": "2026-08-03",
       "resolved_commit": "7303ddd",
       "resolved_date": "2026-08-03"
+    },
+    {
+      "id": "f-0049",
+      "category": "code-quality",
+      "priority": "medium",
+      "risk": "safe",
+      "cluster_id": "c-212",
+      "depends_on": [],
+      "file": "docs/commands/salary-calculator/step5b-final-verification.md",
+      "line": 33,
+      "description": "Flow diagram still showed the final table displayed with 'plus brief recalibration note' attached, contradicting the table-only/no-surrounding-commentary rule already correctly applied everywhere else in this same file and in the paired prompt file.",
+      "status": "fixed",
+      "first_found_commit": "6885d0d",
+      "first_found_date": "2026-08-10",
+      "resolved_commit": "6885d0d",
+      "resolved_date": "2026-08-10"
     }
   ]
 }

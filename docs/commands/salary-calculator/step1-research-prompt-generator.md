@@ -68,7 +68,7 @@ Each country's prompt is run as a separate, isolated research task. Each agent r
 
 ## Output
 
-Results are appended to `sc-step1-salary-research.md` in the workspace as each agent completes. Step 2 reads this file automatically.
+Results are appended to `sc-step1-salary-research.md` in the workspace as each agent completes. Step 2 reads this file automatically. Claude does not reproduce the per-country research findings in chat — only a brief summary (how many countries were researched) and confirmation that the file is saved.
 
 ## Stop condition
 
