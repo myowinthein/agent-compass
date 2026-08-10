@@ -25,7 +25,7 @@ If recalibration is not supported, state explicitly that the Step 5 results rema
 
 Summary
 
-Show a Summary section directly in your chat response — not just in the saved file — that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track.
+Write a Summary section into the file (not shown in chat — the Priority Table below is the only thing from this step shown in chat) that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track.
 
 For each country that has data on at least one track, show one row with both its Remote fit and Sponsorship fit side by side:
 
@@ -44,13 +44,13 @@ The Summary itself contains no ranking, recommendations, or interpretation beyon
 
 Priority Table
 
-After the Summary above, show one additional Markdown table directly in your chat response — not just in the saved file.
+Below the Summary in the file, also write this Priority Table. Unlike the Summary, show this table directly in your chat response too — this is the only thing from this step shown in chat.
 
 Columns: Country | Tier | Remote Fit | Sponsorship Fit
 
 Tier is two independent parts — a word and a medal.
 
-The word identifies which application track is usable. Remote Fit and Sponsorship Fit for this table are read directly from cf-step5-scoring-results.md — Step 5 is the authoritative source for these two values. Never substitute a Step 6 recalibration here, even if the Summary above revised a country's classification; this table's Fit columns must trace back to Step 5's original ratings only.
+The word identifies which application track is usable. Remote Fit and Sponsorship Fit for this table are read directly from cf-step5-scoring-results.md — Step 5 is the authoritative source for these two values. Never substitute a Step 6 recalibration here, even if the Summary revised a country's classification; this table's Fit columns must trace back to Step 5's original ratings only.
 - Both: Remote Fit and Sponsorship Fit are each Strong or Moderate.
 - Remote: Remote Fit is Strong or Moderate; Sponsorship Fit is Weak or unavailable.
 - Sponsorship: Sponsorship Fit is Strong or Moderate; Remote Fit is Weak or unavailable.

@@ -52,4 +52,4 @@ Keep the output compact and present the results country by country.
 
 Save the full adjustment output to sc-step3-adjustment-values.md in the workspace.
 
-Continue automatically into Step 4 now, in this same response — do not stop and wait here.
+Tell me in a few lines: how many countries received an adjustment estimate, and that the full per-country figures are saved for Step 4 to apply. Do not reproduce the per-country adjustment reasoning in this summary. Then continue automatically into Step 4 now, in this same response — do not stop and wait here.

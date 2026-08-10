@@ -84,7 +84,7 @@ Countries are ordered to match `cf-step6-final-ranking.md`'s Priority Table if t
 
 ## Legal Requirement comparison
 
-For any country with a usable sponsorship salary threshold, the unrounded Safe and Stretch Fixed values are compared against it — before display rounding is applied, since rounding could flip a borderline result. The threshold is converted to match whichever period (Annual or Monthly) the comparison needs. This never changes Safe or Stretch itself — it's a separate fact shown alongside them, not folded into the calculation. The resulting states are documented in [Step 5 — Final Verification](step5b-final-verification.html), where the table is actually shown to you.
+For any country with a usable sponsorship salary threshold, the unrounded Safe and Stretch Fixed values are compared against it — before display rounding is applied, since rounding could flip a borderline result. The threshold is converted to match whichever period (Annual or Monthly) the comparison needs. This never changes Safe or Stretch itself — it's a separate fact shown alongside them, not folded into the calculation. The resulting display states are detailed in Table format below.
 
 ## Show your work
 
@@ -92,9 +92,40 @@ Before producing the table, the calculator works through the full calculation fo
 
 Countries missing either salary data or adjustment data are skipped and listed in the summary with the reason.
 
+## Table format
+
+One Markdown table with one row per country:
+
+| Country | Legal Requirement | 🛡️ Safe Annual | 🚀 Stretch Annual | 🛡️ Safe Monthly | 🚀 Stretch Monthly |
+|---|---:|---:|---:|---:|---:|
+| 🇩🇪 Germany (EUR) | 45,300 (3,775/mo) | 59,500 (56,500–65,500) | 74,500 (71,000–82,000) | 4,950 | 6,200 |
+| 🇳🇱 Netherlands (EUR) | 63,972 (5,331/mo) ⚠️ | 56,500 (53,500–62,000) | 70,000 (66,500–77,000) | 4,700 | 5,850 |
+| 🇺🇸 United States (USD) | — | 140,000 (133,000–154,000) | 175,000 (166,500–192,500) | 11,650 | 14,600 |
+
+- The country's flag emoji is placed before its name, and the currency code is included, e.g. `🇩🇪 Germany (EUR)`.
+- Each Annual column shows the Fixed target first, then its Range in parentheses.
+- Each Monthly column shows only the single Monthly value (Annual Fixed ÷ 12) — no range. Monthly values are a reference only and may not represent actual monthly payslips in countries using 13th or 14th salary payments.
+- Values in local currency only — no USD conversion.
+- Annual (Fixed and Range) rounded to nearest 500, Monthly to nearest 50.
+- No currency symbols inside salary values.
+- Legal Requirement, Safe Annual, Stretch Annual, Safe Monthly, and Stretch Monthly are right-aligned.
+- No footnotes, revision markers, notes, explanations, or additional columns.
+
+**Legal Requirement column:**
+
+| State | Shown as |
+|---|---|
+| No usable threshold (none exists, or couldn't be confirmed as a comparable number) | — (em dash) |
+| Threshold exists, both Safe and Stretch clear it | Both period equivalents in one cell — Annual figure first, Monthly in parentheses with a "/mo" suffix, e.g. `45,300 (3,775/mo)`. Neither figure is rounded. |
+| Threshold exists, either Safe or Stretch falls short | Same combined format, with a single ⚠️ appended once at the end of the cell |
+
+Safe and Stretch are never adjusted because of this column — it's shown alongside them as a separate fact, not merged into the calculation.
+
+If Step 5 recalibrates, its revised table reuses this exact format and column order — see [Step 5 — Final Verification](step5b-final-verification.html).
+
 ## Output
 
-- `sc-step4-salary-table.md` — the raw, pre-audit table and summary, written for Step 5 to read and present. Column format and Legal Requirement display states are documented in [Step 5 — Final Verification](step5b-final-verification.html), the step that actually shows the table to you.
+- `sc-step4-salary-table.md` — the raw, pre-audit table and summary, written for Step 5 to read. This step's own output is file-only, unlike Step 5, which does show its resulting table in chat.
 
 Claude does not reproduce the calculations or the table in chat — instead, it tells you in a few lines how many countries were calculated and skipped, and confirms the file is saved.
 
