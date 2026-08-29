@@ -8,7 +8,7 @@ claude-compass is an open source Claude Code plugin pack, maintained by Myo Win 
 
 ## What Data We Collect
 
-Neither the documentation site nor the plugin's commands collect, receive, or store any personal data. The documentation site is a static site with no forms, no accounts, no cookies, and no analytics or tracking scripts. When you use the plugin's commands (`/country-finder`, `/salary-calculator`, `/portal-finder`, `/job-screener`) inside your own Claude Code or Claude Cowork session, any information you provide — such as your resume, salary criteria, or citizenship and location details — is processed entirely within your own conversation with Claude and saved only to files in your own local workspace (for example `profile.md`, `situational-profile.md`, and pipeline state files). We never receive, see, or store this data.
+Neither the documentation site nor the plugin's commands collect, receive, or store any personal data. The documentation site is a static site with no forms, no accounts, no cookies, and no analytics or tracking scripts. When you use the plugin's commands (`/country-finder`, `/salary-calculator`, `/portal-finder`, `/job-screener`) inside your own Claude Code or Claude Cowork session, any information you provide, such as your resume, salary criteria, or citizenship and location details, is processed entirely within your own conversation with Claude and saved only to files in your own local workspace (for example `profile.md`, `situational-profile.md`, and pipeline state files). We never receive, see, or store this data.
 
 ## How We Use Your Data
 
@@ -20,15 +20,15 @@ We do not share any data with third parties, because we do not collect any. The 
 
 ## International Data Transfers
 
-Not applicable — we do not collect or store any data, so no data leaves the EEA under our control.
+Not applicable: we do not collect or store any data, so no data leaves the EEA under our control.
 
 ## Data Retention
 
-Not applicable — we do not collect or retain any data. Files the plugin creates in your workspace (`profile.md`, `situational-profile.md`, state files, and similar) remain on your own device for as long as you choose to keep them, entirely under your control.
+Not applicable: we do not collect or retain any data. Files the plugin creates in your workspace (`profile.md`, `situational-profile.md`, state files, and similar) remain on your own device for as long as you choose to keep them, entirely under your control.
 
 ## Your Rights
 
-Because we hold no personal data about you, there is nothing for us to give you access to, correct, erase, restrict, port, or object to. Under GDPR Articles 15–21 you would normally have these rights over data a controller holds about you — here, there is none. If you have questions about data processed by the underlying Claude service itself, refer to Anthropic's own privacy policy. You are welcome to contact us (see Contact) with any privacy questions about this project.
+Because we hold no personal data about you, there is nothing for us to give you access to, correct, erase, restrict, port, or object to. Under GDPR Articles 15–21 you would normally have these rights over data a controller holds about you; here, there is none. If you have questions about data processed by the underlying Claude service itself, refer to Anthropic's own privacy policy. You are welcome to contact us (see Contact) with any privacy questions about this project.
 
 ## Children's Privacy
 

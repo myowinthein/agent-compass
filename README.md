@@ -46,7 +46,7 @@ Type `/` in a **Cowork** task. All four commands appear listed under the **Claud
 | [`/portal-finder`](https://myowinthein.github.io/claude-compass/docs/commands/portal-finder.html) | Find verified job portals for IT/tech roles in a specific country, grouped by type. |
 | [`/job-screener`](https://myowinthein.github.io/claude-compass/docs/commands/job-screener.html) | Screen a job description against your resume and get a structured apply / maybe / skip verdict. |
 
-Judgment-heavy and arithmetic-heavy steps can be routed to specialist subagents — Claude asks at each step whether to use Opus.
+Judgment-heavy and arithmetic-heavy steps can be routed to specialist subagents; Claude asks at each step whether to use Opus.
 
 | Agent | Model | Steps |
 |---|---|---|

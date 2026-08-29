@@ -8,7 +8,7 @@ By installing, accessing, or using the claude-compass plugin or its documentatio
 
 ## Description of Service
 
-claude-compass is an open source Claude Code plugin pack that provides four slash commands — `/country-finder`, `/salary-calculator`, `/portal-finder`, and `/job-screener` — to help IT/tech job seekers discover remote-hire and visa-sponsorship countries, calculate realistic local-market salaries, find verified job portals, and screen job descriptions against their own resume. The Service runs entirely within your own Claude Code or Claude Cowork session and depends on research and data you provide during that session.
+claude-compass is an open source Claude Code plugin pack that provides four slash commands (`/country-finder`, `/salary-calculator`, `/portal-finder`, and `/job-screener`) to help IT/tech job seekers discover remote-hire and visa-sponsorship countries, calculate realistic local-market salaries, find verified job portals, and screen job descriptions against their own resume. The Service runs entirely within your own Claude Code or Claude Cowork session and depends on research and data you provide during that session.
 
 ## User Accounts and Eligibility
 
@@ -28,7 +28,7 @@ The claude-compass source code and prompts are licensed under the MIT License (s
 
 ## Disclaimer of Warranties
 
-The Service is provided "as is" and "as available," without warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that the Service's output — including salary estimates, country scores, or job-screening verdicts — is accurate, complete, or current. See the Disclaimer document for more detail on AI-generated content.
+The Service is provided "as is" and "as available," without warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that the Service's output, including salary estimates, country scores, or job-screening verdicts, is accurate, complete, or current. See the Disclaimer document for more detail on AI-generated content.
 
 ## Limitation of Liability
 
