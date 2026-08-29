@@ -78,6 +78,7 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 - Vague answers to criteria questions (e.g. "good," "reasonable," "flexible") are not accepted. Claude must ask for an exact number, currency, or clear yes/no before continuing.
 - Salary research targets local-market compensation only. Exclude expat, FAANG-only, US-skewed, contractor, and equity-heavy data.
 - Opus routing for judgment-heavy steps (scoring, final ranking, international adjustment, final verification) is user opt-in at each step; never assume automatic routing. This is separate from whether the step itself runs: Country Finder step6 always runs regardless of the Opus choice.
+- Prose in `docs/` avoids em dashes; use a comma, semicolon, colon, or restructure the sentence instead. Does not apply to `prompts/` or other files outside `docs/`.
 
 ## 7. Hard Safety Rules
 

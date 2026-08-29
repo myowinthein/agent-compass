@@ -1,11 +1,11 @@
 ---
-title: Step 1 — Match analysis
+title: Step 1: Match analysis
 parent: /job-screener
 grand_parent: Commands
 nav_order: 1
 ---
 
-# Step 1 — Match analysis
+# Step 1: Match analysis
 
 Reads `profile.md` as the canonical candidate profile, then waits. Each pasted job description is screened against the profile using a fixed format. Pasted form questions or writing tasks are answered using the writing guidelines instead.
 
@@ -26,15 +26,15 @@ flowchart TD
 
 ## What it reads
 
-- `profile.md` — the canonical candidate profile
+- `profile.md`: the canonical candidate profile
 
 ## Decision rules
 
-Applied silently, in order — the first that matches wins:
+Applied silently, in order, the first that matches wins:
 
-- **❌ Skip** — one or more 🚫 blockers present, regardless of other fit.
-- **⚠️ Maybe** — no 🚫 blockers, but two or more required (not preferred) qualifications are clearly unmet, or so many required qualifications are unverifiable that fit cannot be judged.
-- **✅ Apply** — no 🚫 blockers, and most required qualifications are met. Unknown or unverifiable requirements do not count against an Apply; they are noted as unknown.
+- **❌ Skip**: one or more 🚫 blockers present, regardless of other fit.
+- **⚠️ Maybe**: no 🚫 blockers, but two or more required (not preferred) qualifications are clearly unmet, or so many required qualifications are unverifiable that fit cannot be judged.
+- **✅ Apply**: no 🚫 blockers, and most required qualifications are met. Unknown or unverifiable requirements do not count against an Apply; they are noted as unknown.
 
 ## Output format
 
@@ -59,13 +59,13 @@ Each job description is screened into these sections:
 - a mandatory on-site location the candidate cannot be at, with no remote or relocation option stated
 - a mandatory timezone or working-hours overlap the candidate cannot meet
 - a legally or contractually mandatory certification the candidate does not hold
-- the role's core technology or stack is one the candidate does not have — not merely one item missing from a longer required list
+- the role's core technology or stack is one the candidate does not have, not merely one item missing from a longer required list
 
-Years-of-experience gaps are never hard blockers, regardless of the size of the gap or whether the JD states a hard minimum — a shortfall is always a normal con instead. More experience than required is likewise never a blocker unless the JD states a maximum. Unclear-if-mandatory requirements are treated as cons, not blockers. Unmet preferred qualifications are labeled "preferred, not required" and never marked 🚫.
+Years-of-experience gaps are never hard blockers, regardless of the size of the gap or whether the JD states a hard minimum; a shortfall is always a normal con instead. More experience than required is likewise never a blocker unless the JD states a maximum. Unclear-if-mandatory requirements are treated as cons, not blockers. Unmet preferred qualifications are labeled "preferred, not required" and never marked 🚫.
 
 ## Missing information checklist
 
-Every screen reports which of these the JD does not explicitly state (or "None — all covered"):
+Every screen reports which of these the JD does not explicitly state (or "None, all covered"):
 
 - salary
 - visa sponsorship
@@ -75,7 +75,7 @@ Every screen reports which of these the JD does not explicitly state (or "None �
 - timezone or working-hours overlap
 - employment type (permanent / contract)
 
-An item unstated here is unknown, not a negative — it can never be a 🚫 blocker or a con on its own.
+An item unstated here is unknown, not a negative; it can never be a 🚫 blocker or a con on its own.
 
 ## Form questions and application writing
 
@@ -83,4 +83,4 @@ When you paste application form questions or ask Claude to write anything for th
 
 ## Drift resistance
 
-Before each screen, Claude re-anchors to the exact format and rules and silently corrects itself if it notices drift. Over a long session this can still slip — re-invoke the command to reset.
+Before each screen, Claude re-anchors to the exact format and rules and silently corrects itself if it notices drift. Over a long session this can still slip; re-invoke the command to reset.

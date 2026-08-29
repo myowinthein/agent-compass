@@ -1,13 +1,13 @@
 ---
-title: Step 1 — Research prompt generator
+title: Step 1: Research prompt generator
 parent: /salary-calculator
 grand_parent: Commands
 nav_order: 1
 ---
 
-# Step 1 — Research prompt generator
+# Step 1: Research prompt generator
 
-Generates one ready-to-copy research prompt per target country, runs each as an isolated sub-agent research task, and saves the results to `sc-step1-salary-research.md`. Claude does not estimate salaries itself — every number comes from real web research.
+Generates one ready-to-copy research prompt per target country, runs each as an isolated sub-agent research task, and saves the results to `sc-step1-salary-research.md`. Claude does not estimate salaries itself; every number comes from real web research.
 
 ## Flow
 
@@ -15,7 +15,7 @@ Generates one ready-to-copy research prompt per target country, runs each as an 
 flowchart TD
   Start([Step 1 begins]) --> ReadProfile[Read profile.md\nfor role and seniority]
   ReadProfile --> CFCheck{cf-step6-final-ranking.md or\ncf-step5-scoring-results.md exist?}
-  CFCheck -->|yes| Offer[Show Strong/Moderate countries\nfrom that file — use, add, remove, or start fresh?]
+  CFCheck -->|yes| Offer[Show Strong/Moderate countries\nfrom that file: use, add, remove, or start fresh?]
   CFCheck -->|no| AskList[Ask for target\ncountry list]
   Offer -->|start fresh| AskList
   Offer -->|use/adjust| ForEach
@@ -33,8 +33,8 @@ flowchart TD
 
 ## What it reads
 
-- `profile.md` — used to fill in your target role, seniority, and skills in each prompt
-- `cf-step6-final-ranking.md` or `cf-step5-scoring-results.md`, if either exists — see Country list below
+- `profile.md`: used to fill in your target role, seniority, and skills in each prompt
+- `cf-step6-final-ranking.md` or `cf-step5-scoring-results.md`, if either exists; see Country list below
 
 ## Country list
 
@@ -46,14 +46,14 @@ Each generated prompt instructs the researcher to:
 
 - Use current web research only, prioritising sources from the last 12 months
 - Find realistic local-market annual base salary for your role and seniority
-- Target local candidates with a similar profile — not expat, FAANG-only, or global remote rates
+- Target local candidates with a similar profile, not expat, FAANG-only, or global remote rates
 - Separate results into two company tiers:
-  - **Mid-size / Mainstream Local-Market** — typical local employers
-  - **Premium / International / Remote-first** — higher-paying segment
+  - **Mid-size / Mainstream Local-Market**: typical local employers
+  - **Premium / International / Remote-first**: higher-paying segment
 - Provide a national range and major tech hub range if salary varies significantly by city
 - Include practical Low, Realistic, and Strong figures within each tier
 - Cite sources with dates
-- Report the country's government-mandated minimum salary threshold for employer-sponsored work-visa relocation, if one exists and is a usable figure (see `skills/sponsorship-threshold-rules.md`) — not applicable to remote or contractor arrangements, so most countries and roles will have none to report
+- Report the country's government-mandated minimum salary threshold for employer-sponsored work-visa relocation, if one exists and is a usable figure (see `skills/sponsorship-threshold-rules.md`); not applicable to remote or contractor arrangements, so most countries and roles will have none to report
 
 **Excluded from research:**
 - levels.fyi and FAANG-only data
@@ -68,7 +68,7 @@ Each country's prompt is run as a separate, isolated research task. Each agent r
 
 ## Output
 
-Results are appended to `sc-step1-salary-research.md` in the workspace as each agent completes. Step 2 reads this file automatically. Claude does not reproduce the per-country research findings in chat — only a brief summary (how many countries were researched) and confirmation that the file is saved.
+Results are appended to `sc-step1-salary-research.md` in the workspace as each agent completes. Step 2 reads this file automatically. Claude does not reproduce the per-country research findings in chat; only a brief summary (how many countries were researched) and confirmation that the file is saved.
 
 ## Stop condition
 

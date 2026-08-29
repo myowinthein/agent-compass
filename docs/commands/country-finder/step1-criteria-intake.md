@@ -1,13 +1,13 @@
 ---
-title: Step 1 — Criteria intake
+title: Step 1: Criteria intake
 parent: /country-finder
 grand_parent: Commands
 nav_order: 1
 ---
 
-# Step 1 — Criteria intake
+# Step 1: Criteria intake
 
-Collects your hard requirements for both tracks before any research begins. Claude stops and waits only while asking questions — once everything is answered and saved, it continues straight into Step 2 within the same response, without waiting for a new message.
+Collects your hard requirements for both tracks before any research begins. Claude stops and waits only while asking questions; once everything is answered and saved, it continues straight into Step 2 within the same response, without waiting for a new message.
 
 ## Flow
 
@@ -20,8 +20,8 @@ flowchart TD
   SaveSit --> P1
   Reuse --> P1
 
-  P1[Phase 1: Remote criteria\nmax timezone — optional] --> Vague1{Vague answer?}
-  Vague1 -->|yes| Ask1[Reject — ask again\nfor clear value]
+  P1[Phase 1: Remote criteria\nmax timezone, optional] --> Vague1{Vague answer?}
+  Vague1 -->|yes| Ask1[Reject, ask again\nfor clear value]
   Ask1 --> Vague1
   Vague1 -->|no| P2
 
@@ -33,8 +33,8 @@ flowchart TD
 
 ## What it reads
 
-- `profile.md` — your resume profile (must exist before this step runs)
-- `situational-profile.md` — if present, reused without re-asking; if absent, Claude collects it here
+- `profile.md`: your resume profile (must exist before this step runs)
+- `situational-profile.md`: if present, reused without re-asking; if absent, Claude collects it here
 
 ## Situational profile
 
@@ -45,32 +45,32 @@ If `situational-profile.md` does not exist, Claude asks seven questions and save
 3. Any known immigration friction tied to that citizenship
 4. Languages spoken
 5. Required work environment language
-6. Minimum acceptable monthly salary and currency — or "not specified" to skip salary filtering
-7. Existing residency or work authorization in any target country, and status there (independent work rights, a visa requiring sponsorship to change jobs, student visa, etc.) — or "not applicable"
+6. Minimum acceptable monthly salary and currency, or "not specified" to skip salary filtering
+7. Existing residency or work authorization in any target country, and status there (independent work rights, a visa requiring sponsorship to change jobs, student visa, etc.), or "not applicable"
 
 These answers persist across sessions and are reused by both pipelines. The salary minimum, if provided, is used as a filter in Steps 2 and 5. Existing residency/work authorization, if provided, is used by Salary Calculator step3 to weigh relocation-related friction lighter for a matching country. If not provided, both are skipped.
 
 ## Criteria questions
 
-Claude asks all questions before proceeding. Vague answers are rejected — Claude asks again until it receives a specific value or an explicit "no limit" / "not specified."
+Claude asks all questions before proceeding. Vague answers are rejected; Claude asks again until it receives a specific value or an explicit "no limit" / "not specified."
 
 **Remote track**
-- Maximum time zone difference from your current location — or "no limit" to skip timezone filtering
+- Maximum time zone difference from your current location, or "no limit" to skip timezone filtering
 
 **Sponsorship track**
 - Timeline or urgency for relocating (e.g. "within 12 months," "no rush")
 
-Relocation is assumed — Claude does not ask whether you are open to relocating.
+Relocation is assumed; Claude does not ask whether you are open to relocating.
 
-**Country preferences** — asked as two separate questions, not one combined free-text answer, so there's no ambiguity in classifying your reply
+**Country preferences**: asked as two separate questions, not one combined free-text answer, so there's no ambiguity in classifying your reply
 - Countries or regions to include
 - Countries or regions to exclude
 
 ## Output
 
-- `cf-step1-criteria.md` — criteria answers (timezone limit, relocation timeline, country preferences) written after all phases are complete. Claude confirms the save in one line rather than repeating the criteria back — you just gave them, so there's nothing new to show.
-- `situational-profile.md` — written here if it did not already exist; reused by subsequent steps and the Salary Calculator pipeline
+- `cf-step1-criteria.md`: criteria answers (timezone limit, relocation timeline, country preferences) written after all phases are complete. Claude confirms the save in one line rather than repeating the criteria back; you just gave them, so there's nothing new to show.
+- `situational-profile.md`: written here if it did not already exist; reused by subsequent steps and the Salary Calculator pipeline
 
 ## Stop condition
 
-Claude only stops while the situational-profile and criteria questions are still being asked — vague answers are rejected and re-asked. Once every phase is answered and the criteria file is saved, Claude continues automatically into Step 2 within the same response, without waiting for a new message.
+Claude only stops while the situational-profile and criteria questions are still being asked; vague answers are rejected and re-asked. Once every phase is answered and the criteria file is saved, Claude continues automatically into Step 2 within the same response, without waiting for a new message.
