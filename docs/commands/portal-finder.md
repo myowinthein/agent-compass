@@ -7,7 +7,7 @@ has_children: true
 
 # /portal-finder
 
-Finds verified job portals for IT/tech roles in a specified country. Accepts the country as an optional argument — if omitted, Claude asks before doing anything. Researches portals online rather than relying on general knowledge, confirming each one actually exists and is active on its own site.
+Finds verified job portals for IT/tech roles in a specified country. Accepts the country as an optional argument: if omitted, Claude asks before doing anything. Researches portals online rather than relying on general knowledge, confirming each one actually exists and is active on its own site.
 
 ## Usage
 
@@ -24,7 +24,7 @@ If you provide a country argument, Claude uses it directly. If you omit it, Clau
 flowchart TD
   Start([User runs /portal-finder]) --> CountryCheck{Country argument\nprovided?}
   CountryCheck -->|yes| S1
-  CountryCheck -->|no| AskCountry[Ask for country — wait]
+  CountryCheck -->|no| AskCountry[Ask for country, wait]
   AskCountry --> S1
 
   S1[Step 1: Portal research\nOnline verification per portal] --> Output[Output grouped portal list\nwith start-here flags]
@@ -37,17 +37,17 @@ flowchart TD
 
 Claude checks whether a country was provided as an argument. If not, it asks and waits before proceeding.
 
-### [Step 1 — Portal research](portal-finder/step1-portal-research.html)
+### [Step 1: Portal research](portal-finder/step1-portal-research.html)
 
-Researches job portals for IT/tech roles in the target country online. Portals are organized by type into three mutually exclusive groups: general job boards, tech-specific boards, and professional & community networks. Government and official employment-service portals are deliberately excluded — they tend to be citizen/PR-oriented or geared toward expat/relocation information rather than reliable third-party job listings. Geographic scope (country-dedicated vs global) is noted per portal rather than used as a group. Within each group, the 2–3 portals to start with first are flagged. Anything noteworthy but outside the structure — deprecated portals, shared ownership, foreign-applicant restrictions — is flagged with ⚠️.
+Researches job portals for IT/tech roles in the target country online. Portals are organized by type into three mutually exclusive groups: general job boards, tech-specific boards, and professional & community networks. Government and official employment-service portals are deliberately excluded: they tend to be citizen/PR-oriented or geared toward expat/relocation information rather than reliable third-party job listings. Geographic scope (country-dedicated vs global) is noted per portal rather than used as a group. Within each group, the 2–3 portals to start with first are flagged. Anything noteworthy but outside the structure (deprecated portals, shared ownership, foreign-applicant restrictions) is flagged with ⚠️.
 
 ## Stop conditions
 
-- **Country not provided as argument.** Claude asks and waits — it does not guess or default to a country.
+- **Country not provided as argument.** Claude asks and waits; it does not guess or default to a country.
 - **Online research finds no portals matching a group.** Claude omits that group rather than inventing entries.
 
 ## See also
 
-- [`/country-finder`](country-finder.html) — discover which countries are viable for remote hire or visa sponsorship
-- [`/salary-calculator`](salary-calculator.html) — calculate realistic local-market salaries for a target country
-- [`/job-screener`](job-screener.html) — screen job descriptions against your resume profile
+- [`/country-finder`](country-finder.html): discover which countries are viable for remote hire or visa sponsorship
+- [`/salary-calculator`](salary-calculator.html): calculate realistic local-market salaries for a target country
+- [`/job-screener`](job-screener.html): screen job descriptions against your resume profile

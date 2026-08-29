@@ -1,13 +1,13 @@
 ---
-title: Step 6 — Final Ranking
+title: Step 6: Final Ranking
 parent: /country-finder
 grand_parent: Commands
 nav_order: 6
 ---
 
-# Step 6 — Final Ranking
+# Step 6: Final Ranking
 
-A focused audit of the Step 5 scoring output, followed by a prioritized Country Finder result — the Priority Table. Always runs; unlike the rest of the pipeline this is the only step with no skip option, since it's what produces the final result. The two checks and the Summary are file-only; the Priority Table is the one thing this step shows directly in chat. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy on the audit itself. If you decline, the step runs with your current model.
+A focused audit of the Step 5 scoring output, followed by a prioritized Country Finder result: the Priority Table. Always runs; unlike the rest of the pipeline this is the only step with no skip option, since it's what produces the final result. The two checks and the Summary are file-only; the Priority Table is the one thing this step shows directly in chat. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy on the audit itself. If you decline, the step runs with your current model.
 
 ## Flow
 
@@ -20,8 +20,8 @@ flowchart TD
   CurrentModel --> C1[Check 1: Confidence calibration\nHigh confidence backed by real evidence?]
   C1 --> C2[Check 2: Missing candidate check\nExpected absences are evidence-based?]
   C2 --> Recal{Inflated confidence\nfound?}
-  Recal -->|yes| Revise[Revise confidence levels\nor classifications — explain each change]
-  Recal -->|no| Confirm[Confirm Step 5 results\nare appropriate — no changes]
+  Recal -->|yes| Revise[Revise confidence levels\nor classifications, explain each change]
+  Recal -->|no| Confirm[Confirm Step 5 results\nare appropriate, no changes]
   Revise --> Summary[Summary: countries grouped\nby row, both tracks side by side\nfile-only]
   Confirm --> Summary
   Summary --> Priority[Priority Table: word + medal\nper country, holistic ranking]
@@ -36,9 +36,9 @@ Challenges the two aspects of Step 5 scoring that Step 5 cannot self-audit: whet
 
 ## What it reads
 
-- `cf-step5-scoring-results.md` — full scoring output from Step 5, and the sole authoritative source for the Priority Table's Remote Fit / Sponsorship Fit columns
-- `cf-step2-candidates.md` — the full candidate universe, used to detect countries that were candidates but never reached Step 4
-- `cf-step4-country-data.md`, `cf-step1-criteria.md`, `situational-profile.md`, and `profile.md` — the underlying evidence, criteria, situational profile, and candidate profile (the last used for the Priority Table's medal assignment)
+- `cf-step5-scoring-results.md`: full scoring output from Step 5, and the sole authoritative source for the Priority Table's Remote Fit / Sponsorship Fit columns
+- `cf-step2-candidates.md`: the full candidate universe, used to detect countries that were candidates but never reached Step 4
+- `cf-step4-country-data.md`, `cf-step1-criteria.md`, `situational-profile.md`, and `profile.md`: the underlying evidence, criteria, situational profile, and candidate profile (the last used for the Priority Table's medal assignment)
 
 All inputs come from workspace files, so the audit is safe to route to the isolated deep-reasoner subagent.
 
@@ -46,11 +46,11 @@ All inputs come from workspace files, so the audit is safe to route to the isola
 
 **1. Confidence calibration check**
 
-For every country marked High confidence: verifies that the underlying evidence is genuinely specific, sourced, and dated — not just confidently worded. Flags any confidence level that seems inflated relative to the actual evidence quality and explains why.
+For every country marked High confidence: verifies that the underlying evidence is genuinely specific, sourced, and dated, not just confidently worded. Flags any confidence level that seems inflated relative to the actual evidence quality and explains why.
 
 **2. Missing candidate check**
 
-Compares the Step 2 candidate list against the countries that reached Steps 4 and 5 (and also considers any commonly expected country that is absent). For each missing country, states whether the absence was a genuine evidence-based elimination (citing the reason from earlier steps) or a process gap — such as being a Step 2 candidate that was never researched or never reached Step 4.
+Compares the Step 2 candidate list against the countries that reached Steps 4 and 5 (and also considers any commonly expected country that is absent). For each missing country, states whether the absence was a genuine evidence-based elimination (citing the reason from earlier steps) or a process gap, such as being a Step 2 candidate that was never researched or never reached Step 4.
 
 ## Recalibration
 
@@ -63,33 +63,33 @@ If recalibration is not supported, Step 5 results are explicitly confirmed as ap
 
 ## Summary
 
-After the recalibration verdict, Claude writes a Summary into the file (not shown in chat — the Priority Table below is the only thing from this step shown in chat) that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track, each country showing its Remote and Sponsorship fit side by side.
+After the recalibration verdict, Claude writes a Summary into the file (not shown in chat; the Priority Table below is the only thing from this step shown in chat) that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track, each country showing its Remote and Sponsorship fit side by side.
 
 | Country | Remote | Sponsorship |
 |---|---|---|
-| Example A | Strong — High | Moderate — Medium |
-| Example B | Excluded | Strong — High |
-| Example C | not scored (no data) | Weak — Low |
+| Example A | Strong, High | Moderate, Medium |
+| Example B | Excluded | Strong, High |
+| Example C | not scored (no data) | Weak, Low |
 
 Rules for the table:
 
-- **Excluded** — the country was actively eliminated on that track during Step 5. The reason is not restated here.
-- **not scored (no data)** — no research was ever ingested for that country on that track. This is distinct from Excluded.
+- **Excluded**: the country was actively eliminated on that track during Step 5. The reason is not restated here.
+- **not scored (no data)**: no research was ever ingested for that country on that track. This is distinct from Excluded.
 - If Step 6 revised a country's confidence level or classification, a short one-line note appears beneath it.
 
-Countries flagged by the Missing Candidate Check that were never researched on either track are listed separately under **"Flagged but not researched"** — they are not forced into the table.
+Countries flagged by the Missing Candidate Check that were never researched on either track are listed separately under **"Flagged but not researched"**; they are not forced into the table.
 
 The section closes with counts:
 - Remote: [N] scored, [N] excluded, [N] not scored (no data)
 - Sponsorship: [N] scored, [N] excluded, [N] not scored (no data)
 
-The Summary itself contains no ranking, recommendations, or interpretation beyond the classifications above — ranking is reserved for the Priority Table below.
+The Summary itself contains no ranking, recommendations, or interpretation beyond the classifications above; ranking is reserved for the Priority Table below.
 
 ## Priority Table
 
-A second table, written into the file right after the Summary and using the same final classifications — but unlike the Summary, this one is also shown directly in chat, since it's this step's actual deliverable. Each row's Tier has two independent parts:
+A second table, written into the file right after the Summary and using the same final classifications, but unlike the Summary, this one is also shown directly in chat, since it's this step's actual deliverable. Each row's Tier has two independent parts:
 
-**Word** — which application track is usable, derived from that country's Remote/Sponsorship fit values as recorded in `cf-step5-scoring-results.md` — Step 5 is the authoritative source here. Even if the Summary revised a country's classification during recalibration, the Priority Table's Fit columns still trace back to Step 5's original ratings, never Step 6's:
+**Word**: which application track is usable, derived from that country's Remote/Sponsorship fit values as recorded in `cf-step5-scoring-results.md`; Step 5 is the authoritative source here. Even if the Summary revised a country's classification during recalibration, the Priority Table's Fit columns still trace back to Step 5's original ratings, never Step 6's:
 
 | Word | Condition |
 |---|---|
@@ -98,7 +98,7 @@ A second table, written into the file right after the Summary and using the same
 | Sponsorship | Sponsorship Fit Strong or Moderate; Remote Fit Weak or unavailable |
 | Limited | Neither track reaches Moderate |
 
-**Medal** (🥇 / 🥈 / 🥉 / 🎗️) — a holistic judgment of expected application priority for this specific candidate, deliberately *not* calculated mechanically from the two fit values or from confidence alone. This is where Step 6's own audit work comes in: its evidence-quality and confidence-calibration findings inform how much the underlying evidence is trusted, without ever changing the Fit values themselves. Weighed against seniority/skills/industry match (from `profile.md`), job opportunity volume and recency, remote-location acceptance, sponsorship evidence for the specific profession, salary compatibility, visa practicality, language/citizenship barriers, and evidence strength (as informed by the Confidence Calibration Check). There's no fixed quota per medal — a Moderate/Moderate "Both" country can still land 🥉 if conversion factors (hiring volume, evidence strength, language barriers) are weak.
+**Medal** (🥇 / 🥈 / 🥉 / 🎗️): a holistic judgment of expected application priority for this specific candidate, deliberately *not* calculated mechanically from the two fit values or from confidence alone. This is where Step 6's own audit work comes in: its evidence-quality and confidence-calibration findings inform how much the underlying evidence is trusted, without ever changing the Fit values themselves. Weighed against seniority/skills/industry match (from `profile.md`), job opportunity volume and recency, remote-location acceptance, sponsorship evidence for the specific profession, salary compatibility, visa practicality, language/citizenship barriers, and evidence strength (as informed by the Confidence Calibration Check). There's no fixed quota per medal; a Moderate/Moderate "Both" country can still land 🥉 if conversion factors (hiring volume, evidence strength, language barriers) are weak.
 
 | Country | Tier | Remote Fit | Sponsorship Fit |
 |---|---|---|---|
@@ -107,17 +107,17 @@ A second table, written into the file right after the Summary and using the same
 | 🏳️ Example Country | 🥉 Sponsorship | Weak | Moderate |
 | 🏳️ Example Country | 🎗️ Limited | Weak | Weak |
 
-Sorted by medal first (🥇 → 🎗️), then within the same medal by expected chance of landing a job there (same factors as above, never alphabetical as a first pass) — with alphabetical order only as the last-resort tie-breaker, after domain/industry match, named-employer evidence, accessibility/sponsorship willingness, salary/timeline, and evidence confidence have all been weighed. Remote Fit and Sponsorship Fit values are restricted to Strong / Moderate / Weak / — (em dash, covering unavailable, excluded, and unresearched alike). No notes, citations, or footnotes in this table — every country from the Summary appears exactly once.
+Sorted by medal first (🥇 → 🎗️), then within the same medal by expected chance of landing a job there (same factors as above, never alphabetical as a first pass); with alphabetical order only as the last-resort tie-breaker, after domain/industry match, named-employer evidence, accessibility/sponsorship willingness, salary/timeline, and evidence confidence have all been weighed. Remote Fit and Sponsorship Fit values are restricted to Strong / Moderate / Weak / — (em dash, covering unavailable, excluded, and unresearched alike). No notes, citations, or footnotes in this table; every country from the Summary appears exactly once.
 
 ## Output
 
-- `cf-step6-final-ranking.md` — the Summary table and the Priority Table, saved together after both are output. This is the final, post-audit classification — later steps or pipelines (e.g. Salary Calculator) should prefer it over `cf-step5-scoring-results.md` if both exist.
+- `cf-step6-final-ranking.md`: the Summary table and the Priority Table, saved together after both are output. This is the final, post-audit classification; later steps or pipelines (e.g. Salary Calculator) should prefer it over `cf-step5-scoring-results.md` if both exist.
 
-Of the two, only the Priority Table is also shown directly in chat — the Summary stays file-only, since the Priority Table alone is the step's actual deliverable.
+Of the two, only the Priority Table is also shown directly in chat; the Summary stays file-only, since the Priority Table alone is the step's actual deliverable.
 
 ## Completion message
 
-After saving, Claude tells you the pipeline is complete and where the results live, so the conversation doesn't just trail off after the table: *"Country Finder is complete. Results are saved to `cf-step6-final-ranking.md` if you want to revisit them later without re-running the pipeline — start with your 🥇 countries above."*
+After saving, Claude tells you the pipeline is complete and where the results live, so the conversation doesn't just trail off after the table: *"Country Finder is complete. Results are saved to `cf-step6-final-ranking.md` if you want to revisit them later without re-running the pipeline; start with your 🥇 countries above."*
 
 ## Stop condition
 
