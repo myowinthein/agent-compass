@@ -37,11 +37,12 @@ A Claude Cowork plugin for globally-minded IT/tech job seekers: find remote-hire
 
 ## Usage
 
-Type `/` in a **Cowork** task. All four commands appear listed under the **Claude Compass** section.
+Type `/` in a **Cowork** task. All five commands appear listed under the **Claude Compass** section.
 
 | Command | What it does |
 |---|---|
 | [`/country-finder`](https://myowinthein.github.io/claude-compass/docs/commands/country-finder.html) | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
+| [`/country-finder-v2`](https://myowinthein.github.io/claude-compass/docs/commands/country-finder-v2.html) | Run an automated, evidence-audited country search with numeric scores and explicit cutoffs. |
 | [`/salary-calculator`](https://myowinthein.github.io/claude-compass/docs/commands/salary-calculator.html) | Calculate realistic local-market salaries for your target role. |
 | [`/portal-finder`](https://myowinthein.github.io/claude-compass/docs/commands/portal-finder.html) | Find verified job portals for IT/tech roles in a specific country, grouped by type. |
 | [`/job-screener`](https://myowinthein.github.io/claude-compass/docs/commands/job-screener.html) | Screen a job description against your resume and get a structured apply / maybe / skip verdict. |

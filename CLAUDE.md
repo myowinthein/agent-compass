@@ -3,9 +3,9 @@
 ## 1. Project Identity
 
 **Name:** claude-compass  
-**Version:** 1.12.0  
+**Version:** 1.13.0
 **Type:** Claude Code plugin (no runtime code, pure markdown)  
-**Purpose:** Four slash commands for globally-minded IT/tech job seekers: discover countries for remote hire or visa sponsorship, calculate realistic local-market salaries, find verified job portals per country, and screen job descriptions against the candidate's resume. Biased toward the IT/tech industry (the target audience) but not toward any single IT role. Grounded in user-provided research, never in Claude's assumptions.  
+**Purpose:** Five slash commands for globally-minded IT/tech job seekers: discover countries for remote hire or visa sponsorship, run an automated evidence-audited country search, calculate realistic local-market salaries, find verified job portals per country, and screen job descriptions against the candidate's resume. Biased toward the IT/tech industry (the target audience) but not toward any single IT role. Grounded in sourced evidence, never in Claude's assumptions.
 **Blast radius:** Low. No external services, no databases, no code execution. Changes affect prompt behavior in consumer workspaces only.
 
 ## 2. Project Config
@@ -28,6 +28,7 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 |------|----------------|
 | `.claude-plugin/plugin.json` | Plugin identity and version |
 | `commands/country-finder.md` | Orchestrator for the 6-step Country Finder pipeline; owns state file and resume logic |
+| `commands/country-finder-v2.md` | Orchestrator for the 4-step automated, evidence-audited Country Finder v2 pipeline |
 | `commands/salary-calculator.md` | Orchestrator for the 5-step Salary Calculator pipeline; runs standalone after Country Finder |
 | `commands/portal-finder.md` | Orchestrator for the 1-step Portal Finder pipeline; no state file, no resume required |
 | `commands/job-screener.md` | Orchestrator for the 1-step Job Screener; needs `profile.md`, keeps no state, re-invoke on drift |
@@ -36,6 +37,7 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 | `prompts/job-screener/step1-match-analysis.md` | Single step for Job Screener; screens pasted JDs against `profile.md` with a deterministic decision waterfall, then drafts application writing |
 | `skills/data-validation-rules.md` | Cross-pipeline ingestion constraints; referenced at runtime by both data-validation steps |
 | `skills/evidence-quality-rules.md` | Confidence-lowering rules for vague or unsourced research claims; referenced at runtime by the scoring step |
+| `skills/country-finder-v2-scoring-rules.md` | Numeric scoring, evidence hierarchy, audit rules, tiers, and cutoffs for Country Finder v2 |
 | `skills/exclusion-transparency-rules.md` | Every filtered-out item requires a specific, evidence-based reason; referenced at runtime by the scoring step |
 | `skills/situational-profile-questions.md` | Shared situational profile questions (location, citizenship, language, salary minimum, existing work authorization) and save/reuse logic; referenced at runtime by CF step1 and SC step3 |
 | `skills/sponsorship-threshold-rules.md` | Governs sponsorship salary threshold collection and comparison; referenced at runtime by SC steps 1, 4, and 5b |
