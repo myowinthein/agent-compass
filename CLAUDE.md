@@ -3,9 +3,9 @@
 ## 1. Project Identity
 
 **Name:** claude-compass  
-**Version:** 1.13.0
+**Version:** 1.14.0
 **Type:** Claude Code plugin (no runtime code, pure markdown)  
-**Purpose:** Four slash commands for globally-minded IT/tech job seekers: discover countries for remote hire or visa sponsorship, calculate realistic local-market salaries, find verified job portals per country, and screen job descriptions against the candidate's resume. Biased toward the IT/tech industry (the target audience) but not toward any single IT role. Grounded in sourced evidence, never in Claude's assumptions.
+**Purpose:** Five slash commands for globally-minded IT/tech job seekers: discover countries for remote hire or visa sponsorship, calculate realistic local-market salaries with either the original or evidence-audited v2 workflow, find verified job portals per country, and screen job descriptions against the candidate's resume. Biased toward the IT/tech industry (the target audience) but not toward any single IT role. Grounded in sourced evidence, never in Claude's assumptions.
 **Blast radius:** Low. No external services, no databases, no code execution. Changes affect prompt behavior in consumer workspaces only.
 
 ## 2. Project Config
@@ -29,6 +29,7 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 | `.claude-plugin/plugin.json` | Plugin identity and version |
 | `commands/country-finder.md` | Orchestrator for the 6-step Country Finder pipeline; owns state file and resume logic |
 | `commands/salary-calculator.md` | Orchestrator for the 5-step Salary Calculator pipeline; runs standalone after Country Finder |
+| `commands/salary-calculator-v2.md` | Separate 6-step Salary Calculator v2 orchestrator; owns fingerprinted v2 state and never overwrites v1 outputs |
 | `commands/portal-finder.md` | Orchestrator for the 1-step Portal Finder pipeline; no state file, no resume required |
 | `commands/job-screener.md` | Orchestrator for the 1-step Job Screener; needs `profile.md`, keeps no state, re-invoke on drift |
 | `prompts/shared/resume-extraction-prompt.md` | Shared first step for Country Finder, Salary Calculator, and Job Screener; produces `profile.md` in the consumer workspace |
@@ -39,13 +40,14 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 | `skills/exclusion-transparency-rules.md` | Every filtered-out item requires a specific, evidence-based reason; referenced at runtime by the scoring step |
 | `skills/situational-profile-questions.md` | Shared situational profile questions (location, citizenship, language, salary minimum with hard-floor/context distinction, existing work authorization, age) and save/reuse logic; referenced at runtime by CF step1 and SC step3 |
 | `skills/sponsorship-threshold-rules.md` | Governs sponsorship salary threshold collection and comparison; referenced at runtime by SC steps 1, 4, and 5b |
+| `skills/salary-calculator-v2-rules.md` | Single source of truth for v2 market scope, evidence grades, adjustments, visa states, formulas, rounding, and audit limits |
 | `data/default-preferred-countries.md` | Shipped, continent-grouped default country list for CF step2 when no Step 1 Include list was given; requires explicit user confirmation before use |
 | `agents/deep-reasoner.md` | Routes scoring, final ranking, international adjustment, and final verification to Opus/high effort |
 | `agents/calculator.md` | Routes salary table calculation to Opus/max effort |
 | `_config.yml` | Jekyll + just-the-docs GitHub Pages site config; excludes plugin dirs (`agents/`, `commands/`, `prompts/`, `skills/`, `data/`, `.claude/`) from the public site |
 | `.claude/helm/refactor-log.json` | Refactoring ledger: tracks open/fixed/skipped findings across runs; not source code |
 
-**Pipeline pattern:** Each command is a thin orchestrator. All logic lives in numbered prompt files under `prompts/`. Pipeline state persists across sessions via JSON files written to the consumer's workspace (`.country-finder-state.json`, `.salary-calculator-state.json`). Intermediate step outputs also persist to workspace files prefixed `cf-` or `sc-` (e.g. `cf-step5-scoring-results.md`, `sc-step3-adjustment-values.md`) so Opus subagents can read real data without relying on conversation memory. Every step writes to exactly one such file; no step splits its output across two files. Profile data persists via `profile.md` and `situational-profile.md`.
+**Pipeline pattern:** Each command is a thin orchestrator. All logic lives in numbered prompt files under `prompts/`. Pipeline state persists across sessions via JSON files written to the consumer's workspace. Salary Calculator v2 uses `.salary-calculator-v2-state.json`, an input fingerprint, and only `scv2-` output names, so it cannot overwrite or resume from v1 `sc-` artifacts. Intermediate outputs let subagents read real data without relying on conversation memory. Profile data persists via `profile.md` and, for v1, `situational-profile.md`.
 
 **Skill file pattern:** Skill files are not auto-loaded; they are referenced explicitly by the prompt files that need them (`Read and apply skills/...`). This is the single-source-of-truth for shared rules and logic; do not inline skill content in prompts.
 
@@ -69,6 +71,9 @@ To use the plugin locally, install it from the repo root in a Claude Code worksp
 - Salary Calculator step1 offers Country Finder's scored output (`cf-step6-final-ranking.md`, falling back to `cf-step5-scoring-results.md`) as a starting country list if either exists, always shown for confirmation rather than silently applied. Never `data/default-preferred-countries.md` for this: that's Country Finder's unscored search scope, not a result.
 - Salary Calculator step4 (Table Calculation) also orders its table to match `cf-step6-final-ranking.md`'s Priority Table when that file exists, falling back to alphabetical order otherwise.
 - Salary Calculator step5b writes to exactly one file, `sc-step5b-final-verification.md`: the four detailed checks, the recalibration verdict, and the resulting final table (unchanged or revised) all live in that single file. There is no separate table file; a revised table is never written anywhere but into `sc-step5b-final-verification.md` alongside the audit that produced it.
+- Salary Calculator v2 confirms role level and country scope before research, uses one broad practical employer market, and returns one Expected Annual value plus a compact interview range per country. Its adjustment is limited to 0, 3, 5, 7, 10, or 12 percent and must rest on concrete candidate-applicable employer friction, never passport prestige or protected traits.
+- Salary Calculator v2 uses four distinct visa states: Verified numeric, No fixed threshold, Not applicable, and Unknown. A verified comparable threshold participates in the Required Floor; the other states never become a numeric zero. The final table renders them as a number, `None`, `N/A`, and `?`, respectively.
+- Salary Calculator v2 country workers return isolated results to the parent. Only the parent writes `scv2-research/` and consolidated files serially; no parallel worker appends to a shared file.
 - Situational profile (`situational-profile.md`) is asked once and reused across Country Finder step1 and Salary Calculator step3, never re-asked if the file already exists.
 - Portal Finder groups portals by type only (general, tech-specific, professional/community networks); scope (country-dedicated vs global) is a per-portal note, never a grouping axis, and each portal belongs to exactly one group. Government/official employment-service portals are deliberately excluded: citizen/PR-oriented or expat/relocation-info focused, not reliable third-party job listings. Portals carry no verified-attribute tags (remote/sponsorship/no-account); that mechanism was removed as not worth the research overhead.
 - Job Screener's verdict is a deterministic waterfall applied silently in order: Skip (any 🚫 blocker) beats Maybe (2+ unmet required quals) beats Apply, never re-derived per JD.
