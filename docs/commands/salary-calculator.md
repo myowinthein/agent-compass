@@ -7,7 +7,7 @@ has_children: true
 
 # /salary-calculator
 
-Researches current salary evidence and returns one recruiter-friendly expected salary, one monthly equivalent, and one short interview range per selected country. Detailed evidence, adjustments, and calculations stay in workspace files.
+Runs the full Salary Calculator pipeline. Generates ready-to-copy research prompts for local-market salary data, ingests your research results, applies an international candidate adjustment, produces a salary table with shown calculations, and audits it with a mandatory final verification. Runs standalone after Country Finder. Resumes from the last completed step if interrupted.
 
 ## Usage
 
@@ -15,65 +15,69 @@ Researches current salary evidence and returns one recruiter-friendly expected s
 /claude-compass:salary-calculator
 ```
 
+Run it once per session. Claude resumes automatically if a `.salary-calculator-state.json` file already exists.
+
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Run salary calculator]) --> Profile[Create or reuse confirmed profile]
-  Profile --> Situation[Confirm situational profile and employment basis]
-  Situation --> Level[Confirm target role and level]
-  Level --> Countries[Confirm active Country Finder countries]
-  Countries --> Research[Step 1: Isolated country research]
-  Research --> Validate[Step 2: Verify and normalize evidence]
-  Validate --> Adjust[Step 3: Capped recruiter-attraction adjustment]
-  Adjust --> Calculate[Step 4: Deterministic target calculation]
-  Calculate --> Audit[Step 5: Independent final verification]
-  Audit --> Done([Simple expected-salary table])
+  Start([User runs /salary-calculator]) --> Profile{profile.md\nexists?}
+  Profile -->|no| Extract[Resume extraction,\nwait for upload and confirmation]
+  Profile -->|yes| State
+  Extract --> State
+
+  State{.salary-calculator-state.json\nexists?} -->|yes| Resume[Inform user: resuming from step N]
+  State -->|no| S1
+  Resume --> S1
+
+  S1[Step 1: Research prompt generator\nlocal-market salary prompts per country] --> S2
+  S2[Step 2: Data validation\nreads sc-step1-salary-research.md] --> S3prep
+  S3prep[Collect situational profile\non current model, before handoff] --> S3
+  S3[Step 3: International adjustment\ndeep-reasoner agent] --> S4
+  S4[Step 4: Table calculation\ncalculator agent, file-only,\nbrief note in chat] --> Ladder
+
+  Ladder[Confirm career ladder\non current model, before handoff] --> S5[Step 5: Final Verification\ndeep-reasoner agent, always runs\nChecks file-only, final table\nshown in chat\nOne file: sc-step5b-final-verification.md]
+  S5 --> Done([Results delivered])
 ```
-
-## Preflight
-
-Before research begins, Claude confirms:
-
-- candidate identity and resume profile,
-- current location, citizenship, work authorization, languages, age, and salary floor,
-- whether salaries are for relocation, cross-border remote work, or Country Finder's selected path,
-- target role and career level.
-
-The pipeline will not blend local-relocation compensation and cross-border remote compensation into one number.
 
 ## Steps
 
-### [Step 1: Salary research](salary-calculator/step1-research-prompt-generator.html)
+### Profile check
 
-Uses Country Finder's active-application countries as the default list, with the Gold or top-priority group preferred. After confirmation, each country is researched independently. The research produces one broad-market Low, Realistic midpoint, and Strong salary band plus a candidate-specific sponsorship threshold record.
+Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resume-extraction-prompt.md`, waits for the user to upload their resume, and waits for explicit confirmation of the extracted profile. The profile is reused on all subsequent runs without re-extraction.
 
-### [Step 2: Evidence validation](salary-calculator/step2-data-validation.html)
+### State check
 
-Opens the decisive sources, checks role, level, location, currency, compensation basis, dates, and numerical consistency, then repairs incomplete evidence where possible. Each country receives an evidence grade.
+Checks for `.salary-calculator-state.json`. If found, reads `last_completed_step` and informs the user which step will resume. If absent, creates the file with `last_completed_step: 0` and starts from Step 1. Updates the file after each step completes.
 
-### [Step 3: Recruiter-attraction adjustment](salary-calculator/step3-international-adjustment.html)
+### [Step 1: Research prompt generator](salary-calculator/step1-research-prompt-generator.html)
 
-Applies a deliberate 0 to 12 percent adjustment to the verified midpoint when concrete overseas-hiring friction makes a slightly lower initial ask strategically useful. It does not use passport rankings or presumed nationality prestige.
+If Country Finder's output exists (`cf-step6-final-ranking.md` or `cf-step5-scoring-results.md`), offers its Strong/Moderate-fit countries as a starting point before asking. Generates ready-to-copy research prompts for each target country, scoped to the candidate's role and profile from `profile.md`. Each prompt instructs the researcher to find realistic local-market annual base salary ranges: excluding expat, FAANG-only, US-skewed, contractor, and equity-heavy data. Prompts request two company tiers (mid-size local-market and premium/international), city-level breakdowns where relevant, sourced, dated evidence, and each country's sponsorship salary threshold for employer-sponsored work-visa relocation, if one exists.
 
-### [Step 4: Target calculation](salary-calculator/step4-table-calculation.html)
+### [Step 2: Data validation](salary-calculator/step2-data-validation.html)
 
-Calculates one Expected Salary per country. The target cannot fall below the verified market low, an applicable legal sponsorship threshold, or a user-declared hard floor. It also generates a monthly equivalent and a short evidence-based interview range.
+Reads `sc-step1-salary-research.md` written by Step 1 and stores each country's data automatically, no pasting. Validates each block: one country per block, both company tiers and sources present, duplicates skipped and noted. Data is preserved verbatim: no analysis or adjustments during ingestion. Stored data is written to `sc-step2-salary-data.md` for later steps.
 
-### [Step 5: Final verification](salary-calculator/step5b-final-verification.html)
+### [Step 3: International adjustment](salary-calculator/step3-international-adjustment.html)
 
-Independently checks sources, adjustment logic, immigration rules, arithmetic, and rounding. Corrections require evidence or a deterministic calculation error. The final compact table is shown in chat and saved with the detailed audit.
+Before this step, the command collects the situational profile on your current model (so it exists before any Opus handoff). Claude then asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy; if declined, the step runs with your current model. Estimates the international candidate adjustment for each country: the realistic hiring discount an overseas applicant may face compared to a local candidate, based on employer risk perception, visa complexity, remote interview logistics, and local talent availability. Shows reasoning for each adjustment.
 
-## Final table
+### [Step 4: Table calculation](salary-calculator/step4-table-calculation.html)
 
-| Country | Visa Minimum | Expected Annual | Expected Monthly | Interview Range Annual |
-|---|---:|---:|---:|---:|
+Claude asks whether to use the **calculator** subagent (Opus, max effort) for higher arithmetic precision; if declined, the step runs with your current model. Reads all ingested salary data and adjustment figures, works through full arithmetic for every country, and double-checks each calculation before finalising. Precision takes priority over speed. Countries with a reported sponsorship salary threshold get a Legal Requirement column flagging whether Safe or Stretch falls short; the figures themselves are never adjusted to meet it. This is the raw, pre-audit calculation: the shown work and table are saved to file only, with just a brief calculated/skipped count in chat.
 
-- Expected Annual is the single number for application forms.
-- Expected Monthly is its monthly equivalent.
-- Interview Range is the short answer for recruiter or interview conversations.
-- Detailed employer scenarios stay out of the final table.
+### [Step 5: Final Verification](salary-calculator/step5b-final-verification.html)
 
-## Resume behavior
+Always runs after Step 4 completes; this is the only step in the pipeline with no skip option, since it produces the final result. It first drafts your career ladder on the current model and waits for your confirmation (saved to `sc-step5a-career-ladder.md`) before any Opus handoff, then asks whether to use the **deep-reasoner** subagent (Opus, high effort); if declined, the step runs with your current model. Audits the table output for inconsistencies, outliers, or weak evidence, and revises it if the evidence supports doing so. The four detailed checks and the recalibration verdict are file-only, but the resulting final table (unchanged or revised) is shown directly in chat, copied from the file, table only with no surrounding commentary. The completion message afterward states whether recalibration occurred. Everything from this step, including the table, is written to a single file, `sc-step5b-final-verification.md`.
 
-State schema version 2 records candidate and input fingerprints plus completed country research. If the candidate, role, country list, or employment basis changes, Claude restarts from the earliest affected step instead of silently reusing stale data.
+## Stop conditions
+
+- **Profile not yet uploaded.** Claude waits; it does not proceed or fill in placeholder data.
+- **Any step instructs Claude to wait.** Claude stops and waits. No guessing, no assumptions.
+- **Data validation receives multiple countries or missing required tiers/sources.** Claude never stops mid-batch; it skips the item and records the reason. Duplicates and skipped items are all reported together in one consolidated report at the end of Step 2, rather than stopping the run.
+
+## See also
+
+- [`/country-finder`](country-finder.html): discover which countries are worth calculating salaries for
+- [`/portal-finder`](portal-finder.html): find verified job portals for a specific country
+- [`/job-screener`](job-screener.html): screen job descriptions against your resume profile
