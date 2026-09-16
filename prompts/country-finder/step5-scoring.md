@@ -8,7 +8,7 @@ Batching rule: score every country's Remote fit first, all the way through, befo
 
 For Remote Track, for each country with Remote data stored:
 
-1. If a minimum monthly salary was specified in the situational profile, check whether the confirmed salary meets or exceeds it. If not, exclude this country from the Remote results and state the specific gap (e.g. "confirmed salary $X, below your minimum of $Y"). If no minimum was specified, skip this check.
+1. If a minimum monthly salary was specified in the situational profile, check whether it was marked a hard floor or context only. If a hard floor, exclude this country from the Remote results when the confirmed salary falls short, and state the specific gap (e.g. "confirmed salary $X, below your minimum of $Y"). If context only, do not exclude on this basis alone: weigh the confirmed salary against a recruiter-friendly local-market midpoint for this role and note it in the reasoning if it falls meaningfully below that midpoint. If no minimum was specified, skip this check entirely.
 2. If it passes, classify Remote fit as: Strong / Moderate / Weak.
 3. Assign a confidence level: High / Medium / Low.
 4. Give brief reasoning, referencing the actual stored evidence, not assumption.

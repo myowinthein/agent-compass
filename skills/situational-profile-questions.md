@@ -12,7 +12,8 @@ Check if situational-profile.md exists in the workspace. If it does, reuse it an
 3. Is there any immigration friction, visa complexity, or employer risk perception generally tied to your citizenship? (or "none known")
 4. What language(s) do you speak?
 5. What language do you require for your work environment?
-6. What is your minimum acceptable monthly salary, and in what currency? (or "not specified" to skip salary filtering)
+6. What is your minimum acceptable monthly salary, and in what currency? If you give one, is it a hard floor you won't go below, or context only (permission to use a recruiter-friendly local-market midpoint per country instead)? (or "not specified" to skip salary filtering)
 7. Are you already living in, or do you have existing work authorization for, any of your target countries? If so, which, and what's your status there (e.g. independent work rights, a visa that would require employer sponsorship to change jobs, student visa, none)? (or "not applicable" if none apply)
+8. What is your date of birth, or current age? Some visa salary thresholds vary by age. (or "prefer not to say" to skip age-based threshold checks)
 
 Once answered, save these to situational-profile.md in the workspace.

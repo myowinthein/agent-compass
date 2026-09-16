@@ -45,6 +45,8 @@ Important rule for every prompt:
 
 Do not report a finding based on reputation alone. If a country is commonly assumed to be a good fit but no real, dated source supports it, report "no evidence found" for that track rather than guessing.
 
+Evidence hierarchy, in order of preference: current official government immigration or labour sources; current direct employer vacancy or policy pages; official sponsor or accredited-employer registers (proof of capability only, never of intent); credible specialist job boards, recruiters, or salary surveys; aggregators and search snippets, which need direct verification before use rather than being cited on their own. Instruct the researcher to note which tier each source falls into.
+
 Required answer format per country (instruct the researcher to use this exact structure):
 
 Country: [name]
@@ -52,13 +54,13 @@ Country: [name]
 Remote:
 - Suitable: [yes / no / no evidence found]
 - Reason: [evidence-based reasoning, or "no evidence found"]
-- Source: [name of source, or "none"]
+- Source: [name and URL of source, or "none"]
 - Date: [date of source, or "n/a"]
 
 Sponsorship:
 - Suitable: [yes / no / no evidence found]
 - Reason: [evidence-based reasoning, or "no evidence found"]
-- Source: [name of source, or "none"]
+- Source: [name and URL of source, or "none"]
 - Date: [date of source, or "n/a"]
 
 Output:

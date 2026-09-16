@@ -11,6 +11,8 @@ Each generated prompt must embed directly as literal text — never by reference
 
 Each generated prompt must instruct the researcher to use current web research (prioritizing sources from the last 12 months), not memory or general reputation. Do not include a claim unless it is supported by a real, dated source.
 
+Evidence hierarchy, in order of preference: current official government immigration or labour sources; current direct employer vacancy or policy pages; official sponsor or accredited-employer registers (proof of capability only, never of intent); credible specialist job boards, recruiters, or salary surveys; aggregators and search snippets, which need direct verification before use rather than being cited on their own. Instruct the researcher to note which tier each source falls into.
+
 Remote Track section should ask for:
 
 - confirmed realistic remote salary range for this candidate's role and skillset in this country, with currency
@@ -37,7 +39,7 @@ Remote Track (include only if applicable):
 - Confirmed salary range: [amount] [currency]
 - Hiring prevalence evidence: [details]
 - Payment structure norms: [details]
-- Sources: [list with dates]
+- Sources: [list with URLs and dates]
 
 Sponsorship Track (include only if applicable):
 - Visa or pathway name: [name]
@@ -47,7 +49,7 @@ Sponsorship Track (include only if applicable):
 - Quota or cap limitations: [details, or "none known"]
 - Family or dependent provisions: [details]
 - Citizenship-specific considerations: [details]
-- Sources: [list with dates]
+- Sources: [list with URLs and dates]
 
 Notes: [anything relevant not covered above]
 

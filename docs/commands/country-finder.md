@@ -35,7 +35,7 @@ flowchart TD
   S3[Step 3: Research prompt generator\nready-to-copy prompts per country] --> S4
   S4[Step 4: Data validation\none country at a time] --> S5
   S5[Step 5: Scoring\ndeep-reasoner agent] --> S6
-  S6[Step 6: Final ranking\ndeep-reasoner agent, always runs]
+  S6[Step 6: Final ranking\ndeep-reasoner agent, always runs\n3 audit checks + effort allocation]
   S6 --> Done([Results delivered])
 ```
 
@@ -51,7 +51,7 @@ Checks for `.country-finder-state.json`. If found, reads `last_completed_step` a
 
 ### [Step 1: Criteria intake](country-finder/step1-criteria-intake.html)
 
-Collects requirements for both tracks. Remote track: maximum timezone difference (or "no limit" to skip). Sponsorship track: relocation timeline. Relocation is assumed; the question is not asked. Country preferences: any countries or regions to include or exclude from both tracks. Vague answers are rejected; specific values or explicit "no limit" / "not specified" are required. Also checks for `situational-profile.md` and, if it doesn't exist yet, asks seven questions (current location, citizenship, any known immigration friction tied to that citizenship, languages spoken, required work language, minimum acceptable monthly salary, and existing residency or work authorization for any target country) and saves the answers for reuse across sessions and pipelines, never re-asked if the file already exists.
+Collects requirements for both tracks. Remote track: maximum timezone difference (or "no limit" to skip). Sponsorship track: relocation timeline. Relocation is assumed; the question is not asked. Country preferences: any countries or regions to include or exclude from both tracks. Vague answers are rejected; specific values or explicit "no limit" / "not specified" are required. Also checks for `situational-profile.md` and, if it doesn't exist yet, asks eight questions (current location, citizenship, any known immigration friction tied to that citizenship, languages spoken, required work language, minimum acceptable monthly salary and whether it's a hard floor or context only, existing residency or work authorization for any target country, and date of birth or age for age-based visa thresholds) and saves the answers for reuse across sessions and pipelines, never re-asked if the file already exists.
 
 ### [Step 2: Country discovery](country-finder/step2-country-discovery.html)
 
@@ -71,7 +71,7 @@ Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) fo
 
 ### [Step 6: Final Ranking](country-finder/step6-final-ranking.html)
 
-Always runs after Step 5 completes; this is the only step in the pipeline with no skip option, since it produces the final result. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort); if declined, the step runs with your current model. Audits the scoring output across two checks (confidence calibration and a missing-candidate check), then produces the Priority Table, a country-by-country ranking with a usable-track label and a holistic priority medal.
+Always runs after Step 5 completes; this is the only step in the pipeline with no skip option, since it produces the final result. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort); if declined, the step runs with your current model. Audits the scoring output across three checks (confidence calibration, a missing-candidate check, and an evidence-misuse check), then produces the Priority Table, a country-by-country ranking with a usable-track label and a holistic priority medal, plus a file-only Effort Allocation note on where to concentrate application effort versus passively monitor.
 
 ## Stop conditions
 

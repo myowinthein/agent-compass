@@ -19,10 +19,12 @@ flowchart TD
   DeepReasoner --> Remote
   CurrentModel --> Remote[Score all Remote-track countries first]
   Remote --> SalCheck{Salary minimum\nspecified?}
-  SalCheck -->|yes| RSalary{Salary meets\nthe minimum?}
+  SalCheck -->|yes, hard floor| RSalary{Salary meets\nthe minimum?}
+  SalCheck -->|yes, context only| RContext[Weigh against recruiter-friendly\nmidpoint, note but don't exclude]
   SalCheck -->|no| RClassify
   RSalary -->|no| RExclude[Exclude, state specific gap]
   RSalary -->|yes| RClassify[Classify: Strong / Moderate / Weak\nAssign confidence: High / Medium / Low]
+  RContext --> RClassify
   RClassify --> RVague{Evidence vague\nor unquantified?}
   RVague -->|yes| RLower[Lower confidence\nstate reason]
   RVague -->|no| RNext
@@ -57,7 +59,7 @@ All Remote-track countries are scored first, all the way through, before Sponsor
 
 For each country with Remote data stored:
 
-1. If a minimum monthly salary was specified in the situational profile, check whether the confirmed salary meets or exceeds it. If not, exclude with the specific gap stated (e.g. "confirmed salary $X, below your minimum of $Y"). If no minimum was specified, skip this check.
+1. If a minimum monthly salary was specified in the situational profile, check whether it was marked a hard floor or context only. If a hard floor, exclude when the confirmed salary falls short, stating the specific gap (e.g. "confirmed salary $X, below your minimum of $Y"). If context only, weigh the confirmed salary against a recruiter-friendly local-market midpoint instead of excluding on this basis alone. If no minimum was specified, skip this check entirely.
 2. If it passes: classify Remote fit as **Strong**, **Moderate**, or **Weak**.
 3. Assign confidence: **High**, **Medium**, or **Low**.
 4. Give brief reasoning referencing actual stored evidence, not assumption.
