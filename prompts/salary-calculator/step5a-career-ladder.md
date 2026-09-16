@@ -1,7 +1,14 @@
-Draft the realistic career ladder for my role as stated in profile.md. Assume I work in the IT/tech industry, but do not assume a specific sub-field like backend — infer the ladder from my actual role, which could be any IT role (software engineering, data, DevOps/SRE, QA, security, product, design, IT management, and so on), and use the level and title conventions real to that role.
+Read `profile.md` and identify the candidate's current role, intended target role, and likely target level.
 
-Show it to me, and wait for my confirmation or edits.
+Draft a compact, realistic career ladder using title conventions appropriate to the actual profession. Do not force software-engineering titles onto product, design, data, QA, security, DevOps, IT management, or another discipline.
 
-Once confirmed, save it to sc-step5a-career-ladder.md in the workspace.
+Show only:
 
-You already have everything needed for the Step 5 Opus routing question — continue automatically into it now, in this same response. Do not stop and wait here.
+- Career ladder
+- Likely current level
+- Proposed salary-benchmark role and level
+- Any ambiguity that could materially change the salary benchmark
+
+Ask the user to confirm or correct the proposed benchmark. Stop and wait.
+
+After confirmation, save the confirmed ladder, target role, and target level to `sc-step5a-career-ladder.md`. This confirmation happens before Step 1 salary research; later steps must treat it as the single source of truth for role and level.

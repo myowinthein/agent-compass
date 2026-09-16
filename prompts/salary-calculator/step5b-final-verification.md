@@ -1,182 +1,103 @@
-Read sc-step4-salary-table.md from the workspace. Also read sc-step2-salary-data.md and sc-step3-adjustment-values.md for the underlying salary data and adjustment values, profile.md for the candidate profile and target role, and sc-step5a-career-ladder.md for the career ladder already confirmed with me before this step. Base the audit only on these files, not on prior conversation memory.
+Read:
 
-Goal
+- `sc-step4-salary-table.md`
+- `sc-step2-salary-data.md`
+- `sc-step3-adjustment-values.md`
+- `profile.md`
+- `situational-profile.md`
+- `sc-step5a-career-ladder.md`
+- `skills/sponsorship-threshold-rules.md`
 
-Perform a strict recruiter market audit of the FINAL salary framework.
+This is an independent evidence and calculation audit. Do not automatically defend or lower the numbers.
 
-Challenge assumptions where warranted.
+## Audit checks
 
-Do NOT automatically defend the existing salary numbers.
+### 1. Candidate benchmark
 
-Do NOT automatically lower the numbers unless the evidence genuinely supports doing so.
+Confirm that every country uses the confirmed target role and level rather than the highest historical title or a management-heavy role the candidate is not targeting.
 
-Follow the evidence.
+### 2. Evidence integrity
 
-Framework Definitions (used by the checks below)
+For every country, verify:
 
-- Safe = Market Midpoint (the "Realistic" value) from the Mid-size / Mainstream Local-Market tier
-- Stretch = Market Midpoint (the "Realistic" value) from the Premium / International / Remote-first tier
+- decisive source URLs support the recorded figures,
+- role, seniority, location, currency, and compensation basis align,
+- sources are sufficiently current,
+- elite-company, contractor, total-compensation, and remote-first outliers were not mixed into a broad local benchmark,
+- Low ≤ Midpoint ≤ Strong,
+- the evidence grade is justified.
 
-The salary data (with its sources and exclusions) and the international adjustment values are already in the files you read above — work from those directly rather than from any assumed methodology.
+Perform a fresh web check only where a source is weak, inaccessible, contradictory, stale, or produces an outlier. Do not replace sound evidence merely to make the table look more uniform.
 
-Save all four checks below and the recalibration verdict to file only — do not reproduce that detailed reasoning in your chat response, since it would overwhelm rather than help. The resulting final table is different: show it directly in your chat response too, copied from what you save to file — table only, no surrounding commentary. This is the one thing in this step you do show me — the four checks themselves stay file-only, and whether recalibration happened is stated as a plain fact in the completion message, not as extra commentary around the table.
+### 3. Adjustment integrity
 
-File format (write the following structure, including the final table, to sc-step5b-final-verification.md — this is the only file this step writes; the four checks are file-only, see below for what also goes in chat):
+Confirm that:
 
----
+- the adjustment is one of 0%, 3%, 5%, 7%, 10%, or 12%,
+- it is supported by concrete candidate-specific friction,
+- passport rankings and presumed nationality prestige were not used,
+- hiring difficulty was not automatically converted into a large discount,
+- the adjustment cap was respected,
+- existing residence or independent work authorization was handled correctly.
 
-1. Candidate Positioning
+### 4. Calculation integrity
 
-CAREER LEVELS FOR THIS ROLE:
+Recalculate every country independently:
 
-Use the career ladder in sc-step5a-career-ladder.md — it was drafted from profile.md and confirmed with me before this step. Do not redraft it or ask me to confirm it again; treat it as settled.
+- Raw Target,
+- Required Floor,
+- Expected Salary,
+- Monthly Equivalent,
+- Interview Range,
+- currency-aware rounding.
 
-First determine:
-- likely career level
-- likely target role level
+Confirm that historical/context-only salary was not treated as a hard floor.
 
-Benchmark compensation primarily against the TARGET role being applied for, not the highest historical responsibility.
+### 5. Immigration integrity
 
-Do not assume a level near the top of the ladder unless both the candidate profile and target role clearly support that level. Use the level names from the confirmed ladder, which reflect my actual IT role — do not force backend or software-engineering titles onto a different IT role.
+Confirm the threshold route, candidate applicability, amount, period, compensation basis, effective date, and official source.
 
----
+Ensure that:
 
-2. Framework Calibration Review
+- verified thresholds act as floors,
+- unknown is shown as `?`, not as no threshold,
+- remote-path countries show `N/A`,
+- period conversion is valid,
+- any threshold above Market Strong is flagged as a market / visa conflict.
 
-Determine whether the overall framework is:
-- conservative
-- recruiter safe
-- appropriately calibrated
-- slightly inflated
-- heavily inflated
-- under market
+## Corrections
 
-Evaluate whether the following legitimately increase compensation expectations:
-- years of experience
-- technical or domain depth
-- leadership responsibility
-- ownership scope
-- business impact
-- specialization scarcity
-- cross functional influence
-- stakeholder complexity
-- domain expertise
-- employer relevance
-- international experience
-- proven delivery history
+Correct a country only when supported by:
 
-Separately identify factors that commonly inflate salary expectations beyond practical recruiter behavior.
+- a verified source,
+- a unit, role, level, currency, or compensation-basis correction,
+- a deterministic arithmetic error,
+- a threshold-applicability correction.
 
-Examples:
-- premium employer weighting
-- niche industry weighting
-- multinational weighting
-- higher-level title interpretation (e.g. treating a Senior profile as Staff or Principal)
-- leadership title inflation
-- remote company bias
-- niche specialist premium
-- AI optimism bias
+Do not recalibrate based only on intuition, generic recruiter language, or a desire to improve interview conversion.
 
-Clearly separate:
-A. Legitimate compensation drivers
-B. Potential inflation sources
+Record every correction with the old value, new value, and reason. If the evidence remains too weak, keep the country out of the final table and state what must be researched; do not invent a number.
 
----
+## Output file
 
-3. Country by Country Verification
+Write all audit checks, corrections, unresolved issues, and the resulting final table to `sc-step5b-final-verification.md`.
 
-For each country:
+Use the same compact table and country order as Step 4:
 
-Evaluate:
-- Safe positioning
-- Stretch positioning
-- recruiter comfort
-- sponsorship realism — if this country has a Legal Requirement flag from Step 4, factor that concrete result in rather than judging realism independently of it
-- overseas hiring realism
-- interview conversion impact
+| Country | Visa Minimum | Expected Annual | Expected Monthly | Interview Range Annual |
+|---|---:|---:|---:|---:|
 
-Use approximate percentile bands rather than precise percentiles.
+The table is the user's practical result:
 
-Examples:
-- 50-60%
-- 60-70%
-- 70-80%
-- 80-90%
+- Expected Annual: single number for application forms.
+- Expected Monthly: monthly equivalent when a form asks monthly.
+- Interview Range: short answer for recruiter or interview conversations.
 
-Avoid false precision.
+## Chat response
 
-Classify Safe as:
-- conservative
-- recruiter comfortable
-- appropriately calibrated
-- slightly aggressive but realistic
-- strong senior pricing
-- top tier compensation
+Show the final table exactly as saved, followed by one completion sentence:
 
-Classify Stretch as:
-- realistic stretch
-- strong senior stretch
-- elite employer compensation
-- high end specialist compensation
-- international remote premium compensation
+- If corrected: `Salary Calculator is complete. [N] countries audited; evidence-backed corrections were applied. Full audit saved to sc-step5b-final-verification.md.`
+- If unchanged: `Salary Calculator is complete. [N] countries audited; no corrections were needed. Full audit saved to sc-step5b-final-verification.md.`
 
-For both Safe and Stretch, distinguish between:
-- commonly achievable
-- theoretically achievable
-
----
-
-4. Framework Recommendation
-
-Determine whether:
-- Safe philosophy remains appropriate
-- Stretch philosophy remains appropriate
-- employer segmentation remains appropriate
-- percentile assumptions remain appropriate
-
-If improvements are recommended, explain:
-- why
-- what assumption caused the issue
-- what structural change is recommended
-
-Also evaluate whether:
-- Safe should use broader market employers instead of strong market employers
-- Stretch should be derived from Safe plus a realistic premium
-- premium employers should remain upper bound references rather than baseline inputs
-- target role should carry more weight than historical title
-- international candidate adjustments remain appropriate
-
----
-
-5. Recalibration
-
-Only if the evidence genuinely supports recalibration:
-- revise the affected countries
-- adjust salary ranges upward or downward where appropriate
-- prioritize recruiter comfort
-- prioritize interview conversion
-- prioritize sponsorship realism
-- prioritize broad market achievability
-- prioritize realistic overseas positioning
-
-If recalibration is not supported, explicitly state that the existing framework remains appropriate and do not generate a revised salary table. Copy the table from sc-step4-salary-table.md into this file as the final table, unchanged.
-
-If recalibration is required, generate a revised table using the same format and country order as Step 4 — including the Legal Requirement column. Read and apply skills/sponsorship-threshold-rules.md and recompute that column against the revised Safe and Stretch Fixed values, using the same threshold data from Step 1. A country's Legal Requirement result from Step 4 does not carry forward automatically — recalibration can push a figure below a threshold it previously cleared, or above one it previously missed, so it must be re-evaluated against whatever the revised figures actually are. This revised table becomes the final table.
-
-Either way — unchanged or revised — write the resulting final table into sc-step5b-final-verification.md, in the same file as the four checks and the recalibration verdict. sc-step4-salary-table.md is left untouched as the pre-audit record; this step never creates any other file. sc-step5b-final-verification.md is the only file this step writes.
-
-After saving, show the final table directly in your chat response — copied from what you just wrote to the file, same format. Output only the table — no surrounding commentary, and do not reproduce the four detailed checks themselves in chat.
-
-Then tell me the pipeline is complete: if revised, "Salary Calculator is complete. [N] countries audited, recalibration applied — see the table above. Full audit saved to sc-step5b-final-verification.md." If not revised, "Salary Calculator is complete. [N] countries audited, no recalibration needed — see the table above. Full audit saved to sc-step5b-final-verification.md."
-
-Overall Principles
-
-- Be analytical.
-- Be recruiter focused.
-- Be evidence driven.
-- Challenge assumptions when warranted.
-- Do not defend the framework.
-- Do not attack the framework.
-- Follow the evidence.
-
-Step complete — stop here and wait for the main command.
+Do not reproduce the detailed audit in chat.

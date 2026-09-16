@@ -1,42 +1,62 @@
 ---
 name: Sponsorship Threshold Rules
-description: Governs how Salary Calculator collects and compares government-mandated minimum salary thresholds for employer-sponsored work visas. Applies to Salary Calculator steps 1, 4, and 5b.
+description: Governs collection and use of candidate-specific salary thresholds for employer-sponsored work authorization.
 ---
 
 # Sponsorship Threshold Rules
 
-## What counts as a threshold
+## Scope
 
-A sponsorship salary threshold is a legally mandated minimum salary a country requires an employer to pay in order to sponsor this candidate's work visa. It is a hard eligibility rule, not a market benchmark and not the same thing as an international-candidate negotiation adjustment.
+A sponsorship salary threshold is a legally mandated pay floor for a specific work-authorization route. It is not a market salary, recruiter preference, or international-candidate discount.
 
-It is scoped to employer-sponsored work-visa relocation only. It does not apply to remote or independent-contractor arrangements — most remote hiring uses one of these, so most countries and roles will have no threshold to report at all.
+Apply a threshold only when the chosen employment basis is local employment or relocation and the route is plausibly applicable to this candidate. Cross-border remote or independent-contractor work normally has no destination-country sponsorship threshold.
 
-Only report a threshold as a usable number if it is:
-- A specific fixed figure in local currency, or
-- A clearly computable multiple of a stated national average that you can resolve into an actual number
+## Required threshold record
 
-If the threshold is occupation-specific with no fixed figure, based on an unstated "prevailing wage," or you cannot confirm one exists at all, do not report a number — report "not applicable." Do not guess a figure to fill the gap.
+For each country, store:
 
-If the threshold would structurally require including compensation components not reflected in a base-salary figure (e.g. mandatory housing allowance, guaranteed bonus counted toward the legal minimum), and you cannot isolate the base-salary-equivalent portion, report "not applicable" rather than an apples-to-oranges number.
+- Status: `verified numeric`, `no fixed threshold`, `not applicable to chosen path`, or `unknown / unverified`
+- Visa or permit route
+- Candidate-applicability conditions, including age, occupation, experience, education, residence, and new-entrant rules where relevant
+- Amount and local currency
+- Reported period: hourly, monthly, or annual
+- Compensation basis: base salary, guaranteed cash compensation, allowances, holiday allowance, or another legally defined basis
+- Effective date or validity period
+- Official government source URL and access date
 
-## What to collect
+Never use an abstract passport ranking. Citizenship matters only through concrete eligibility rules, restrictions, processing requirements, or documented employer obligations.
 
-For each country, report:
-- The threshold figure (local currency), or "not applicable"
-- Whether that figure is annual or monthly
-- The official government source and how recent it is
+## What counts as verified numeric
 
-## How to compare
+A threshold is usable only when an official source provides:
 
-Compare against the Fixed values (not the ranges) for both Safe and Stretch, using the unrounded computed figures — the table's display rounding (nearest 500 annual, nearest 50 monthly) happens only for presentation and must never be applied before this comparison, since it could flip a borderline result.
+- a fixed numeric amount, or
+- a formula that can be resolved into a numeric amount for this candidate, role, location, and date.
 
-Convert the threshold to match whichever period (Annual or Monthly) the comparison needs — a monthly threshold reported as X converts to 12×X for an Annual comparison, and vice versa. Since Safe and Stretch each have one Annual Fixed value and one Monthly value, compare both, using whichever conversion matches the threshold's own reported period.
+An occupation-specific prevailing wage may be used when the official system provides a verifiable numeric figure for the target occupation and location. If the amount cannot be resolved, mark it `unknown / unverified`, not `no fixed threshold`.
 
-## Result states
+Do not combine base salary with allowances, bonuses, equity, or benefits unless the legal rule explicitly counts those components and the salary dataset uses the same basis.
 
-- **No usable threshold** (none exists, or it isn't a comparable number) — show an em dash. Do not distinguish "legally no threshold" from "could not confirm one" — both render the same way.
-- **Threshold exists** — show both period equivalents in one cell: the Annual figure first, then the Monthly figure in parentheses with a "/mo" suffix, e.g. `45,300 (3,775/mo)`. Neither figure is rounded — both are specific legal figures, shown exactly as reported or derived from it via the ×12/÷12 conversion.
-  - If both Safe and Stretch Fixed values clear it (at the period the threshold was actually reported in), show the cell as above with no warning.
-  - If either Safe or Stretch Fixed value falls short, append a single ⚠️ at the end of the cell — the warning applies to the country as a whole, not to one period only.
+## Period conversion
 
-Never adjust Safe or Stretch to meet the threshold. The threshold failing means the calculated market salary is unlikely to qualify through this sponsorship route, not that the market figure itself is wrong — the two facts are shown side by side, never merged.
+Convert a monthly threshold to an annual equivalent only when multiplying by 12 is legally and economically comparable to the researched annual base salary. Do not assume this when holiday allowance, 13th/14th-month salary, hourly rules, or guaranteed allowances change the basis.
+
+When a clean conversion is not possible, preserve the official period and compare on that same basis. Record any limitation.
+
+## Use in the final target
+
+The verified threshold is a hard floor for a sponsorship-based expected salary:
+
+- Compare it with the unrounded recruiter-friendly target.
+- If the target is below the threshold, raise the displayed target to the threshold and round upward using the country's normal salary increment.
+- If the threshold exceeds the researched strong-market figure, keep the visa-compliant target but flag a `market / visa conflict` in the audit.
+- Never lower the market evidence or claim the market midpoint changed merely because a legal floor applies.
+
+Display states:
+
+- Verified numeric: show the figure and period.
+- No fixed threshold: `None`.
+- Not applicable to chosen path: `N/A`.
+- Unknown or unverified: `?`.
+
+These states must never be collapsed into a single em dash.
