@@ -38,7 +38,7 @@ flowchart TD
 
 ## Situational profile
 
-If `situational-profile.md` does not exist, Claude asks eight questions and saves the answers to that file:
+If `situational-profile.md` does not exist, Claude asks nine questions and saves the answers to that file:
 
 1. Current location
 2. Citizenship
@@ -48,8 +48,9 @@ If `situational-profile.md` does not exist, Claude asks eight questions and save
 6. Minimum acceptable monthly salary and currency, plus whether it's a hard floor or context only, or "not specified" to skip salary filtering
 7. Existing residency or work authorization in any target country, and status there (independent work rights, a visa requiring sponsorship to change jobs, student visa, etc.), or "not applicable"
 8. Date of birth or current age, since some visa salary thresholds vary by age, or "prefer not to say" to skip age-based threshold checks
+9. Salary Calculator employment basis: local employment with relocation, cross-border remote work from the current location, or Country Finder's primary path per country
 
-These answers persist across sessions and are reused by both pipelines. The salary minimum, if provided, is used as a filter in Steps 2 and 5; whether it's a hard floor or context only changes how Step 5 applies it (see Step 5). Existing residency/work authorization, if provided, is used by Salary Calculator step3 to weigh relocation-related friction lighter for a matching country. Age, if provided, is used by Salary Calculator's sponsorship-threshold checks. If not provided, all are skipped.
+These answers persist across sessions when they clearly belong to the same candidate and are reused by both pipelines. The salary minimum, if provided, is used as a filter in Steps 2 and 5; whether it is a hard floor or context only changes how Step 5 applies it. Existing residency/work authorization informs Salary Calculator's recruiter-attraction adjustment. Age is used by candidate-specific sponsorship-threshold checks. The employment basis prevents local-relocation and cross-border remote compensation from being blended into one number.
 
 ## Criteria questions
 

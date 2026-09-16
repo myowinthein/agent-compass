@@ -1,80 +1,105 @@
-CANDIDATE PROFILE:
-Read profile.md from the workspace and use it as the candidate profile. [TARGET ROLE] below should be filled using the target or desired role from the candidate profile if one is stated; otherwise use the current or most recent title.
+Check that `profile.md`, `situational-profile.md`, and `sc-step5a-career-ladder.md` exist. Stop and report the missing file if any is absent.
 
-Countries:
-Check whether cf-step6-final-ranking.md exists in the workspace; if not, check cf-step5-scoring-results.md. If either exists, read it (preferring cf-step6-final-ranking.md if both exist), extract every country classified Strong or Moderate fit on any track, and show me that list: "Country Finder found these countries worth calculating salaries for: [list]. Use this list as-is, add to it, remove some, or start fresh?" Wait for my answer. If neither file exists, or I choose to start fresh, ask me for my target country list.
+## Select countries
 
-Generate individual research prompts to estimate realistic local-market annual base salary ranges for a [TARGET ROLE] in each country given above. Do not estimate salaries directly — only generate ready-to-copy research prompts. Estimate what a local candidate with a similar profile would realistically earn in that country — local-market salary only.
+Prefer `cf-step6-final-ranking.md` when it exists.
 
-Read and apply skills/sponsorship-threshold-rules.md — each generated prompt must also ask for the country's government-mandated minimum salary threshold for employer-sponsored work-visa relocation, following that skill's rules for what counts as a usable figure.
+- Read its Priority Table and Effort Allocation.
+- Propose the countries above the active-application cutoff; when medals are used, default to the 🥇 countries.
+- Preserve the Priority Table order.
+- Show the proposed list and ask: "Use these countries as-is, add or remove countries, or start fresh?"
+- Wait for confirmation.
 
-Important:
-Each generated prompt must instruct the researcher to perform the analysis completely from scratch using current web research and real-world market conditions only, prioritizing sources from the last 12 months. Do not rely on previous conversations, memory, earlier country discussions, or assumed preferences.
+If no Country Finder output exists, ask for the target-country list.
 
-Exclude from research:
-- expat salary and relocation premium
-- FAANG-only data (including levels.fyi)
-- Glassdoor US
-- inflated global or remote-first compensation
-- contractor or freelance rates
-- equity-heavy total compensation
-- US-skewed compensation data
+Record the confirmed list and the employment basis from `situational-profile.md`. Salary Calculator returns one answer per country, so never blend local-relocation compensation with cross-border remote compensation.
 
-For each country, create one ready-to-copy research prompt asking for:
+## Research goal
 
-- realistic annual base salary range in local currency
-- local-market salary only
-- current data only, prioritizing sources from the last 12 months
-- salary for local candidates with similar seniority and profile
-- evidence from local employers, local job boards, recruiter salary guides, employer postings, and LinkedIn salary/job data where useful
-- source for each number, and how recent that source is
-- separation of local-company salary vs international or remote-first salary if relevant
-- separate salary figures for two company tiers:
-  - mid-size or mainstream local-market companies
-  - premium, international, or remote-first companies
-- national range and major tech hub range if salary varies significantly by city (name the city used)
-- practical low, realistic, and strong ranges within each tier
-- government-mandated minimum salary threshold for employer-sponsored work-visa relocation, if one exists and is a usable figure per skills/sponsorship-threshold-rules.md — not applicable to remote or independent-contractor arrangements
+Research one broad, practical salary market for the confirmed target role and level in each country. The final target should work for mass applications without requiring the candidate to identify whether every employer is a startup, enterprise, local company, or multinational.
 
-Prioritize:
-- realistic local-market compensation
-- actual hiring behavior
-- practical market salary ranges
-- non-FAANG and non-outlier compensation
-- salary consistency across multiple local sources
+Use a balanced market sample:
 
-Required answer format (instruct the researcher to use this exact structure):
+- mainstream employers,
+- established startups and scale-ups,
+- ordinary international employers,
+- sponsor-capable employers when relocation is the chosen basis.
 
+Exclude:
+
+- FAANG-only and elite-company-only data,
+- levels.fyi,
+- Glassdoor US as a primary source,
+- equity-heavy total compensation,
+- executive or management-heavy roles when the target is an individual-contributor role,
+- contractor or freelance rates unless cross-border contracting is the confirmed employment basis,
+- global-remote compensation that is unavailable to candidates in the current location,
+- obvious low-wage outliers, internships, and junior roles.
+
+## Evidence requirements
+
+Use current web research from scratch. Prefer evidence from the last 12 months; allow an older annual salary guide only when it remains the latest edition and record its date.
+
+Aim for at least three independent usable sources per country when available, including at least one of:
+
+- a current direct-employer posting with a disclosed salary,
+- a reputable recruiter salary guide,
+- an official or well-documented local salary dataset.
+
+Every source record must include URL, publisher or employer, publication or access date, location, role/level, salary figure, period, and whether it is base salary or total compensation.
+
+Do not silently convert net salary, total compensation, hourly pay, or contractor rates into annual gross base salary. If a conversion is necessary and valid, show it.
+
+Read and apply `skills/sponsorship-threshold-rules.md`. Research the candidate-applicable route, not a generic country minimum.
+
+## Required country result
+
+Use this exact structure:
+
+```text
 Country: [name]
+Employment basis: [local employment / relocation OR cross-border remote from current location]
+Target benchmark: [role and level]
+Currency: [ISO code]
+Market coverage: [national or named city/region]
+Compensation basis: [annual gross base salary or clearly stated alternative]
 
-Mid-size / Mainstream Local-Market tier:
-- Low: [amount] [currency]
-- Realistic: [amount] [currency]
-- Strong: [amount] [currency]
-- City used (if applicable): [city]
-- Sources: [list with dates]
+Broad-market evidence:
+- Low: [amount]
+- Realistic midpoint: [amount]
+- Strong: [amount]
 
-Premium / International / Remote-first tier:
-- Low: [amount] [currency]
-- Realistic: [amount] [currency]
-- Strong: [amount] [currency]
-- City used (if applicable): [city]
-- Sources: [list with dates]
+Sponsorship threshold:
+- Status: [verified numeric / no fixed threshold / not applicable to chosen path / unknown or unverified]
+- Route: [name or N/A]
+- Amount and period: [value or status]
+- Effective date: [date or unknown]
+- Official source: [URL or none]
+- Conditions and compensation basis: [brief]
 
-Sponsorship salary threshold: [amount] [currency], [annual or monthly], or "not applicable"
+Sources:
+- [URL] — [publisher/employer], [date], [role/level/location], [figure and basis]
+- [repeat]
 
-Notes: [anything relevant not covered above]
+Notes:
+- [13th/14th-month pay, holiday allowance, city variation, conflicting evidence, or other material limitation]
+```
 
-Output format:
-- one ready-to-copy research prompt per country
-- clearly separated by country name
-- do not attempt to answer the research questions yourself in this step
+The figures must satisfy `Low ≤ Realistic midpoint ≤ Strong`. Do not invent a complete range from one salary datapoint.
 
-After generating these prompts, run each one as a separate, isolated research task. If you are able to run these as isolated sub-agent tasks, do so with the following strict brief per agent:
+## Isolated research execution
 
-- Each agent receives only one country's prompt. Its only job is to run that research and return the results for that one country. It must not answer, draft, or save results for any other country.
-- Each agent works from its own prompt only, with no access to your prior reasoning in this conversation and no access to research or conclusions reached for other countries.
+Run one isolated research task per country when subagents are available. Each agent receives only:
 
-Append each country's results to sc-step1-salary-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and stop here — wait for me to bring back the results myself before continuing.
+- the confirmed candidate benchmark,
+- relevant situational facts,
+- one country,
+- the required schema above.
 
-Once all results are saved to sc-step1-salary-research.md, tell me in a few lines: how many countries were researched, and that the full results are saved for Step 2 to validate and store. Do not reproduce the per-country research findings in this summary. Then continue automatically into Step 2 now, in this same response — do not stop and wait here.
+Agents must return their result to the main agent; they must not append concurrently to a shared file.
+
+The main agent writes each completed result serially to `sc-research/[country-slug].md`, updates `.salary-calculator-state.json`, and then assembles the country files in confirmed order into `sc-step1-salary-research.md`.
+
+If isolated research is unavailable, show the ready-to-copy prompts and stop for the user to bring back results.
+
+After all results are assembled, report only the researched count and any failed countries, then continue automatically to Step 2.

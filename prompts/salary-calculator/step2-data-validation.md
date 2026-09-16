@@ -1,29 +1,69 @@
-Check whether sc-step1-salary-research.md exists in the workspace.
+Check whether `sc-step1-salary-research.md` exists. If it does not, stop and report that Step 1 must finish first.
 
-If it does not exist, stop and tell me: "sc-step1-salary-research.md was not found. Please ensure Step 1 completed successfully before continuing."
+Read `profile.md`, `situational-profile.md`, `sc-step5a-career-ladder.md`, and every country block in `sc-step1-salary-research.md`.
 
-If it exists, read it and process each country's data from that file sequentially — this runs fully automated, with no pause for input between countries. Apply all the behavior rules below to each country block in the file, in order.
+This is an evidence-validation and normalization step, not passive storage.
 
-Behavior rules:
+## Validate each country
 
-* Read and apply the cross-pipeline data validation rules in skills/data-validation-rules.md, then follow the additional rules below.
-* Read and silently store the salary data.
-* Each block is expected to contain salary data for exactly one country.
-* If a block contains multiple countries or no recognizable country, skip it and record the issue. Do not store anything from that block.
-* Each country's data is expected to contain both tiers (Mid-size/Mainstream Local-Market, and Premium/International/Remote-first) along with sources for each. If a required tier or its sources are missing, skip it and record exactly what is missing. Do not store incomplete data.
-* Store the sponsorship salary threshold field as provided, including "not applicable." This field is never required — a missing or absent threshold never causes a country to be skipped.
-* If a country has already been stored, skip it, keep the original, and record it as a duplicate.
-* Preserve all values, wording, and formatting as provided.
-* Do not verify, correct, or critique the supplied data.
-* Do NOT analyze, summarize, calculate, rank, interpret, or generate tables.
-* Do NOT give opinions, recommendations, or perform any additional actions unless explicitly instructed later.
+Confirm:
 
-Once all countries from sc-step1-salary-research.md have been processed, write all successfully stored country datasets to sc-step2-salary-data.md in the workspace, preserving the original structure and content for each country. Then reply with one consolidated report, not a per-country reply:
+1. Exactly one country is represented.
+2. The employment basis matches `situational-profile.md`.
+3. The role and level match `sc-step5a-career-ladder.md`.
+4. Values use one clearly identified currency and compensation basis.
+5. Values are comparable annual gross base salary, or any alternative basis is explicit.
+6. `Low ≤ Realistic midpoint ≤ Strong`.
+7. Sources actually support the recorded role, level, location, period, and compensation type.
+8. Source URLs, dates, and figures are present.
+9. Contractor, equity, bonus, allowance, net-pay, and elite-employer figures have not been mixed into base salary without justification.
+10. City or regional variation is recorded when material.
+11. The sponsorship-threshold record follows `skills/sponsorship-threshold-rules.md`.
+12. Duplicate sources or reposted copies are not counted as independent evidence.
 
-Stored: [count] countries.
+Open and verify the decisive sources. If a source is inaccessible, stale, contradictory, or does not support the number attributed to it, downgrade or remove it.
 
-Skipped — malformed or unrecognizable: [country or "none"], with the issue for each.
-Skipped — missing required tier or sources: [country or "none"], with what was missing for each.
-Skipped — duplicate: [country or "none"].
+## Repair before skipping
 
-This data is saved to sc-step2-salary-data.md, which Step 3 will use next. Continue automatically into Step 3 now, in this same response — do not stop and wait here.
+When a field or source is missing, perform targeted current research to repair the country record. Record every repaired value and its replacement source.
+
+Skip a country only when there is still insufficient evidence to establish a defensible broad-market midpoint after repair. Never invent missing values.
+
+For duplicates, keep the better-supported and more recent record rather than automatically keeping the first one.
+
+## Evidence grade
+
+Assign:
+
+- High: at least three mutually consistent, current, directly relevant sources, including strong direct-employer or recruiter-guide evidence.
+- Medium: at least two usable sources with manageable limitations.
+- Low: a usable estimate exists, but evidence is thin, older, indirect, or conflicting.
+
+Low-confidence countries may continue, but the weakness must be visible to the final auditor.
+
+## Normalized output
+
+Write `sc-step2-salary-data.md` in confirmed country order. For every stored country include:
+
+- Country
+- Employment basis
+- Target role and level
+- Currency
+- Market coverage
+- Compensation basis
+- Market Low
+- Market Realistic midpoint
+- Market Strong
+- Sponsorship threshold status, route, amount, period, effective date, conditions, and official source
+- Evidence grade
+- Verified sources
+- Validation or repair notes
+
+Finish with one consolidated report:
+
+- Validated: [count]
+- Repaired: [count and countries]
+- Low confidence: [count and countries]
+- Skipped: [count, countries, and reasons]
+
+Continue automatically to Step 3.

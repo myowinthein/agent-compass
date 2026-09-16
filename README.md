@@ -42,16 +42,15 @@ Type `/` in a **Cowork** task. All four commands appear listed under the **Claud
 | Command | What it does |
 |---|---|
 | [`/country-finder`](https://myowinthein.github.io/claude-compass/docs/commands/country-finder.html) | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
-| [`/salary-calculator`](https://myowinthein.github.io/claude-compass/docs/commands/salary-calculator.html) | Calculate realistic local-market salaries for your target role. |
+| [`/salary-calculator`](https://myowinthein.github.io/claude-compass/docs/commands/salary-calculator.html) | Find one evidence-backed, recruiter-friendly expected salary per target country. |
 | [`/portal-finder`](https://myowinthein.github.io/claude-compass/docs/commands/portal-finder.html) | Find verified job portals for IT/tech roles in a specific country, grouped by type. |
 | [`/job-screener`](https://myowinthein.github.io/claude-compass/docs/commands/job-screener.html) | Screen a job description against your resume and get a structured apply / maybe / skip verdict. |
 
-Judgment-heavy and arithmetic-heavy steps can be routed to specialist subagents; Claude asks at each step whether to use Opus.
+Judgment-heavy steps can be routed to a specialist subagent; Claude asks before each optional handoff. Salary arithmetic uses deterministic calculator or code tooling when available.
 
 | Agent | Model | Steps |
 |---|---|---|
-| `deep-reasoner` | Opus / high effort | Country scoring, final ranking, international salary adjustment, final verification |
-| `calculator` | Opus / max effort | Salary table calculation |
+| `deep-reasoner` | Opus / high effort | Country scoring, final ranking, recruiter-attraction adjustment, final verification |
 
 ## Contributing
 
