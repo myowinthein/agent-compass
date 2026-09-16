@@ -4,7 +4,7 @@ Read cf-step5-scoring-results.md from the workspace. Also read cf-step2-candidat
 
 Goal
 
-Perform a focused audit on the Step 5 results across two checks.
+Perform a focused audit on the Step 5 results across three checks.
 
 1. Confidence Calibration Check
 
@@ -14,14 +14,23 @@ For each country marked "High confidence," verify the underlying evidence is gen
 
 Compare cf-step2-candidates.md against the countries that actually reached Step 4 and Step 5, and also consider any country that would commonly be expected to appear but is absent. For each missing country, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap — such as being on a Step 2 candidate list but never researched or never reaching Step 4.
 
+3. Evidence Misuse Check
+
+For each scored country, check the stored Reason text for these specific misreadings:
+- Domestic-only remote-work evidence (a policy or listing that only covers workers already inside that country) counted as proof of cross-border remote hiring.
+- A legal visa route or sponsor-eligibility register treated as proof of actual employer willingness to sponsor this candidate's role, rather than proof that sponsorship is merely possible.
+- A single job vacancy or hiring example treated as evidence of deep, ongoing market demand.
+
+Flag any country whose fit classification or confidence rests on one of these misreadings, and explain what the underlying evidence actually supports.
+
 Recalibration
 
-Only if the confidence calibration check found inflated confidence levels:
+If the confidence calibration check found inflated confidence levels, or the evidence misuse check found a misreading that changes a country's real fit:
 - Revise the affected country's confidence level
-- If the inflated confidence was masking a genuinely weaker fit, revise the classification too
+- If the inflated confidence or evidence misuse was masking a genuinely weaker fit, revise the classification too
 - Explain what evidence caused each change
 
-If recalibration is not supported, state explicitly that the Step 5 results remain appropriate, and do not alter them.
+If recalibration is not supported by either check, state explicitly that the Step 5 results remain appropriate, and do not alter them.
 
 Summary
 
@@ -96,7 +105,11 @@ Use this exact header:
 | Country | Tier | Remote Fit | Sponsorship Fit |
 |---|---|---|---|
 
-Save the Summary and the Priority Table to cf-step6-final-ranking.md in the workspace — this is the final, post-audit classification, and later steps or pipelines should prefer it over cf-step5-scoring-results.md if both exist.
+Effort Allocation
+
+Below the Priority Table in the file only (never shown in chat, and never mechanically derived from the medal alone), add a short paragraph translating the medals into where to actually spend application time: which 🥇 countries deserve custom, individually-tailored applications; which 🥈/🥉 countries are better served by a lighter-touch pass or passive monitoring (saved searches, alerts) rather than deep individual effort; and which 🎗️ countries can be deprioritized for now. Base this on the same holistic factors used for the medals — a 🥈 country with unusually high opportunity volume can still merit custom effort, and the reverse.
+
+Save the Summary, the Priority Table, and the Effort Allocation note to cf-step6-final-ranking.md in the workspace — this is the final, post-audit classification, and later steps or pipelines should prefer it over cf-step5-scoring-results.md if both exist.
 
 After saving, tell me the pipeline is complete: "Country Finder is complete. Results are saved to cf-step6-final-ranking.md if you want to revisit them later without re-running the pipeline — start with your 🥇 countries above."
 

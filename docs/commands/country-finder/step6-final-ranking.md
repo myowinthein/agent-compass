@@ -7,7 +7,7 @@ nav_order: 6
 
 # Step 6: Final Ranking
 
-A focused audit of the Step 5 scoring output, followed by a prioritized Country Finder result: the Priority Table. Always runs; unlike the rest of the pipeline this is the only step with no skip option, since it's what produces the final result. The two checks and the Summary are file-only; the Priority Table is the one thing this step shows directly in chat. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy on the audit itself. If you decline, the step runs with your current model.
+A focused audit of the Step 5 scoring output, followed by a prioritized Country Finder result: the Priority Table. Always runs; unlike the rest of the pipeline this is the only step with no skip option, since it's what produces the final result. The three checks, the Summary, and the Effort Allocation note are all file-only; the Priority Table is the one thing this step shows directly in chat. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy on the audit itself. If you decline, the step runs with your current model.
 
 ## Flow
 
@@ -19,14 +19,16 @@ flowchart TD
   DeepReasoner --> C1
   CurrentModel --> C1[Check 1: Confidence calibration\nHigh confidence backed by real evidence?]
   C1 --> C2[Check 2: Missing candidate check\nExpected absences are evidence-based?]
-  C2 --> Recal{Inflated confidence\nfound?}
+  C2 --> C3[Check 3: Evidence misuse check\nDomestic-vs-cross-border, route-vs-willingness,\none vacancy-vs-market-depth]
+  C3 --> Recal{Inflated confidence or\nevidence misuse found?}
   Recal -->|yes| Revise[Revise confidence levels\nor classifications, explain each change]
   Recal -->|no| Confirm[Confirm Step 5 results\nare appropriate, no changes]
   Revise --> Summary[Summary: countries grouped\nby row, both tracks side by side\nfile-only]
   Confirm --> Summary
   Summary --> Priority[Priority Table: word + medal\nper country, holistic ranking]
-  Priority --> Save[Save Summary and Priority Table\nto cf-step6-final-ranking.md]
-  Save --> ShowTable[Show Priority Table in chat\nSummary stays file-only]
+  Priority --> Effort[Effort Allocation note\nfile-only]
+  Effort --> Save[Save Summary, Priority Table, and\nEffort Allocation to cf-step6-final-ranking.md]
+  Save --> ShowTable[Show Priority Table in chat\nSummary and Effort Allocation stay file-only]
   ShowTable --> Done([Step complete\nWait for main command])
 ```
 
@@ -42,7 +44,7 @@ Challenges the two aspects of Step 5 scoring that Step 5 cannot self-audit: whet
 
 All inputs come from workspace files, so the audit is safe to route to the isolated deep-reasoner subagent.
 
-## The two checks
+## The three checks
 
 **1. Confidence calibration check**
 
@@ -52,14 +54,18 @@ For every country marked High confidence: verifies that the underlying evidence 
 
 Compares the Step 2 candidate list against the countries that reached Steps 4 and 5 (and also considers any commonly expected country that is absent). For each missing country, states whether the absence was a genuine evidence-based elimination (citing the reason from earlier steps) or a process gap, such as being a Step 2 candidate that was never researched or never reached Step 4.
 
+**3. Evidence misuse check**
+
+Checks each scored country's stored reasoning for three specific misreadings: domestic-only remote-work evidence counted as proof of cross-border remote hiring; a legal visa route or sponsor-eligibility register treated as proof of actual employer willingness rather than mere possibility; and a single job vacancy treated as proof of deep, ongoing market demand. Flags any country whose classification or confidence rests on one of these misreadings and explains what the evidence actually supports.
+
 ## Recalibration
 
-Only if the confidence calibration check found inflated confidence levels:
+If the confidence calibration check found inflated confidence levels, or the evidence misuse check found a misreading that changes a country's real fit:
 - The affected country's confidence level is revised
-- If inflated confidence was masking a genuinely weaker fit, the classification is revised too
+- If inflated confidence or evidence misuse was masking a genuinely weaker fit, the classification is revised too
 - Each change is explained with the evidence that caused it
 
-If recalibration is not supported, Step 5 results are explicitly confirmed as appropriate and left unchanged.
+If recalibration is not supported by either check, Step 5 results are explicitly confirmed as appropriate and left unchanged.
 
 ## Summary
 
@@ -109,11 +115,15 @@ A second table, written into the file right after the Summary and using the same
 
 Sorted by medal first (🥇 → 🎗️), then within the same medal by expected chance of landing a job there (same factors as above, never alphabetical as a first pass); with alphabetical order only as the last-resort tie-breaker, after domain/industry match, named-employer evidence, accessibility/sponsorship willingness, salary/timeline, and evidence confidence have all been weighed. Remote Fit and Sponsorship Fit values are restricted to Strong / Moderate / Weak / — (em dash, covering unavailable, excluded, and unresearched alike). No notes, citations, or footnotes in this table; every country from the Summary appears exactly once.
 
+## Effort Allocation
+
+Written into the file, directly below the Priority Table, and never shown in chat or derived mechanically from the medal alone. A short paragraph translating the medals into where to actually spend application time: which 🥇 countries deserve custom, individually-tailored applications; which 🥈/🥉 countries are better served by a lighter-touch pass or passive monitoring (saved searches, alerts) rather than deep individual effort; and which 🎗️ countries can be deprioritized for now. Uses the same holistic factors as the medals, so a 🥈 country with unusually high opportunity volume can still merit custom effort, and the reverse.
+
 ## Output
 
-- `cf-step6-final-ranking.md`: the Summary table and the Priority Table, saved together after both are output. This is the final, post-audit classification; later steps or pipelines (e.g. Salary Calculator) should prefer it over `cf-step5-scoring-results.md` if both exist.
+- `cf-step6-final-ranking.md`: the Summary table, the Priority Table, and the Effort Allocation note, saved together after all three are produced. This is the final, post-audit classification; later steps or pipelines (e.g. Salary Calculator) should prefer it over `cf-step5-scoring-results.md` if both exist.
 
-Of the two, only the Priority Table is also shown directly in chat; the Summary stays file-only, since the Priority Table alone is the step's actual deliverable.
+Of the three, only the Priority Table is also shown directly in chat; the Summary and Effort Allocation note stay file-only, since the Priority Table alone is the step's actual deliverable.
 
 ## Completion message
 

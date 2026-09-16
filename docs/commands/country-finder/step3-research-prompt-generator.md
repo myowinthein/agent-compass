@@ -7,7 +7,7 @@ nav_order: 3
 
 # Step 3: Research prompt generator
 
-Generates one ready-to-copy research prompt per candidate country, then runs each as an isolated sub-agent. Claude does not answer the research questions itself in this step.
+Generates one ready-to-copy research prompt per candidate country, then runs each as an isolated sub-agent. Claude does not answer the research questions itself in this step. Every prompt instructs the researcher to prefer sources in order: official government sources, direct employer pages, official sponsor/accredited-employer registers (capability only, not intent), specialist job boards/recruiters/salary surveys, then aggregators (which need direct verification), and to report which tier each source falls into.
 
 ## Flow
 
@@ -61,7 +61,7 @@ Each prompt covers only the track(s) Step 2 marked "yes" for that country:
 - Any quota, cap, or annual limit
 - Family or dependent sponsorship provisions
 - Citizenship-specific complications based on your situational profile
-- Sources with dates
+- Sources with URLs and dates
 
 ## Sub-agents
 
