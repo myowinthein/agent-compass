@@ -1,74 +1,55 @@
-Check whether `sc-step2-salary-data.md` exists. If it does not, stop and report that Step 2 must finish first.
+Check whether sc-step2-salary-data.md exists in the workspace. If it does not exist, stop and tell me: "sc-step2-salary-data.md was not found. Please ensure Step 2 completed successfully before continuing."
 
-Read:
+Read sc-step2-salary-data.md and proceed with the international adjustment.
 
-- `sc-step2-salary-data.md`
-- `profile.md`
-- `situational-profile.md`
-- `sc-step5a-career-ladder.md`
-- relevant Country Finder evidence when available
+Read situational-profile.md from the workspace and treat it as the single source of truth for location, citizenship, language, and salary minimum. (It was collected by the main command before this step.)
 
-## Goal
+Read profile.md from the workspace and treat it as the single source of truth for the candidate's actual education and experience.
 
-Choose a small, deliberate recruiter-attraction adjustment for each country.
+Goal
 
-This adjustment reflects the candidate's strategy: ask slightly below the verified local-market midpoint when concrete overseas-hiring friction makes that useful, while avoiding both low-balling and premium pricing.
+Estimate the realistic international candidate adjustment that may apply when an overseas candidate negotiates with local employers compared to the local-market midpoint salary.
 
-It is not:
+This is an estimate of practical hiring and negotiation behavior, not a rule or guaranteed outcome.
 
-- a claim that foreigners legally or normally deserve lower pay,
-- a prediction of the final offer,
-- a substitute for the visa salary threshold,
-- a penalty based on passport ranking, nationality prestige, race, or ethnicity.
+Assume the situational profile remains the single source of truth across all countries.
 
-Use citizenship only when a current, sourced immigration rule, restriction, processing obligation, or employer sponsorship requirement actually applies.
+Only vary the adjustment based on country-specific hiring practices, employer behavior, and current market conditions.
 
-## Evidence considered
+For each country, provide:
 
-Consider only factors that plausibly affect the usefulness of a lower initial salary ask:
+- International candidate adjustment range (%)
+- Typical midpoint adjustment (%)
+- Adjustment level: Small, Moderate, or Significant
+- Confidence: High, Medium, or Low
+- Brief explanation
 
-- whether employer sponsorship is required,
-- documented sponsorship cost or administrative burden,
-- relocation and cross-border interview friction,
-- whether the candidate already lives locally,
-- whether the candidate has independent work authorization,
-- workplace-language mismatch when the target market genuinely requires it,
-- sponsor-capable employer availability,
-- direct fit between the candidate's experience and the confirmed target role,
-- current hiring-market conditions.
+Consider:
 
-Do not convert general hiring difficulty into a large salary discount. Hiring probability and salary level are separate concepts.
+- openness to international hiring
+- employer willingness to sponsor overseas candidates
+- visa complexity
+- local talent availability
+- language tolerance in the workplace
+- relocation friction
+- remote interview logistics
+- perceived hiring risk for overseas candidates
+- current hiring market conditions (most recent 12 months)
 
-## Adjustment scale
+Important:
 
-Choose one value from: `0%`, `3%`, `5%`, `7%`, `10%`, or `12%`.
+- This is NOT about legal pay discrimination.
+- This is NOT a prediction of the candidate's future salary.
+- Treat every adjustment as a realistic market estimate rather than a fixed rule.
+- Focus on practical recruiter and employer behavior for overseas candidates compared with local candidates.
+- Do not focus heavily on tax, lifestyle, or permanent residence pathways.
+- "Employer willingness to sponsor" and "visa complexity" above are about negotiation dynamics — how sponsorship friction realistically affects an employer's offered pay during negotiation, not whether a legally mandated minimum salary exists. That is a separate, hard eligibility question handled later in Step 4 and must never be folded into this percentage.
+- If a country's visa route has an education requirement (e.g. a degree related to the occupation), check it against the candidate's actual degree(s) in profile.md before treating it as a friction factor. Do not assume a mismatch based on generic assumptions about the occupation as a class — a candidate can hold multiple degrees, and any one of them being relevant is enough to satisfy a relevance requirement.
+- Formal recognition of a specific degree or institution (as opposed to its relevance) is not something you can verify through research — it requires a country's actual credential-assessment body. Never assert that a degree does or doesn't formally qualify. If a country's route has a named formal-recognition or equivalency requirement, state it as a plain process caveat in that country's Brief explanation (e.g. "may require formal degree recognition via [body]; not independently verified") — this is informational only and must never affect the adjustment percentage.
+- If situational-profile.md states the candidate already lives in, or already has some form of work authorization for, a country being calculated, weigh relocation friction, remote interview logistics, and perceived hiring risk much lighter for that country specifically — she isn't relocating and can interview locally, so these largely don't apply. This is independent of sponsorship: if her stated status there would still require employer sponsorship to take the job, weigh employer willingness to sponsor and visa complexity normally — being already resident reduces relocation-driven friction, not sponsorship-driven friction. If situational-profile.md doesn't cover a given country, treat the candidate as not already resident there.
 
-- 0–3%: little practical friction, already local/authorized, or unusually strong direct fit.
-- 5–7%: meaningful but routine international-hiring friction.
-- 10–12%: substantial, specifically evidenced friction where a more attractive initial ask is strategically reasonable.
+Keep the output compact and present the results country by country.
 
-Rules:
+Save the full adjustment output to sc-step3-adjustment-values.md in the workspace.
 
-- 12% is the hard maximum unless the user explicitly authorizes more after seeing evidence.
-- Never use a large adjustment merely because evidence is missing. When evidence is insufficient, use 5% with Low confidence.
-- If the candidate already lives in the country with independent work authorization, do not exceed 3% without specific evidence.
-- Strong role/domain fit may reduce the adjustment; it does not create a negative discount or premium.
-- Do not apply the sponsorship threshold or personal hard floor here. Step 4 handles those floors after calculating the raw target.
-
-## Required output per country
-
-```text
-Country: [name]
-Market midpoint: [amount and currency]
-Recruiter-attraction adjustment: [allowed percentage]
-Adjustment level: [None / Small / Moderate / Significant]
-Confidence: [High / Medium / Low]
-Evidence:
-- [source-backed factor]
-- [source-backed factor]
-Reason: [two or three concise sentences]
-```
-
-Save all countries to `sc-step3-adjustment-values.md` in the same order as Step 2.
-
-Report only the number completed, confidence counts, and any countries that could not be assessed. Continue automatically to Step 4.
+Tell me in a few lines: how many countries received an adjustment estimate, and that the full per-country figures are saved for Step 4 to apply. Do not reproduce the per-country adjustment reasoning in this summary. Then continue automatically into Step 4 now, in this same response — do not stop and wait here.

@@ -1,39 +1,85 @@
 ---
-title: Step 3: Recruiter-attraction adjustment
+title: Step 3: International adjustment
 parent: /salary-calculator
 grand_parent: Commands
 nav_order: 3
 ---
 
-# Step 3: Recruiter-attraction adjustment
+# Step 3: International adjustment
 
-Chooses a small strategic discount from the verified local-market midpoint when concrete international-hiring friction makes that useful.
+Estimates the realistic hiring discount an overseas candidate may face when negotiating with local employers, compared to a local candidate at the same level. Before running, the main command collects the situational profile (on your current model), then asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
 
-## Purpose
+## Flow
 
-The adjustment supports a simple mass-application strategy: competitive enough to attract recruiters, but not a low-ball figure and not premium pricing.
+```mermaid
+flowchart TD
+  Start([Command: collect situational profile\non current model, before handoff]) --> SitCheck{situational-profile.md\nexists?}
+  SitCheck -->|yes| ReuseSit[Reuse existing profile\nSkip questions]
+  SitCheck -->|no| SitQ[Ask situational questions\nlocation · citizenship · friction\nlanguages · work language · salary minimum\nexisting work authorization\nSave to situational-profile.md]
+  ReuseSit --> Begin
+  SitQ --> Begin
+  Begin([Step 3 begins]) --> FileCheck{sc-step2-salary-data.md\nexists?}
+  FileCheck -->|no| Error[Stop, report missing file\nAsk user to rerun Step 2]
+  FileCheck -->|yes| ReadFile[Read sc-step2-salary-data.md\nsituational-profile.md, and profile.md]
+  ReadFile --> OpusQ{Use Opus for\nhigher accuracy?}
+  OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
+  OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
+  DeepReasoner --> Estimate
+  CurrentModel --> Estimate
+  Estimate[Estimate adjustment per country\nbased on hiring practices and\nmarket conditions] --> Output[For each country output:\nAdjustment range %\nTypical midpoint %\nLevel: Small / Moderate / Significant\nConfidence: High / Medium / Low\nBrief explanation]
+  Output --> Save[Save to sc-step3-adjustment-values.md]
+  Save --> Done([Continue automatically\ninto Step 4])
+```
 
-It is not a claim that foreign candidates deserve lower pay, and it does not use passport rankings or presumed nationality prestige.
+## What it reads
 
-## Allowed values
+- `sc-step2-salary-data.md`: salary data from Step 2
+- `situational-profile.md`: collected by the main command before this step, so it always exists here
+- `profile.md`: the candidate's actual education and experience, checked before treating any visa education requirement as a friction factor (see below)
 
-Claude chooses one of:
+## Situational questions (collected before the step, once, if not already saved)
 
-- 0 percent
-- 3 percent
-- 5 percent
-- 7 percent
-- 10 percent
-- 12 percent
+The main command collects these on your current model before any Opus handoff, so the subagent path never has to ask interactively. If `situational-profile.md` does not exist, Claude asks:
 
-Twelve percent is the default hard maximum.
+1. Current location
+2. Citizenship
+3. Any known immigration friction or employer risk perception tied to your citizenship
+4. Languages spoken
+5. Required work environment language
+6. Minimum acceptable monthly salary and currency, or "not specified" to skip salary filtering
+7. Existing residency or work authorization in any target country, and status there, or "not applicable"
 
-## Evidence
+Answers are saved to `situational-profile.md` and reused across sessions and pipelines.
 
-Relevant factors include sponsorship requirements, documented administrative burden, relocation friction, local residence or work authorization, genuine workplace-language requirements, sponsor availability, direct role fit, and current hiring conditions.
+## What the adjustment estimates
 
-General hiring difficulty does not automatically justify a large salary discount. When evidence is insufficient, the default is 5 percent with Low confidence.
+The adjustment reflects practical recruiter and employer behaviour for overseas candidates, not a legal pay rule. Factors considered:
 
-## Output
+- Openness to international hiring in that market
+- Employer willingness to sponsor overseas candidates
+- Visa complexity and processing friction
+- Local talent availability and competition
+- Language tolerance in the workplace
+- Relocation friction and remote interview logistics
+- Perceived hiring risk for overseas applicants
+- Current hiring market conditions (last 12 months)
 
-Each country record includes its midpoint, adjustment, level, confidence, evidence, and concise reason. Results are saved to `sc-step3-adjustment-values.md`.
+This is not about tax, cost of living, purchasing power, or permanent residence pathways.
+
+**Degree relevance vs. formal recognition:** if a country's visa route has an education requirement, Claude checks it against the candidate's actual degree(s) in `profile.md` rather than assuming a mismatch based on generic assumptions about the occupation; any one relevant degree is enough, even if the candidate also holds unrelated ones. Formal recognition of a specific degree or institution is a different question that can't be verified through research (it requires a country's actual credential-assessment body); Claude never asserts pass/fail on this. If a route has a named formal-recognition requirement, it's noted as a plain process caveat in that country's Brief explanation, never as a factor in the adjustment percentage.
+
+**Already resident in a target country:** if the situational profile states you already live in, or already have some form of work authorization for, a country being calculated, relocation friction, remote interview logistics, and perceived hiring risk are weighed much lighter for that country specifically; you aren't relocating and can interview locally. This is independent of sponsorship: if your status there would still require employer sponsorship to take the job, employer willingness to sponsor and visa complexity are still weighed normally. Being already resident reduces relocation-driven friction, not sponsorship-driven friction.
+
+## Output per country
+
+- Adjustment range (%)
+- Typical midpoint adjustment (%)
+- Adjustment level: Small, Moderate, or Significant
+- Confidence: High, Medium, or Low
+- Brief explanation
+
+Results are saved to `sc-step3-adjustment-values.md` in the workspace. Step 4 reads this file directly. Claude does not reproduce the per-country adjustment reasoning in chat; only a brief summary (how many countries received an adjustment) and confirmation that the file is saved.
+
+## Stop condition
+
+There is no interactive checkpoint in this step itself (the situational-profile questions, if needed, are asked by the main command beforehand). Once results are saved, Claude continues automatically into Step 4 within the same response, without waiting for a new message.
