@@ -63,8 +63,14 @@ The adjustment reflects practical recruiter and employer behaviour for overseas 
 - Relocation friction and remote interview logistics
 - Perceived hiring risk for overseas applicants
 - Current hiring market conditions (last 12 months)
+- No prior employment history in the target country or market
+- Fewer local references or less local professional network signal
+
+These are weighed cumulatively rather than each requiring a separately priced cost, but the same underlying issue is never counted twice under different labels.
 
 This is not about tax, cost of living, purchasing power, or permanent residence pathways.
+
+**Guardrails:** the adjustment must never be based on race, ethnicity, passport prestige, or a generic nationality ranking; every adjustment ties to concrete, candidate-applicable friction (visa complexity, sponsorship risk, relocation logistics, language or market unfamiliarity). The typical midpoint adjustment is capped at 15%, and anything above 10% requires citing specific, concrete evidence rather than general market difficulty. If a country's underlying salary data carries a Low evidence grade (from Step 1/Step 2), this step's Confidence for that country is capped at Medium.
 
 **Degree relevance vs. formal recognition:** if a country's visa route has an education requirement, Claude checks it against the candidate's actual degree(s) in `profile.md` rather than assuming a mismatch based on generic assumptions about the occupation; any one relevant degree is enough, even if the candidate also holds unrelated ones. Formal recognition of a specific degree or institution is a different question that can't be verified through research (it requires a country's actual credential-assessment body); Claude never asserts pass/fail on this. If a route has a named formal-recognition requirement, it's noted as a plain process caveat in that country's Brief explanation, never as a factor in the adjustment percentage.
 

@@ -35,6 +35,10 @@ Consider:
 - remote interview logistics
 - perceived hiring risk for overseas candidates
 - current hiring market conditions (most recent 12 months)
+- no prior employment history in the target country or market
+- fewer local references or less local professional network signal
+
+Weigh these factors cumulatively rather than requiring each one to carry a separately priced cost, but do not count the same underlying issue twice under different labels (e.g. "visa complexity" and "relocation friction" describing the same fact).
 
 Important:
 
@@ -43,6 +47,9 @@ Important:
 - Treat every adjustment as a realistic market estimate rather than a fixed rule.
 - Focus on practical recruiter and employer behavior for overseas candidates compared with local candidates.
 - Do not focus heavily on tax, lifestyle, or permanent residence pathways.
+- Never base the adjustment on race, ethnicity, passport prestige, or a generic nationality ranking. Every adjustment must be tied to concrete, candidate-applicable friction (visa complexity, employer sponsorship risk, relocation logistics, language or market unfamiliarity), never a generalized assumption about people from the candidate's country.
+- Cap the typical midpoint adjustment at 15%. Anything above 10% requires citing a specific, concrete piece of evidence in the brief explanation, not general market difficulty.
+- If the underlying salary data's evidence grade (from Step 1/Step 2) is Low for a country, cap this step's Confidence at Medium for that country, since the adjustment is calibrated against a less certain baseline.
 - "Employer willingness to sponsor" and "visa complexity" above are about negotiation dynamics — how sponsorship friction realistically affects an employer's offered pay during negotiation, not whether a legally mandated minimum salary exists. That is a separate, hard eligibility question handled later in Step 4 and must never be folded into this percentage.
 - If a country's visa route has an education requirement (e.g. a degree related to the occupation), check it against the candidate's actual degree(s) in profile.md before treating it as a friction factor. Do not assume a mismatch based on generic assumptions about the occupation as a class — a candidate can hold multiple degrees, and any one of them being relevant is enough to satisfy a relevance requirement.
 - Formal recognition of a specific degree or institution (as opposed to its relevance) is not something you can verify through research — it requires a country's actual credential-assessment body. Never assert that a degree does or doesn't formally qualify. If a country's route has a named formal-recognition or equivalency requirement, state it as a plain process caveat in that country's Brief explanation (e.g. "may require formal degree recognition via [body]; not independently verified") — this is informational only and must never affect the adjustment percentage.

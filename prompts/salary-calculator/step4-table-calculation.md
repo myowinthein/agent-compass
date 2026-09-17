@@ -4,6 +4,10 @@ Check whether sc-step3-adjustment-values.md exists in the workspace. If it does 
 
 If both files exist, read them. Using the adjustment values from sc-step3-adjustment-values.md and the salary data from sc-step2-salary-data.md, calculate adjusted expected salary ranges for each country.
 
+Use a calculator or step-by-step verified arithmetic for every calculation in this step, regardless of whether this step is running on the calculator subagent or your current model. Do not compute by intuition; precision takes priority over speed.
+
+Read situational-profile.md. Note whether a salary minimum was given there and, if so, whether it was marked a hard floor or context only — this is used only for the flag described under Summary below, never to change Safe or Stretch.
+
 Read and apply skills/sponsorship-threshold-rules.md for the Legal Requirement column described below.
 
 Only calculate countries that have BOTH:
@@ -70,8 +74,10 @@ Formatting Rules
 - Do not add footnotes, revision markers, notes, explanations, or additional columns.
 
 Legal Requirement column:
-- Em dash (—) if there is no usable sponsorship salary threshold for this country (per skills/sponsorship-threshold-rules.md — this covers both "no threshold exists" and "could not confirm one").
-- Otherwise, show both period equivalents in one cell: the Annual figure first, then the Monthly figure in parentheses with a "/mo" suffix — e.g. `45,300 (3,775/mo)`. Neither figure is rounded.
+- Em dash (—) if the state is "No fixed threshold" or "Not applicable" per skills/sponsorship-threshold-rules.md — there is nothing to compare against.
+- Question mark (?) if the state is "Unknown" — a plausible route exists but its figure couldn't be confirmed. Never render this the same as the em dash; the two mean different things to the candidate.
+- The literal word "Blocked" if the state is "Blocked" — a real route exists but is currently unavailable to this candidate. Show this even if a figure was otherwise confirmed; never fall back to the numeric figure or an em dash.
+- Otherwise ("Verified numeric"), show both period equivalents in one cell: the Annual figure first, then the Monthly figure in parentheses with a "/mo" suffix — e.g. `45,300 (3,775/mo)`. Neither figure is rounded.
 - If either Safe or Stretch Fixed value falls short of the threshold (at either period), append a single ⚠️ at the end of the cell — the warning applies to the country as a whole, not to one period only.
 - Never adjust Safe or Stretch because of this column — the two facts are shown side by side, never merged.
 
@@ -97,6 +103,7 @@ Example:
 | 🇩🇪 Germany (EUR) | 45,300 (3,775/mo) | 59,500 (56,500–65,500) | 74,500 (71,000–82,000) | 4,950 | 6,200 |
 | 🇳🇱 Netherlands (EUR) | 63,972 (5,331/mo) ⚠️ | 56,500 (53,500–62,000) | 70,000 (66,500–77,000) | 4,700 | 5,850 |
 | 🇺🇸 United States (USD) | — | 140,000 (133,000–154,000) | 175,000 (166,500–192,500) | 11,650 | 14,600 |
+| 🇦🇺 Australia (AUD) | Blocked | 95,000 (90,250–104,500) | 118,000 (112,100–129,800) | 7,900 | 9,850 |
 
 After the table, output:
 
@@ -106,6 +113,10 @@ Summary
 - Countries skipped: Y
 
 If any countries are skipped, list them with the reason.
+
+If situational-profile.md gave a hard-floor salary minimum, list any country whose Safe Fixed value falls short of it, with the specific gap (e.g. "confirmed Safe $X, below your hard floor of $Y"). This is a flag only, in the Summary text, not a table column — never adjust Safe or Stretch because of it, the same principle as the Legal Requirement column above.
+
+If any country's Legal Requirement state is "Blocked," list them in the Summary too, each with its stated reason, noting that country's Safe/Stretch figures are reference-only for sponsorship purposes since the route itself isn't currently open to the candidate — independent of what the salary numbers say.
 
 Save the shown work, table, and summary to sc-step4-salary-table.md in the workspace.
 

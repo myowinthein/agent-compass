@@ -22,7 +22,8 @@ flowchart TD
   AskList --> ForEach[For each country:\ngenerate research prompt]
   ForEach --> Prompt[Prompt instructs researcher to find\nlocal-market salary only\nexcluding expat · FAANG · US-skewed\ncontractor · equity-heavy data]
   Prompt --> Tiers[Request two company tiers:\nMid-size / Mainstream Local-Market\nPremium / International / Remote-first]
-  Tiers --> More{More\ncountries?}
+  Tiers --> Grade[Request evidence grade:\nHigh / Medium / Low]
+  Grade --> More{More\ncountries?}
   More -->|yes| ForEach
   More -->|no| Agents[Run each prompt as\nan isolated sub-agent task]
   Agents --> Append[Append each result to\nsc-step1-salary-research.md]
@@ -53,7 +54,8 @@ Each generated prompt instructs the researcher to:
 - Provide a national range and major tech hub range if salary varies significantly by city
 - Include practical Low, Realistic, and Strong figures within each tier
 - Cite sources with dates
-- Report the country's government-mandated minimum salary threshold for employer-sponsored work-visa relocation, if one exists and is a usable figure (see `skills/sponsorship-threshold-rules.md`); not applicable to remote or contractor arrangements, so most countries and roles will have none to report
+- Report the country's government-mandated minimum salary threshold for employer-sponsored work-visa relocation as one of five states (see `skills/sponsorship-threshold-rules.md`): a verified figure, "no fixed threshold," "not applicable" (most remote and contractor arrangements), "unknown" if a plausible route exists but the figure couldn't be confirmed, or "blocked" if a real route exists but is currently unavailable to this candidate (e.g. exhausted quota, paused category, an eligibility cutoff), with the concrete reason stated
+- Self-assess an evidence grade (High / Medium / Low) based on source count and consistency
 
 **Excluded from research:**
 - levels.fyi and FAANG-only data
