@@ -66,8 +66,9 @@ For each country, evaluates:
 - Safe positioning: percentile band and classification (conservative to top-tier)
 - Stretch positioning: classification (realistic stretch to international remote premium)
 - Recruiter comfort: how likely is this to convert interviews?
-- Sponsorship realism: if Step 4 set a Legal Requirement flag for this country, that concrete result feeds into this judgment rather than being assessed independently of it
+- Sponsorship realism: if Step 4 set a Legal Requirement flag for this country, that concrete result feeds into this judgment rather than being assessed independently of it; a "Blocked" state means sponsorship realism is zero for that country regardless of how attractive the salary figures look
 - Overseas hiring realism: adjusted for your profile as an international candidate
+- Evidence grade: a Low grade from Step 2 tempers how confidently this country's positioning is stated, even if the classification itself doesn't change
 
 Uses approximate percentile bands (50–60%, 60–70%, etc.), no false precision.
 
@@ -80,6 +81,8 @@ Determines whether the Safe/Stretch philosophy, employer segmentation, and perce
 Only if the evidence genuinely supports it:
 - Affected countries are revised upward or downward
 - A revised table is generated using the same format as [Step 4](step4-table-calculation.html#table-format), **including the Legal Requirement column**; it is recomputed against the revised Safe and Stretch figures, not carried forward from Step 4. Recalibration can push a country below a threshold it previously cleared, or above one it previously missed.
+- If Step 4 flagged any country as below the candidate's hard-floor salary minimum, that flag is re-checked against any revised Safe value and restated in this file's Summary if it still applies. Safe and Stretch are never adjusted to clear it.
+- If Step 4 marked any country "Blocked," that classification is re-verified against current evidence (a route can open or close), carried into the revised table exactly as "Blocked" if it still applies, and restated in the Summary. A Blocked country's Safe/Stretch figures never override the block.
 - Priority is given to recruiter comfort, interview conversion, sponsorship realism, and realistic overseas positioning
 - This revised table becomes the final table.
 

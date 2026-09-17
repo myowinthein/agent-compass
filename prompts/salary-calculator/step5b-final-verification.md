@@ -91,9 +91,10 @@ Evaluate:
 - Safe positioning
 - Stretch positioning
 - recruiter comfort
-- sponsorship realism — if this country has a Legal Requirement flag from Step 4, factor that concrete result in rather than judging realism independently of it
+- sponsorship realism — if this country has a Legal Requirement flag from Step 4, factor that concrete result in rather than judging realism independently of it; if the state is "Blocked," sponsorship realism for that country is zero regardless of how attractive the salary figures look
 - overseas hiring realism
 - interview conversion impact
+- the underlying salary data's evidence grade from Step 2, if provided — a Low grade should temper how confidently this country's positioning is stated, even if the classification itself doesn't change
 
 Use approximate percentile bands rather than precise percentiles.
 
@@ -162,6 +163,10 @@ Only if the evidence genuinely supports recalibration:
 If recalibration is not supported, explicitly state that the existing framework remains appropriate and do not generate a revised salary table. Copy the table from sc-step4-salary-table.md into this file as the final table, unchanged.
 
 If recalibration is required, generate a revised table using the same format and country order as Step 4 — including the Legal Requirement column. Read and apply skills/sponsorship-threshold-rules.md and recompute that column against the revised Safe and Stretch Fixed values, using the same threshold data from Step 1. A country's Legal Requirement result from Step 4 does not carry forward automatically — recalibration can push a figure below a threshold it previously cleared, or above one it previously missed, so it must be re-evaluated against whatever the revised figures actually are. This revised table becomes the final table.
+
+If Step 4 flagged any country as below the candidate's hard-floor salary minimum, re-check that flag against any revised Safe value too, and restate it in this file's Summary if it still applies. Never adjust Safe or Stretch to clear it, the same principle as the Legal Requirement column.
+
+If Step 4 marked any country "Blocked," verify that classification is still correct against current evidence (a route can open or close), carry it into the revised table's Legal Requirement column exactly as "Blocked" if it still applies, and restate the reference-only note in this file's Summary. Never let a Blocked country's attractive Safe/Stretch figures override the block in the final table or Summary.
 
 Either way — unchanged or revised — write the resulting final table into sc-step5b-final-verification.md, in the same file as the four checks and the recalibration verdict. sc-step4-salary-table.md is left untouched as the pre-audit record; this step never creates any other file. sc-step5b-final-verification.md is the only file this step writes.
 

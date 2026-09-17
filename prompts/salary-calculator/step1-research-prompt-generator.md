@@ -43,6 +43,8 @@ Prioritize:
 - non-FAANG and non-outlier compensation
 - salary consistency across multiple local sources
 
+Each prompt must also instruct the researcher to self-assess an evidence grade for the country: High if at least three independent, current, mutually consistent sources support the figures; Medium if the evidence is useful but has a material coverage or comparability limitation; Low if the evidence is sparse, old, indirect, or conflicting.
+
 Required answer format (instruct the researcher to use this exact structure):
 
 Country: [name]
@@ -61,7 +63,9 @@ Premium / International / Remote-first tier:
 - City used (if applicable): [city]
 - Sources: [list with dates]
 
-Sponsorship salary threshold: [amount] [currency], [annual or monthly], or "not applicable"
+Sponsorship salary threshold: [amount] [currency], [annual or monthly], or state which applies: "no fixed threshold" (route exists but has no fixed numeric minimum), "not applicable" (not an employer-sponsored relocation path), "unknown" (a plausible route exists but the figure couldn't be confirmed), or "blocked" (a real route exists but current official rules make it unavailable to this specific candidate right now, e.g. exhausted quota, paused category, or an eligibility cutoff this candidate doesn't meet — state the concrete reason)
+
+Evidence grade: [High / Medium / Low]
 
 Notes: [anything relevant not covered above]
 

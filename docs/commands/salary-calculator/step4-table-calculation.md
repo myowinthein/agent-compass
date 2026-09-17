@@ -7,7 +7,7 @@ nav_order: 4
 
 # Step 4: Table calculation
 
-Applies the international adjustment to the salary data and produces a table with shown calculations. Before running, Claude asks whether to use the **calculator** subagent (Opus, max effort) for higher arithmetic precision. If you decline, the step runs with your current model. Precision takes priority over speed.
+Applies the international adjustment to the salary data and produces a table with shown calculations. Before running, Claude asks whether to use the **calculator** subagent (Opus, max effort) for higher arithmetic precision. If you decline, the step runs with your current model, but Claude still uses a calculator or step-by-step verified arithmetic for every calculation rather than computing by intuition. Precision takes priority over speed.
 
 ## Flow
 
@@ -38,7 +38,7 @@ flowchart TD
   ShowWork --> More{More\ncountries?}
   More -->|yes| Check
   More -->|no| Table[One row per country\nAnnual: Fixed and Range\nMonthly: single value]
-  Table --> Summary[Summary: countries calculated\nand countries skipped with reasons]
+  Table --> Summary[Summary: countries calculated,\nskipped with reasons, and any\nhard-floor flag]
   Summary --> Save[Save to sc-step4-salary-table.md]
   Save --> Done([Continue automatically\ninto Step 5])
 ```
@@ -47,6 +47,7 @@ flowchart TD
 
 - `sc-step2-salary-data.md`: salary data from Step 2, including each country's sponsorship salary threshold if one was reported
 - `sc-step3-adjustment-values.md`: adjustment figures from Step 3
+- `situational-profile.md`: checked for a hard-floor salary minimum, used only for the flag described under Hard-floor flag below
 - `skills/sponsorship-threshold-rules.md`: governs the Legal Requirement column below
 - `cf-step6-final-ranking.md`: if present, its Priority Table order is used to order this step's output; if absent, countries are ordered alphabetically instead
 
@@ -115,11 +116,21 @@ One Markdown table with one row per country:
 
 | State | Shown as |
 |---|---|
-| No usable threshold (none exists, or couldn't be confirmed as a comparable number) | — (em dash) |
-| Threshold exists, both Safe and Stretch clear it | Both period equivalents in one cell, Annual figure first, Monthly in parentheses with a "/mo" suffix, e.g. `45,300 (3,775/mo)`. Neither figure is rounded. |
-| Threshold exists, either Safe or Stretch falls short | Same combined format, with a single ⚠️ appended once at the end of the cell |
+| No fixed threshold, or not applicable | — (em dash) |
+| Unknown (a plausible route exists but its figure couldn't be confirmed) | ? (question mark) — never rendered the same as the em dash |
+| Blocked (a real route exists but is currently unavailable to this candidate) | The literal word `Blocked` — shown even if a figure was otherwise confirmed, never an em dash or the number |
+| Verified numeric, both Safe and Stretch clear it | Both period equivalents in one cell, Annual figure first, Monthly in parentheses with a "/mo" suffix, e.g. `45,300 (3,775/mo)`. Neither figure is rounded. |
+| Verified numeric, either Safe or Stretch falls short | Same combined format, with a single ⚠️ appended once at the end of the cell |
 
-Safe and Stretch are never adjusted because of this column; it's shown alongside them as a separate fact, not merged into the calculation.
+Safe and Stretch are never adjusted because of this column; it's shown alongside them as a separate fact, not merged into the calculation. A Blocked route follows the same principle: the figures aren't zeroed, they're just not a live sponsorship target for this candidate right now.
+
+## Hard-floor flag
+
+Claude reads `situational-profile.md`. If a salary minimum was given there and marked a hard floor, the Summary (not the table itself) lists any country whose Safe Fixed value falls short of it, with the specific gap. Like the Legal Requirement column, this is a flag only, in prose form; Safe and Stretch are never adjusted because of it.
+
+## Blocked-route flag
+
+If any country's Legal Requirement state is "Blocked," the Summary also lists it with its stated reason, noting that country's Safe/Stretch figures are reference-only for sponsorship purposes, independent of what the numbers themselves say.
 
 If Step 5 recalibrates, its revised table reuses this exact format and column order; see [Step 5: Final Verification](step5b-final-verification.html).
 
