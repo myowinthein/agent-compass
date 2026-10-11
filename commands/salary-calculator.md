@@ -1,42 +1,6 @@
 ---
 name: Salary Calculator
-description: Runs the full Salary Calculator pipeline — research prompt generation, data validation, international adjustment, table calculation, and a mandatory final verification.
+description: Run the Salary Calculator workflow.
 ---
 
-# /claude-compass:salary-calculator
-
-Run the full Salary Calculator pipeline, resuming from where it left off if a state file exists.
-
-## Before starting
-
-Check if profile.md exists in the workspace. If it does not, read prompts/shared/resume-extraction-prompt.md and follow it first. Wait for my resume and my confirmation of the extracted profile before continuing.
-
-## State tracking
-
-Check for .salary-calculator-state.json in the workspace.
-
-- If it exists, read it to find the last completed step. Tell me which step you are resuming from, then continue from the next step.
-- If it does not exist, create it with last_completed_step set to 0 and start from Step 1.
-
-State file format:
-{
-  "last_completed_step": 0,
-  "updated_at": ""
-}
-
-After finishing each step below, update last_completed_step and updated_at in the state file before moving to the next one.
-
-## Sequence
-
-1. Read prompts/salary-calculator/step1-research-prompt-generator.md and follow it exactly.
-2. Read prompts/salary-calculator/step2-data-validation.md and follow it exactly.
-3. First, read and apply skills/situational-profile-questions.md yourself using your current model, so situational-profile.md exists before any handoff. Then ask me: "Step 3 (international adjustment) can run on Claude Opus for higher reasoning accuracy, which may cost more. Use Opus for this step? (yes/no)" — If I say yes, use the deep-reasoner subagent to read prompts/salary-calculator/step3-international-adjustment.md. If I say no, read prompts/salary-calculator/step3-international-adjustment.md yourself and follow it exactly using your current model.
-4. Before running this step, ask me: "Step 4 (table calculation) can run on Claude Opus for higher arithmetic precision, which may cost more. Use Opus for this step? (yes/no)" — If I say yes, use the calculator subagent to read prompts/salary-calculator/step4-table-calculation.md. If I say no, read prompts/salary-calculator/step4-table-calculation.md yourself and follow it exactly using your current model.
-5. Step 5 (final verification) always runs — it produces the pipeline's final result, so it is never skipped. First, read prompts/salary-calculator/step5a-career-ladder.md and follow it exactly using your current model. This must happen before any Opus handoff so the confirmation is not lost to a subagent. Then ask: "Step 5 (final verification) can also run on Claude Opus. Use Opus for this step? (yes/no)" — If I say yes, use the deep-reasoner subagent to read prompts/salary-calculator/step5b-final-verification.md. If I say no, read prompts/salary-calculator/step5b-final-verification.md yourself and follow it exactly using your current model.
-
-## Important
-
-- If any step file tells you to stop and wait for me, actually stop and wait. Never fill in a placeholder, answer a question, or assume data on my behalf.
-- If a step file tells you to continue automatically into the next step, do exactly that — within the same response, without stopping for a new message. Only step 1 (conditionally, on the CF-list confirmation or the manual-research fallback) and step 5a (career ladder confirmation) genuinely need to stop and wait; every other step chains straight into the next, including into the Opus routing questions below.
-- If uncertain whether you are following a rule correctly, ask me rather than proceeding on a best guess.
-- Do not skip, combine, or summarize steps to save time.
+Read ${CLAUDE_PLUGIN_ROOT}/skills/salary-calculator/SKILL.md and follow it. Pass through the user's arguments and answers to that shared entry point.

@@ -1,5 +1,5 @@
 ---
-title: Step 4: Table calculation
+title: "Step 4: Table calculation"
 parent: /salary-calculator
 grand_parent: Commands
 nav_order: 4
@@ -7,7 +7,9 @@ nav_order: 4
 
 # Step 4: Table calculation
 
-Applies the international adjustment to the salary data and produces a table with shown calculations. Before running, Claude asks whether to use the **calculator** subagent (Opus, max effort) for higher arithmetic precision. If you decline, the step runs with your current model, but Claude still uses a calculator or step-by-step verified arithmetic for every calculation rather than computing by intuition. Precision takes priority over speed.
+Applies the international adjustment to the salary data and produces a table with shown calculations. Before running, the assistant asks whether to use the **calculator** subagent (host-specific model and effort) for higher arithmetic precision. If you decline, the step runs with your current model, but the assistant still uses a calculator or step-by-step verified arithmetic for every calculation rather than computing by intuition. Precision takes priority over speed.
+
+Model routing follows the [platform behavior documented on the home page](../../../index.html#usage).
 
 ## Flow
 
@@ -18,9 +20,9 @@ flowchart TD
   FC1 -->|yes| FC2{sc-step3-adjustment-values.md\nexists?}
   FC2 -->|no| Err2[Stop, report missing file\nAsk user to rerun Step 3]
   FC2 -->|yes| ReadFiles[Read both files]
-  ReadFiles --> OpusQ{Use Opus for\nhigher precision?}
-  OpusQ -->|yes| CalcAgent[Route to calculator\nOpus / max effort]
-  OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
+  ReadFiles --> SpecialistQ{Use specialist for\nhigher precision?}
+  SpecialistQ -->|yes| CalcAgent[Route to calculator\nhost-specific model and effort]
+  SpecialistQ -->|no| CurrentModel[Run with your\ncurrent model]
   CalcAgent --> Order
   CurrentModel --> Order{cf-step6-final-ranking.md\nexists?}
   Order -->|yes| OrderCF[Order countries to match\nits Priority Table]
@@ -126,7 +128,7 @@ Safe and Stretch are never adjusted because of this column; it's shown alongside
 
 ## Hard-floor flag
 
-Claude reads `situational-profile.md`. If a salary minimum was given there and marked a hard floor, the Summary (not the table itself) lists any country whose Safe Fixed value falls short of it, with the specific gap. Like the Legal Requirement column, this is a flag only, in prose form; Safe and Stretch are never adjusted because of it.
+The assistant reads `situational-profile.md`. If a salary minimum was given there and marked a hard floor, the Summary (not the table itself) lists any country whose Safe Fixed value falls short of it, with the specific gap. Like the Legal Requirement column, this is a flag only, in prose form; Safe and Stretch are never adjusted because of it.
 
 ## Blocked-route flag
 
@@ -138,8 +140,8 @@ If Step 5 recalibrates, its revised table reuses this exact format and column or
 
 - `sc-step4-salary-table.md`: the raw, pre-audit table and summary, written for Step 5 to read. This step's own output is file-only, unlike Step 5, which does show its resulting table in chat.
 
-Claude does not reproduce the calculations or the table in chat; instead, it tells you in a few lines how many countries were calculated and skipped, and confirms the file is saved.
+The assistant does not reproduce the calculations or the table in chat; instead, it tells you in a few lines how many countries were calculated and skipped, and confirms the file is saved.
 
 ## Stop condition
 
-There is no interactive checkpoint in this step. Once results are saved, Claude continues automatically into Step 5 (final verification) within the same response, without waiting for a new message; it always runs and is never asked about.
+There is no interactive checkpoint in this step. Once results are saved, the assistant continues automatically into Step 5 (final verification) within the same response, without waiting for a new message; it always runs and is never asked about.

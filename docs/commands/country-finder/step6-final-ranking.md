@@ -1,5 +1,5 @@
 ---
-title: Step 6: Final Ranking
+title: "Step 6: Final Ranking"
 parent: /country-finder
 grand_parent: Commands
 nav_order: 6
@@ -7,15 +7,17 @@ nav_order: 6
 
 # Step 6: Final Ranking
 
-A focused audit of the Step 5 scoring output, followed by a prioritized Country Finder result: the Priority Table. Always runs; unlike the rest of the pipeline this is the only step with no skip option, since it's what produces the final result. The three checks, the Summary, and the Effort Allocation note are all file-only; the Priority Table is the one thing this step shows directly in chat. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy on the audit itself. If you decline, the step runs with your current model.
+A focused audit of the Step 5 scoring output, followed by a prioritized Country Finder result: the Priority Table. Always runs; unlike the rest of the pipeline this is the only step with no skip option, since it's what produces the final result. The three checks, the Summary, and the Effort Allocation note are all file-only; the Priority Table is the one thing this step shows directly in chat. The assistant asks whether to use the **deep-reasoner** subagent (host-specific model and effort) for higher reasoning accuracy on the audit itself. If you decline, the step runs with your current model.
+
+Model routing follows the [platform behavior documented on the home page](../../../index.html#usage).
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 6 begins]) --> OpusQ{Use Opus for\nhigher accuracy?}
-  OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
-  OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
+  Start([Step 6 begins]) --> SpecialistQ{Use specialist for\nhigher accuracy?}
+  SpecialistQ -->|yes| DeepReasoner[Route to deep-reasoner\nhost-specific model and effort]
+  SpecialistQ -->|no| CurrentModel[Run with your\ncurrent model]
   DeepReasoner --> C1
   CurrentModel --> C1[Check 1: Confidence calibration\nHigh confidence backed by real evidence?]
   C1 --> C2[Check 2: Missing candidate check\nExpected absences are evidence-based?]
@@ -69,7 +71,7 @@ If recalibration is not supported by either check, Step 5 results are explicitly
 
 ## Summary
 
-After the recalibration verdict, Claude writes a Summary into the file (not shown in chat; the Priority Table below is the only thing from this step shown in chat) that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track, each country showing its Remote and Sponsorship fit side by side.
+After the recalibration verdict, the assistant writes a Summary into the file (not shown in chat; the Priority Table below is the only thing from this step shown in chat) that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track, each country showing its Remote and Sponsorship fit side by side.
 
 | Country | Remote | Sponsorship |
 |---|---|---|
@@ -127,8 +129,8 @@ Of the three, only the Priority Table is also shown directly in chat; the Summar
 
 ## Completion message
 
-After saving, Claude tells you the pipeline is complete and where the results live, so the conversation doesn't just trail off after the table: *"Country Finder is complete. Results are saved to `cf-step6-final-ranking.md` if you want to revisit them later without re-running the pipeline; start with your 🥇 countries above."*
+After saving, the assistant tells you the pipeline is complete and where the results live, so the conversation doesn't just trail off after the table: *"Country Finder is complete. Results are saved to `cf-step6-final-ranking.md` if you want to revisit them later without re-running the pipeline; start with your 🥇 countries above."*
 
 ## Stop condition
 
-After the completion message, Claude stops and waits for the main command.
+After the completion message, the assistant stops and waits for the main command.

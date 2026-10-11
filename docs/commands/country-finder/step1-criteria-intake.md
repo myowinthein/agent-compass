@@ -1,5 +1,5 @@
 ---
-title: Step 1: Criteria intake
+title: "Step 1: Criteria intake"
 parent: /country-finder
 grand_parent: Commands
 nav_order: 1
@@ -7,7 +7,7 @@ nav_order: 1
 
 # Step 1: Criteria intake
 
-Collects your hard requirements for both tracks before any research begins. Claude stops and waits only while asking questions; once everything is answered and saved, it continues straight into Step 2 within the same response, without waiting for a new message.
+Collects your hard requirements for both tracks before any research begins. The assistant stops and waits only while asking questions; once everything is answered and saved, it continues straight into Step 2 within the same response, without waiting for a new message.
 
 ## Flow
 
@@ -34,11 +34,11 @@ flowchart TD
 ## What it reads
 
 - `profile.md`: your resume profile (must exist before this step runs)
-- `situational-profile.md`: if present, reused without re-asking; if absent, Claude collects it here
+- `situational-profile.md`: if present, reused without re-asking; if absent, the assistant collects it here
 
 ## Situational profile
 
-If `situational-profile.md` does not exist, Claude asks eight questions and saves the answers to that file:
+If `situational-profile.md` does not exist, the assistant asks eight questions and saves the answers to that file:
 
 1. Current location
 2. Citizenship
@@ -53,7 +53,7 @@ These answers persist across sessions and are reused by both pipelines. The sala
 
 ## Criteria questions
 
-Claude asks all questions before proceeding. Vague answers are rejected; Claude asks again until it receives a specific value or an explicit "no limit" / "not specified."
+The assistant asks all questions before proceeding. Vague answers are rejected; the assistant asks again until it receives a specific value or an explicit "no limit" / "not specified."
 
 **Remote track**
 - Maximum time zone difference from your current location, or "no limit" to skip timezone filtering
@@ -61,7 +61,7 @@ Claude asks all questions before proceeding. Vague answers are rejected; Claude 
 **Sponsorship track**
 - Timeline or urgency for relocating (e.g. "within 12 months," "no rush")
 
-Relocation is assumed; Claude does not ask whether you are open to relocating.
+Relocation is assumed; the assistant does not ask whether you are open to relocating.
 
 **Country preferences**: asked as two separate questions, not one combined free-text answer, so there's no ambiguity in classifying your reply
 - Countries or regions to include
@@ -69,9 +69,9 @@ Relocation is assumed; Claude does not ask whether you are open to relocating.
 
 ## Output
 
-- `cf-step1-criteria.md`: criteria answers (timezone limit, relocation timeline, country preferences) written after all phases are complete. Claude confirms the save in one line rather than repeating the criteria back; you just gave them, so there's nothing new to show.
+- `cf-step1-criteria.md`: criteria answers (timezone limit, relocation timeline, country preferences) written after all phases are complete. The assistant confirms the save in one line rather than repeating the criteria back; you just gave them, so there's nothing new to show.
 - `situational-profile.md`: written here if it did not already exist; reused by subsequent steps and the Salary Calculator pipeline
 
 ## Stop condition
 
-Claude only stops while the situational-profile and criteria questions are still being asked; vague answers are rejected and re-asked. Once every phase is answered and the criteria file is saved, Claude continues automatically into Step 2 within the same response, without waiting for a new message.
+The assistant only stops while the situational-profile and criteria questions are still being asked; vague answers are rejected and re-asked. Once every phase is answered and the criteria file is saved, the assistant continues automatically into Step 2 within the same response, without waiting for a new message.

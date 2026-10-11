@@ -11,11 +11,15 @@ Screens job descriptions against your resume profile and returns a structured ma
 
 ## Usage
 
+Claude Cowork / Claude Code:
+
 ```
 /claude-compass:job-screener
 ```
 
-Run it once at the top of a chat. Claude loads your profile and waits. Then paste a job description to get a screen, or paste application form questions to get drafted answers.
+Codex: type `$` and select `job-screener` from Claude Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
+
+Run it once at the top of a chat. The assistant loads your profile and waits. Then paste a job description to get a screen, or paste application form questions to get drafted answers.
 
 ## Flow
 
@@ -37,7 +41,7 @@ flowchart TD
 
 ### Profile check
 
-Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resume-extraction-prompt.md`, waits for the user to upload their resume, and waits until `profile.md` is produced. The profile is reused on all subsequent runs without re-extraction.
+Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resume-extraction-prompt.md`, waits for the user to provide their resume as an attachment, pasted text, or a readable local file, and waits until `profile.md` is produced. The profile is reused on all subsequent runs without re-extraction.
 
 ### [Step 1: Match analysis](job-screener/step1-match-analysis.html)
 
@@ -45,8 +49,8 @@ Reads `profile.md` as the canonical candidate profile, replies "Profile loaded. 
 
 ## Stop conditions
 
-- **Resume not yet provided.** Claude waits for the upload before profile.md can be created, the same resume-extraction step shared with Country Finder and Salary Calculator.
-- **Waiting for a paste.** After replying "Profile loaded," Claude waits for you to paste a job description or application question; it does not screen or answer anything until you paste something.
+- **Resume not yet provided.** The assistant waits for the upload before profile.md can be created, the same resume-extraction step shared with Country Finder and Salary Calculator.
+- **Waiting for a paste.** After replying "Profile loaded," the assistant waits for you to paste a job description or application question; it does not screen or answer anything until you paste something.
 
 ## No state file
 

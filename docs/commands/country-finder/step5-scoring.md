@@ -1,5 +1,5 @@
 ---
-title: Step 5: Scoring
+title: "Step 5: Scoring"
 parent: /country-finder
 grand_parent: Commands
 nav_order: 5
@@ -7,15 +7,17 @@ nav_order: 5
 
 # Step 5: Scoring
 
-Scores every stored country against your criteria, keeping Remote and Sponsorship tracks completely separate. Before running, Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
+Scores every stored country against your criteria, keeping Remote and Sponsorship tracks completely separate. Before running, the assistant asks whether to use the **deep-reasoner** subagent (host-specific model and effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
+
+Model routing follows the [platform behavior documented on the home page](../../../index.html#usage).
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 5 begins]) --> OpusQ{Use Opus for\nhigher accuracy?}
-  OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
-  OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
+  Start([Step 5 begins]) --> SpecialistQ{Use specialist for\nhigher accuracy?}
+  SpecialistQ -->|yes| DeepReasoner[Route to deep-reasoner\nhost-specific model and effort]
+  SpecialistQ -->|no| CurrentModel[Run with your\ncurrent model]
   DeepReasoner --> Remote
   CurrentModel --> Remote[Score all Remote-track countries first]
   Remote --> SalCheck{Salary minimum\nspecified?}
@@ -83,7 +85,7 @@ Every country actually scored on a track but excluded from the results must be l
 
 ## File format
 
-This structure is written to `cf-step5-scoring-results.md`; it is not what Claude shows in chat (see Output below):
+This structure is written to `cf-step5-scoring-results.md`; it is not what the assistant shows in chat (see Output below):
 
 ```
 Remote Track Results
@@ -101,8 +103,8 @@ Summary
 
 ## Output
 
-Full results are saved to `cf-step5-scoring-results.md` in the workspace. Step 6 reads this file directly and always runs next to produce the curated, human-facing result, so Claude does not reproduce this detailed breakdown in chat. Instead, it tells you in a few lines how many countries were scored and excluded on each track, and confirms the file is saved.
+Full results are saved to `cf-step5-scoring-results.md` in the workspace. Step 6 reads this file directly and always runs next to produce the curated, human-facing result, so the assistant does not reproduce this detailed breakdown in chat. Instead, it tells you in a few lines how many countries were scored and excluded on each track, and confirms the file is saved.
 
 ## Stop condition
 
-There is no interactive checkpoint in this step. After outputting results, Claude continues automatically into Step 6 (Final Ranking) within the same response, without waiting for a new message; it always runs and is never asked about.
+There is no interactive checkpoint in this step. After outputting results, the assistant continues automatically into Step 6 (Final Ranking) within the same response, without waiting for a new message; it always runs and is never asked about.

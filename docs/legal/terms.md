@@ -1,6 +1,6 @@
 # Terms of Service
 
-**Last updated:** 2026-08-01
+**Last updated:** 2026-10-11
 
 ## Acceptance of Terms
 
@@ -8,11 +8,11 @@ By installing, accessing, or using the claude-compass plugin or its documentatio
 
 ## Description of Service
 
-claude-compass is an open source Claude Code plugin pack that provides four slash commands (`/country-finder`, `/salary-calculator`, `/portal-finder`, and `/job-screener`) to help IT/tech job seekers discover remote-hire and visa-sponsorship countries, calculate realistic local-market salaries, find verified job portals, and screen job descriptions against their own resume. The Service runs entirely within your own Claude Code or Claude Cowork session and depends on research and data you provide during that session.
+claude-compass is an open source plugin pack for Claude Cowork, Claude Code, and Codex that provides four workflows (`/country-finder`, `/salary-calculator`, `/portal-finder`, and `/job-screener`) to help IT/tech job seekers discover remote-hire and visa-sponsorship countries, calculate realistic local-market salaries, find verified job portals, and screen job descriptions against their own resume. The Service runs entirely within your own Claude Cowork, Claude Code, or Codex session and depends on research and data you provide during that session.
 
 ## User Accounts and Eligibility
 
-The Service does not require an account, registration, or sign-up of any kind. You must have your own access to Claude Code or Claude Cowork, subject to Anthropic's own terms, to use the plugin.
+The Service does not require an account, registration, or sign-up of any kind. You must have your own access to Claude Cowork, Claude Code, or Codex, subject to the selected provider's terms, to use the plugin.
 
 ## Acceptable Use
 

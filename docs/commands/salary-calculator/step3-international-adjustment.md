@@ -1,5 +1,5 @@
 ---
-title: Step 3: International adjustment
+title: "Step 3: International adjustment"
 parent: /salary-calculator
 grand_parent: Commands
 nav_order: 3
@@ -7,7 +7,9 @@ nav_order: 3
 
 # Step 3: International adjustment
 
-Estimates the realistic hiring discount an overseas candidate may face when negotiating with local employers, compared to a local candidate at the same level. Before running, the main command collects the situational profile (on your current model), then asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
+Estimates the realistic hiring discount an overseas candidate may face when negotiating with local employers, compared to a local candidate at the same level. Before running, the main command collects the situational profile (on your current model), then asks whether to use the **deep-reasoner** subagent (host-specific model and effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
+
+Model routing follows the [platform behavior documented on the home page](../../../index.html#usage).
 
 ## Flow
 
@@ -21,9 +23,9 @@ flowchart TD
   Begin([Step 3 begins]) --> FileCheck{sc-step2-salary-data.md\nexists?}
   FileCheck -->|no| Error[Stop, report missing file\nAsk user to rerun Step 2]
   FileCheck -->|yes| ReadFile[Read sc-step2-salary-data.md\nsituational-profile.md, and profile.md]
-  ReadFile --> OpusQ{Use Opus for\nhigher accuracy?}
-  OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
-  OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
+  ReadFile --> SpecialistQ{Use specialist for\nhigher accuracy?}
+  SpecialistQ -->|yes| DeepReasoner[Route to deep-reasoner\nhost-specific model and effort]
+  SpecialistQ -->|no| CurrentModel[Run with your\ncurrent model]
   DeepReasoner --> Estimate
   CurrentModel --> Estimate
   Estimate[Estimate adjustment per country\nbased on hiring practices and\nmarket conditions] --> Output[For each country output:\nAdjustment range %\nTypical midpoint %\nLevel: Small / Moderate / Significant\nConfidence: High / Medium / Low\nBrief explanation]
@@ -39,7 +41,7 @@ flowchart TD
 
 ## Situational questions (collected before the step, once, if not already saved)
 
-The main command collects these on your current model before any Opus handoff, so the subagent path never has to ask interactively. If `situational-profile.md` does not exist, Claude asks:
+The main command collects these on your current model before any specialist handoff, so the subagent path never has to ask interactively. If `situational-profile.md` does not exist, the assistant asks:
 
 1. Current location
 2. Citizenship
@@ -72,7 +74,7 @@ This is not about tax, cost of living, purchasing power, or permanent residence 
 
 **Guardrails:** the adjustment must never be based on race, ethnicity, passport prestige, or a generic nationality ranking; every adjustment ties to concrete, candidate-applicable friction (visa complexity, sponsorship risk, relocation logistics, language or market unfamiliarity). The typical midpoint adjustment is capped at 15%, and anything above 10% requires citing specific, concrete evidence rather than general market difficulty. If a country's underlying salary data carries a Low evidence grade (from Step 1/Step 2), this step's Confidence for that country is capped at Medium.
 
-**Degree relevance vs. formal recognition:** if a country's visa route has an education requirement, Claude checks it against the candidate's actual degree(s) in `profile.md` rather than assuming a mismatch based on generic assumptions about the occupation; any one relevant degree is enough, even if the candidate also holds unrelated ones. Formal recognition of a specific degree or institution is a different question that can't be verified through research (it requires a country's actual credential-assessment body); Claude never asserts pass/fail on this. If a route has a named formal-recognition requirement, it's noted as a plain process caveat in that country's Brief explanation, never as a factor in the adjustment percentage.
+**Degree relevance vs. formal recognition:** if a country's visa route has an education requirement, the assistant checks it against the candidate's actual degree(s) in `profile.md` rather than assuming a mismatch based on generic assumptions about the occupation; any one relevant degree is enough, even if the candidate also holds unrelated ones. Formal recognition of a specific degree or institution is a different question that can't be verified through research (it requires a country's actual credential-assessment body); the assistant never asserts pass/fail on this. If a route has a named formal-recognition requirement, it's noted as a plain process caveat in that country's Brief explanation, never as a factor in the adjustment percentage.
 
 **Already resident in a target country:** if the situational profile states you already live in, or already have some form of work authorization for, a country being calculated, relocation friction, remote interview logistics, and perceived hiring risk are weighed much lighter for that country specifically; you aren't relocating and can interview locally. This is independent of sponsorship: if your status there would still require employer sponsorship to take the job, employer willingness to sponsor and visa complexity are still weighed normally. Being already resident reduces relocation-driven friction, not sponsorship-driven friction.
 
@@ -84,8 +86,8 @@ This is not about tax, cost of living, purchasing power, or permanent residence 
 - Confidence: High, Medium, or Low
 - Brief explanation
 
-Results are saved to `sc-step3-adjustment-values.md` in the workspace. Step 4 reads this file directly. Claude does not reproduce the per-country adjustment reasoning in chat; only a brief summary (how many countries received an adjustment) and confirmation that the file is saved.
+Results are saved to `sc-step3-adjustment-values.md` in the workspace. Step 4 reads this file directly. The assistant does not reproduce the per-country adjustment reasoning in chat; only a brief summary (how many countries received an adjustment) and confirmation that the file is saved.
 
 ## Stop condition
 
-There is no interactive checkpoint in this step itself (the situational-profile questions, if needed, are asked by the main command beforehand). Once results are saved, Claude continues automatically into Step 4 within the same response, without waiting for a new message.
+There is no interactive checkpoint in this step itself (the situational-profile questions, if needed, are asked by the main command beforehand). Once results are saved, the assistant continues automatically into Step 4 within the same response, without waiting for a new message.

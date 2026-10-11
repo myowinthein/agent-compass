@@ -1,5 +1,5 @@
 ---
-title: Step 1: Portal research
+title: "Step 1: Portal research"
 parent: /portal-finder
 grand_parent: Commands
 nav_order: 1
@@ -54,4 +54,4 @@ Within each group, ⭐ marks the 2–3 portals to start with first.
 
 ## Stop condition
 
-Claude outputs all groups in a single response, in order from group 1 to 3, then stops. No follow-up advice or recommendations are added.
+The assistant outputs all groups in a single response, in order from group 1 to 3, then stops. No follow-up advice or recommendations are added.

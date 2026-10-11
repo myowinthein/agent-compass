@@ -1,5 +1,5 @@
 ---
-title: Step 4: Data validation
+title: "Step 4: Data validation"
 parent: /country-finder
 grand_parent: Commands
 nav_order: 4
@@ -7,7 +7,7 @@ nav_order: 4
 
 # Step 4: Data validation
 
-A strict silent-storage mode. Claude reads `cf-step3-country-research.md` written by Step 3 and processes each country's data autonomously, no pasting required. If the file is missing, Claude stops and reports it rather than waiting for manual input.
+A strict silent-storage mode. The assistant reads `cf-step3-country-research.md` written by Step 3 and processes each country's data autonomously, no pasting required. If the file is missing, the assistant stops and reports it rather than waiting for manual input.
 
 ## Flow
 
@@ -38,14 +38,14 @@ flowchart TD
 
 ## What it reads
 
-- `cf-step3-country-research.md`: written by Step 3 sub-agents
+- `cf-step3-country-research.md`: written by the parent from Step 3's subagent results
 - `cf-step2-candidates.md`: used to validate that each country was marked suitable for at least one track
 
 ## Rules
 
 This runs fully automated, with no pause between countries; bad items are skipped and recorded, never halted on.
 
-| Situation | Claude's response |
+| Situation | Assistant's response |
 |---|---|
 | File not found | Stops, reports missing file, asks user to ensure Step 3 completed |
 | Block contains multiple countries | Skips it and records the issue, nothing stored |
@@ -55,9 +55,9 @@ This runs fully automated, with no pause between countries; bad items are skippe
 | Country already stored | Skips it, keeps original, records it as a duplicate |
 | Valid, complete data for one country | Stored silently |
 
-Claude preserves all values, wording, and formatting exactly as provided. It does not correct, improve, or reinterpret the data.
+The assistant preserves all values, wording, and formatting exactly as provided. It does not correct, improve, or reinterpret the data.
 
-## What Claude does not do in this step
+## What the assistant does not do in this step
 
 - No analysis, scoring, or ranking
 - No summaries or tables
@@ -66,4 +66,4 @@ Claude preserves all values, wording, and formatting exactly as provided. It doe
 
 ## Stop condition
 
-Once all countries from `cf-step3-country-research.md` have been processed, Claude writes all successfully stored countries to `cf-step4-country-data.md` (which Step 5 scores next), replies with one consolidated report (stored count, plus every skip grouped by reason: malformed, missing fields, duplicate, not marked suitable for any track), then continues automatically into Step 5 within the same response, without waiting for a new message. There is no interactive checkpoint in this step.
+Once all countries from `cf-step3-country-research.md` have been processed, the assistant writes all successfully stored countries to `cf-step4-country-data.md` (which Step 5 scores next), replies with one consolidated report (stored count, plus every skip grouped by reason: malformed, missing fields, duplicate, not marked suitable for any track), then continues automatically into Step 5 within the same response, without waiting for a new message. There is no interactive checkpoint in this step.

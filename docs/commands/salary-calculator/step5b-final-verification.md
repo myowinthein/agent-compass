@@ -1,5 +1,5 @@
 ---
-title: Step 5: Final Verification
+title: "Step 5: Final Verification"
 parent: /salary-calculator
 grand_parent: Commands
 nav_order: 5
@@ -7,7 +7,9 @@ nav_order: 5
 
 # Step 5: Final Verification
 
-An independent audit of the salary table from Step 4. Always runs; this is the only step in the pipeline with no skip option, since it produces the pipeline's final result. The four detailed checks are file-only, like Step 4's own work, but the resulting final table is the one thing this step does show you, copied from the file into chat, table only with no surrounding commentary. Whether recalibration happened is stated as a plain fact in the completion message afterward, not as commentary attached to the table. Everything (checks, verdict, and table) is written to a single file, `sc-step5b-final-verification.md`; this step never creates more than one file. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
+An independent audit of the salary table from Step 4. Always runs; this is the only step in the pipeline with no skip option, since it produces the pipeline's final result. The four detailed checks are file-only, like Step 4's own work, but the resulting final table is the one thing this step does show you, copied from the file into chat, table only with no surrounding commentary. Whether recalibration happened is stated as a plain fact in the completion message afterward, not as commentary attached to the table. Everything (checks, verdict, and table) is written to a single file, `sc-step5b-final-verification.md`; this step never creates more than one file. The assistant asks whether to use the **deep-reasoner** subagent (host-specific model and effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
+
+Model routing follows the [platform behavior documented on the home page](../../../index.html#usage).
 
 ## Flow
 
@@ -17,9 +19,9 @@ flowchart TD
   Ladder --> Confirm{Career ladder\nconfirmed?}
   Confirm -->|no| EditLadder[Adjust ladder per feedback]
   EditLadder --> Confirm
-  Confirm -->|yes| OpusQ{Use Opus for\nhigher accuracy?}
-  OpusQ -->|yes| DeepReasoner[Route to deep-reasoner\nOpus / high effort]
-  OpusQ -->|no| CurrentModel[Run with your\ncurrent model]
+  Confirm -->|yes| SpecialistQ{Use specialist for\nhigher accuracy?}
+  SpecialistQ -->|yes| DeepReasoner[Route to deep-reasoner\nhost-specific model and effort]
+  SpecialistQ -->|no| CurrentModel[Run with your\ncurrent model]
   DeepReasoner --> C1
   CurrentModel --> C1[1. Candidate positioning\nUse the confirmed ladder from\nsc-step5a-career-ladder.md]
   C1 --> C2[2. Framework calibration review\nIs the framework conservative · calibrated\nor inflated?]
@@ -41,7 +43,7 @@ flowchart TD
 - `profile.md`: used to assess candidate positioning and career level
 - `sc-step5a-career-ladder.md`: the career ladder drafted and confirmed with you before the step runs
 
-All inputs come from workspace files, so the audit is safe to route to the isolated deep-reasoner subagent. The career ladder is confirmed on your current model before any Opus handoff, so the subagent never has to pause for interactive confirmation.
+All inputs come from workspace files, so the audit is safe to route to the isolated deep-reasoner subagent. The career ladder is confirmed on your current model before any specialist handoff, so the subagent never has to pause for interactive confirmation.
 
 All four checks and the recalibration verdict are saved to file only; not reproduced in chat, since the raw reasoning would overwhelm rather than help. The resulting final table (whether unchanged or revised) is written into that same file, then also shown directly in chat, copied from what was just saved, table only, no surrounding commentary.
 
@@ -94,8 +96,8 @@ Either way, the resulting final table (unchanged or revised) is written into `sc
 
 - `sc-step5b-final-verification.md`: the only file this step writes. Always contains the full audit (all four checks, file-only) plus the recalibration verdict and the resulting final table (unchanged or revised).
 
-The final table is also shown directly in chat, copied from the file, table only, no surrounding commentary. The four checks themselves are not reproduced in chat. Claude closes with a completion message naming how many countries were audited, whether recalibration occurred, and confirming where the full audit is saved.
+The final table is also shown directly in chat, copied from the file, table only, no surrounding commentary. The four checks themselves are not reproduced in chat. The assistant closes with a completion message naming how many countries were audited, whether recalibration occurred, and confirming where the full audit is saved.
 
 ## Stop condition
 
-Once the audit (and any recalibration) is complete and the completion message is shown, Claude stops and waits for the main command to deliver the final results; this is the last step in the pipeline.
+Once the audit (and any recalibration) is complete and the completion message is shown, the assistant stops and waits for the main command to deliver the final results; this is the last step in the pipeline.

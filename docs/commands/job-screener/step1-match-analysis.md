@@ -1,5 +1,5 @@
 ---
-title: Step 1: Match analysis
+title: "Step 1: Match analysis"
 parent: /job-screener
 grand_parent: Commands
 nav_order: 1
@@ -79,8 +79,8 @@ An item unstated here is unknown, not a negative; it can never be a 🚫 blocker
 
 ## Form questions and application writing
 
-When you paste application form questions or ask Claude to write anything for the application (emails, answers, cover letters, forms, or messages), Claude answers using a fixed set of writing guidelines: plain English, short and compact, a calm and slightly detached tone, no unnecessary hyphens, no overpraising the company, and writing as someone capable of doing the job who is also comfortable if the opportunity doesn't proceed.
+When you paste application form questions or ask the assistant to write anything for the application (emails, answers, cover letters, forms, or messages), the assistant answers using a fixed set of writing guidelines: plain English, short and compact, a calm and slightly detached tone, no unnecessary hyphens, no overpraising the company, and writing as someone capable of doing the job who is also comfortable if the opportunity doesn't proceed.
 
 ## Drift resistance
 
-Before each screen, Claude re-anchors to the exact format and rules and silently corrects itself if it notices drift. Over a long session this can still slip; re-invoke the command to reset.
+Before each screen, the assistant re-anchors to the exact format and rules and silently corrects itself if it notices drift. Over a long session this can still slip; re-invoke the command to reset.
