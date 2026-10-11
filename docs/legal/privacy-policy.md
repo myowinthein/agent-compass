@@ -1,18 +1,18 @@
 # Privacy Policy
 
-**Last updated:** 2026-08-01
+**Last updated:** 2026-10-11
 
 ## Who We Are
 
-claude-compass is an open source Claude Code plugin pack, maintained by Myo Win Thein, providing slash commands for globally-minded IT/tech job seekers to discover remote-hire and visa-sponsorship countries, calculate local-market salaries, find verified job portals, and screen job descriptions against their resume. This policy covers both the claude-compass documentation site (hosted on GitHub Pages) and the claude-compass plugin itself.
+claude-compass is an open source plugin pack for Claude Cowork, Claude Code, and Codex, maintained by Myo Win Thein, providing career research workflows for globally-minded IT/tech job seekers to discover remote-hire and visa-sponsorship countries, calculate local-market salaries, find verified job portals, and screen job descriptions against their resume. This policy covers both the claude-compass documentation site (hosted on GitHub Pages) and the claude-compass plugin itself.
 
 ## What Data We Collect
 
-Neither the documentation site nor the plugin's commands collect, receive, or store any personal data. The documentation site is a static site with no forms, no accounts, no cookies, and no analytics or tracking scripts. When you use the plugin's commands (`/country-finder`, `/salary-calculator`, `/portal-finder`, `/job-screener`) inside your own Claude Code or Claude Cowork session, any information you provide, such as your resume, salary criteria, or citizenship and location details, is processed entirely within your own conversation with Claude and saved only to files in your own local workspace (for example `profile.md`, `situational-profile.md`, and pipeline state files). We never receive, see, or store this data.
+Neither the documentation site nor the plugin's commands collect, receive, or store any personal data. The documentation site is a static site with no forms, no accounts, no cookies, and no analytics or tracking scripts. When you use the plugin's commands (`/country-finder`, `/salary-calculator`, `/portal-finder`, `/job-screener`) inside your own Claude Cowork, Claude Code, or Codex session, any information you provide, such as your resume, salary criteria, or citizenship and location details, is processed within your own session with the selected AI provider and saved only to files in your own local workspace (for example `profile.md`, `situational-profile.md`, and pipeline state files). We never receive, see, or store this data.
 
 ## How We Use Your Data
 
-Because we do not collect any personal data, there is no processing of personal data by us and no Article 6 legal basis is required on our part. Any data you enter is processed by the Claude model within your own session, governed by Anthropic's own terms and privacy policy.
+Because we do not collect any personal data, there is no processing of personal data by us and no Article 6 legal basis is required on our part. Any data you enter is processed by your selected AI provider within your own session, governed by Anthropic's terms and privacy policy when using Claude, or OpenAI's terms and privacy policy when using Codex.
 
 ## Data Sharing and Third Parties
 
@@ -28,7 +28,7 @@ Not applicable: we do not collect or retain any data. Files the plugin creates i
 
 ## Your Rights
 
-Because we hold no personal data about you, there is nothing for us to give you access to, correct, erase, restrict, port, or object to. Under GDPR Articles 15–21 you would normally have these rights over data a controller holds about you; here, there is none. If you have questions about data processed by the underlying Claude service itself, refer to Anthropic's own privacy policy. You are welcome to contact us (see Contact) with any privacy questions about this project.
+Because we hold no personal data about you, there is nothing for us to give you access to, correct, erase, restrict, port, or object to. Under GDPR Articles 15–21 you would normally have these rights over data a controller holds about you; here, there is none. If you have questions about data processed by the underlying AI service, refer to the selected provider's privacy policy (Anthropic for Claude, OpenAI for Codex). You are welcome to contact us (see Contact) with any privacy questions about this project.
 
 ## Children's Privacy
 

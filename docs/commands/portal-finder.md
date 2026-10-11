@@ -7,16 +7,20 @@ has_children: true
 
 # /portal-finder
 
-Finds verified job portals for IT/tech roles in a specified country. Accepts the country as an optional argument: if omitted, Claude asks before doing anything. Researches portals online rather than relying on general knowledge, confirming each one actually exists and is active on its own site.
+Finds verified job portals for IT/tech roles in a specified country. Accepts the country as an optional argument: if omitted, the assistant asks before doing anything. Researches portals online rather than relying on general knowledge, confirming each one actually exists and is active on its own site.
 
 ## Usage
+
+Claude Cowork / Claude Code:
 
 ```
 /claude-compass:portal-finder Germany
 /claude-compass:portal-finder
 ```
 
-If you provide a country argument, Claude uses it directly. If you omit it, Claude asks first and waits for your answer.
+Codex: type `$` and select `portal-finder` from Claude Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
+
+If you provide a country argument, the assistant uses it directly. If you omit it, the assistant asks first and waits for your answer.
 
 ## Flow
 
@@ -35,7 +39,7 @@ flowchart TD
 
 ### Country
 
-Claude checks whether a country was provided as an argument. If not, it asks and waits before proceeding.
+The assistant checks whether a country was provided as an argument. If not, it asks and waits before proceeding.
 
 ### [Step 1: Portal research](portal-finder/step1-portal-research.html)
 
@@ -43,8 +47,9 @@ Researches job portals for IT/tech roles in the target country online. Portals a
 
 ## Stop conditions
 
-- **Country not provided as argument.** Claude asks and waits; it does not guess or default to a country.
-- **Online research finds no portals matching a group.** Claude omits that group rather than inventing entries.
+- **Live browsing unavailable.** The assistant explains that it cannot verify portals and waits for access or user-provided sources.
+- **Country not provided as argument.** The assistant asks and waits; it does not guess or default to a country.
+- **Online research finds no portals matching a group.** The assistant omits that group rather than inventing entries.
 
 ## See also
 

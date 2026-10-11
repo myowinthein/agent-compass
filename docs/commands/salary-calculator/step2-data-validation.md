@@ -1,5 +1,5 @@
 ---
-title: Step 2: Data validation
+title: "Step 2: Data validation"
 parent: /salary-calculator
 grand_parent: Commands
 nav_order: 2
@@ -7,7 +7,7 @@ nav_order: 2
 
 # Step 2: Data validation
 
-A strict silent-storage mode. Claude reads `sc-step1-salary-research.md` written by Step 1 and processes each country's data automatically, no pasting required. If the file is missing, Claude stops and reports it rather than waiting for manual input.
+A strict silent-storage mode. The assistant reads `sc-step1-salary-research.md` written by Step 1 and processes each country's data automatically, no pasting required. If the file is missing, the assistant stops and reports it rather than waiting for manual input.
 
 ## Flow
 
@@ -41,7 +41,7 @@ flowchart TD
 
 This runs fully automated, with no pause between countries; bad items are skipped and recorded, never halted on.
 
-| Situation | Claude's response |
+| Situation | Assistant's response |
 |---|---|
 | File not found | Stops, reports missing file, asks user to ensure Step 1 completed |
 | Block contains multiple countries | Skips it and records the issue, nothing stored |
@@ -50,7 +50,7 @@ This runs fully automated, with no pause between countries; bad items are skippe
 | Country already stored | Skips it, keeps original, records it as a duplicate |
 | Valid, complete data for one country | Stored silently |
 
-Claude preserves all values, wording, and formatting exactly as provided. It does not correct, improve, or reinterpret the data.
+The assistant preserves all values, wording, and formatting exactly as provided. It does not correct, improve, or reinterpret the data.
 
 ## Required data per country
 
@@ -59,7 +59,7 @@ Each block must include both tiers:
 - **Mid-size / Mainstream Local-Market tier**: Low, Realistic, Strong figures, city used if applicable, sources with dates
 - **Premium / International / Remote-first tier**: Low, Realistic, Strong figures, city used if applicable, sources with dates
 
-If either tier or its sources are missing, Claude skips that country and records what is missing; nothing is stored, and the run continues to the next country.
+If either tier or its sources are missing, the assistant skips that country and records what is missing; nothing is stored, and the run continues to the next country.
 
 ## Evidence grade
 
@@ -71,4 +71,4 @@ Stored salary data is written to `sc-step2-salary-data.md` in the workspace afte
 
 ## Stop condition
 
-There is no interactive checkpoint in this step. Once all countries from `sc-step1-salary-research.md` have been processed, Claude writes all successfully stored countries to `sc-step2-salary-data.md`, replies with one consolidated report (stored count, plus every skip grouped by reason: malformed, missing tier or sources, duplicate), then continues automatically into Step 3 within the same response, without waiting for a new message.
+There is no interactive checkpoint in this step. Once all countries from `sc-step1-salary-research.md` have been processed, the assistant writes all successfully stored countries to `sc-step2-salary-data.md`, replies with one consolidated report (stored count, plus every skip grouped by reason: malformed, missing tier or sources, duplicate), then continues automatically into Step 3 within the same response, without waiting for a new message.
