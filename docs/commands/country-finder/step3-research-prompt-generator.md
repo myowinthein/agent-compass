@@ -1,5 +1,5 @@
 ---
-title: Step 3: Research prompt generator
+title: "Step 3: Research prompt generator"
 parent: /country-finder
 grand_parent: Commands
 nav_order: 3
@@ -7,7 +7,7 @@ nav_order: 3
 
 # Step 3: Research prompt generator
 
-Generates one ready-to-copy research prompt per candidate country, then runs each as an isolated sub-agent. Claude does not answer the research questions itself in this step. Every prompt instructs the researcher to prefer sources in order: official government sources, direct employer pages, official sponsor/accredited-employer registers (capability only, not intent), specialist job boards/recruiters/salary surveys, then aggregators (which need direct verification), and to report which tier each source falls into.
+Generates one ready-to-copy research prompt per candidate country, then runs each as an isolated sub-agent. The assistant does not answer the research questions itself in this step. Every prompt instructs the researcher to prefer sources in order: official government sources, direct employer pages, official sponsor/accredited-employer registers (capability only, not intent), specialist job boards/recruiters/salary surveys, then aggregators (which need direct verification), and to report which tier each source falls into.
 
 ## Flow
 
@@ -70,12 +70,12 @@ Each country's prompt is run as a separate isolated sub-agent. Each agent:
 - Has no access to results for other countries
 - Returns results that are appended to `cf-step3-country-research.md`
 
-If isolation cannot be guaranteed, Claude shows all prompts and waits for you to bring back the results manually.
+If isolation cannot be guaranteed, the assistant shows all prompts and waits for you to bring back the results manually.
 
 ## Output
 
-- `cf-step3-country-research.md`: per-country research results, appended as each agent completes. Claude does not reproduce these findings in chat; only a brief summary (countries researched) and confirmation that the file is saved for Step 4 to validate and store.
+- `cf-step3-country-research.md`: per-country research results, appended as each agent completes. The assistant does not reproduce these findings in chat; only a brief summary (countries researched) and confirmation that the file is saved for Step 4 to validate and store.
 
 ## Stop condition
 
-Claude only stops here if isolated sub-agents aren't available; it shows the prompts and waits for you to bring back results manually. In the normal, automated case, once all results are saved to `cf-step3-country-research.md`, Claude continues automatically into Step 4 within the same response, without waiting for a new message.
+The assistant only stops here if isolated sub-agents aren't available; it shows the prompts and waits for you to bring back results manually. In the normal, automated case, once all results are saved to `cf-step3-country-research.md`, the assistant continues automatically into Step 4 within the same response, without waiting for a new message.

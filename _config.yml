@@ -1,5 +1,5 @@
 title: Claude Compass
-description: A Claude Cowork plugin for globally-minded IT/tech job seekers.
+description: Career research workflows for Claude Cowork, Claude Code, and Codex.
 url: "https://myowinthein.github.io"
 baseurl: "/claude-compass"
 
@@ -25,6 +25,7 @@ exclude:
   - Gemfile.lock
   - Rakefile
   - CLAUDE.md
+  - AGENTS.md
   - LICENSE
   - .gitignore
   - .DS_Store
@@ -34,3 +35,5 @@ exclude:
   - data/
   - prompts/
   - skills/
+  - workflows/
+  - scripts/

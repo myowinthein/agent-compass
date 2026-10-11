@@ -11,11 +11,17 @@ Runs the full Country Finder pipeline. Collects your criteria, discovers candida
 
 ## Usage
 
+Claude Cowork / Claude Code:
+
 ```
 /claude-compass:country-finder
 ```
 
-Run it once per session. Claude resumes automatically if a `.country-finder-state.json` file already exists.
+Codex: type `$` and select `country-finder` from Claude Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
+
+Run it once per session. The assistant resumes automatically if a `.country-finder-state.json` file already exists.
+
+Model routing follows the [platform behavior documented on the home page](../../index.html#usage).
 
 ## Flow
 
@@ -43,11 +49,11 @@ flowchart TD
 
 ### Profile check
 
-Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resume-extraction-prompt.md`, waits for the user to upload their resume, and waits for explicit confirmation of the extracted profile before continuing. The profile is reused on all subsequent runs without re-extraction.
+Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resume-extraction-prompt.md`, waits for the user to provide their resume as an attachment, pasted text, or a readable local file, and waits for explicit confirmation of the extracted profile before continuing. The profile is reused on all subsequent runs without re-extraction.
 
 ### State check
 
-Checks for `.country-finder-state.json`. If found, reads `last_completed_step` and informs the user which step will resume. If absent, creates the file with `last_completed_step: 0` and starts from Step 1. Updates the file after each step completes.
+Checks for `.country-finder-state.json`. If found, reads `last_completed_step` and informs the user which step will resume. If absent, creates the file with `last_completed_step: 0` and starts from Step 1. Updates the file only after each step and its required output are complete. Pending questions or partial research do not advance state. A run already at Step 6 reuses `cf-step6-final-ranking.md`. Invalid state or a missing final output is reported without overwriting it. The same workspace can be resumed on either host.
 
 ### [Step 1: Criteria intake](country-finder/step1-criteria-intake.html)
 
@@ -55,30 +61,30 @@ Collects requirements for both tracks. Remote track: maximum timezone difference
 
 ### [Step 2: Country discovery](country-finder/step2-country-discovery.html)
 
-Builds a single candidate universe: your Step 1 Include list if one was given, otherwise the shipped `data/default-preferred-countries.md` (Claude shows it grouped by continent and asks whether to proceed with it or provide your own countries, then waits). Then researches it in region-batched sub-agents that check each country for Remote and Sponsorship suitability together. A timezone limit from Step 1 marks (not removes) out-of-range countries as unsuitable for Remote only; a salary minimum from the situational profile is folded into the Remote check.
+Builds a single candidate universe: your Step 1 Include list if one was given, otherwise the shipped `data/default-preferred-countries.md` (the assistant shows it grouped by continent and asks whether to proceed with it or provide your own countries, then waits). Then researches it in region-batched sub-agents that check each country for Remote and Sponsorship suitability together. A timezone limit from Step 1 marks (not removes) out-of-range countries as unsuitable for Remote only; a salary minimum from the situational profile is folded into the Remote check.
 
 ### [Step 3: Research prompt generator](country-finder/step3-research-prompt-generator.html)
 
-Generates ready-to-copy research prompts for each candidate country on each track. The user copies these prompts and runs them in separate research sessions to gather real-world data. Claude does not generate the research itself.
+Generates ready-to-copy research prompts for each candidate country on each track. Runs them as isolated research tasks when supported. If browsing or the required isolation is unavailable, it shows the prompts and waits for manually gathered results.
 
 ### [Step 4: Data validation](country-finder/step4-data-validation.html)
 
-Reads `cf-step3-country-research.md` written by Step 3's sub-agents and stores each country's data automatically. Validates each block: one country per block, all required fields present, duplicates skipped and noted. Data is preserved verbatim: no analysis, scoring, or summarizing during ingestion. Stored data is written to `cf-step4-country-data.md` for later steps.
+Reads `cf-step3-country-research.md` written by the parent from Step 3's subagent results and stores each country's data automatically. Validates each block: one country per block, all required fields present, duplicates skipped and noted. Data is preserved verbatim: no analysis, scoring, or summarizing during ingestion. Stored data is written to `cf-step4-country-data.md` for later steps.
 
 ### [Step 5: Scoring](country-finder/step5-scoring.html)
 
-Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy; if declined, the step runs with your current model. Scores each stored country against the criteria from Step 1, keeping remote hire and sponsorship tracks completely separate. Salary minimum check is only applied if a minimum was specified. Each country receives a fit classification (Strong / Moderate / Weak) and a confidence level (High / Medium / Low). Every excluded country requires a specific, evidence-based reason.
+The assistant asks whether to use the **deep-reasoner** subagent (host-specific model and effort) for higher reasoning accuracy; if declined, the step runs with your current model. Scores each stored country against the criteria from Step 1, keeping remote hire and sponsorship tracks completely separate. Salary minimum check is only applied if a minimum was specified. Each country receives a fit classification (Strong / Moderate / Weak) and a confidence level (High / Medium / Low). Every excluded country requires a specific, evidence-based reason.
 
 ### [Step 6: Final Ranking](country-finder/step6-final-ranking.html)
 
-Always runs after Step 5 completes; this is the only step in the pipeline with no skip option, since it produces the final result. Claude asks whether to use the **deep-reasoner** subagent (Opus, high effort); if declined, the step runs with your current model. Audits the scoring output across three checks (confidence calibration, a missing-candidate check, and an evidence-misuse check), then produces the Priority Table, a country-by-country ranking with a usable-track label and a holistic priority medal, plus a file-only Effort Allocation note on where to concentrate application effort versus passively monitor.
+Always runs after Step 5 completes; this is the only step in the pipeline with no skip option, since it produces the final result. The assistant asks whether to use the **deep-reasoner** subagent (host-specific model and effort); if declined, the step runs with your current model. Audits the scoring output across three checks (confidence calibration, a missing-candidate check, and an evidence-misuse check), then produces the Priority Table, a country-by-country ranking with a usable-track label and a holistic priority medal, plus a file-only Effort Allocation note on where to concentrate application effort versus passively monitor.
 
 ## Stop conditions
 
-- **Profile not yet uploaded.** Claude waits; it does not proceed or fill in placeholder data.
-- **Any step instructs Claude to wait.** Claude stops and waits. No guessing, no assumptions.
-- **Vague answer to a criteria question.** Claude asks again for a specific value before continuing.
-- **Data validation receives multiple countries, missing fields, or a country not on either Step 2 candidate list.** Claude never stops mid-batch; it skips the item and records the reason. Duplicates, malformed items, missing-field items, and unlisted candidates are all reported together in one consolidated report at the end of Step 4, rather than stopping the run.
+- **Profile not yet uploaded.** The assistant waits; it does not proceed or fill in placeholder data.
+- **Any step instructs the assistant to wait.** The assistant stops and waits. No guessing, no assumptions.
+- **Vague answer to a criteria question.** The assistant asks again for a specific value before continuing.
+- **Data validation receives multiple countries, missing fields, or a country not on either Step 2 candidate list.** The assistant never stops mid-batch; it skips the item and records the reason. Duplicates, malformed items, missing-field items, and unlisted candidates are all reported together in one consolidated report at the end of Step 4, rather than stopping the run.
 
 ## See also
 

@@ -1,16 +1,18 @@
 {
   "name": "claude-compass-marketplace",
+  "description": "Install the shared Compass career research workflows.",
   "owner": {
     "name": "myowinthein"
   },
   "plugins": [
     {
       "name": "claude-compass",
-      "source": {
-        "source": "github",
-        "repo": "myowinthein/claude-compass"
+      "source": "./",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
       },
-      "description": "A Claude Cowork plugin pack for globally-minded IT/tech job seekers. Slash commands to discover visa-sponsorship and remote-hire countries, calculate realistic salaries, find verified job portals, and screen job descriptions against your resume. Grounded in real evidence, not guesswork."
+      "category": "Productivity"
     }
   ]
 }

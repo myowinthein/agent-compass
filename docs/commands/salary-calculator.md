@@ -11,11 +11,17 @@ Runs the full Salary Calculator pipeline. Generates ready-to-copy research promp
 
 ## Usage
 
+Claude Cowork / Claude Code:
+
 ```
 /claude-compass:salary-calculator
 ```
 
-Run it once per session. Claude resumes automatically if a `.salary-calculator-state.json` file already exists.
+Codex: type `$` and select `salary-calculator` from Claude Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
+
+Run it once per session. The assistant resumes automatically if a `.salary-calculator-state.json` file already exists.
+
+Model routing follows the [platform behavior documented on the home page](../../index.html#usage).
 
 ## Flow
 
@@ -44,15 +50,15 @@ flowchart TD
 
 ### Profile check
 
-Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resume-extraction-prompt.md`, waits for the user to upload their resume, and waits for explicit confirmation of the extracted profile. The profile is reused on all subsequent runs without re-extraction.
+Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resume-extraction-prompt.md`, waits for the user to provide their resume as an attachment, pasted text, or a readable local file, and waits for explicit confirmation of the extracted profile. The profile is reused on all subsequent runs without re-extraction.
 
 ### State check
 
-Checks for `.salary-calculator-state.json`. If found, reads `last_completed_step` and informs the user which step will resume. If absent, creates the file with `last_completed_step: 0` and starts from Step 1. Updates the file after each step completes.
+Checks for `.salary-calculator-state.json`. If found, reads `last_completed_step` and informs the user which step will resume. If absent, creates the file with `last_completed_step: 0` and starts from Step 1. Updates the file only after each step and its required output are complete. Pending questions or partial research do not advance state. A run already at Step 5 reuses `sc-step5b-final-verification.md`. Invalid state or a missing final output is reported without overwriting it. The same workspace can be resumed on either host.
 
 ### [Step 1: Research prompt generator](salary-calculator/step1-research-prompt-generator.html)
 
-If Country Finder's output exists (`cf-step6-final-ranking.md` or `cf-step5-scoring-results.md`), offers its Strong/Moderate-fit countries as a starting point before asking. Generates ready-to-copy research prompts for each target country, scoped to the candidate's role and profile from `profile.md`. Each prompt instructs the researcher to find realistic local-market annual base salary ranges: excluding expat, FAANG-only, US-skewed, contractor, and equity-heavy data. Prompts request two company tiers (mid-size local-market and premium/international), city-level breakdowns where relevant, sourced, dated evidence, a self-assessed evidence grade (High/Medium/Low), and each country's sponsorship salary threshold for employer-sponsored work-visa relocation as one of four states: verified figure, no fixed threshold, not applicable, or unknown.
+If Country Finder's output exists (`cf-step6-final-ranking.md` or `cf-step5-scoring-results.md`), offers its Strong/Moderate-fit countries as a starting point before asking. Generates ready-to-copy research prompts for each target country, scoped to the candidate's role and profile from `profile.md`. Each prompt instructs the researcher to find realistic local-market annual base salary ranges: excluding expat, FAANG-only, US-skewed, contractor, and equity-heavy data. Prompts request two company tiers (mid-size local-market and premium/international), city-level breakdowns where relevant, sourced, dated evidence, a self-assessed evidence grade (High/Medium/Low), and each country's sponsorship salary threshold for employer-sponsored work-visa relocation as one of five states: verified figure, no fixed threshold, not applicable, unknown, or blocked.
 
 ### [Step 2: Data validation](salary-calculator/step2-data-validation.html)
 
@@ -60,21 +66,21 @@ Reads `sc-step1-salary-research.md` written by Step 1 and stores each country's 
 
 ### [Step 3: International adjustment](salary-calculator/step3-international-adjustment.html)
 
-Before this step, the command collects the situational profile on your current model (so it exists before any Opus handoff). Claude then asks whether to use the **deep-reasoner** subagent (Opus, high effort) for higher reasoning accuracy; if declined, the step runs with your current model. Estimates the international candidate adjustment for each country: the realistic hiring discount an overseas applicant may face compared to a local candidate, based on employer risk perception, visa complexity, remote interview logistics, and local talent availability. Shows reasoning for each adjustment.
+Before this step, the command collects the situational profile on your current model (so it exists before any specialist handoff). The assistant then asks whether to use the **deep-reasoner** subagent (host-specific model and effort) for higher reasoning accuracy; if declined, the step runs with your current model. Estimates the international candidate adjustment for each country: the realistic hiring discount an overseas applicant may face compared to a local candidate, based on employer risk perception, visa complexity, remote interview logistics, and local talent availability. Shows reasoning for each adjustment.
 
 ### [Step 4: Table calculation](salary-calculator/step4-table-calculation.html)
 
-Claude asks whether to use the **calculator** subagent (Opus, max effort) for higher arithmetic precision; if declined, the step runs with your current model but still uses a calculator or step-by-step verified arithmetic, never intuition. Reads all ingested salary data and adjustment figures, works through full arithmetic for every country, and double-checks each calculation before finalising. Precision takes priority over speed. Countries with a reported sponsorship salary threshold get a Legal Requirement column flagging whether Safe or Stretch falls short (with a distinct `?` for an unconfirmed-but-plausible threshold, and the literal word `Blocked` when a real route exists but is currently unavailable to this candidate, both separate from the em dash for "nothing to compare"); the figures themselves are never adjusted to meet it. If the candidate gave a hard-floor salary minimum, or if any country is Blocked, the Summary separately flags these, again without adjusting the figures. This is the raw, pre-audit calculation: the shown work and table are saved to file only, with just a brief calculated/skipped count in chat.
+The assistant asks whether to use the **calculator** subagent (host-specific model and effort) for higher arithmetic precision; if declined, the step runs with your current model but still uses a calculator or step-by-step verified arithmetic, never intuition. Reads all ingested salary data and adjustment figures, works through full arithmetic for every country, and double-checks each calculation before finalising. Precision takes priority over speed. Countries with a reported sponsorship salary threshold get a Legal Requirement column flagging whether Safe or Stretch falls short (with a distinct `?` for an unconfirmed-but-plausible threshold, and the literal word `Blocked` when a real route exists but is currently unavailable to this candidate, both separate from the em dash for "nothing to compare"); the figures themselves are never adjusted to meet it. If the candidate gave a hard-floor salary minimum, or if any country is Blocked, the Summary separately flags these, again without adjusting the figures. This is the raw, pre-audit calculation: the shown work and table are saved to file only, with just a brief calculated/skipped count in chat.
 
 ### [Step 5: Final Verification](salary-calculator/step5b-final-verification.html)
 
-Always runs after Step 4 completes; this is the only step in the pipeline with no skip option, since it produces the final result. It first drafts your career ladder on the current model and waits for your confirmation (saved to `sc-step5a-career-ladder.md`) before any Opus handoff, then asks whether to use the **deep-reasoner** subagent (Opus, high effort); if declined, the step runs with your current model. Audits the table output for inconsistencies, outliers, or weak evidence, and revises it if the evidence supports doing so. The four detailed checks and the recalibration verdict are file-only, but the resulting final table (unchanged or revised) is shown directly in chat, copied from the file, table only with no surrounding commentary. The completion message afterward states whether recalibration occurred. Everything from this step, including the table, is written to a single file, `sc-step5b-final-verification.md`.
+Always runs after Step 4 completes; this is the only step in the pipeline with no skip option, since it produces the final result. It drafts your career ladder on the current model and waits for your confirmation (saved to `sc-step5a-career-ladder.md`, reused if already confirmed) before any specialist handoff, then asks whether to use the **deep-reasoner** subagent (host-specific model and effort); if declined, the step runs with your current model. Audits the table output for inconsistencies, outliers, or weak evidence, and revises it if the evidence supports doing so. The four detailed checks and the recalibration verdict are file-only, but the resulting final table (unchanged or revised) is shown directly in chat, copied from the file, table only with no surrounding commentary. The completion message afterward states whether recalibration occurred. Everything from this step, including the table, is written to a single file, `sc-step5b-final-verification.md`.
 
 ## Stop conditions
 
-- **Profile not yet uploaded.** Claude waits; it does not proceed or fill in placeholder data.
-- **Any step instructs Claude to wait.** Claude stops and waits. No guessing, no assumptions.
-- **Data validation receives multiple countries or missing required tiers/sources.** Claude never stops mid-batch; it skips the item and records the reason. Duplicates and skipped items are all reported together in one consolidated report at the end of Step 2, rather than stopping the run.
+- **Profile not yet uploaded.** The assistant waits; it does not proceed or fill in placeholder data.
+- **Any step instructs the assistant to wait.** The assistant stops and waits. No guessing, no assumptions.
+- **Data validation receives multiple countries or missing required tiers/sources.** The assistant never stops mid-batch; it skips the item and records the reason. Duplicates and skipped items are all reported together in one consolidated report at the end of Step 2, rather than stopping the run.
 
 ## See also
 

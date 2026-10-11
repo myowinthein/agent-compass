@@ -1,5 +1,5 @@
 ---
-title: Step 1: Research prompt generator
+title: "Step 1: Research prompt generator"
 parent: /salary-calculator
 grand_parent: Commands
 nav_order: 1
@@ -7,7 +7,7 @@ nav_order: 1
 
 # Step 1: Research prompt generator
 
-Generates one ready-to-copy research prompt per target country, runs each as an isolated sub-agent research task, and saves the results to `sc-step1-salary-research.md`. Claude does not estimate salaries itself; every number comes from real web research.
+Generates one ready-to-copy research prompt per target country, runs each as an isolated sub-agent research task, and saves the results to `sc-step1-salary-research.md`. The assistant does not estimate salaries itself; every number comes from real web research.
 
 ## Flow
 
@@ -39,7 +39,7 @@ flowchart TD
 
 ## Country list
 
-Before asking cold, Claude checks for Country Finder's output: `cf-step6-final-ranking.md` if it exists (preferred, since it's the post-audit result), otherwise `cf-step5-scoring-results.md`. If either is found, Claude extracts every country classified Strong or Moderate fit on any track and shows you that list, asking whether to use it as-is, add to it, remove countries, or start fresh. If neither file exists, or you choose to start fresh, Claude asks for your target country list directly.
+Before asking cold, the assistant checks for Country Finder's output: `cf-step6-final-ranking.md` if it exists (preferred, since it's the post-audit result), otherwise `cf-step5-scoring-results.md`. If either is found, the assistant extracts every country classified Strong or Moderate fit on any track and shows you that list, asking whether to use it as-is, add to it, remove countries, or start fresh. If neither file exists, or you choose to start fresh, the assistant asks for your target country list directly.
 
 ## Prompt content
 
@@ -66,12 +66,12 @@ Each generated prompt instructs the researcher to:
 
 ## Sub-agent isolation
 
-Each country's prompt is run as a separate, isolated research task. Each agent receives only one country's prompt and must not produce or save results for any other country. If isolation cannot be guaranteed, Claude shows the prompts and waits for you to bring back results manually before continuing.
+Each country's prompt is run as a separate, isolated research task. Each agent receives only one country's prompt and must not produce or save results for any other country. If isolation cannot be guaranteed, the assistant shows the prompts and waits for you to bring back results manually before continuing.
 
 ## Output
 
-Results are appended to `sc-step1-salary-research.md` in the workspace as each agent completes. Step 2 reads this file automatically. Claude does not reproduce the per-country research findings in chat; only a brief summary (how many countries were researched) and confirmation that the file is saved.
+Results are appended to `sc-step1-salary-research.md` in the workspace as each agent completes. Step 2 reads this file automatically. The assistant does not reproduce the per-country research findings in chat; only a brief summary (how many countries were researched) and confirmation that the file is saved.
 
 ## Stop condition
 
-Claude stops and waits at two points: the country-list question (if Country Finder's output exists or none was given cold) and the manual-research fallback (if isolated sub-agents aren't available). Otherwise, once all results are saved, Claude continues automatically into Step 2 within the same response, without waiting for a new message.
+The assistant stops and waits at two points: the country-list question (if Country Finder's output exists or none was given cold) and the manual-research fallback (if isolated sub-agents aren't available). Otherwise, once all results are saved, the assistant continues automatically into Step 2 within the same response, without waiting for a new message.
