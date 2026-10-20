@@ -8,5 +8,3 @@ permalink: /docs/setup/codex.html
 ---
 
 # Codex
-
-Read the [Setup notes](./) before starting.
