@@ -1,6 +1,6 @@
 {
   "name": "agent-compass",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A career research plugin for Claude and Codex. Find countries for remote work or visa sponsorship, explore market salaries, discover verified job portals and screen job descriptions against your profile.",
   "author": {
     "name": "Myo Win Thein",

@@ -1,0 +1,92 @@
+{
+  "description": "Fictional salary and visa inputs for testing only, not current market or immigration facts.",
+  "cases": [
+    {
+      "visa_state": "Verified numeric",
+      "input": {
+        "schema_version": 1,
+        "country": "Germany",
+        "currency": "EUR",
+        "pay_basis": "gross_base",
+        "segments": {
+          "mainstream": {"market_midpoint": "62500", "adjustment_percent": "6.8"},
+          "premium": {"market_midpoint": "80000", "adjustment_percent": "6.8"}
+        },
+        "comparisons": {
+          "visa": {"amount": "58275", "period": "annual", "currency": "EUR", "pay_basis": "gross_base"},
+          "candidate_minimum": {"amount": "4900", "period": "monthly", "currency": "EUR", "pay_basis": "gross_base"}
+        }
+      },
+      "recalibration": {"mainstream": "60000"}
+    },
+    {
+      "visa_state": "Verified numeric",
+      "input": {
+        "schema_version": 1,
+        "country": "Netherlands",
+        "currency": "EUR",
+        "pay_basis": "gross_base",
+        "segments": {
+          "mainstream": {"market_midpoint": "65000", "adjustment_percent": "10"},
+          "premium": {"market_midpoint": "80000", "adjustment_percent": "10"}
+        },
+        "comparisons": {
+          "visa": {"amount": "4875", "period": "monthly", "currency": "EUR", "pay_basis": "gross_base"}
+        }
+      },
+      "recalibration": {"mainstream": "58000"}
+    },
+    {
+      "visa_state": "Not applicable",
+      "input": {
+        "schema_version": 1,
+        "country": "United States",
+        "currency": "USD",
+        "pay_basis": "gross_base",
+        "segments": {
+          "mainstream": {"market_midpoint": "140000", "adjustment_percent": "0"},
+          "premium": {"market_midpoint": "175000", "adjustment_percent": "0"}
+        }
+      }
+    },
+    {
+      "visa_state": "Blocked",
+      "input": {
+        "schema_version": 1,
+        "country": "Australia",
+        "currency": "AUD",
+        "pay_basis": "gross_base",
+        "segments": {
+          "mainstream": {"market_midpoint": "95000", "adjustment_percent": "0"},
+          "premium": {"market_midpoint": "118000", "adjustment_percent": "0"}
+        }
+      }
+    },
+    {
+      "visa_state": "No fixed threshold",
+      "input": {
+        "schema_version": 1,
+        "country": "Japan",
+        "currency": "JPY",
+        "pay_basis": "gross_base",
+        "segments": {
+          "mainstream": {"market_midpoint": "7800000", "adjustment_percent": "0"},
+          "premium": {"market_midpoint": "10200000", "adjustment_percent": "0"}
+        }
+      }
+    },
+    {
+      "visa_state": "Unknown",
+      "input": {
+        "schema_version": 1,
+        "country": "United Kingdom",
+        "currency": "GBP",
+        "pay_basis": "gross_base",
+        "segments": {
+          "mainstream": {"market_midpoint": "60000", "adjustment_percent": "0"},
+          "premium": {"market_midpoint": "78000", "adjustment_percent": "0"}
+        }
+      }
+    }
+  ]
+}

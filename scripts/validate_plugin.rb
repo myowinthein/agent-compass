@@ -40,6 +40,7 @@ module CompassValidation
     check(entry.fetch("source") == "./", "Marketplace must point to this package, not a second copy")
     check(entry.dig("policy", "installation") == "AVAILABLE", "Plugin is not installable in Codex")
     check(!entry.key?("version") && !entry.key?("description"), "Maintain metadata only in plugin.json")
+    resource(root, "helpers/salary_targets.py")
 
     workflows = root.glob("workflows/*.md").map { |file| file.basename(".md").to_s }.sort
     commands = root.glob("commands/*.md").map { |file| file.basename(".md").to_s }.sort
@@ -86,7 +87,7 @@ module CompassValidation
     end
 
     root.glob("{commands,workflows,prompts,skills,agents}/**/*.md").each do |file|
-      read(file).scan(%r{(?<![\w.-])(?:workflows|prompts|skills|agents|data)/[\w./-]+\.md}).uniq.each do |path|
+      read(file).scan(%r{(?<![\w.-])(?:workflows|prompts|skills|agents|data|helpers)/[\w./-]+\.(?:md|py)}).uniq.each do |path|
         resource(root, path)
       end
     end
@@ -103,7 +104,7 @@ module CompassValidation
       workspace = Pathname(temp).join("candidate workspace")
       installation.mkpath
       workspace.mkpath
-      %w[.claude-plugin commands workflows prompts skills agents data].each do |component|
+      %w[.claude-plugin commands workflows prompts skills agents helpers data].each do |component|
         FileUtils.cp_r(Pathname(root).join(component), installation)
       end
       Dir.chdir(workspace) { validate(installation) }

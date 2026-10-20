@@ -2,6 +2,7 @@ desc "Validate shared plugin entry points and packaged resources"
 task :plugin_test do
   ruby "scripts/validate_plugin.rb"
   ruby "scripts/test_plugin.rb"
+  ruby "scripts/test_salary_targets.rb"
 end
 
 desc "Build the Jekyll site and validate it with HTML-Proofer"

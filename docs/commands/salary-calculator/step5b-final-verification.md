@@ -11,6 +11,8 @@ An independent audit of the salary table from Step 4. Always runs; this is the o
 
 For model choices, effort settings and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).
 
+New calculations use the same shared helper as [Step 4](step4-table-calculation.html#calculation-runtime), including recalibration and unfinished legacy tables. If a specialist needs revised numbers, it sends the raw inputs to the parent for calculation and continues with the returned results as part of the approved handoff. It does not save a partial final result while waiting. The method and exact values are recorded in Recalibration, without an extra output file. An unchanged current-format table can be copied without another helper run only when it records the helper or an approved manual method and its inputs still match the source files. Older tables without that disclosure are verified first; any arithmetic correction is recorded separately from market recalibration and never overwrites Step 4.
+
 ## Flow
 
 ```mermaid
