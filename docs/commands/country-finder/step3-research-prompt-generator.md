@@ -7,7 +7,7 @@ nav_order: 3
 
 # Step 3: Research prompt generator
 
-Generates one ready-to-copy research prompt per candidate country, then runs each as an isolated sub-agent. The assistant does not answer the research questions itself in this step. Every prompt instructs the researcher to prefer sources in order: official government sources, direct employer pages, official sponsor/accredited-employer registers (capability only, not intent), specialist job boards/recruiters/salary surveys, then aggregators (which need direct verification), and to report which tier each source falls into.
+Generates one ready-to-copy research prompt per candidate country, then runs each as a fresh-context research sub-agent. The assistant does not answer the research questions itself in this step. Every prompt instructs the researcher to prefer sources in order: official government sources, direct employer pages, official sponsor/accredited-employer registers (capability only, not intent), specialist job boards/recruiters/salary surveys, then aggregators (which need direct verification), and to report which tier each source falls into.
 
 ## Flow
 
@@ -19,22 +19,24 @@ flowchart TD
   TrackCheck -->|Sponsorship yes only| SponP[Sponsorship Track\nprompt only]
   TrackCheck -->|Both yes| Combined[Combined prompt\nwith both sections]
   TrackCheck -->|Neither yes| SkipCountry[Skip, did not\nsurvive Step 2]
-  RemoteP --> RunAgent[Run as isolated sub-agent\none country only]
-  SponP --> RunAgent
-  Combined --> RunAgent
-  RunAgent --> Isolate{Isolation\nguaranteed?}
-  Isolate -->|yes| Append[Append results to\ncf-step3-country-research.md]
-  Isolate -->|no| Manual[Show prompt\nWait for manual results]
+  RemoteP --> Capability{Fresh context and\nlive research available?}
+  SponP --> Capability
+  Combined --> Capability
+  Capability -->|yes| RunAgent[Run fresh-context research task\none country only]
+  RunAgent --> Append[Parent appends results to\ncf-step3-country-research.md]
+  Capability -->|no| Manual[Show prompt\nWait for manual results]
   Manual --> Append
   Append --> More{More\ncountries?}
   More -->|yes| ForEach
-  More -->|no| Done([Continue automatically\ninto Step 4])
+  More -->|no| Done([Parent continues\ninto Step 4])
 ```
 
 ## What it reads
 
 - `cf-step2-candidates.md` from Step 2
-- `profile.md` and `situational-profile.md`: target role/skillset and citizenship/immigration friction are embedded as literal text into each generated prompt, since the isolated sub-agent running it has no access to these files or this conversation
+- `profile.md` and `situational-profile.md`: target role/skillset and citizenship/immigration friction are embedded as literal text into each generated prompt, so the researcher can work from its own brief without reading profile files or relying on the parent's conversation
+
+Sponsorship briefs also embed the supplied age/date reference, residence and work-rights facts needed to check the applicable official threshold category. Unknown facts remain unknown rather than selecting an age-dependent threshold by assumption.
 
 ## Prompt structure per country
 
@@ -65,12 +67,13 @@ Each prompt covers only the track(s) Step 2 marked "yes" for that country:
 
 ## Sub-agents
 
-Each country's prompt is run as a separate isolated sub-agent. Each agent:
-- Receives only its own country's prompt
-- Has no access to results for other countries
-- Returns results that are appended to `cf-step3-country-research.md`
+Each country's prompt is run as a separate fresh-context research task. Each agent:
 
-If isolation cannot be guaranteed, the assistant shows all prompts and waits for you to bring back the results manually.
+- Receives a self-contained brief for its assigned country
+- Is instructed not to read workspace files or other researchers' results
+- Returns findings only; the parent appends them to `cf-step3-country-research.md`
+
+Fresh conversation context does not guarantee filesystem isolation. Before delegation, the parent checks that fresh conversation context and live web research are available. If either capability is unavailable or cannot be established, it shows all prompts and waits for you to bring back results manually.
 
 ## Output
 
@@ -78,4 +81,4 @@ If isolation cannot be guaranteed, the assistant shows all prompts and waits for
 
 ## Stop condition
 
-The assistant only stops here if isolated sub-agents aren't available; it shows the prompts and waits for you to bring back results manually. In the normal, automated case, once all results are saved to `cf-step3-country-research.md`, the assistant continues automatically into Step 4 within the same response, without waiting for a new message.
+The parent waits for manual results if fresh conversation context or live web research is unavailable or cannot be established. In the normal, automated case, once all results are saved to `cf-step3-country-research.md`, the parent continues automatically into Step 4 within the same response, without waiting for a new message.

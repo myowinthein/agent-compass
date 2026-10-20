@@ -19,6 +19,8 @@ For each portal, provide:
 
 Within each group, put ⭐ before the 2–3 portals you would start with first.
 
+If fewer than two portals verify in a group, star only the verified entries; never fill a quota with unverifiable sites. When browsing works but a specific site is inaccessible (login wall, robots block, network error), try another relevant public page on that same official domain. If it still cannot be verified, omit it from the verified groups and include a short ⚠️ coverage note naming the portal/domain and access limitation. Do not label it dead, inactive, unsuitable, or verified merely because access failed, and do not substitute a search snippet or listicle for own-site verification. Partial failures do not invalidate other portals that did verify.
+
 Use ⚠️ to flag anything that does not fit the structure but is worth knowing — for example: a portal that is dead or deprecated despite still ranking in searches, two portals in the list owned by the same parent company, a portal that is restricted to citizens or residents and not open to foreign applicants, or any significant caveat affecting an international candidate.
 
 Output the groups in one response, in order from group 1 to 3. Any additional group created per the exception above (a portal that fits none of the three) is output last, after group 3. If a group has no portal that verifies for this country, omit it (or leave it empty with a brief note) rather than inventing entries. Do not add advice, recommendations, or commentary beyond what is asked here.

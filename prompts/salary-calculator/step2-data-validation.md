@@ -27,4 +27,6 @@ Skipped — malformed or unrecognizable: [country or "none"], with the issue for
 Skipped — missing required tier or sources: [country or "none"], with what was missing for each.
 Skipped — duplicate: [country or "none"].
 
-This data is saved to sc-step2-salary-data.md, which Step 3 will use next. Continue automatically into Step 3 now, in this same response — do not stop and wait here.
+Persist this same consolidated report under `## Validation report` in sc-step1-salary-research.md using skills/data-validation-rules.md. Use the Research scope preface, when present, to account for confirmed countries whose results never arrived. If a legacy file lacks scope, report that coverage is unknown rather than inventing a target list. Preserve the raw research and stored data unchanged; a duplicate with a retained original is not a missing-country failure.
+
+This data is saved to sc-step2-salary-data.md, which Step 3 will use next. Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

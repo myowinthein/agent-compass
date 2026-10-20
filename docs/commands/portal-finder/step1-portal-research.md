@@ -44,6 +44,8 @@ For each portal:
 
 Within each group, ⭐ marks the 2–3 portals to start with first.
 
+A smaller verified group stars only the entries that actually verified, never invented quota-fillers. If one site is blocked or behind login, the assistant tries another relevant public page on its official domain. A portal that remains unverifiable is excluded from the verified groups but named in a short coverage warning with the access limitation. Failed access is not evidence that the portal is dead or unsuitable; other verified results remain usable.
+
 ## Warning flags
 
 ⚠️ flags anything outside the structure but worth knowing:

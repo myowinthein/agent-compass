@@ -7,7 +7,9 @@ Read cf-step2-candidates.md, profile.md, and situational-profile.md from the wor
 - If both are "yes," generate a single combined prompt with both sections.
 - If neither is "yes," skip this country — it did not survive Step 2.
 
-Each generated prompt must embed directly as literal text — never by reference to "the candidate" or "the situational profile" — the candidate's target role and skillset from profile.md, and, for any Sponsorship Track section, the candidate's citizenship and any noted immigration friction from situational-profile.md. This keeps each prompt self-contained, since the isolated sub-agent running it has no access to this conversation or to either file.
+Each generated prompt must embed directly as literal text — never by reference to "the candidate" or "the situational profile" — the candidate's target role and skillset from profile.md, and, for any Sponsorship Track section, the candidate's citizenship and any noted immigration friction from situational-profile.md. This keeps each prompt self-contained, so the researcher can work from its own brief without reading either workspace file or relying on the parent's conversation.
+
+For sponsorship thresholds, read skills/sponsorship-threshold-rules.md and include the relevant age/date-of-birth reference, residence, work-rights/status, and candidate-category research instructions directly in the brief. Preserve unknown or declined age/status as unknown; do not select an age-dependent threshold by assumption.
 
 Each generated prompt must instruct the researcher to use current web research (prioritizing sources from the last 12 months), not memory or general reputation. Do not include a claim unless it is supported by a real, dated source.
 
@@ -15,7 +17,7 @@ Evidence hierarchy, in order of preference: current official government immigrat
 
 Remote Track section should ask for:
 
-- confirmed realistic remote salary range for this candidate's role and skillset in this country, with currency
+- confirmed realistic remote salary range for this candidate's role and skillset in this country, with currency, pay period, and gross/base versus net basis (or explicitly unknown)
 - evidence of remote hiring volume or frequency for this role (job postings, hiring reports, company remote policies)
 - typical payment structure norms (local currency vs USD, contractor vs employee status)
 - sources with dates
@@ -58,11 +60,6 @@ Output:
 - One ready-to-copy research prompt per country, clearly labeled with the country name and which track(s) it covers
 - Do not attempt to answer the research questions yourself in this step
 
-After generating these prompts, run each one as a separate, isolated research task. If you are able to run these as isolated sub-agent tasks, do so with the following strict brief per agent:
+Parent: run the generated prompts using the research-delegation rule in prompts/shared/runtime.md, including its capability checks, task-brief rules, and manual fallback. Each task covers exactly one country. The parent collects the returned results into cf-step3-country-research.md in the workspace.
 
-- Each agent receives only one country's prompt. Its only job is to run that research and return the results for that one country. It must not answer, draft, or save results for any other country.
-- Each agent works from its own prompt only, with no access to your prior reasoning in this conversation and no access to research or conclusions reached for other countries.
-
-Append each country's results to cf-step3-country-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and stop here — wait for me to bring back the results myself before continuing.
-
-Once all results are saved to cf-step3-country-research.md, tell me in a few lines how many countries were researched and that the full per-country findings are saved there for Step 4 to validate and store. Do not reproduce the per-country research findings in this summary. Then continue automatically into Step 4 now, in this same response — do not stop and wait here.
+Once all results are saved to cf-step3-country-research.md, tell me in a few lines how many countries were researched and that the full per-country findings are saved there for Step 4 to validate and store. Do not reproduce the per-country research findings in this summary. Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

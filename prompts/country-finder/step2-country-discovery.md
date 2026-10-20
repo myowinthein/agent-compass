@@ -2,6 +2,8 @@ Check whether cf-step1-criteria.md exists in the workspace. If it does not exist
 
 Read cf-step1-criteria.md, profile.md, and situational-profile.md from the workspace.
 
+Read and apply skills/salary-comparison-rules.md for any salary-minimum comparison. Include its applicable normalization/FX requirements directly in each generated research brief so the researcher need not read bundled files. Never reject Remote suitability because unlike currencies or pay bases could not be compared.
+
 Part A — Build the candidate universe (no research needed, apply immediately)
 
 1. Determine the base:
@@ -17,14 +19,14 @@ Part B — Research each country for both tracks together
 
 Batch the final country list for parallel research:
 
-- data/default-preferred-countries.md is organized under `##` region headings — if the base came from it, use those regions as the batches, one sub-agent per region present in the final list.
-- If, for some reason, the final list has no usable region grouping, split it into batches of roughly 15 countries each, capped at 8 batches total.
+- data/default-preferred-countries.md is organized under `##` region headings — if the base came from it, preserve those regions, but split any region larger than 15 countries into numbered sub-batches of at most 15.
+- If the final list has no usable region grouping, split it into batches of at most 15 countries each in list order. There is no total batch cap; queue batches within the client's concurrency limit and never drop a country to fit agent slots.
 
-For each batch, generate one ready-to-copy research prompt. Each prompt must embed directly as literal text — never by reference to a label like "the candidate universe" — all of the following, since the sub-agent running it has no access to this conversation:
+For each batch, generate one ready-to-copy research prompt. Each prompt must embed directly as literal text — never by reference to a label like "the candidate universe" — all of the following, so it can run from its own brief without relying on the parent's conversation:
 
 - The exact list of countries in this batch, and only this batch
 - The candidate's target role and skillset, read from profile.md (use the target or desired role if one is stated; otherwise the current or most recent title)
-- The minimum monthly salary from situational-profile.md, if one was specified — state explicitly if none was specified, since the Remote check below is skipped in that case
+- The minimum monthly salary, currency, gross/net basis, and hard-floor/context-only choice from situational-profile.md, if specified; explicitly mark absent facts as unknown, and state if no minimum was specified
 - The candidate's citizenship, and any noted immigration friction, from situational-profile.md
 
 Each prompt must instruct the researcher to use current web research (prioritizing sources from the last 12 months), not memory or general reputation, and must require the researcher to check, for every country in the batch, both of the following:
@@ -68,17 +70,12 @@ Output:
 - One ready-to-copy research prompt per batch, clearly labeled with the batch's region (or batch number, if unbatched by region) and the exact countries it covers
 - Do not attempt to answer the research questions yourself in this step
 
-After generating these prompts, run each one as a separate, isolated research task. If you are able to run these as isolated sub-agent tasks, do so with the following strict brief per agent:
-
-- Each agent receives only its own batch's prompt. Its only job is to research the countries in that batch and return results for exactly those countries — no others.
-- Each agent works from its own prompt only, with no access to your prior reasoning in this conversation and no access to research or conclusions reached by any other agent.
-
-Append each country's results to cf-step2-candidates.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me all the prompts and wait for me to bring back the results myself before continuing.
+Parent: run the generated prompts using the research-delegation rule in prompts/shared/runtime.md, including its capability checks, task-brief rules, and manual fallback. Each task covers exactly the countries in its assigned batch. The parent collects the returned country results into cf-step2-candidates.md in the workspace.
 
 Part C — Mark timezone suitability
 
-If cf-step1-criteria.md has a maximum timezone difference, calculate the UTC time difference between each country in cf-step2-candidates.md and my current location (from situational-profile.md). For any country outside that maximum, overwrite its Remote "Suitable" value with "no — outside your max timezone of [N] hours," replacing whatever Part B found for Remote. Never touch Sponsorship suitability this way — relocation removes the timezone constraint. If no maximum was provided, skip this part entirely.
+Read and apply skills/timezone-rules.md. If cf-step1-criteria.md has a maximum timezone difference, assess relevant job hubs against my current location over the rule's reference period. Only for a supported whole-country failure, overwrite Remote "Suitable" with "no — outside your max timezone of [N] hours," replacing whatever Part B found for Remote, and record the reference date, zones/hubs, seasonal difference range, and maximum in Reason. Preserve the existing answer fields. If only some locations pass, retain any otherwise-supported Remote suitability conditionally and name those locations in Reason; if timezone evidence is insufficient, mark the timezone check unverified rather than creating a rejection. Never change Sponsorship suitability for timezone. If no maximum was provided, skip this part entirely.
 
 Once cf-step2-candidates.md exists in the workspace, and Part C has been applied if applicable, tell me in a few lines: how many countries were researched, how many came back Suitable on each track, and that the full per-country findings are saved to cf-step2-candidates.md for Step 3 to use. Do not reproduce the per-country Suitable/Reason/Source/Date findings in this summary.
 
-Continue automatically into Step 3 now, in this same response — do not stop and wait here.
+Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

@@ -47,6 +47,8 @@ Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resum
 
 Reads `profile.md` as the canonical candidate profile, replies "Profile loaded. Paste a job description to screen," then waits. Each pasted job description is screened against the profile using a fixed output format. Pasted form questions or writing tasks are answered using the writing guidelines instead.
 
+An existing situational profile is reused for explicit work rights, location, languages, and salary preferences. Its absence does not trigger full intake or imply missing authorization. Currency/pay-basis and timezone/DST checks require enough evidence to establish a blocker; unknown facts stay unknown.
+
 ## Stop conditions
 
 - **Resume not yet provided.** The assistant waits for the upload before profile.md can be created, the same resume-extraction step shared with Country Finder and Salary Calculator.

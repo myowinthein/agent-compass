@@ -19,8 +19,9 @@ readme-style: custom
 - `workflows/<command>.md`: the single source of orchestration for each workflow.
 - `prompts/<command>/`: canonical step instructions, output formats, and domain decisions.
 - `prompts/shared/runtime.md`: packaged resource paths, workspace state tracking, host-specific delegation, and research fallback.
-- `prompts/shared/deep-reasoner.md` and `prompts/shared/calculator.md`: canonical specialist procedures. `agents/*.md` only select Claude models and reference these files.
+- `prompts/shared/deep-reasoner.md` and `prompts/shared/calculator.md`: canonical specialist procedures. `agents/*.md` select Claude models, declare each role's effort once for both hosts, and reference these files. Codex model selection and fallback behavior belong in the shared runtime, not a second agent definition.
 - `skills/*.md`: shared rule references; these flat files are explicitly read by step prompts, not discoverable Agent Skills.
+- `skills/salary-comparison-rules.md` and `skills/timezone-rules.md`: canonical currency/pay-basis and timezone/DST policies. Research briefs embed applicable rules as literal text so isolated researchers do not need workspace or package access.
 - `data/default-preferred-countries.md`: shipped Country Finder default search scope.
 - `.claude-plugin/marketplace.json`: shared Claude-compatible marketplace. Do not duplicate the manifest's description or version here.
 
@@ -31,6 +32,7 @@ Bundled resources are read from the installed plugin root. Candidate data and ou
 ## Verification
 
 - `ruby scripts/validate_plugin.rb`: check entry names, shared references, and a relocated package with a separate consumer workspace. No external dependencies required.
+- `ruby scripts/test_plugin.rb`: regress non-UTF-8 validation, check the compact salary table, threshold states and published arithmetic examples, check Country Finder's table contract and documentation edge cases, and verify Git archive exclusions. These contributor checks use Git and are not live model/workflow tests.
 - `bundle exec rake test`: validate the plugin, build the Jekyll site, and check its internal HTML links/images/scripts. Required after documentation or site configuration changes.
 - `claude plugin validate .claude-plugin/plugin.json` and `claude plugin validate skills`: native manifest and skill validation when Claude Code is installed.
 

@@ -28,6 +28,10 @@ If the threshold would structurally require including compensation components no
 
 ## What to collect
 
+Read the candidate's situational profile before generating threshold research. Embed the relevant facts as literal text in the research brief: citizenship, current residence, target-country work rights/status, and supplied age/date of birth with its reference date. Use the supplied date of birth to establish age at the official rule's relevant date; an age without a reliable as-of date does not establish age at a future filing date. Do not infer immigration status from citizenship or residence alone.
+
+Research which official pathway and age/status category actually applies, including whether the rule is based on application date or another event. Record the applicable category, eligibility assumptions, source, and effective date in the existing threshold field or Notes. Do not automatically choose the cheapest age-based threshold. If the candidate declined age disclosure or a material status/date is unknown, report the applicable figure as Unknown when a candidate-specific category cannot be confirmed; explain the conditional categories without inventing the missing fact. Do not classify the route as Blocked merely because eligibility is unknown.
+
 For each country, report:
 - The threshold figure (local currency), or which of the four non-numeric states applies (No fixed threshold / Not applicable / Unknown / Blocked)
 - Whether that figure is annual or monthly
@@ -36,17 +40,24 @@ For each country, report:
 
 ## How to compare
 
-Compare against the Fixed values (not the ranges) for both Safe and Stretch, using the unrounded computed figures — the table's display rounding (nearest 500 annual, nearest 50 monthly) happens only for presentation and must never be applied before this comparison, since it could flip a borderline result.
+Compare both Mainstream and Premium Annual Targets with the applicable threshold using unrounded computed values. The displayed salary rounding (nearest 500 annual, nearest 50 monthly) must never decide a borderline result. Equality clears this salary-minimum comparison.
 
-Convert the threshold to match whichever period (Annual or Monthly) the comparison needs — a monthly threshold reported as X converts to 12×X for an Annual comparison, and vice versa. Since Safe and Stretch each have one Annual Fixed value and one Monthly value, compare both, using whichever conversion matches the threshold's own reported period.
+Use the threshold's verified original period. For a monthly threshold X, compare each raw Annual Target / 12 with X; for an annual threshold, compare the raw Annual Target directly. Record any annual/monthly conversion in shown work, not a second number in the compact table cell. Check comparable currency and eligible pay components first; an unconfirmable base-pay comparison stays Unknown rather than an invented pass or failure.
 
 ## Result states
 
-- **No fixed threshold** or **Not applicable** — show an em dash (—). Both mean there is genuinely nothing to compare against; render them the same way.
-- **Unknown** — show a question mark (?), never an em dash. This means a plausible route exists but its figure couldn't be confirmed, which is materially different from "there is nothing to check" and must stay visually distinct.
-- **Blocked** — show the literal word `Blocked`, never an em dash or a number, even if a figure was otherwise confirmed. A blocked route is a live fact the candidate needs to see, not an absence of data.
-- **Verified numeric** — show both period equivalents in one cell: the Annual figure first, then the Monthly figure in parentheses with a "/mo" suffix, e.g. `45,300 (3,775/mo)`. Neither figure is rounded — both are specific legal figures, shown exactly as reported or derived from it via the ×12/÷12 conversion.
-  - If both Safe and Stretch Fixed values clear it (at the period the threshold was actually reported in), show the cell as above with no warning.
-  - If either Safe or Stretch Fixed value falls short, append a single ⚠️ at the end of the cell — the warning applies to the country as a whole, not to one period only.
+The following rendering is canonical for the **Visa salary rule** column. Stored research keeps the original five state names; these are presentation labels, not new research fields.
 
-Never adjust Safe or Stretch to meet the threshold. The threshold failing means the calculated market salary is unlikely to qualify through this sponsorship route, not that the market figure itself is wrong — the two facts are shown side by side, never merged. A Blocked route follows the same principle: it never zeroes or changes Safe or Stretch, it just means those figures aren't a live sponsorship target for this candidate right now, independent of what the numbers themselves say.
+- **No fixed threshold**: show `No fixed minimum`. Preserve any prevailing-wage, occupation-rate, or other compensation conditions in the saved shown work/audit. This is not a claim that no pay requirements apply.
+- **Not applicable**: show `Not applicable`, only when the confirmed employment path does not use employer-sponsored relocation.
+- **Unknown**: show `Unknown`, never a dash, N/A, a guessed figure, or a claimed block.
+- **Blocked**: show `Blocked`, even if a numeric threshold is known. Retain the concrete candidate-specific route-blocking reason in the saved Summary. Do not claim every possible immigration route is blocked from evidence about the assessed route only.
+- **Verified numeric**: show the exact verified figure in its original period with `/yr` or `/mo`, e.g. `45,300/yr` or `5,331/mo`. Never display-round a legal threshold, show an unqualified number, or duplicate both period equivalents in the cell. Candidate category, source, effective date, and any additional conditions stay in the existing shown work/audit.
+  - If both raw segment targets meet the threshold, show the numeric rule without a warning.
+  - If either raw target falls short, append a single ⚠️ and identify the affected segment(s) with the raw comparison in the saved Summary. This warning concerns the salary minimum only, not overall visa eligibility.
+
+Never adjust Mainstream or Premium targets to meet a visa minimum. Market estimates and the visa rule remain separate facts. A threshold shortfall is not a blocked route: a higher actual offer may satisfy the salary requirement. A Blocked route does not zero or change salary estimates; they remain reference-only for sponsorship through that route.
+
+## Legacy display compatibility
+
+When an unfinished audit reads a legacy table, Safe maps to Mainstream and Stretch maps to Premium; Legal Requirement is the old column label. Recover threshold meaning from the underlying stored research, not display shorthand alone. A legacy dash cannot distinguish No fixed threshold from Not applicable by itself. If the source cannot establish a state, category, or period, render Unknown and explain the limitation rather than guessing. Preserve original research and pre-audit tables; completed final results are replayed as saved, never silently migrated.

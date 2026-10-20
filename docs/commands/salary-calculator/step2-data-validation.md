@@ -39,7 +39,9 @@ flowchart TD
 
 ## Rules
 
-This runs fully automated, with no pause between countries; bad items are skipped and recorded, never halted on.
+Identifiable malformed items are skipped and recorded without a pause between countries. If the boundaries themselves are ambiguous, the parent asks for clarification rather than guessing.
+
+Generated country blocks start with a top-level `Country:` field and end at the next such field, Validation report, or end of file. Blank lines alone do not split blocks. Two top-level Country fields mean two datasets; an explicitly fenced block containing two datasets is malformed. Unambiguous legacy boundaries are accepted without rewriting the data. Research scope and Validation report sections are metadata, not country datasets.
 
 | Situation | Assistant's response |
 |---|---|
@@ -69,6 +71,8 @@ Step 1's evidence grade (High / Medium / Low) is stored as provided; unlike the 
 
 Stored salary data is written to `sc-step2-salary-data.md` in the workspace after all blocks are processed. Step 3 and Step 4 read from this file directly.
 
+The consolidated Validation report is also saved at the end of `sc-step1-salary-research.md`, outside its unchanged raw country blocks. It records each rejection, duplicate, and expected-but-missing country. Later calculation and final-audit summaries carry these reasons forward, without making up salary rows. A duplicate whose original was stored does not count as a missing country. Legacy files without scope or a report remain readable, but unsupported coverage claims stay unknown.
+
 ## Stop condition
 
-There is no interactive checkpoint in this step. Once all countries from `sc-step1-salary-research.md` have been processed, the assistant writes all successfully stored countries to `sc-step2-salary-data.md`, replies with one consolidated report (stored count, plus every skip grouped by reason: malformed, missing tier or sources, duplicate), then continues automatically into Step 3 within the same response, without waiting for a new message.
+Other than clarifying genuinely ambiguous boundaries, this step has no interactive checkpoint. After processing the blocks, the parent saves stored data and the validation report, presents the consolidated counts and reasons, then enters Step 3 and its specialist-routing question.

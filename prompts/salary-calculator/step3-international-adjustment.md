@@ -12,6 +12,8 @@ Estimate the realistic international candidate adjustment that may apply when an
 
 This is an estimate of practical hiring and negotiation behavior, not a rule or guaranteed outcome.
 
+Adjustment percentages are nonnegative reductions from the local-market midpoint: 5% means multiply by 0.95, not increase pay by 5%. A supported 0% is allowed; do not invent a discount to fill a label. Keep the estimated range within 0–15% and state its uncertainty. The label is a display convention based on the typical midpoint: Small = 0–5% inclusive; Moderate = above 5% through 10%; Significant = above 10% through 15%. These labels are not independently researched market bands and do not determine the percentage.
+
 Assume the situational profile remains the single source of truth across all countries.
 
 Only vary the adjustment based on country-specific hiring practices, employer behavior, and current market conditions.
@@ -59,4 +61,4 @@ Keep the output compact and present the results country by country.
 
 Save the full adjustment output to sc-step3-adjustment-values.md in the workspace.
 
-Tell me in a few lines: how many countries received an adjustment estimate, and that the full per-country figures are saved for Step 4 to apply. Do not reproduce the per-country adjustment reasoning in this summary. Then continue automatically into Step 4 now, in this same response — do not stop and wait here.
+Tell me in a few lines: how many countries received an adjustment estimate, and that the full per-country figures are saved for Step 4 to apply. Do not reproduce the per-country adjustment reasoning in this summary. Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

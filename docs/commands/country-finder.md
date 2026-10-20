@@ -21,7 +21,7 @@ Codex: type `$` and select `country-finder` from Agent Compass, or use `/skills`
 
 Run it once per session. The assistant resumes automatically if a `.country-finder-state.json` file already exists.
 
-Model routing follows the [platform behavior documented on the home page](../../index.html#usage).
+For model choices, effort settings and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).
 
 ## Flow
 
@@ -47,6 +47,8 @@ flowchart TD
 
 ## Steps
 
+The parent conversation owns user questions, state updates, and movement between steps. A delegated specialist completes only its assigned step and returns its saved output; the parent checks that output before continuing. After the final step, the parent presents the deliverable and ends the workflow.
+
 ### Profile check
 
 Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resume-extraction-prompt.md`, waits for the user to provide their resume as an attachment, pasted text, or a readable local file, and waits for explicit confirmation of the extracted profile before continuing. The profile is reused on all subsequent runs without re-extraction.
@@ -57,15 +59,15 @@ Checks for `.country-finder-state.json`. If found, reads `last_completed_step` a
 
 ### [Step 1: Criteria intake](country-finder/step1-criteria-intake.html)
 
-Collects requirements for both tracks. Remote track: maximum timezone difference (or "no limit" to skip). Sponsorship track: relocation timeline. Relocation is assumed; the question is not asked. Country preferences: any countries or regions to include or exclude from both tracks. Vague answers are rejected; specific values or explicit "no limit" / "not specified" are required. Also checks for `situational-profile.md` and, if it doesn't exist yet, asks eight questions (current location, citizenship, any known immigration friction tied to that citizenship, languages spoken, required work language, minimum acceptable monthly salary and whether it's a hard floor or context only, existing residency or work authorization for any target country, and date of birth or age for age-based visa thresholds) and saves the answers for reuse across sessions and pipelines, never re-asked if the file already exists.
+Collects requirements for both tracks. Remote track: maximum timezone difference (or "no limit" to skip). Sponsorship track: relocation timeline. Relocation is assumed; the question is not asked. Country preferences: countries or regions to include or exclude from both tracks. Vague answers require clarification. If the situational profile is absent, the parent asks the eight shared questions, including salary currency/gross-net basis, hard-floor versus context-only preference, work rights, and optional dated age. Existing profiles skip full intake; only material missing facts are clarified when a later check needs them.
 
 ### [Step 2: Country discovery](country-finder/step2-country-discovery.html)
 
-Builds a single candidate universe: your Step 1 Include list if one was given, otherwise the shipped `data/default-preferred-countries.md` (the assistant shows it grouped by continent and asks whether to proceed with it or provide your own countries, then waits). Then researches it in region-batched sub-agents that check each country for Remote and Sponsorship suitability together. A timezone limit from Step 1 marks (not removes) out-of-range countries as unsuitable for Remote only; a salary minimum from the situational profile is folded into the Remote check.
+Builds a single candidate universe: your Include list or the shipped default, confirmed with you before using the default. Research batches preserve regions where possible but never exceed 15 countries, with extra tasks queued rather than dropped. Remote and Sponsorship are checked separately. Timezone filtering accounts for relevant hubs and DST over the reference period; salary comparisons require compatible periods/pay bases and sourced FX where needed. Missing comparison evidence is unverified, not a rejection.
 
 ### [Step 3: Research prompt generator](country-finder/step3-research-prompt-generator.html)
 
-Generates ready-to-copy research prompts for each candidate country on each track. Runs them as isolated research tasks when supported. If browsing or the required isolation is unavailable, it shows the prompts and waits for manually gathered results.
+Generates ready-to-copy research prompts for each candidate country on each track. Runs them as fresh-context research tasks when supported. If live web research or fresh conversation context is unavailable or cannot be established, it shows the prompts and waits for manually gathered results.
 
 ### [Step 4: Data validation](country-finder/step4-data-validation.html)
 
@@ -77,14 +79,14 @@ The assistant asks whether to use the **deep-reasoner** subagent (host-specific 
 
 ### [Step 6: Final Ranking](country-finder/step6-final-ranking.html)
 
-Always runs after Step 5 completes; this is the only step in the pipeline with no skip option, since it produces the final result. The assistant asks whether to use the **deep-reasoner** subagent (host-specific model and effort); if declined, the step runs with your current model. Audits the scoring output across three checks (confidence calibration, a missing-candidate check, and an evidence-misuse check), then produces the Priority Table, a country-by-country ranking with a usable-track label and a holistic priority medal, plus a file-only Effort Allocation note on where to concentrate application effort versus passively monitor.
+Always runs after Step 5 completes; this is the only step in the pipeline with no skip option, since it produces the final result. The assistant asks whether to use the **deep-reasoner** subagent (host-specific model and effort); if declined, the step runs with your current model. Audits the scoring output across three checks (confidence calibration, a missing-candidate check, and an evidence-misuse check), then produces a five-column Priority Table: Country, Priority, Remote Fit, Sponsorship Fit, and Main limitation. Action priorities are Focus, Selective, Monitor, or Deprioritize; insufficient evidence without a usable track is Pending evidence, not a negative recommendation. Excluded and Unknown fits stay distinct, and a file-only Effort Allocation note expands the same priorities into practical effort.
 
 ## Stop conditions
 
 - **Profile not yet uploaded.** The assistant waits; it does not proceed or fill in placeholder data.
 - **Any step instructs the assistant to wait.** The assistant stops and waits. No guessing, no assumptions.
 - **Vague answer to a criteria question.** The assistant asks again for a specific value before continuing.
-- **Data validation receives multiple countries, missing fields, or a country not on either Step 2 candidate list.** The assistant never stops mid-batch; it skips the item and records the reason. Duplicates, malformed items, missing-field items, and unlisted candidates are all reported together in one consolidated report at the end of Step 4, rather than stopping the run.
+- **Data validation finds an identifiable malformed block, missing fields, or an unlisted country.** It skips the item and records the reason in a consolidated report, also saved in the research file. Genuinely ambiguous block boundaries require clarification rather than guessed parsing.
 
 ## See also
 

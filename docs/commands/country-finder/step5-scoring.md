@@ -7,9 +7,9 @@ nav_order: 5
 
 # Step 5: Scoring
 
-Scores every stored country against your criteria, keeping Remote and Sponsorship tracks completely separate. Before running, the assistant asks whether to use the **deep-reasoner** subagent (host-specific model and effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
+Assesses every stored country against your criteria, keeping Remote and Sponsorship tracks completely separate. Fits and confidence are categorical, not numerical scores, percentages, or a combined priority formula. Step 6 assigns application priorities after its audit; legacy numbers are not converted into new fits without stored evidence. Before running, the assistant asks whether to use the **deep-reasoner** subagent (host-specific model and effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
 
-Model routing follows the [platform behavior documented on the home page](../../../index.html#usage).
+For model choices, effort settings and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).
 
 ## Flow
 
@@ -18,8 +18,9 @@ flowchart TD
   Start([Step 5 begins]) --> SpecialistQ{Use specialist for\nhigher accuracy?}
   SpecialistQ -->|yes| DeepReasoner[Route to deep-reasoner\nhost-specific model and effort]
   SpecialistQ -->|no| CurrentModel[Run with your\ncurrent model]
-  DeepReasoner --> Remote
-  CurrentModel --> Remote[Score all Remote-track countries first]
+  DeepReasoner --> Carry
+  CurrentModel --> Carry[Carry Step 2 exclusions forward\nAccount for missing-data tracks]
+  Carry --> Remote[Score eligible Remote-track countries first]
   Remote --> SalCheck{Salary minimum\nspecified?}
   SalCheck -->|yes, hard floor| RSalary{Salary meets\nthe minimum?}
   SalCheck -->|yes, context only| RContext[Weigh against recruiter-friendly\nmidpoint, note but don't exclude]
@@ -43,12 +44,13 @@ flowchart TD
   SNext -->|yes| Spons
   SNext -->|no| Save[Save full results\nto cf-step5-scoring-results.md]
   Save --> Brief[Tell user a brief\nscored/excluded count per track]
-  Brief --> Done([Continue automatically\ninto Step 6])
+  Brief --> Done([Parent continues\ninto Step 6])
 ```
 
 ## What it reads
 
 - `cf-step4-country-data.md`: all country data from Step 4
+- `cf-step2-candidates.md`: the full candidate universe and recorded per-track exclusions, including timezone rejections
 - `cf-step1-criteria.md`: timezone limit (informational, already applied in Step 2)
 - `situational-profile.md`: salary minimum (optional, skipped if not specified) and citizenship-specific friction
 - `sc-step4-salary-table.md`: Salary Calculator's final figures, if present, used to check Sponsorship-track visa salary thresholds
@@ -81,7 +83,11 @@ If the stored research uses vague or unquantified language ("sometimes," "genera
 
 ## Exclusion transparency rule
 
-Every country actually scored on a track but excluded from the results must be listed separately with a specific, evidence-based reason. "General reputation" is not an acceptable reason. If no data was ever stored for that country and track, that is stated plainly. Checking the full Step 2 candidate list for countries that never reached scoring at all is Step 6's Missing Candidate Check, not this rule; Step 5 never reads `cf-step2-candidates.md`.
+Every excluded country/track is listed with a specific, evidence-based reason. Explicit Step 2 rejections are carried forward before scoring, with the original reason and any hard-rule detail; a timezone rejection remains an exclusion, not missing data. The other track is assessed independently. Excluded counts include these earlier rejections, which are not counted as scored.
+
+Missing research or "no evidence found" without an explicit rejection is recorded as **not scored (no data)**, not Excluded, and counted as neither scored nor excluded. Step 6 audits these absences to distinguish evidence limitations from process gaps. "General reputation" is never an acceptable exclusion reason.
+
+The saved Validation report in Step 3's research file explains ingestion failures without treating them as evidence-based country rejections. Salary-floor decisions use the shared currency/period/pay-basis policy: sourced FX is recorded when needed, while missing rates or a range straddling the floor cannot prove a failure.
 
 ## File format
 
@@ -91,10 +97,12 @@ This structure is written to `cf-step5-scoring-results.md`; it is not what the a
 Remote Track Results
 - [Scored countries: fit, confidence, brief reasoning]
 - [Excluded countries: specific reason]
+- [Unresearched countries/tracks: not scored (no data), with what is missing]
 
 Sponsorship Track Results
 - [Scored countries: fit, confidence, brief reasoning]
 - [Excluded countries: specific reason]
+- [Unresearched countries/tracks: not scored (no data), with what is missing]
 
 Summary
 - Remote: [N] scored, [N] excluded
@@ -107,4 +115,4 @@ Full results are saved to `cf-step5-scoring-results.md` in the workspace. Step 6
 
 ## Stop condition
 
-There is no interactive checkpoint in this step. After outputting results, the assistant continues automatically into Step 6 (Final Ranking) within the same response, without waiting for a new message; it always runs and is never asked about.
+There is no interactive checkpoint within scoring. A specialist returns the saved scoring results to the parent. The parent checks the output and enters Step 6, including its specialist-routing question. Final Ranking always runs; choosing a specialist remains optional.

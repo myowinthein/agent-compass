@@ -1,8 +1,15 @@
 Check whether cf-step4-country-data.md exists in the workspace. If it does not exist, stop and tell me: "cf-step4-country-data.md was not found. Please ensure Step 4 completed successfully before continuing."
 
-Read cf-step4-country-data.md, cf-step1-criteria.md, and situational-profile.md from the workspace. Using all country data from cf-step4-country-data.md and the criteria and situational profile, score each country.
+Read cf-step2-candidates.md, cf-step4-country-data.md, cf-step1-criteria.md, and situational-profile.md from the workspace. Use Step 2's full candidate universe to account for each country on each track, and the stored Step 4 data to score eligible tracks.
 
-Keep Remote and Sponsorship scoring completely separate. Do not blend them into a single score.
+Keep Remote and Sponsorship scoring completely separate. Use categorical fits and confidence only, never numerical scores, percentages, or a combined priority formula. Step 6 assigns application priorities after its audit; do not convert legacy numeric scores into new fits without supporting stored evidence.
+
+Read and apply skills/salary-comparison-rules.md before judging a salary minimum. A missing exchange rate, ambiguous gross/net basis, or range straddling the floor is an unverified comparison, not proof of failure. If available, read the Validation report in cf-step3-country-research.md to explain missing Step 4 data; distinguish research rejected during ingestion from research never supplied. Keep that report out of the scored datasets.
+
+Before scoring a country on either track, check that track's Step 2 Suitable value:
+- An explicit "no" (including "no — outside your max timezone of [N] hours") is an earlier exclusion. Carry it into this track's excluded list with the recorded reason and any hard-rule detail; do not score it or relabel it as missing data, even if incidental data for that track was stored. This does not exclude the country's other track.
+- "no evidence found," an absent suitability finding, or missing Step 4 research without an explicit exclusion is not a reasoned rejection. Account for it as "not scored (no data)" in that track's results, state what is missing, and leave it for Step 6's missing-candidate audit. Do not invent a fit or count it as excluded.
+- Score a track marked "yes" only when its required Step 4 data is present. Never infer that a track failed merely because Step 3 correctly omitted research for an earlier rejection.
 
 Batching rule: score every country's Remote fit first, all the way through, before starting Sponsorship scoring for any country. Do not alternate between tracks country by country.
 
@@ -32,15 +39,19 @@ File format (write this structure to cf-step5-scoring-results.md — this is not
 
 Remote Track Results
 - List each scored country: fit classification, confidence, brief reasoning
-- List each excluded country: specific reason
+- List each excluded country: specific reason, including exclusions carried from Step 2
+- Account for each unresearched country/track as "not scored (no data)" with what is missing
 
 Sponsorship Track Results
 - List each scored country: fit classification, confidence, brief reasoning
-- List each excluded country: specific reason
+- List each excluded country: specific reason, including exclusions carried from Step 2
+- Account for each unresearched country/track as "not scored (no data)" with what is missing
 
 Summary
 - Remote: [count] scored, [count] excluded
 - Sponsorship: [count] scored, [count] excluded
+
+Excluded counts include earlier Step 2 exclusions; do not count those tracks as scored. Missing-data tracks belong to neither count and must still be accounted for in the track results above.
 
 Do not rank countries against each other beyond the Strong/Moderate/Weak classification. Do not add recommendations, next steps, or commentary beyond what is asked here.
 
@@ -48,4 +59,4 @@ Save the full scoring output to cf-step5-scoring-results.md in the workspace.
 
 In your chat response, do not reproduce this detailed breakdown — Step 6 always runs next and produces the curated, human-facing result. Instead, tell me in a few lines: how many countries were scored and excluded on each track, and that the full results are saved to cf-step5-scoring-results.md.
 
-Continue automatically into Step 6 now, in this same response — do not stop and wait here.
+Step complete. Follow the step-completion rule in prompts/shared/runtime.md.
