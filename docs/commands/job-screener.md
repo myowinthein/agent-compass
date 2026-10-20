@@ -14,10 +14,10 @@ Screens job descriptions against your resume profile and returns a structured ma
 Claude Cowork / Claude Code:
 
 ```
-/claude-compass:job-screener
+/agent-compass:job-screener
 ```
 
-Codex: type `$` and select `job-screener` from Claude Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
+Codex: type `$` and select `job-screener` from Agent Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
 
 Run it once at the top of a chat. The assistant loads your profile and waits. Then paste a job description to get a screen, or paste application form questions to get drafted answers.
 
