@@ -6,6 +6,7 @@ end
 
 desc "Build the Jekyll site and validate it with HTML-Proofer"
 task :docs_test do
+  sh "node --test scripts/test_theme_switcher.cjs"
   require "html-proofer"
   require "yaml"
   sh "bundle exec jekyll build"
