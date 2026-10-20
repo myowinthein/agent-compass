@@ -1,16 +1,22 @@
 desc "Validate shared plugin entry points and packaged resources"
 task :plugin_test do
   ruby "scripts/validate_plugin.rb"
+  ruby "scripts/test_plugin.rb"
 end
 
 desc "Build the Jekyll site and validate it with HTML-Proofer"
 task :docs_test do
   require "html-proofer"
+  require "yaml"
   sh "bundle exec jekyll build"
+
+  baseurl = YAML.safe_load_file("_config.yml").fetch("baseurl", "").to_s
+  url_swaps = baseurl.empty? ? {} : { /\A#{Regexp.escape(baseurl)}\// => "/" }
 
   HTMLProofer.check_directory(
     "./_site",
     disable_external: true,
+    swap_urls: url_swaps,
     checks: %w[Html Images Scripts Links]
   ).run
 end
