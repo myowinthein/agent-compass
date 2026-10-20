@@ -13,7 +13,7 @@ Read the [Setup notes]({{ '/docs/setup/' | relative_url }}) before starting.
 
 ## Install
 
-1. Open **Customize → Plugins** in Claude Desktop.
+1. Open **Customize → Plugins** in Claude.
 2. Choose **Add plugin → Add marketplace → Add from a repository**.
 3. Enter `myowinthein/agent-compass`, select the repository or **Use “myowinthein/agent-compass”**, then click **Sync**.
 4. Find **Agent Compass** in the marketplace and click **Add**.

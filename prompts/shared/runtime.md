@@ -1,6 +1,6 @@
 # Shared runtime
 
-Apply these instructions for all four Compass workflows in Claude Cowork, Claude Code, or Codex.
+Apply these instructions for all four Compass workflows in Claude or Codex.
 
 ## Checkpoints
 
@@ -47,7 +47,7 @@ This policy applies only to the `deep-reasoner` and `calculator` handoffs reques
 
 Before running the step, resolve the requested specialist configuration and keep the user choice in the parent conversation:
 
-- In Claude Cowork or Claude Code, use the matching bundled agent's declared Claude model and effort.
+- In Claude, use the matching bundled agent's declared Claude model and effort.
 - In Codex, use `gpt-6.1-sol` with the role's declared effort. Set both `model` and `reasoning_effort` explicitly in the subagent launch, using the client's equivalent controls if named differently. Do not inherit the parent's or configured subagent defaults. Use a fresh task context when the client requires it to honor model/effort overrides; supply all needed file paths and task instructions explicitly. Do not modify the user's persistent configuration or switch the parent model.
 - Check that delegation and the exact requested model/effort can be selected. If unavailable, unsupported, or impossible to establish, explain the limitation and ask whether to run on the current model/settings or use another available configuration. Wait for the user's choice; never silently downgrade, substitute a model, or pretend an unselectable configuration is available.
 - When the requested configuration is selectable, name the role, actual model, and effort, explain that delegation uses additional tokens and higher effort may increase cost and response time, then ask whether to use it for this step. An explicitly user-chosen alternative applies only to this handoff unless the user says otherwise.

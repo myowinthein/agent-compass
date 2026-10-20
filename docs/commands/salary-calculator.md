@@ -11,7 +11,7 @@ Runs the full Salary Calculator pipeline. Generates ready-to-copy research promp
 
 ## Usage
 
-Claude Cowork / Claude Code:
+Claude:
 
 ```
 /agent-compass:salary-calculator
