@@ -12,9 +12,13 @@ module CompassValidation
   end
 
   def frontmatter(path)
-    match = path.read.match(/\A---\n(.*?)\n---\n/m)
+    match = read(path).match(/\A---\n(.*?)\n---\n/m)
     check(match, "Missing frontmatter: #{path}")
     YAML.safe_load(match[1])
+  end
+
+  def read(path)
+    Pathname(path).read(encoding: "UTF-8:UTF-8")
   end
 
   def resource(root, path)
@@ -27,8 +31,8 @@ module CompassValidation
 
   def validate(root)
     root = Pathname(root).realpath
-    manifest = JSON.parse(resource(root, ".claude-plugin/plugin.json").read)
-    marketplace = JSON.parse(resource(root, ".claude-plugin/marketplace.json").read)
+    manifest = JSON.parse(read(resource(root, ".claude-plugin/plugin.json")))
+    marketplace = JSON.parse(read(resource(root, ".claude-plugin/marketplace.json")))
     check(manifest.fetch("skills") == "./skills/", "Manifest must expose shared skill entry points")
     check(manifest.fetch("version").match?(/\A\d+\.\d+\.\d+\z/), "Invalid plugin version")
     entry = marketplace.fetch("plugins").find { |plugin| plugin["name"] == manifest["name"] }
@@ -53,13 +57,13 @@ module CompassValidation
             "Missing skill description: #{skill}")
       check(metadata["description"].length <= 1024 && !metadata["description"].match?(/[<>]/),
             "Invalid skill description: #{skill}")
-      links = skill.read.scan(/\[[^\]]+\]\(([^)]+)\)/).flatten
+      links = read(skill).scan(/\[[^\]]+\]\(([^)]+)\)/).flatten
       targets = links.map { |link| resource(root, skill.parent.join(link).relative_path_from(root)).realpath }
       check(targets.include?(root.join("workflows/#{name}.md")), "Skill bypasses shared workflow: #{name}")
       check(targets.include?(root.join("prompts/shared/runtime.md")), "Skill omits shared runtime: #{name}")
 
       command = resource(root, "commands/#{name}.md")
-      body = command.read.sub(/\A---\n.*?\n---\n/m, "").strip
+      body = read(command).sub(/\A---\n.*?\n---\n/m, "").strip
       check(body.include?("${CLAUDE_PLUGIN_ROOT}/skills/#{name}/SKILL.md"),
             "Claude command does not load the shared skill: #{name}")
       check(body.lines.length <= 3, "Command duplicates orchestration instead of pointing to it: #{name}")
@@ -67,19 +71,27 @@ module CompassValidation
 
     root.glob("agents/*.md").each do |agent|
       role = agent.basename(".md").to_s
+      metadata = frontmatter(agent)
+      check(metadata["name"] == role, "Agent name must match its shared role: #{role}")
+      check(metadata["model"].is_a?(String) && !metadata["model"].empty?,
+            "Missing Claude specialist model: #{role}")
+      check(%w[high max].include?(metadata["effort"]),
+            "Specialist must declare an explicit shared high/max effort: #{role}")
       procedure = resource(root, "prompts/shared/#{role}.md")
-      check(agent.read.include?("${CLAUDE_PLUGIN_ROOT}/prompts/shared/#{role}.md"),
+      check(read(agent).include?("${CLAUDE_PLUGIN_ROOT}/prompts/shared/runtime.md"),
+            "Agent must load shared routing and step boundaries: #{role}")
+      check(read(agent).include?("${CLAUDE_PLUGIN_ROOT}/prompts/shared/#{role}.md"),
             "Agent must reference its shared procedure: #{role}")
-      check(!agent.read.include?(procedure.read.strip), "Agent duplicates specialist procedure: #{role}")
+      check(!read(agent).include?(read(procedure).strip), "Agent duplicates specialist procedure: #{role}")
     end
 
     root.glob("{commands,workflows,prompts,skills,agents}/**/*.md").each do |file|
-      file.read.scan(%r{(?<![\w.-])(?:workflows|prompts|skills|agents|data)/[\w./-]+\.md}).uniq.each do |path|
+      read(file).scan(%r{(?<![\w.-])(?:workflows|prompts|skills|agents|data)/[\w./-]+\.md}).uniq.each do |path|
         resource(root, path)
       end
     end
     root.glob("docs/**/*.md").each do |file|
-      frontmatter(file) if file.read.start_with?("---\n")
+      frontmatter(file) if read(file).start_with?("---\n")
     end
     true
   end
