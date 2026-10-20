@@ -23,6 +23,8 @@ Run it once per session. The assistant resumes automatically if a `.salary-calcu
 
 For model choices, effort settings and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).
 
+Salary calculations use one shared Python 3.11+ helper in both hosts, with no extra packages. If code execution is unavailable, the assistant asks before using verified manual arithmetic and records that choice. Research and eligibility judgments remain in the workflow. See [Calculation runtime](salary-calculator/step4-table-calculation.html#calculation-runtime).
+
 ## Flow
 
 ```mermaid
@@ -72,7 +74,7 @@ Reuses the situational profile collected before Step 1, with parent-side intake 
 
 ### [Step 4: Table calculation](salary-calculator/step4-table-calculation.html)
 
-The assistant offers the **calculator** specialist; if declined, the current model still uses verified arithmetic. It independently adjusts the two researched employer segments and saves a compact table: Country, Visa salary rule, Mainstream Annual, Premium Annual, Mainstream Monthly, and Premium Monthly. Salary cells contain single targets, not automatic ranges. Monthly references and threshold checks use raw annual targets before independent display rounding. Visa salary rule retains a period-labeled exact figure or an explicit No fixed minimum / Not applicable / Unknown / Blocked label, with a warning for a numeric shortfall. Visa and candidate minima never change the market estimates. Shown work, coverage/skip reasons, blocked-route notes and comparison details stay in the file; chat gets only a brief calculated/skipped count.
+The parent runs the shared numeric helper, then offers the **calculator** specialist to check the inputs and prepare the table. Declining the specialist keeps the same arithmetic on the current model. It independently adjusts the two researched employer segments and saves a compact table: Country, Visa salary rule, Mainstream Annual, Premium Annual, Mainstream Monthly, and Premium Monthly. Salary cells contain single targets, not automatic ranges. Monthly references and threshold checks use raw annual targets before independent display rounding. Visa salary rule retains a period-labeled exact figure or an explicit No fixed minimum / Not applicable / Unknown / Blocked label, with a warning for a numeric shortfall. Visa and candidate minima never change the market estimates. Shown work, coverage/skip reasons, blocked-route notes and comparison details stay in the file; chat gets only a brief calculated/skipped count.
 
 ### [Step 5: Final Verification](salary-calculator/step5b-final-verification.html)
 

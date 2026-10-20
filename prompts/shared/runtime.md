@@ -15,11 +15,13 @@ Only the parent orchestrator advances the workflow. This rule applies whether it
 - Parent: verify the step's required output, record completion using the state-tracking rule where applicable, then enter the next step in the workflow within the same turn. Stop at the next user question. After the final step, present its saved deliverable and completion message, then end the workflow.
 - Specialist: execute only the assigned step, save only its required output, and return the result and saved file path to the parent. If blocked, return the missing information or failure instead. Never start another step, update pipeline state, ask the user a question, or delegate the rest of the pipeline. Instructions in a step about user-facing output are material for the parent to present, not a separate conversation with the user.
 
+A Salary Calculator specialist may return a pending numeric request under skills/salary-calculation-helper.md. This is a normal incomplete return, not a failed handoff. The parent executes the request without advancing state, then resumes the assigned task, or starts a continuation with the same approved role/model/effort and exact remaining instructions if task resumption is unavailable. That continuation stays within the original handoff approval. Batch known requests; if the identical request repeats without progress or continuation is unavailable, stop and ask for direction rather than looping. Changed or unavailable specialist settings still require the routing choice below.
+
 ## File locations
 
 The loaded entry point has the layout `<plugin-root>/skills/<command>/SKILL.md`. Resolve symlinks first, then take the parent directory three times from the file path (or go two levels up from its containing `<command>` folder) to find the plugin root. When a Claude plugin-root substitution supplies an absolute path, use that same installed root. Keep the user's selected workspace as the working directory.
 
-- Read `workflows/`, `prompts/`, `skills/`, `agents/`, and `data/` paths from the plugin root. These are bundled resources, even when a step says to read them "from the workspace."
+- Read `workflows/`, `prompts/`, `skills/`, `agents/`, `helpers/`, and `data/` paths from the plugin root. These are bundled resources, even when a step says to read them "from the workspace."
 - Read and write `profile.md`, `situational-profile.md`, `cf-*`, `sc-*`, and pipeline state JSON files in the user's workspace. Never put candidate data or results in the plugin installation.
 - Give each subagent the absolute plugin root and workspace paths, the exact step prompt, and only the inputs its task needs. Do not rely on its working directory or inherited conversation to locate files.
 - If a required file is missing, report its actual path and stop that step. Do not substitute a similarly named file from another installation or workspace.
