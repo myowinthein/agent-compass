@@ -1,8 +1,14 @@
 CANDIDATE PROFILE:
 Read profile.md from the workspace and use it as the candidate profile. [TARGET ROLE] below should be filled using the target or desired role from the candidate profile if one is stated; otherwise use the current or most recent title.
 
+Read situational-profile.md before generating research. If absent, the parent applies skills/situational-profile-questions.md and waits for answers first. Every generated country brief must embed the target role, seniority, relevant years of experience (or explicitly unknown), skills, and relevant citizenship/residence/work-authorization and age facts as literal text, including their reference dates. Never rely on a job title to imply the profile or ask a fresh-context researcher to read workspace files. Include the candidate-specific threshold instructions from skills/sponsorship-threshold-rules.md directly in each brief, not merely a path reference.
+
 Countries:
-Check whether cf-step6-final-ranking.md exists in the workspace; if not, check cf-step5-scoring-results.md. If either exists, read it (preferring cf-step6-final-ranking.md if both exist), extract every country classified Strong or Moderate fit on any track, and show me that list: "Country Finder found these countries worth calculating salaries for: [list]. Use this list as-is, add to it, remove some, or start fresh?" Wait for my answer. If neither file exists, or I choose to start fresh, ask me for my target country list.
+Check whether cf-step6-final-ranking.md exists in the workspace; if not, check cf-step5-scoring-results.md.
+- If the final file exists, select countries exclusively from its post-audit Summary: include each country once if at least one final track is Strong or Moderate. Do not select from the Priority Table, medals, audit prose, or original Step 5 ratings, even if a legacy final file contains conflicting sections. A Weak, Excluded, or not scored track is not eligible by itself. If the Summary is missing or cannot be interpreted, explain the problem and ask me for a target list rather than silently falling back to pre-audit data.
+- Only when the final file is absent, use the scored Strong/Moderate countries from cf-step5-scoring-results.md and explain that this is the pre-audit result.
+- Show the resulting list: "Country Finder found these countries worth calculating salaries for: [list]. Use this list as-is, add to it, remove some, or start fresh?" Wait for my answer. If the eligible list is empty, say no countries currently meet that criterion and ask me to provide a target list or stop; never resurrect an older rating to populate it.
+- If neither file exists, or I choose to start fresh, ask me for my target country list.
 
 Generate individual research prompts to estimate realistic local-market annual base salary ranges for a [TARGET ROLE] in each country given above. Do not estimate salaries directly — only generate ready-to-copy research prompts. Estimate what a local candidate with a similar profile would realistically earn in that country — local-market salary only.
 
@@ -22,7 +28,7 @@ Exclude from research:
 
 For each country, create one ready-to-copy research prompt asking for:
 
-- realistic annual base salary range in local currency
+- realistic gross annual base salary range in local currency, with any source's different or unknown pay basis stated explicitly
 - local-market salary only
 - current data only, prioritizing sources from the last 12 months
 - salary for local candidates with similar seniority and profile
@@ -74,11 +80,8 @@ Output format:
 - clearly separated by country name
 - do not attempt to answer the research questions yourself in this step
 
-After generating these prompts, run each one as a separate, isolated research task. If you are able to run these as isolated sub-agent tasks, do so with the following strict brief per agent:
+Parent: run the generated prompts using the research-delegation rule in prompts/shared/runtime.md, including its capability checks, task-brief rules, and manual fallback. Each task covers exactly one country. The parent collects the returned results into sc-step1-salary-research.md in the workspace.
 
-- Each agent receives only one country's prompt. Its only job is to run that research and return the results for that one country. It must not answer, draft, or save results for any other country.
-- Each agent works from its own prompt only, with no access to your prior reasoning in this conversation and no access to research or conclusions reached for other countries.
+Before collecting results, record the confirmed target countries under a `## Research scope` preface in sc-step1-salary-research.md so validation and later audits can account for omitted or rejected countries after a resume. Keep the existing Country fields and dataset structure; collect blocks under the shared data-validation boundaries.
 
-Append each country's results to sc-step1-salary-research.md in the workspace as each agent completes. If you cannot guarantee that isolation, show me the prompts and stop here — wait for me to bring back the results myself before continuing.
-
-Once all results are saved to sc-step1-salary-research.md, tell me in a few lines: how many countries were researched, and that the full results are saved for Step 2 to validate and store. Do not reproduce the per-country research findings in this summary. Then continue automatically into Step 2 now, in this same response — do not stop and wait here.
+Once all results are saved to sc-step1-salary-research.md, tell me in a few lines: how many countries were researched, and that the full results are saved for Step 2 to validate and store. Do not reproduce the per-country research findings in this summary. Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

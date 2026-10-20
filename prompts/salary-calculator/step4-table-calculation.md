@@ -2,13 +2,15 @@ Check whether sc-step2-salary-data.md exists in the workspace. If it does not ex
 
 Check whether sc-step3-adjustment-values.md exists in the workspace. If it does not exist, stop and tell me: "sc-step3-adjustment-values.md was not found. Please ensure Step 3 completed successfully before continuing."
 
-If both files exist, read them. Using the adjustment values from sc-step3-adjustment-values.md and the salary data from sc-step2-salary-data.md, calculate adjusted expected salary ranges for each country.
+If both files exist, read them. Using the adjustment values from sc-step3-adjustment-values.md and the salary data from sc-step2-salary-data.md, calculate adjusted salary targets for each country.
 
 Use a calculator or step-by-step verified arithmetic for every calculation in this step, regardless of whether this step is running on the calculator subagent or your current model. Do not compute by intuition; precision takes priority over speed.
 
-Read situational-profile.md. Note whether a salary minimum was given there and, if so, whether it was marked a hard floor or context only — this is used only for the flag described under Summary below, never to change Safe or Stretch.
+Read situational-profile.md. Note whether a salary minimum was given there and, if so, whether it was marked a hard floor or context only — this is used only for the flag described under Summary below, never to change Mainstream or Premium.
 
-Read and apply skills/sponsorship-threshold-rules.md for the Legal Requirement column described below.
+Read and apply skills/sponsorship-threshold-rules.md for the Visa salary rule column. This shared rule is the canonical source of its display states, period labels, and warning behavior.
+
+Read and apply skills/salary-comparison-rules.md for the candidate's minimum, including currency/period/basis normalization and comparison-only FX. Record the dated rate and unrounded calculation in Show Your Work or Summary, not the salary table. An unavailable or non-comparable minimum check is unverified, not a proven shortfall.
 
 Only calculate countries that have BOTH:
 
@@ -17,111 +19,83 @@ Only calculate countries that have BOTH:
 
 Skip countries with missing data.
 
+Also read the Research scope and Validation report in sc-step1-salary-research.md if available. Reconcile the confirmed scope, research/ingestion rejections, salary datasets, and adjustment datasets: every expected country must be calculated or listed as skipped with its actual reason. Do not fabricate table rows for rejected data or count a rejected duplicate whose original survived as a skipped country. If legacy scope/report information is missing, say which coverage or ingestion outcome cannot be established instead of silently claiming complete coverage.
+
 Ordering: check whether cf-step6-final-ranking.md exists in the workspace.
 - If it exists, read its Priority Table and order the countries in this step's output to match that table's order, top to bottom.
+- Append calculated countries not present in that Priority Table afterward, alphabetically by country name. Do not omit user-added countries.
 - If it does not exist, order countries alphabetically by country name (A→Z).
 
 Definitions
 
 - Market Midpoint = the "Realistic" value for the relevant tier, as provided in the salary dataset. Do not average, estimate, or derive it any other way.
-- Safe = Market Midpoint from the Mid-size / Mainstream Local-Market tier.
-- Stretch = Market Midpoint from the Premium / International / Remote-first tier.
-
-Do not estimate new salary tiers. Use only the salary data already provided.
+- Mainstream uses the Mid-size / Mainstream Local-Market tier.
+- Premium uses the Premium / International / Remote-first tier.
+- These are employer segments, not guarantees, personal salary floors, or automatic visa-qualifying offers. Do not estimate new tiers or derive Premium by adding a generic uplift to Mainstream.
 
 Calculation Rules
 
-1. Apply the international candidate adjustment independently to both the Safe and Stretch Market Midpoints.
+1. Apply the country's typical midpoint international candidate adjustment independently to each segment's Market Midpoint:
 
-Adjusted Midpoint = Market Midpoint x (1 - Adjustment %)
+Annual Target = Market Midpoint x (1 - Adjustment %)
 
-2. Fixed Value
+2. Keep both Annual Targets unrounded internally. Monthly Reference = unrounded Annual Target / 12. Use these raw amounts for sponsorship-threshold and candidate-minimum comparisons, never displayed rounded figures.
 
-Fixed = Adjusted Midpoint
+3. Round each displayed salary independently, once, at final formatting: Annual to nearest 500; Monthly to nearest 50; exact halfway ties upward for nonnegative amounts. Use decimal/rational or otherwise verified arithmetic to avoid floating-point tie errors. Recomputing Monthly from the displayed Annual may differ from the displayed Monthly; retain the raw calculation.
 
-3. Range Calculation (Annual only)
+4. Do not generate automatic -5%/+10% ranges or a universal interview range. Retain the original researched Low/Realistic/Strong figures in their existing research and stored-data files; they are not automatically a negotiation range. Any discussion of a negotiation range belongs in the saved audit, tied to the applicable employer segment and actual evidence, not an invented percentage band.
 
-For each Annual Fixed value:
+5. Compare both raw segment targets with the candidate-specific sponsorship threshold using skills/sponsorship-threshold-rules.md. The Visa salary rule column is independent of market targets; never change targets to clear it.
 
-- Lower Range = Fixed x 0.95
-- Upper Range = Fixed x 1.10
-
-4. Monthly Calculation
-
-Monthly = Annual Fixed / 12 — a single reference value, not a range. Monthly values are a reference only and may not represent actual monthly payslips in countries using 13th or 14th salary payments.
-
-5. Legal Requirement Comparison
-
-For each country with a usable sponsorship salary threshold (per skills/sponsorship-threshold-rules.md), compare it against the unrounded Fixed values for both Safe and Stretch — this comparison happens before the display rounding in the Formatting Rules below, never after, since rounding could flip a borderline result. Convert the threshold to match whichever period (Annual or Monthly) the comparison needs.
-
-File format (write this structure to sc-step4-salary-table.md — this is not what you show in chat, see below):
+File format (write this structure to sc-step4-salary-table.md; only a brief calculated/skipped count is shown in chat at this step):
 
 Show Your Work
 
-Before producing the table, work through the calculation for each country: Market Midpoint, Adjustment % applied, and resulting Adjusted Midpoint, for both Safe and Stretch.
+For every country and segment, record Market Midpoint, typical midpoint Adjustment %, raw Annual Target, raw Monthly Reference, and independently rounded display values. Record the sourced threshold in its original period, applicable candidate category, effective date and official source, comparison arithmetic, and which segment misses it when applicable. Keep any additional wage conditions visible in the saved explanation.
 
-Formatting Rules
+Table
 
-- After showing the calculations, format the final salary data as ONE Markdown table with ONE row per country.
-- Use ONLY these columns, in this exact order:
+Put this exact caption immediately before the table:
 
-| Country | Legal Requirement | 🛡️ Safe Annual | 🚀 Stretch Annual | 🛡️ Safe Monthly | 🚀 Stretch Monthly |
+Gross base salary in local currency. Monthly figures are annual ÷ 12 references, not necessarily payslips; targets are market estimates, not visa-eligibility guarantees.
 
-- Place the country's flag emoji before its name, and include the currency code. Example: `🇩🇪 Germany (EUR)`.
-- In each Annual column, show the Fixed target first, then its Range in parentheses. Example: `65,500 (62,000–72,000)`.
-- Each Monthly column shows only the single Monthly value (Annual Fixed ÷ 12) — no range.
-- Right-align the Legal Requirement, Safe Annual, Stretch Annual, Safe Monthly, and Stretch Monthly columns.
-- Do not add footnotes, revision markers, notes, explanations, or additional columns.
+Use ONLY these columns, in this exact order:
 
-Legal Requirement column:
-- Em dash (—) if the state is "No fixed threshold" or "Not applicable" per skills/sponsorship-threshold-rules.md — there is nothing to compare against.
-- Question mark (?) if the state is "Unknown" — a plausible route exists but its figure couldn't be confirmed. Never render this the same as the em dash; the two mean different things to the candidate.
-- The literal word "Blocked" if the state is "Blocked" — a real route exists but is currently unavailable to this candidate. Show this even if a figure was otherwise confirmed; never fall back to the numeric figure or an em dash.
-- Otherwise ("Verified numeric"), show both period equivalents in one cell: the Annual figure first, then the Monthly figure in parentheses with a "/mo" suffix — e.g. `45,300 (3,775/mo)`. Neither figure is rounded.
-- If either Safe or Stretch Fixed value falls short of the threshold (at either period), append a single ⚠️ at the end of the cell — the warning applies to the country as a whole, not to one period only.
-- Never adjust Safe or Stretch because of this column — the two facts are shown side by side, never merged.
+| Country | Visa salary rule | Mainstream Annual | Premium Annual | Mainstream Monthly | Premium Monthly |
 
-Do NOT repeat currency symbols or currency codes inside salary values.
+- One row per calculated country, in the order specified above.
+- Place the flag before the country name and put the local currency code after it, e.g. "🇩🇪 Germany (EUR)".
+- Each of the four salary cells contains a single comma-formatted number, with no range, parentheses, currency symbol, or repeated currency code. No USD conversion.
+- Right-align the four numeric salary columns; left-align Country and Visa salary rule.
+- Render Visa salary rule using skills/sponsorship-threshold-rules.md: a period-labeled exact threshold, or the distinct explicit state label. Do not replace it with a status-only check.
+- No extra columns, inline citations, revision markers, or footnotes. Explanations and sources stay in Show Your Work and Summary.
 
-Safe and Stretch salary values must:
+Formatting examples only, not current market or visa facts. Each displayed Annual Target is also its raw input in these examples; a real run still computes Monthly and threshold checks before rounding. Their order is illustrative; a real run follows Country Finder or alphabetical ordering.
 
-- use local currency only
-- contain plain formatted numbers only
-- not convert to USD
-- round cleanly for readability
-- use consistent formatting across all countries
-
-Recommended rounding:
-
-- Annual (Fixed and Range): nearest 500
-- Monthly: nearest 50
-
-Example:
-
-| Country | Legal Requirement | 🛡️ Safe Annual | 🚀 Stretch Annual | 🛡️ Safe Monthly | 🚀 Stretch Monthly |
-|---|---:|---:|---:|---:|---:|
-| 🇩🇪 Germany (EUR) | 45,300 (3,775/mo) | 59,500 (56,500–65,500) | 74,500 (71,000–82,000) | 4,950 | 6,200 |
-| 🇳🇱 Netherlands (EUR) | 63,972 (5,331/mo) ⚠️ | 56,500 (53,500–62,000) | 70,000 (66,500–77,000) | 4,700 | 5,850 |
-| 🇺🇸 United States (USD) | — | 140,000 (133,000–154,000) | 175,000 (166,500–192,500) | 11,650 | 14,600 |
-| 🇦🇺 Australia (AUD) | Blocked | 95,000 (90,250–104,500) | 118,000 (112,100–129,800) | 7,900 | 9,850 |
-
-After the table, output:
+| Country | Visa salary rule | Mainstream Annual | Premium Annual | Mainstream Monthly | Premium Monthly |
+|---|---|---:|---:|---:|---:|
+| 🇩🇪 Germany (EUR) | 45,300/yr | 59,500 | 74,500 | 4,950 | 6,200 |
+| 🇳🇱 Netherlands (EUR) | 5,331/mo ⚠️ | 56,500 | 70,000 | 4,700 | 5,850 |
+| 🇺🇸 United States (USD) | Not applicable | 140,000 | 175,000 | 11,650 | 14,600 |
+| 🇦🇺 Australia (AUD) | Blocked | 95,000 | 118,000 | 7,900 | 9,850 |
+| 🇯🇵 Japan (JPY) | No fixed minimum | 7,800,000 | 10,200,000 | 650,000 | 850,000 |
+| 🇬🇧 United Kingdom (GBP) | Unknown | 60,000 | 78,000 | 5,000 | 6,500 |
 
 Summary
 
 - Countries calculated: X
 - Countries skipped: Y
 
-If any countries are skipped, list them with the reason.
+List every skipped country with its actual reason, including earlier ingestion failures carried from the Research scope and Validation report. Do not invent a row for missing data or count a retained duplicate as a skipped country.
 
-If situational-profile.md gave a hard-floor salary minimum, list any country whose Safe Fixed value falls short of it, with the specific gap (e.g. "confirmed Safe $X, below your hard floor of $Y"). This is a flag only, in the Summary text, not a table column — never adjust Safe or Stretch because of it, the same principle as the Legal Requirement column above.
+For a hard-floor candidate salary minimum, flag any raw Mainstream target below it with the normalized amounts and specific gap. Preserve an unverified comparison as unverified when currency, period, or pay basis cannot be established. This is a Summary flag only; never change either target to meet it.
 
-If any country's Legal Requirement state is "Blocked," list them in the Summary too, each with its stated reason, noting that country's Safe/Stretch figures are reference-only for sponsorship purposes since the route itself isn't currently open to the candidate — independent of what the salary numbers say.
+For each Blocked route, retain its concrete reason and state that both salary targets are reference-only for sponsorship through that route. For No fixed minimum, retain any prevailing-wage, occupation-rate, or other pay conditions; absence of a fixed number does not mean there are no salary requirements. A threshold comparison alone never establishes overall visa eligibility.
 
-Save the shown work, table, and summary to sc-step4-salary-table.md in the workspace.
+Save shown work, caption, table, and Summary to sc-step4-salary-table.md in the workspace. Keep the original research, profile files, and state schema unchanged.
 
-In your chat response, do not reproduce the shown calculations or the table — Step 5 always runs next and is the point where the final table is presented to me. Instead, tell me in a few lines: how many countries were calculated and skipped, and that the full results are saved to sc-step4-salary-table.md.
+In chat, do not reproduce calculations or the table; Step 5 always runs next and presents the final caption and table. Give only a brief calculated/skipped count and confirmation that results are saved to sc-step4-salary-table.md.
 
-Do not perform any additional analysis, ranking, recommendations, or commentary.
+Do not perform additional analysis, ranking, or recommendations.
 
-Continue automatically into Step 5 now, in this same response — do not stop and wait here.
+Step complete. Follow the step-completion rule in prompts/shared/runtime.md.
