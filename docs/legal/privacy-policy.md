@@ -16,7 +16,7 @@ Agent Compass is an open source career research plugin for Claude and Codex, mai
 
 ## What Data We Collect
 
-Neither the documentation site nor the plugin's commands collect, receive, or store any personal data. The documentation site is a static site with no forms, no accounts, no cookies, and no analytics or tracking scripts. When you use the plugin's commands (`/country-finder`, `/salary-calculator`, `/portal-finder`, `/job-screener`) inside your own Claude Cowork, Claude Code, or Codex session, any information you provide, such as your resume, salary criteria, or citizenship and location details, is processed within your own session with the selected AI provider and saved only to files in your own local workspace (for example `profile.md`, `situational-profile.md`, and pipeline state files). We never receive, see, or store this data.
+Neither the documentation site nor the plugin's commands collect, receive, or store any personal data. The documentation site is a static site with no forms, no accounts, no cookies, and no analytics or tracking scripts. When you use the plugin's commands (`/country-finder`, `/salary-calculator`, `/portal-finder`, `/job-screener`) inside your own Claude or Codex session, any information you provide, such as your resume, salary criteria, or citizenship and location details, is processed within your own session with the selected AI provider and saved only to files in your own local workspace (for example `profile.md`, `situational-profile.md`, and pipeline state files). We never receive, see, or store this data.
 
 ## How We Use Your Data
 

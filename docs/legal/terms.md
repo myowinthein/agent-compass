@@ -20,7 +20,7 @@ Agent Compass provides four career research workflows for Claude and Codex: `cou
 
 ## User Accounts and Eligibility
 
-The Service does not require an account, registration, or sign-up of any kind. You must have your own access to Claude Cowork, Claude Code, or Codex, subject to the selected provider's terms, to use the plugin.
+The Service does not require an account, registration, or sign-up of any kind. You must have your own access to Claude or Codex, subject to the selected provider's terms, to use the plugin.
 
 ## Acceptable Use
 

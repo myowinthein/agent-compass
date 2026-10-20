@@ -11,7 +11,7 @@ Screens job descriptions against your resume profile and returns a structured ma
 
 ## Usage
 
-Claude Cowork / Claude Code:
+Claude:
 
 ```
 /agent-compass:job-screener

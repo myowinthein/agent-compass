@@ -11,7 +11,7 @@ Finds verified job portals for IT/tech roles in a specified country. Accepts the
 
 ## Usage
 
-Claude Cowork / Claude Code:
+Claude:
 
 ```
 /agent-compass:portal-finder Germany
