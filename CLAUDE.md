@@ -1,4 +1,4 @@
-# Claude Compass
+# Agent Compass
 
 @AGENTS.md
 

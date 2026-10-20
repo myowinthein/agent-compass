@@ -4,11 +4,11 @@
 
 ## Acceptance of Terms
 
-By installing, accessing, or using the claude-compass plugin or its documentation site (together, the "Service"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.
+By installing, accessing, or using the agent-compass plugin or its documentation site (together, the "Service"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.
 
 ## Description of Service
 
-claude-compass is an open source plugin pack for Claude Cowork, Claude Code, and Codex that provides four workflows (`/country-finder`, `/salary-calculator`, `/portal-finder`, and `/job-screener`) to help IT/tech job seekers discover remote-hire and visa-sponsorship countries, calculate realistic local-market salaries, find verified job portals, and screen job descriptions against their own resume. The Service runs entirely within your own Claude Cowork, Claude Code, or Codex session and depends on research and data you provide during that session.
+agent-compass is an open source plugin pack for Claude Cowork, Claude Code, and Codex that provides four workflows (`/country-finder`, `/salary-calculator`, `/portal-finder`, and `/job-screener`) to help IT/tech job seekers discover remote-hire and visa-sponsorship countries, calculate realistic local-market salaries, find verified job portals, and screen job descriptions against their own resume. The Service runs entirely within your own Claude Cowork, Claude Code, or Codex session and depends on research and data you provide during that session.
 
 ## User Accounts and Eligibility
 
@@ -24,7 +24,7 @@ You may not: misrepresent the Service's AI-generated output as verified fact whe
 
 ## Intellectual Property
 
-The claude-compass source code and prompts are licensed under the MIT License (see the `LICENSE` file in the repository) and may be used, modified, and redistributed under its terms. Any output generated for you by the plugin during your own session (profile summaries, country scores, salary tables, job-screening reports) belongs to you.
+The agent-compass source code and prompts are licensed under the MIT License (see the `LICENSE` file in the repository) and may be used, modified, and redistributed under its terms. Any output generated for you by the plugin during your own session (profile summaries, country scores, salary tables, job-screening reports) belongs to you.
 
 ## Disclaimer of Warranties
 
@@ -52,4 +52,4 @@ We may update these Terms from time to time. Material changes will be reflected 
 
 ## Contact
 
-For questions about this Terms of Service, open an issue at https://github.com/myowinthein/claude-compass/issues.
+For questions about this Terms of Service, open an issue at https://github.com/myowinthein/agent-compass/issues.

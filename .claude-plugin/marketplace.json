@@ -1,12 +1,12 @@
 {
-  "name": "claude-compass-marketplace",
+  "name": "agent-compass-marketplace",
   "description": "Install the shared Compass career research workflows.",
   "owner": {
     "name": "myowinthein"
   },
   "plugins": [
     {
-      "name": "claude-compass",
+      "name": "agent-compass",
       "source": "./",
       "policy": {
         "installation": "AVAILABLE",

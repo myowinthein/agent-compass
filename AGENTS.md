@@ -1,8 +1,8 @@
-# Claude Compass
+# Agent Compass
 
 ## Project
 
-This repository packages the same four career research workflows for Claude Cowork, Claude Code, and Codex. Plugin identity and version are maintained only in `.claude-plugin/plugin.json`. Keep the existing plugin name and command names stable.
+This repository packages the same four career research workflows for Claude Cowork, Claude Code, and Codex. Plugin identity and version are maintained only in `.claude-plugin/plugin.json`. Keep the plugin name `agent-compass` and existing workflow command names stable.
 
 Project configuration:
 

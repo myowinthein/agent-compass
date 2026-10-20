@@ -1,5 +1,5 @@
 {
-  "name": "claude-compass",
+  "name": "agent-compass",
   "version": "1.14.0",
   "description": "Career research workflows for Claude Cowork, Claude Code, and Codex: discover remote-hire and visa-sponsorship countries, calculate local-market salaries, find verified job portals, and screen job descriptions. Grounded in sourced evidence.",
   "author": {
@@ -7,8 +7,8 @@
     "email": "mwt.creative@gmail.com",
     "url": "https://github.com/myowinthein"
   },
-  "homepage": "https://github.com/myowinthein/claude-compass",
-  "repository": "https://github.com/myowinthein/claude-compass",
+  "homepage": "https://github.com/myowinthein/agent-compass",
+  "repository": "https://github.com/myowinthein/agent-compass",
   "license": "MIT",
   "skills": "./skills/"
 }
