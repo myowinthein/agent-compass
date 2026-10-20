@@ -38,6 +38,12 @@ Bundled resources are read from the installed plugin root. Candidate data and ou
 
 `docs/` is both user documentation and the GitHub Pages site. Update affected pages whenever behavior changes; search references across `docs/`, `workflows/`, `prompts/`, and `skills/`. Keep documentation summaries explanatory; runtime rules belong in prompts. Prose in `docs/` avoids em dashes.
 
+## Documentation deployment
+
+`.github/workflows/docs.yml` runs the full checks on pushes to `main`, pull requests and manual runs. Only successful `main` builds deploy. There is no schedule. `_config.yml` uses `@latest`; each workflow run resolves the latest stable theme release and temporarily pins that tag for its build, without committing a version change. A failed release lookup stops the build rather than falling back to the development branch.
+
+When enabling this workflow, change the repository's **Settings → Pages → Build and deployment → Source** to **GitHub Actions**. Merge the workflow and configuration together before deploying. Locally, `bundle exec rake test` and `bundle exec jekyll serve` resolve `@latest` through the remote-theme plugin; restart the preview to fetch a newer release.
+
 ## Maintenance boundaries
 
 Preserve unrelated user edits. Do not create or modify `.claude/rules` without an explicit request. Do not inspect or edit `.claude/helm/*-log.json` during feature work; these are tool ledgers, not source code. Repository contributor instructions are not automatically installed as consumer workflow context; runtime requirements must be reachable from the skill entry points.

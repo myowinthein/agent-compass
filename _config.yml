@@ -3,7 +3,7 @@ description: Career research workflows for Claude and Codex.
 url: "https://myowinthein.github.io"
 baseurl: "/agent-compass"
 
-remote_theme: just-the-docs/just-the-docs@v0.10.0
+remote_theme: just-the-docs/just-the-docs@latest
 defaults:
   - scope:
       path: ""
