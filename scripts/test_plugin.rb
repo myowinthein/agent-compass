@@ -1,6 +1,7 @@
 require "open3"
 require "pathname"
 require "rbconfig"
+require "yaml"
 
 # Checks validation, published examples, and instruction contracts, not LLM behavior.
 root = Pathname(__dir__).parent
@@ -145,4 +146,46 @@ paths.each do |path|
               "Local developer/host artifact is not excluded from Git archives: #{path}")
 end
 
-puts "Passed #{checks} validator, salary-example, country-table contract/example, and archive-policy checks (not live workflow tests)."
+deployment = YAML.safe_load_file(root.join(".github/workflows/docs.yml"))
+assert.call(deployment.fetch("on").keys.sort == %w[pull_request push workflow_dispatch],
+            "Docs must build on pushes, pull requests and manual runs without a schedule")
+assert.call(deployment.dig("on", "push", "branches") == ["main"], "Only main pushes should deploy docs")
+assert.call(deployment.fetch("permissions") == { "contents" => "read" }, "Build tokens must remain read-only")
+build_steps = deployment.dig("jobs", "build", "steps")
+assert.call(build_steps.any? { |step| step["run"] == "bundle exec rake test" },
+            "Deployment must run the full project checks")
+theme_resolution = build_steps.find { |step| step.fetch("run", "").include?("/releases/latest") }&.fetch("run")
+assert.call(theme_resolution && theme_resolution.include?("COMPASS_THEME_TAG"),
+            "Deployment must resolve a stable theme tag before building")
+["", "main", "v0.12.0-rc.1"].each do |tag|
+  output, status = Open3.capture2e("bash", "-e", "-o", "pipefail", "-c", <<~BASH)
+    gh() { printf '%s' '#{tag}'; }
+    bundle() { echo 'Unexpected build'; }
+    #{theme_resolution}
+  BASH
+  assert.call(!status.success? && !output.include?("Unexpected build"),
+              "Invalid release #{tag.inspect} must stop before the build")
+end
+output, status = Open3.capture2e("bash", "-e", "-o", "pipefail", "-c", <<~BASH)
+  gh() { return 1; }
+  bundle() { echo 'Unexpected build'; }
+  #{theme_resolution}
+BASH
+assert.call(!status.success? && !output.include?("Unexpected build"),
+            "Failed release lookup must stop before the build")
+upload = build_steps.find { |step| step.fetch("uses", "").start_with?("actions/upload-pages-artifact@") }
+assert.call(upload && upload.fetch("if").include?("refs/heads/main") &&
+                     upload.fetch("if").include?("github.event_name != 'pull_request'"),
+            "Only main deployment runs may upload the tested site")
+assert.call(build_steps.index(upload) > build_steps.index { |step| step["run"] == "bundle exec rake test" },
+            "The site must pass checks before artifact upload")
+assert.call(deployment.dig("jobs", "deploy", "needs") == "build", "Deployment must depend on a successful build")
+assert.call(deployment.dig("jobs", "deploy", "if") == upload.fetch("if"),
+            "Pull requests and other branches must never deploy")
+assert.call(deployment.dig("jobs", "deploy", "permissions") == { "pages" => "write", "id-token" => "write" },
+            "Only the deploy job should receive deployment permissions")
+assert.call(deployment.fetch("jobs").values.flat_map { |job| job.fetch("steps") }.all? { |step|
+  !step.key?("uses") || step.fetch("uses").match?(/@[0-9a-f]{40}\z/)
+}, "Deployment actions must be pinned to immutable commits")
+
+puts "Passed #{checks} validator, salary-example, country-table contract/example, archive-policy and deployment checks (not live workflow tests)."
