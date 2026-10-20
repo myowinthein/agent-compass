@@ -1,11 +1,6 @@
 <link rel="icon" type="image/svg+xml" href="https://myowin.dev/favicon.svg">
 <script src="{{ '/assets/js/new-tab-links.js' | relative_url }}" defer></script>
-
-<script>
-  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    jtd.setTheme('dark');
-  }
-</script>
+<script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
 
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';

@@ -8,7 +8,7 @@ permalink: /docs/legal/privacy-policy.html
 
 # Privacy Policy
 
-**Last updated:** 2026-10-11
+**Last updated:** 2026-10-21
 
 ## Who We Are
 
@@ -19,6 +19,8 @@ Agent Compass is an open source career research plugin for Claude and Codex, mai
 Neither the documentation site nor the plugin's commands collect, receive, or store any personal data. The documentation site is a static site with no forms, no accounts, no cookies, and no analytics or tracking scripts. When you use the plugin's commands (`/country-finder`, `/salary-calculator`, `/portal-finder`, `/job-screener`) inside your own Claude or Codex session, any information you provide, such as your resume, salary criteria, or citizenship and location details, is processed within your own session with the selected AI provider and saved only to files in your own local workspace (for example `profile.md`, `situational-profile.md`, and pipeline state files). We never receive, see, or store this data.
 
 ## How We Use Your Data
+
+The documentation site saves your theme choice (System, Light or Dark) in your browser's local storage. This preference stays in your browser and is not sent to us. You can remove it by clearing the site's browser data.
 
 Because we do not collect any personal data, there is no processing of personal data by us and no Article 6 legal basis is required on our part. Any data you enter is processed by your selected AI provider within your own session, governed by Anthropic's terms and privacy policy when using Claude, or OpenAI's terms and privacy policy when using Codex.
 
