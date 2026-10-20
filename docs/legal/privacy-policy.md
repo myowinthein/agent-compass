@@ -1,3 +1,11 @@
+---
+layout: default
+title: Privacy Policy
+parent: Legal
+nav_order: 1
+permalink: /docs/legal/privacy-policy.html
+---
+
 # Privacy Policy
 
 **Last updated:** 2026-10-11
