@@ -1,6 +1,6 @@
 {
   "name": "agent-compass-marketplace",
-  "description": "Install the shared Compass career research workflows.",
+  "description": "A marketplace for installing Agent Compass in Claude and Codex.",
   "owner": {
     "name": "myowinthein"
   },

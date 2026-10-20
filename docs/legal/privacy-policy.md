@@ -4,7 +4,7 @@
 
 ## Who We Are
 
-agent-compass is an open source plugin pack for Claude Cowork, Claude Code, and Codex, maintained by Myo Win Thein, providing career research workflows for globally-minded IT/tech job seekers to discover remote-hire and visa-sponsorship countries, calculate local-market salaries, find verified job portals, and screen job descriptions against their resume. This policy covers both the agent-compass documentation site (hosted on GitHub Pages) and the agent-compass plugin itself.
+Agent Compass is an open source career research plugin for Claude and Codex, maintained by Myo Win Thein. It helps IT and tech job seekers research countries for remote work or visa sponsorship, explore market salaries, find verified job portals and screen job descriptions against their profile. This policy covers the Agent Compass plugin and its documentation site, hosted on GitHub Pages.
 
 ## What Data We Collect
 

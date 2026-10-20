@@ -8,7 +8,7 @@ By installing, accessing, or using the agent-compass plugin or its documentation
 
 ## Description of Service
 
-agent-compass is an open source plugin pack for Claude Cowork, Claude Code, and Codex that provides four workflows (`/country-finder`, `/salary-calculator`, `/portal-finder`, and `/job-screener`) to help IT/tech job seekers discover remote-hire and visa-sponsorship countries, calculate realistic local-market salaries, find verified job portals, and screen job descriptions against their own resume. The Service runs entirely within your own Claude Cowork, Claude Code, or Codex session and depends on research and data you provide during that session.
+Agent Compass provides four career research workflows for Claude and Codex: `country-finder`, `salary-calculator`, `portal-finder` and `job-screener`. They help IT and tech job seekers choose target countries, explore market salaries, find verified job portals and assess job descriptions against their profile. The Service runs within your own Claude or Codex session and depends on your profile and the available research.
 
 ## User Accounts and Eligibility
 
