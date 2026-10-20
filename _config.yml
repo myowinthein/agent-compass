@@ -4,6 +4,13 @@ url: "https://myowinthein.github.io"
 baseurl: "/agent-compass"
 
 remote_theme: just-the-docs/just-the-docs@v0.10.0
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default
+
 # Navigation
 nav_sort: order
 nav_external_links:
