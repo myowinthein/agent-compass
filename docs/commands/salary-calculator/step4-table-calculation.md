@@ -7,9 +7,19 @@ nav_order: 4
 
 # Step 4: Table calculation
 
-Applies the international adjustment to the salary data and produces a table with shown calculations. Before running, the assistant asks whether to use the **calculator** subagent (host-specific model and effort) for higher arithmetic precision. If you decline, the step runs with your current model, but the assistant still uses a calculator or step-by-step verified arithmetic for every calculation rather than computing by intuition. Precision takes priority over speed.
+Applies the international adjustment and produces a salary table with shown calculations. Claude and Codex use the same bundled Python helper for exact arithmetic. The parent runs it before offering the **calculator** specialist to check the inputs and prepare the table. Declining the specialist keeps the same calculation method on your current model.
 
 For model choices, effort settings and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).
+
+## Calculation runtime
+
+The helper needs Python 3.11 or newer and permission to run code in the current environment. It reads one country's inputs and returns numbers without writing files, researching visa rules or choosing table labels. There are no additional Python packages to install.
+
+If execution is unavailable, the assistant explains why and asks whether to fix it or calculate manually using the same verified-arithmetic rules. It never silently switches methods. A malformed input must be corrected, not bypassed. The chosen method is recorded in shown work; an explicitly run-scoped manual choice also covers later recalculation. A missing bundled helper is reported as a broken installation.
+
+Candidate-minimum comparisons still require confirmed currency, pay period and gross/base pay. Any FX conversion needs the existing sourced, dated quote. The helper does not fetch rates or infer taxes. A recurring normalized FX amount is verified separately with exact arithmetic, not rounded to fit the helper.
+
+FX normalization and national-average multiples are outside this helper. Arithmetic still needed for them uses exact calculation tools with recorded inputs/results, or the same explicit manual approval if only model-done arithmetic is available.
 
 ## Flow
 
@@ -20,7 +30,8 @@ flowchart TD
   FC1 -->|yes| FC2{sc-step3-adjustment-values.md\nexists?}
   FC2 -->|no| Err2[Stop, report missing file\nAsk user to rerun Step 3]
   FC2 -->|yes| ReadFiles[Read both files]
-  ReadFiles --> SpecialistQ{Use specialist for\nhigher precision?}
+  ReadFiles --> Helper[Parent runs shared numeric helper\nor resolves explicit manual fallback]
+  Helper --> SpecialistQ{Use specialist to\ncheck and prepare table?}
   SpecialistQ -->|yes| CalcAgent[Route to calculator\nhost-specific model and effort]
   SpecialistQ -->|no| CurrentModel[Run with your\ncurrent model]
   CalcAgent --> Order
@@ -31,7 +42,7 @@ flowchart TD
   OrderAlpha --> Check{Country has both\nsalary data and\nadjustment data?}
   Check -->|no| Skip[Skip country\nnote reason]
   Check -->|yes| Midpoint[Market Midpoint =\nRealistic value from salary dataset\nDo not average or derive]
-  Midpoint --> Calc[Apply adjustment independently\nto Mainstream and Premium midpoints\nAdjusted = Midpoint x 1 minus Adj%]
+  Midpoint --> Calc[Check helper inputs against source files\nApply adjustment independently\nto Mainstream and Premium]
   Calc --> Monthly[Annual: adjusted segment target\nMonthly: raw annual target divided by 12]
   Monthly --> Legal{Usable sponsorship\nthreshold reported?}
   Legal -->|no| ShowWork
@@ -93,7 +104,7 @@ For any country with a usable sponsorship salary threshold, the raw Mainstream a
 
 ## Show your work
 
-Before producing the table, the calculator works through the full calculation for every country: Market Midpoint, Adjustment % applied, and resulting Adjusted Midpoint for both Mainstream and Premium.
+Before producing the table, the assistant checks the helper's echoed inputs against the source files and records the Market Midpoint, Adjustment %, raw and displayed annual/monthly targets for both segments. Raw values can be exact fractions. Shown work also records whether the shared helper or user-approved manual arithmetic was used.
 
 Countries missing either salary data or adjustment data are skipped and listed in the summary with the reason.
 
@@ -147,4 +158,4 @@ The assistant does not reproduce the calculations or the table in chat; instead,
 
 ## Stop condition
 
-There is no interactive checkpoint within calculation. A specialist returns the saved salary table to the parent, which checks the output and enters Step 5. The parent confirms the career ladder and asks the specialist-routing question before final verification, which always runs.
+Normal helper calculation needs no additional confirmation. An execution problem requires the parent's explicit fallback question before continuing. A specialist returns the saved salary table to the parent, which checks the output and enters Step 5. The parent confirms the career ladder and asks the specialist-routing question before final verification, which always runs.

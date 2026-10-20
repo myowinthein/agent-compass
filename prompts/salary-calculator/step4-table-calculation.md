@@ -4,7 +4,7 @@ Check whether sc-step3-adjustment-values.md exists in the workspace. If it does 
 
 If both files exist, read them. Using the adjustment values from sc-step3-adjustment-values.md and the salary data from sc-step2-salary-data.md, calculate adjusted salary targets for each country.
 
-Use a calculator or step-by-step verified arithmetic for every calculation in this step, regardless of whether this step is running on the calculator subagent or your current model. Do not compute by intuition; precision takes priority over speed.
+Read and apply skills/salary-calculation-helper.md. The parent runs the shared numeric helper before an optional calculator handoff; both hosts use the same implementation. Use its exact results for every supported calculation in this step. Manual arithmetic requires the explicit user choice described there. Do not compute by intuition; precision takes priority over speed.
 
 Read situational-profile.md. Note whether a salary minimum was given there and, if so, whether it was marked a hard floor or context only — this is used only for the flag described under Summary below, never to change Mainstream or Premium.
 
@@ -52,6 +52,8 @@ File format (write this structure to sc-step4-salary-table.md; only a brief calc
 Show Your Work
 
 For every country and segment, record Market Midpoint, typical midpoint Adjustment %, raw Annual Target, raw Monthly Reference, and independently rounded display values. Record the sourced threshold in its original period, applicable candidate category, effective date and official source, comparison arithmetic, and which segment misses it when applicable. Keep any additional wage conditions visible in the saved explanation.
+
+Include the calculation-method disclosure from skills/salary-calculation-helper.md. Check the helper's echoed inputs against the source files and preserve exact fractional raw amounts when needed.
 
 Table
 
