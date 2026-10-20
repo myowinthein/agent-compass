@@ -1,4 +1,5 @@
 ---
+layout: default
 title: Home
 nav_order: 1
 permalink: /
@@ -10,96 +11,57 @@ Trust your compass.
 
 <img src="docs/images/banner.jpg" alt="agent-compass" width="600">
 
-A plugin for Claude Cowork, Claude Code, and Codex, built for globally-minded IT/tech job seekers: find remote-hire countries, visa sponsors, and local-market salaries.
+A plugin for Claude and Codex that helps IT and tech job seekers find countries for remote work or visa sponsorship, compare salaries, find job portals, and screen job descriptions.
 
 **[Documentation site](https://myowinthein.github.io/agent-compass)**
 
-## Installation
+## Why I built this
 
-### Claude Cowork
+When it was time to start a new job search, I used AI to research my options. But getting clear, useful information took more than simply asking a few questions.
 
-1. Open **Claude Desktop** and switch to the **Cowork** tab.
-2. Open **Customize** (left sidebar), then the **Plugins** tab.
-3. Click the **Add** button and select **Add marketplace**.
-4. Click **Add from a repository** and paste `myowinthein/agent-compass`.
-5. Once the marketplace is added, find the **agent-compass** card and click **+** to install.
+I kept refining prompts to get better answers. I also had to save those prompts and run them again whenever I repeated a process. I wanted a way to reuse that work without starting over each time.
 
-### Claude Code
+That’s why I built Agent Compass. I wanted to turn those prompts into workflows I could use throughout my job search and share with others starting a similar journey.
+
+You can install Agent Compass in Claude or Codex by following the [setup guide](https://myowinthein.github.io/agent-compass/docs/setup/).
+
+## How I use it
 
 ```text
-/plugin marketplace add myowinthein/agent-compass
-/plugin install agent-compass@agent-compass-marketplace
+country-finder
 ```
 
-### Codex
+I start here to find countries that match my profile for remote work or visa sponsorship, so I know where to focus my search.
 
-Add the same repository marketplace and install the plugin:
+It asks a few questions about your profile and preferences, then researches the countries and returns a priority table. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/country-finder.html).
 
-```bash
-codex plugin marketplace add myowinthein/agent-compass
-codex plugin add agent-compass@agent-compass-marketplace
+```text
+portal-finder
+portal-finder <country>
 ```
 
-Then start a new chat in a writable folder for your career research. In the desktop app, you can also open the Plugins directory, select the added marketplace, and install Agent Compass there.
+Once I know which countries to target, I use this command to find verified job portals for IT and tech roles. From there, I can create accounts and start looking for opportunities.
 
-For local development, replace `myowinthein/agent-compass` in the marketplace-add command with the absolute path to this checkout. Local changes must be refreshed/reinstalled before the installed copy sees them.
+Provide one country name, or leave it out and the command will ask before finding its job portals. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/portal-finder.html).
 
-The existing Claude-compatible manifest is shared by both platforms; there is no second plugin metadata source. See the [OpenAI packaging documentation](https://developers.openai.com/plugins/build/plugins) for compatibility and marketplace support.
-
-### Update / Uninstall in Claude Cowork
-
-1. Open **Customize** (left sidebar), then the **Plugins** tab.
-2. Click the **Browse** button, then navigate to **Plugins → Personal** tab.
-   _You'll see the marketplace entry at the top and your installed plugins as cards below._
-3. To **update**:
-   - Click **3 dots (…)** on the marketplace entry and select **Check for updates** (or enable **Sync automatically**).
-   - Click the settings icon on the **agent-compass** card, then click **Update**.
-     _The Update button only appears after the marketplace has been synced._
-4. To **uninstall**: click **3 dots (⋮)** on the **agent-compass** card and click **Uninstall**.
-
-### Update / Uninstall in Codex
-
-```bash
-codex plugin marketplace upgrade agent-compass-marketplace
-codex plugin add agent-compass@agent-compass-marketplace
+```text
+salary-calculator
 ```
 
-For uninstalling, run `codex plugin remove agent-compass@agent-compass-marketplace` or remove the plugin in the desktop Plugins directory.
+I use this command to explore realistic local-market salaries for my role and experience. This gives me a clearer idea of what to ask for when discussing salary expectations.
 
-## Usage
+If you’ve already run `country-finder`, it suggests countries from your results. You can keep the list, add or remove countries or start fresh. Otherwise, it asks which countries you want to research. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/salary-calculator.html).
 
-The four command names are the same on both platforms. In Cowork or Claude Code, type `/` and choose the command under Agent Compass, or use `/agent-compass:country-finder`. In Codex CLI, type `$` and choose the matching skill (for example `country-finder`, which may be displayed with the `agent-compass:` namespace), or open `/skills`. In the desktop app, select the skill from the composer. The host controls the invocation prefix: Claude uses `/`, Codex CLI uses `$`. See [Codex skill invocation](https://learn.chatgpt.com/docs/build-skills) and [Cowork plugin commands](https://support.claude.com/en/articles/13837440-use-plugins-in-claude).
+```text
+job-screener
+```
 
-| Command | What it does |
-|---|---|
-| [`/country-finder`](https://myowinthein.github.io/agent-compass/docs/commands/country-finder.html) | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
-| [`/salary-calculator`](https://myowinthein.github.io/agent-compass/docs/commands/salary-calculator.html) | Calculate realistic local-market salaries for your target role. |
-| [`/portal-finder`](https://myowinthein.github.io/agent-compass/docs/commands/portal-finder.html) | Find verified job portals for IT/tech roles in a specific country, grouped by type. |
-| [`/job-screener`](https://myowinthein.github.io/agent-compass/docs/commands/job-screener.html) | Screen a job description against your resume and get a structured apply / maybe / skip verdict. |
+When I find an interesting job, I use this command to compare its requirements with my profile. Its Apply, Maybe, or Skip recommendation helps me decide whether to apply.
 
-Judgment-heavy and arithmetic-heavy steps can be routed to specialist subagents. Claude offers Opus at each eligible step; Codex offers a specialist using your current or configured Codex model and reasoning settings. Delegation is optional, and final ranking and salary verification always run. If the host cannot delegate, the current model runs the step.
+Start a dedicated chat and run this command once. Then paste job descriptions one at a time. If the responses stop following the screening format, run the command again. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/job-screener.html).
 
-| Agent | Claude | Codex | Steps |
-|---|---|---|---|
-| `deep-reasoner` | Opus / high effort | Current or configured model/effort | Country scoring, final ranking, international salary adjustment, final verification |
-| `calculator` | Opus / max effort | Current or configured model/effort | Salary table calculation |
+## Help me improve it
 
-Use one workspace for one candidate. Both hosts read and write the same `profile.md`, `situational-profile.md`, `.country-finder-state.json`, `.salary-calculator-state.json`, and `cf-*` / `sc-*` output files, so you can resume a completed step on either host. Run one pipeline at a time in a workspace.
+If something does not work or you have an idea that would make your job search easier, [share it on GitHub](https://github.com/myowinthein/agent-compass/issues).
 
-Country Finder, Salary Calculator, and Portal Finder require live web access. When isolated research agents or browsing are unavailable, the research pipelines provide prompts for you to run manually. Portal Finder reports when live verification is unavailable. A resume can be pasted or supplied as a readable local file when your client does not support attachments.
-
-## Shared source
-
-`commands/` contains Claude entry points and `skills/<command>/SKILL.md` contains portable entry points. Both load the same orchestrators in `workflows/`, the same step instructions in `prompts/`, and the same shared rule files. Specialist procedures also live once in `prompts/shared/`; Claude agent files only select their model and point to those procedures. Install the complete plugin, not individual skill folders, because the entry points reference its shared resources.
-
-## Contributing
-
-Run `ruby scripts/validate_plugin.rb` to check entry points, resource references, and a relocated installation. Run `bundle exec rake test` for the documentation site. Contributor guidance lives in `AGENTS.md`; `CLAUDE.md` imports it.
-
-Issues and pull requests are welcome at [github.com/myowinthein/agent-compass/issues](https://github.com/myowinthein/agent-compass/issues).
-
-## License
-
-[MIT](https://github.com/myowinthein/agent-compass/blob/main/LICENSE)
-
-<!-- last-reviewed: 0db57abc536b929c52e12ed4aa460d700b71c8c7 -->
+Agent Compass is open source under the [MIT license](https://github.com/myowinthein/agent-compass/blob/main/LICENSE).
