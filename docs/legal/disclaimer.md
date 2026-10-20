@@ -1,3 +1,11 @@
+---
+layout: default
+title: Disclaimer
+parent: Legal
+nav_order: 3
+permalink: /docs/legal/disclaimer.html
+---
+
 # Disclaimer
 
 **Last updated:** 2026-10-11

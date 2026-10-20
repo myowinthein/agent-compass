@@ -1,3 +1,11 @@
+---
+layout: default
+title: Terms of Service
+parent: Legal
+nav_order: 2
+permalink: /docs/legal/terms.html
+---
+
 # Terms of Service
 
 **Last updated:** 2026-10-11
