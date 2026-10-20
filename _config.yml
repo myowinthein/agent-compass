@@ -1,18 +1,18 @@
-title: Claude Compass
+title: Agent Compass
 description: Career research workflows for Claude Cowork, Claude Code, and Codex.
 url: "https://myowinthein.github.io"
-baseurl: "/claude-compass"
+baseurl: "/agent-compass"
 
 remote_theme: just-the-docs/just-the-docs@v0.10.0
 # Navigation
 nav_sort: order
 nav_external_links:
   - title: GitHub
-    url: https://github.com/myowinthein/claude-compass
+    url: https://github.com/myowinthein/agent-compass
     hide_icon: false
 
 # Footer
-footer_content: "Claude Compass &mdash; MIT License"
+footer_content: "Agent Compass &mdash; MIT License"
 
 # Plugins
 plugins:
