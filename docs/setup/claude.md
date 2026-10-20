@@ -8,5 +8,3 @@ permalink: /docs/setup/claude.html
 ---
 
 # Claude
-
-Read the [Setup notes](./) before starting.
