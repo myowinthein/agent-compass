@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Specialist agents
-nav_order: 4
+nav_exclude: true
 permalink: /docs/specialist-agents.html
 ---
 

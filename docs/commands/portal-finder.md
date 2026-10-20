@@ -1,7 +1,7 @@
 ---
 title: /portal-finder
 parent: Commands
-nav_order: 4
+nav_order: 2
 has_children: true
 ---
 
