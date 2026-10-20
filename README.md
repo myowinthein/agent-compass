@@ -13,7 +13,7 @@ Trust your compass.
 
 A plugin for Claude and Codex that helps IT and tech job seekers find countries for remote work or visa sponsorship, compare salaries, find job portals, and screen job descriptions.
 
-**[Documentation site](https://myowinthein.github.io/agent-compass)**
+**<a href="https://myowinthein.github.io/agent-compass" target="_blank" rel="noopener noreferrer">Documentation site</a>**
 
 ## Why I built this
 
@@ -23,7 +23,7 @@ I kept refining prompts to get better answers. I also had to save those prompts 
 
 That’s why I built Agent Compass. I wanted to turn those prompts into workflows I could use throughout my job search and share with others starting a similar journey.
 
-You can install Agent Compass in Claude or Codex by following the [setup guide](https://myowinthein.github.io/agent-compass/docs/setup/).
+You can install Agent Compass in Claude or Codex by following the <a href="https://myowinthein.github.io/agent-compass/docs/setup/" target="_blank" rel="noopener noreferrer">setup guide</a>.
 
 ## How I use it
 
@@ -33,7 +33,7 @@ country-finder
 
 I start here to find countries that match my profile for remote work or visa sponsorship, so I know where to focus my search.
 
-It asks a few questions about your profile and preferences, then researches the countries and returns a priority table. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/country-finder.html).
+It asks a few questions about your profile and preferences, then researches the countries and returns a priority table. <a href="https://myowinthein.github.io/agent-compass/docs/commands/country-finder.html" target="_blank" rel="noopener noreferrer">Read the full guide</a>.
 
 ```text
 portal-finder
@@ -42,7 +42,7 @@ portal-finder <country>
 
 Once I know which countries to target, I use this command to find verified job portals for IT and tech roles. From there, I can create accounts and start looking for opportunities.
 
-Provide one country name, or leave it out and the command will ask before finding its job portals. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/portal-finder.html).
+Provide one country name, or leave it out and the command will ask before finding its job portals. <a href="https://myowinthein.github.io/agent-compass/docs/commands/portal-finder.html" target="_blank" rel="noopener noreferrer">Read the full guide</a>.
 
 ```text
 salary-calculator
@@ -50,7 +50,7 @@ salary-calculator
 
 I use this command to explore realistic local-market salaries for my role and experience. This gives me a clearer idea of what to ask for when discussing salary expectations.
 
-If you’ve already run `country-finder`, it suggests countries from your results. You can keep the list, add or remove countries or start fresh. Otherwise, it asks which countries you want to research. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/salary-calculator.html).
+If you’ve already run `country-finder`, it suggests countries from your results. You can keep the list, add or remove countries or start fresh. Otherwise, it asks which countries you want to research. <a href="https://myowinthein.github.io/agent-compass/docs/commands/salary-calculator.html" target="_blank" rel="noopener noreferrer">Read the full guide</a>.
 
 ```text
 job-screener
@@ -58,10 +58,10 @@ job-screener
 
 When I find an interesting job, I use this command to compare its requirements with my profile. Its Apply, Maybe, or Skip recommendation helps me decide whether to apply.
 
-Start a dedicated chat and run this command once. Then paste job descriptions one at a time. If the responses stop following the screening format, run the command again. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/job-screener.html).
+Start a dedicated chat and run this command once. Then paste job descriptions one at a time. If the responses stop following the screening format, run the command again. <a href="https://myowinthein.github.io/agent-compass/docs/commands/job-screener.html" target="_blank" rel="noopener noreferrer">Read the full guide</a>.
 
 ## Help me improve it
 
-If something does not work or you have an idea that would make your job search easier, [share it on GitHub](https://github.com/myowinthein/agent-compass/issues).
+If something does not work or you have an idea that would make your job search easier, <a href="https://github.com/myowinthein/agent-compass/issues" target="_blank" rel="noopener noreferrer">share it on GitHub</a>.
 
-Agent Compass is open source under the [MIT license](https://github.com/myowinthein/agent-compass/blob/main/LICENSE).
+Agent Compass is open source under the <a href="https://github.com/myowinthein/agent-compass/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT license</a>.
