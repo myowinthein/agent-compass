@@ -11,7 +11,7 @@ Runs the full Country Finder pipeline. Collects your criteria, discovers candida
 
 ## Usage
 
-Claude Cowork / Claude Code:
+Claude:
 
 ```
 /agent-compass:country-finder

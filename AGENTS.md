@@ -2,7 +2,7 @@
 
 ## Project
 
-This repository packages the same four career research workflows for Claude Cowork, Claude Code, and Codex. Plugin identity and version are maintained only in `.claude-plugin/plugin.json`. Keep the plugin name `agent-compass` and existing workflow command names stable.
+This repository packages the same four career research workflows for Claude and Codex. Plugin identity and version are maintained only in `.claude-plugin/plugin.json`. Keep the plugin name `agent-compass` and existing workflow command names stable.
 
 Project configuration:
 
@@ -34,7 +34,7 @@ Bundled resources are read from the installed plugin root. Candidate data and ou
 - `ruby scripts/validate_plugin.rb`: check entry names, shared references, and a relocated package with a separate consumer workspace. No external dependencies required.
 - `ruby scripts/test_plugin.rb`: regress non-UTF-8 validation, check the compact salary table, threshold states and published arithmetic examples, check Country Finder's table contract and documentation edge cases, and verify Git archive exclusions. These contributor checks use Git and are not live model/workflow tests.
 - `bundle exec rake test`: validate the plugin, build the Jekyll site, and check its internal HTML links/images/scripts. Required after documentation or site configuration changes.
-- `claude plugin validate .claude-plugin/plugin.json` and `claude plugin validate skills`: native manifest and skill validation when Claude Code is installed.
+- `claude plugin validate .claude-plugin/plugin.json` and `claude plugin validate skills`: native manifest and skill validation when the `claude` CLI is available.
 
 `docs/` is both user documentation and the GitHub Pages site. Update affected pages whenever behavior changes; search references across `docs/`, `workflows/`, `prompts/`, and `skills/`. Keep documentation summaries explanatory; runtime rules belong in prompts. Prose in `docs/` avoids em dashes.
 
