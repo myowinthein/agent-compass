@@ -43,7 +43,9 @@ flowchart TD
 
 ## Rules
 
-This runs fully automated, with no pause between countries; bad items are skipped and recorded, never halted on.
+Identifiable malformed items are skipped and recorded without pausing between countries. Genuinely ambiguous boundaries require parent-side clarification rather than guessed separators.
+
+Generated blocks start at a top-level `Country:` field and end at the next such field, Validation report, or end of file. Blank lines alone do not split countries. Two top-level Country fields mean two datasets; an explicitly fenced dataset containing two countries is malformed. Unambiguous legacy boundaries are accepted without rewriting the supplied country text.
 
 | Situation | Assistant's response |
 |---|---|
@@ -60,10 +62,12 @@ The assistant preserves all values, wording, and formatting exactly as provided.
 ## What the assistant does not do in this step
 
 - No analysis, scoring, or ranking
-- No summaries or tables
+- No research summaries or analytical tables
 - No opinions or recommendations
 - No additional actions unless explicitly instructed
 
 ## Stop condition
 
-Once all countries from `cf-step3-country-research.md` have been processed, the assistant writes all successfully stored countries to `cf-step4-country-data.md` (which Step 5 scores next), replies with one consolidated report (stored count, plus every skip grouped by reason: malformed, missing fields, duplicate, not marked suitable for any track), then continues automatically into Step 5 within the same response, without waiting for a new message. There is no interactive checkpoint in this step.
+The stored datasets remain in `cf-step4-country-data.md`. The consolidated report is also persisted at the end of `cf-step3-country-research.md` under Validation report, outside its unchanged country blocks, including every rejection reason and expected-but-missing country. A rejected duplicate with a retained original is not a missing-country failure. Later audits use this record to distinguish rejected research from never-supplied research.
+
+After saving the datasets and validation report, the parent presents the consolidated counts and reasons and enters Step 5, including its specialist-routing question. Only genuinely ambiguous input boundaries require clarification during ingestion.

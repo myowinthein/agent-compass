@@ -2,9 +2,13 @@ Check whether cf-step5-scoring-results.md exists in the workspace. If it does no
 
 Read cf-step5-scoring-results.md from the workspace. Also read cf-step2-candidates.md, cf-step4-country-data.md, cf-step1-criteria.md, situational-profile.md, and profile.md from the workspace. cf-step2-candidates.md is the full candidate universe — use it to detect any country that was a Step 2 candidate but never reached Step 4. Base the audit only on these files, not on prior conversation memory.
 
+Read and apply skills/evidence-quality-rules.md and skills/exclusion-transparency-rules.md when auditing classifications, assigning priorities, and summarizing limitations.
+
 Goal
 
 Perform a focused audit on the Step 5 results across three checks.
+
+Save the three named audit checks and Recalibration verdict at the top of cf-step6-final-ranking.md, before Summary, Priority Table, and Effort Allocation. All audit details stay file-only. This step writes only that existing final file; leave source research and Step 5 outputs untouched.
 
 1. Confidence Calibration Check
 
@@ -13,6 +17,10 @@ For each country marked "High confidence," verify the underlying evidence is gen
 2. Missing Candidate Check
 
 Compare cf-step2-candidates.md against the countries that actually reached Step 4 and Step 5, and also consider any country that would commonly be expected to appear but is absent. For each missing country, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap — such as being on a Step 2 candidate list but never researched or never reaching Step 4.
+
+Reconcile this per track, not just per country. Preserve each explicit Step 2 "no" and its recorded reason as Excluded, including timezone rejections; missing downstream research after that rejection is expected, not a process gap. Apply this even when resuming from an older Step 5 output that omitted the earlier exclusion. "no evidence found" or absent research without an explicit rejection remains a missing-data case, not Excluded. Never let an earlier exclusion on one track remove the other track.
+
+If cf-step3-country-research.md exists, read its Validation report and available raw blocks to distinguish never-supplied research from researched data rejected in Step 4. Record the exact rejection reason or state that the legacy ingestion outcome is unknown. A duplicate whose original was retained is not a missing country. Do not reinterpret an ingestion error as an evidence-based country exclusion.
 
 3. Evidence Misuse Check
 
@@ -36,18 +44,20 @@ Summary
 
 Write a Summary section into the file (not shown in chat — the Priority Table below is the only thing from this step shown in chat) that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track.
 
-For each country that has data on at least one track, show one row with both its Remote fit and Sponsorship fit side by side:
+For each country that has ingested research or a recorded exclusion on at least one track, show one row with both its Remote fit and Sponsorship fit side by side:
 
 - Use the final classification (Strong / Moderate / Weak / Excluded / not scored (no data)) for each track.
-- "Excluded" means the country was actively eliminated on that track during Step 5 scoring. Do not restate the reason here.
-- "not scored (no data)" means no research was ever ingested for that country on that track. This is distinct from Excluded and must not be blurred with it.
+- "Excluded" means the country was explicitly eliminated on that track in Step 2 or Step 5. Preserve the original reason and hard-rule detail in the file's audit findings; do not substitute a missing-data explanation.
+- "not scored (no data)" means required research was not ingested and no explicit exclusion explains its absence. This is distinct from Excluded and must not be blurred with it.
 - If Step 6 revised a country's confidence level or classification, add a single short note beneath it.
 
-If the Missing Candidate Check identified countries that were never researched on either track at all, list those separately under a "Flagged but not researched" heading.
+If the Missing Candidate Check identified countries with neither ingested research nor a recorded exclusion on either track, account for them separately. Keep the existing "Flagged but not researched" heading for research genuinely never supplied. Add a file-only note for "Researched but not ingested" with the validation reason when research was rejected, or "Ingestion outcome unknown" for unsupported legacy cases. Do not label rejected research as never researched or put intentionally excluded countries in a process-gap list. These notes do not add Summary fit categories; the Priority Table below renders their missing-data tracks as Unknown.
 
 Close the Summary with counts:
 - Remote: [N] scored, [N] excluded, [N] not scored (no data)
 - Sponsorship: [N] scored, [N] excluded, [N] not scored (no data)
+
+Count each Step 2 candidate once per track, including all separately noted missing-data/ingestion cases. Count explicit early rejections as excluded, not missing data. Report any additional expected-but-absent countries separately from these candidate-universe totals.
 
 The Summary itself contains no ranking, recommendations, or interpretation beyond the classifications above — ranking is reserved for the Priority Table below.
 
@@ -55,17 +65,16 @@ Priority Table
 
 Below the Summary in the file, also write this Priority Table. Unlike the Summary, show this table directly in your chat response too — this is the only thing from this step shown in chat.
 
-Columns: Country | Tier | Remote Fit | Sponsorship Fit
+Columns: Country | Priority | Remote Fit | Sponsorship Fit | Main limitation
 
-Tier is two independent parts — a word and a medal.
+Read Remote Fit and Sponsorship Fit from this step's post-audit Summary, including every supported recalibration and carried exclusion. The Summary is authoritative for final fit classifications; do not copy a superseded Step 5 rating into this table. Leave cf-step5-scoring-results.md untouched as the pre-audit record.
 
-The word identifies which application track is usable. Remote Fit and Sponsorship Fit for this table are read directly from cf-step5-scoring-results.md — Step 5 is the authoritative source for these two values. Never substitute a Step 6 recalibration here, even if the Summary revised a country's classification; this table's Fit columns must trace back to Step 5's original ratings only.
-- Both: Remote Fit and Sponsorship Fit are each Strong or Moderate.
-- Remote: Remote Fit is Strong or Moderate; Sponsorship Fit is Weak or unavailable.
-- Sponsorship: Sponsorship Fit is Strong or Moderate; Remote Fit is Weak or unavailable.
-- Limited: Neither track reaches Moderate.
+Fit display:
+- Strong, Moderate, Weak, and Excluded retain their exact Summary classification.
+- Render "not scored (no data)" as Unknown in this table only, including missing-data cases accounted for in the Summary's separate notes. Keep the Summary's original wording and counts unchanged for downstream consumers.
+- Unknown is missing or unusable evidence, not a weak fit or a proven exclusion. Do not use a dash to collapse these states.
 
-The medal (🥇 / 🥈 / 🥉 / 🎗️) is a holistic judgment of expected application priority for this specific candidate — never calculated mechanically from the two Fit values alone, and never based solely on confidence. This is where Step 6's own audit work feeds in: use this step's evidence-quality and confidence-calibration findings to weigh how much to trust the underlying evidence, without changing the Fit values themselves. Assign the medal using:
+Priority is a holistic judgment of application effort for this specific candidate, not a numerical score, probability, or formula derived from the two fits. Having two usable tracks does not automatically earn a bonus. Use this step's evidence-quality and confidence-calibration findings alongside the final fits; assigning priority must not independently change those fits. Weigh:
 - Direct match to the candidate's seniority, skills, and target industries, from profile.md.
 - Quantity and recency of relevant job opportunities.
 - Evidence that remote positions accept the candidate's current location.
@@ -75,17 +84,22 @@ The medal (🥇 / 🥈 / 🥉 / 🎗️) is a holistic judgment of expected appl
 - Language and citizenship barriers.
 - Strength and reliability of the supporting evidence, informed by this step's Confidence Calibration Check.
 
-Medal meanings:
-- 🥇: Highest expected return — concentrate application time here.
-- 🥈: Good opportunity, but with a narrower market or meaningful limitation.
-- 🥉: Selective opportunity with material barriers or lower expected conversion.
-- 🎗️: Limited opportunity because neither track reaches Moderate — always paired with the word "Limited."
+Valid Priority values and decision boundaries:
+- 🥇 Focus: at least one track is Strong or Moderate, with the highest supported expected return; concentrate application effort here.
+- 🥈 Selective: at least one track is Strong or Moderate, but a narrower market or material limitation makes well-matched openings the better use of effort.
+- 🥉 Monitor: at least one track is Strong or Moderate, but limited current opportunities or substantial barriers favor alerts and occasional exceptional matches.
+- 🎗️ Deprioritize: both tracks are known Weak or Excluded; neither is currently usable.
+- Pending evidence: neither track is Strong or Moderate and at least one is Unknown. This is unranked, not a negative recommendation; resolve the evidence gap before judging application priority.
 
-There is no fixed quota or required number of countries for any medal. A country with Moderate Remote Fit and Moderate Sponsorship Fit can still receive 🥉 if hiring volume is low, evidence is weak, language barriers are substantial, or expected application conversion is poor.
+When one track is Strong or Moderate and the other is Unknown, assign Focus, Selective, or Monitor using only the supported usable track and explain the material limitation. Never assume the unknown track helps or fails. There is no quota per priority and no automatic mapping from Strong versus Moderate or confidence alone: a Moderate/Moderate country can still warrant Monitor because of opportunity volume or barriers.
 
-Valid Tier values: 🥇 Both, 🥇 Remote, 🥇 Sponsorship, 🥈 Both, 🥈 Remote, 🥈 Sponsorship, 🥉 Both, 🥉 Remote, 🥉 Sponsorship, 🎗️ Limited.
+Main limitation:
+- Write one short, country-specific phrase naming the most decision-relevant constraint or evidence gap for the candidate's usable track(s), or the reason for Deprioritize/Pending evidence.
+- Use only stored findings and this audit. Do not invent a barrier, perform new research, or turn an informational visa salary threshold into a confirmed salary shortfall. If a constraint affects only one track, identify that track.
+- For Pending evidence, name the missing or rejected research; keep the detailed ingestion reason in the audit. For Deprioritize, summarize the supported weakness or exclusion. If no material limitation is supported, write "None identified"; do not manufacture one to fill the cell.
+- Full reasons and source references stay in the audit, not in this compact phrase.
 
-Sort the table by medal first (🥇, then 🥈, then 🥉, then 🎗️). Within the same medal, sort by the candidate's expected chance of obtaining a suitable job in that country, using the same factors above — never alphabetically as a first pass. If countries remain effectively tied, apply these tie-breakers in order:
+Sort by Priority: Focus, Selective, Monitor, Deprioritize, then Pending evidence. Within the same assessed priority, sort by the candidate's supported expected chance of obtaining a suitable job using the same factors above, never alphabetically as a first pass. If countries remain effectively tied, apply these tie-breakers in order:
 1. Stronger match to the candidate's stated domain expertise, industry background, and target role, from profile.md.
 2. More concrete named-employer or current-job evidence.
 3. Better accessibility from the candidate's current location, or clearer sponsorship willingness.
@@ -93,24 +107,28 @@ Sort the table by medal first (🥇, then 🥈, then 🥉, then 🎗️). Within
 5. Higher evidence confidence.
 6. Alphabetical order, only as the final tie-breaker.
 
+Sort Pending evidence alphabetically by country name, ignoring flag emoji; do not imply an evidence-based ranking among those countries.
+
 Formatting rules:
 - Place the country's flag emoji directly before its name (e.g., "🇭🇰 Hong Kong").
-- Remote Fit and Sponsorship Fit may contain only: Strong, Moderate, Weak, or — (Unicode em dash, for unavailable, excluded, or unresearched data).
-- Do not add notes, asterisks, citations, explanations, or footnotes to this table.
-- Include every country from the Summary above exactly once.
-- Output only the table for this section — no surrounding commentary.
+- Remote Fit and Sponsorship Fit may contain only: Strong, Moderate, Weak, Excluded, or Unknown.
+- Include every country accounted for in the Summary exactly once, including candidates in its separate missing-data/ingestion notes. These candidates receive Unknown on tracks without a recorded fit or exclusion. Do not promote additional expected-but-absent countries outside the candidate universe from audit commentary into the table.
+- Do not add scores, percentages, redundant track words such as Both, citations, asterisks, or footnotes anywhere in the table. Explanatory prose belongs only in Main limitation.
+- Output only the table for this section, with no surrounding commentary.
 
 Use this exact header:
 
-| Country | Tier | Remote Fit | Sponsorship Fit |
-|---|---|---|---|
+| Country | Priority | Remote Fit | Sponsorship Fit | Main limitation |
+|---|---|---|---|---|
 
 Effort Allocation
 
-Below the Priority Table in the file only (never shown in chat, and never mechanically derived from the medal alone), add a short paragraph translating the medals into where to actually spend application time: which 🥇 countries deserve custom, individually-tailored applications; which 🥈/🥉 countries are better served by a lighter-touch pass or passive monitoring (saved searches, alerts) rather than deep individual effort; and which 🎗️ countries can be deprioritized for now. Base this on the same holistic factors used for the medals — a 🥈 country with unusually high opportunity volume can still merit custom effort, and the reverse.
+Below the Priority Table in the file only (never shown in chat), add a short paragraph expanding its action labels into a practical plan: focused effort and tailored applications for Focus, well-matched openings for Selective, alerts and occasional exceptional matches for Monitor, no active effort for Deprioritize, and research gaps to resolve for Pending evidence. Use the same candidate-specific evidence as the table; do not contradict its labels or allocate effort by an invented numerical formula.
 
-Save the Summary, the Priority Table, and the Effort Allocation note to cf-step6-final-ranking.md in the workspace — this is the final, post-audit classification, and later steps or pipelines should prefer it over cf-step5-scoring-results.md if both exist.
+Before saving, check that the Summary and Priority Table agree on every country's final fits (only "not scored (no data)" becomes Unknown for display), that every candidate is accounted for exactly once, that each Priority follows its decision boundary, that each Main limitation is supported and consistent with the audit, and that counts preserve early exclusions. Save the audit checks, Recalibration verdict, Summary, Priority Table, and Effort Allocation to cf-step6-final-ranking.md in the workspace. Its post-audit Summary is the authoritative classification for later steps or pipelines; prefer it over cf-step5-scoring-results.md if both exist. Salary Calculator still selects countries from this Summary and uses the Priority Table's row order, not its Priority labels or limitation text.
 
-After saving, tell me the pipeline is complete: "Country Finder is complete. Results are saved to cf-step6-final-ranking.md if you want to revisit them later without re-running the pipeline — start with your 🥇 countries above."
+Keep existing output filenames, Summary classifications, and pipeline state unchanged. Completed runs replay their saved final result under the shared runtime; do not migrate or rewrite an older four-column result merely to apply this presentation change.
 
-Step complete — stop here and wait for the main command.
+After saving, tell me the pipeline is complete: "Country Finder is complete. Results are saved to cf-step6-final-ranking.md if you want to revisit them later without re-running the pipeline. Review the ranked results above." Do not imply a Focus country or an actionable target exists when all results are Deprioritize or Pending evidence. If every row is Pending evidence, replace the final sentence with "Application priorities are pending evidence; see the saved audit for missing research." If there are no rows, replace it with "No countries could be ranked; see the saved audit for exclusions or missing research."
+
+Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

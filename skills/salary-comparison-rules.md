@@ -1,0 +1,16 @@
+---
+name: Salary Comparison Rules
+description: Shared normalization, currency conversion, and uncertainty rules for comparing researched salaries or JD pay with a candidate's salary minimum.
+---
+
+# Salary comparison rules
+
+Apply these rules whenever comparing pay with the candidate's minimum, including research suitability checks, scoring, salary-table flags, and job screening. They do not change the local-currency salary table or the separate sponsorship-threshold rules.
+
+- Establish each amount's currency, period, and gross/base versus net/take-home basis. Annual base pay divided by 12 is a monthly comparison reference, not a promise of 12 payslips. Do not silently compare net expectations with gross research, or include bonuses/equity in a base-pay comparison.
+- If a material basis, period, or currency is unknown, the parent asks a targeted clarification or reports the comparison as unverified. Missing comparison evidence never proves a hard floor failed. Do not invent taxes or infer a currency from a dollar sign alone.
+- When currencies differ, convert the candidate's minimum into the researched salary's currency for comparison only. Use a dated exchange rate from a central bank or other named, reliable financial source. Record its URL, effective date, quote direction (1 unit of the minimum's currency = R units of local currency), converted minimum, and calculation in the existing Reason, Notes, shown work, or Summary, not a new table column.
+- Use the latest published rate available at the research date, note weekends/holidays or a publication lag, and reuse that same dated quote for the currency pair during the run. On resume, reuse the recorded quote unless refreshed explicitly and all affected comparisons are recomputed. A reciprocal or cross-rate must show its derivation and use compatible effective dates. Historical fixtures use their recorded rates, not today's rates.
+- If no usable dated rate is available, report "salary-floor comparison unverified: exchange rate unavailable". Do not guess, exclude a country, or declare a salary blocker from unlike-currency numbers. A specialist returns a needed clarification to the parent under the shared runtime.
+- Compare unrounded normalized figures. Equality clears a hard floor. If only a pay range is known, the floor is definitely unmet only when the whole comparable range is below it; a range straddling the floor is uncertain, not a proven failure.
+- A hard floor can trigger only the exclusion/flag allowed by the calling step. A context-only minimum is context, not an exclusion. Never raise or lower market salary figures to satisfy a minimum. Keep the output table in local currency; comparison-only FX is not a USD-converted salary table.

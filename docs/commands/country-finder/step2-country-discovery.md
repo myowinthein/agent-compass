@@ -7,7 +7,7 @@ nav_order: 2
 
 # Step 2: Country discovery
 
-Builds a single candidate universe, then runs isolated research sub-agents (one per region batch) to check each country for both Remote and Sponsorship suitability together. No country is included based on reputation alone; every finding must be traceable to a real, checkable source.
+Builds a single candidate universe, then runs fresh-context research sub-agents (one per region batch) to check each country for both Remote and Sponsorship suitability together. No country is included based on reputation alone; every finding must be traceable to a real, checkable source.
 
 ## Flow
 
@@ -24,13 +24,16 @@ flowchart TD
   BaseOwn --> ExcludeStep
 
   ExcludeStep[Remove Exclude list\nfrom base] --> ShowList[Show final country list]
-  ShowList --> Batch[Batch by region\nor by ~15 countries if unbatched]
-  Batch --> Agents[One isolated sub-agent per batch,\nresearches Remote AND Sponsorship together]
-  Agents --> Append[Append results to\ncf-step2-candidates.md]
+  ShowList --> Batch[Batch by region\nSplit every batch to at most 15 countries]
+  Batch --> Capability{Fresh context and\nlive research available?}
+  Capability -->|yes| Agents[One fresh-context sub-agent per batch,\nresearches Remote AND Sponsorship together]
+  Capability -->|no| Manual[Show prompts\nWait for manual results]
+  Agents --> Append[Parent appends results to\ncf-step2-candidates.md]
+  Manual --> Append
   Append --> TZCheck{Max timezone\nprovided?}
   TZCheck -->|yes| MarkTZ[Mark out-of-range countries'\nRemote suitability as not suitable]
   TZCheck -->|no| Done
-  MarkTZ --> Done([Continue automatically\ninto Step 3])
+  MarkTZ --> Done([Parent continues\ninto Step 3])
 ```
 
 ## What it reads
@@ -50,21 +53,23 @@ Other than the default-list question above, this all happens silently; the assis
 
 ## Part B: Research sub-agents
 
-The final list is batched by region, since `data/default-preferred-countries.md` is organized under region headings; one sub-agent per region present in the final list, when the base came from it. If, for some reason, the list has no usable region grouping (e.g. the base came from your own Include list instead), it falls back to groups of roughly 15 countries. One isolated sub-agent is spawned per batch.
+The final list is batched by region when using the shipped list, but any region over 15 countries is split into numbered sub-batches of at most 15. Lists without usable region grouping are split in list order with the same size limit. There is no total batch cap: tasks are queued within the host's concurrency limit without dropping countries. When fresh task context and live research are available, one researcher handles each batch.
 
-Each sub-agent's prompt embeds, as literal text (never by reference), the exact countries in its batch, the candidate's target role and skillset from `profile.md`, the minimum monthly salary from `situational-profile.md` (if specified), and the candidate's citizenship and any noted immigration friction. This keeps the prompt self-contained, since sub-agents have no access to the conversation that computed these values.
+Each sub-agent's prompt embeds, as literal text (never by reference), the exact countries in its batch, the candidate's target role and skillset from `profile.md`, the minimum monthly salary from `situational-profile.md` (if specified), and the candidate's citizenship and any noted immigration friction. This keeps the prompt self-contained without relying on the parent's conversation. Researchers are instructed not to read workspace files or other researchers' results; fresh conversation context does not guarantee filesystem isolation.
 
 Each agent checks **both** tracks for every country in its batch, not just one track:
 
 **Remote suitability**: is remote hiring for this role a common, well-established practice? If a salary minimum was specified, does typical remote pay meet it? Evidence from remote job boards, hiring reports, salary surveys, or company remote policies.
 
+Salary-minimum checks use comparable currency, period, and gross/net basis. A different-currency minimum is converted for comparison only with a dated, sourced FX quote recorded in the findings; missing conversion evidence is unverified, not an exclusion. Context-only minima are not hard filters.
+
 **Sponsorship suitability**: does a real, named work-visa pathway exist *where a local employer is the sponsor*, a standard employer-sponsored visa or work permit tied to a job offer? Digital-nomad, remote-worker, long-stay, or self-qualifying visas don't count, even if prominent in search results; they don't involve a local employer sponsoring the candidate. Is the occupation on a shortage list? That's a positive factor (and a hard requirement only for the minority of visas that explicitly say so); its absence alone doesn't disqualify a country unless the identified pathway requires it. Citizenship-specific friction is factored in. Evidence from official immigration sources, visa program pages, or recruiter guides. A visa's salary threshold is noted as a fact, never used by itself to decide suitability; that judgment against real market data happens later, in Step 5.
 
-Each researcher is instructed to prefer sources in order: official government immigration/labour sources, direct employer pages, official sponsor/accredited-employer registers (capability only, not intent), specialist job boards/recruiters/salary surveys, then aggregators and search snippets (which need direct verification). Each country gets independent Suitable / Reason / Source (name and URL) / Date findings for each track; "no evidence found" is reported explicitly rather than guessed. If isolation can't be guaranteed, the assistant shows all the batch prompts and waits for you to bring back the results manually.
+Each researcher is instructed to prefer sources in order: official government immigration/labour sources, direct employer pages, official sponsor/accredited-employer registers (capability only, not intent), specialist job boards/recruiters/salary surveys, then aggregators and search snippets (which need direct verification). Each country gets independent Suitable / Reason / Source (name and URL) / Date findings for each track; "no evidence found" is reported explicitly rather than guessed. Before delegation, the parent checks that fresh conversation context and live web research are available. If either capability is unavailable or cannot be established, it shows all batch prompts and waits for you to bring back results manually. Researchers return findings for their assigned batch only; the parent writes the aggregate research file.
 
 ## Part C: Timezone marking
 
-If a maximum timezone difference was provided in Step 1, the assistant calculates each country's UTC distance from your current location (from `situational-profile.md`) and overwrites the Remote "Suitable" value for any out-of-range country with a stated reason; it does not remove the country from the list, and Sponsorship suitability is never affected by timezone. Skipped entirely if no limit was given.
+If a maximum difference was provided, the assistant records the candidate and target-hub zones, reference date, and seasonal differences. Unless you specified another work period, it assesses the next 12 months using simultaneous DST offsets and the maximum absolute difference. Multi-zone countries are assessed by relevant job hubs: only a supported failure across all assessed relevant locations rejects the whole Remote track. If some hubs pass, suitability is conditional on those locations; uncertain timezone evidence is marked unverified, not rejected. Sponsorship is unaffected, and "no limit" skips this filter.
 
 ## Output
 
@@ -72,4 +77,4 @@ If a maximum timezone difference was provided in Step 1, the assistant calculate
 
 ## Stop condition
 
-The assistant only stops here if Part A's default-list question was triggered (no Include list given); it waits for you to confirm the default or provide your own countries. It also waits for manual results if isolated research or browsing is unavailable. Otherwise, once all required results are in `cf-step2-candidates.md` (and Part C has run, if applicable), the assistant continues automatically into Step 3 within the same response, without waiting for a new message.
+The parent waits at the default-list question, manual-research fallback, or any material candidate-location/pay-basis clarification. Unverifiable comparisons are never turned into invented rejections. Once required research is saved and Part C has run if applicable, the parent enters Step 3 without waiting for an extra continuation message.

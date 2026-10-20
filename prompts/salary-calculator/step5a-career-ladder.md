@@ -6,4 +6,4 @@ Show it to me, and wait for my confirmation or edits.
 
 Once confirmed, save it to sc-step5a-career-ladder.md in the workspace.
 
-You already have everything needed for the Step 5 specialist routing question — continue automatically into it now, in this same response. Do not stop and wait here.
+Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

@@ -44,4 +44,4 @@ Country preferences:
 
 Tell me in one line that this was saved to cf-step1-criteria.md — no need to repeat the criteria back, since I just gave them to you.
 
-You already have everything needed for Step 2 — continue automatically into it now, in this same response. Do not stop and wait here.
+Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

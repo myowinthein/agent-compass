@@ -7,13 +7,13 @@ nav_order: 1
 
 # Step 1: Research prompt generator
 
-Generates one ready-to-copy research prompt per target country, runs each as an isolated sub-agent research task, and saves the results to `sc-step1-salary-research.md`. The assistant does not estimate salaries itself; every number comes from real web research.
+Generates one ready-to-copy research prompt per target country, runs each as a fresh-context research task, and saves the results to `sc-step1-salary-research.md`. The assistant does not estimate salaries itself; every number comes from real web research.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 1 begins]) --> ReadProfile[Read profile.md\nfor role and seniority]
+  Start([Parent collects or reuses\nsituational profile]) --> ReadProfile[Read profile.md and situational-profile.md\nfor self-contained candidate briefs]
   ReadProfile --> CFCheck{cf-step6-final-ranking.md or\ncf-step5-scoring-results.md exist?}
   CFCheck -->|yes| Offer[Show Strong/Moderate countries\nfrom that file: use, add, remove, or start fresh?]
   CFCheck -->|no| AskList[Ask for target\ncountry list]
@@ -25,23 +25,31 @@ flowchart TD
   Tiers --> Grade[Request evidence grade:\nHigh / Medium / Low]
   Grade --> More{More\ncountries?}
   More -->|yes| ForEach
-  More -->|no| Agents[Run each prompt as\nan isolated sub-agent task]
-  Agents --> Append[Append each result to\nsc-step1-salary-research.md]
+  More -->|no| Capability{Fresh context and\nlive research available?}
+  Capability -->|yes| Agents[Run each prompt as\na fresh-context research task]
+  Capability -->|no| Manual[Show prompts\nWait for manual results]
+  Agents --> Append[Parent appends each result to\nsc-step1-salary-research.md]
+  Manual --> Append
   Append --> AllDone{All agents\ncomplete?}
   AllDone -->|no| Append
-  AllDone -->|yes| Done([Continue automatically\ninto Step 2])
+  AllDone -->|yes| Done([Parent continues\ninto Step 2])
 ```
 
 ## What it reads
 
 - `profile.md`: used to fill in your target role, seniority, and skills in each prompt
+- `situational-profile.md`: collected or reused before this step for candidate-specific age, residence, citizenship, and work-authorization categories
 - `cf-step6-final-ranking.md` or `cf-step5-scoring-results.md`, if either exists; see Country list below
 
 ## Country list
 
-Before asking cold, the assistant checks for Country Finder's output: `cf-step6-final-ranking.md` if it exists (preferred, since it's the post-audit result), otherwise `cf-step5-scoring-results.md`. If either is found, the assistant extracts every country classified Strong or Moderate fit on any track and shows you that list, asking whether to use it as-is, add to it, remove countries, or start fresh. If neither file exists, or you choose to start fresh, the assistant asks for your target country list directly.
+Before asking cold, the assistant checks for Country Finder's output. When `cf-step6-final-ranking.md` exists, it selects each country with at least one Strong or Moderate final fit exclusively from the post-audit Summary, not the Priority Table, medals, or older ratings. This also handles legacy files whose Summary and Priority Table disagree. If the Summary is missing or unreadable, it explains and asks for your target list rather than silently using pre-audit data.
+
+Only when the final file is absent does it use `cf-step5-scoring-results.md`, explicitly identifying that list as pre-audit. It shows the selected list and asks whether to use it as-is, add countries, remove countries, or start fresh. An empty eligible list prompts you to provide targets or stop, never to resurrect superseded ratings. If neither file exists, or you choose to start fresh, it asks for your target list directly.
 
 ## Prompt content
+
+Each country brief embeds role, seniority, relevant years and skills as literal text, plus the relevant age/date reference and immigration-status facts. Researchers do not need workspace-file access or prior conversation. Official threshold categories are checked against those facts; unknown or declined age/status cannot justify selecting a cheaper category. An unconfirmable applicable figure stays Unknown, not Blocked or an invented number.
 
 Each generated prompt instructs the researcher to:
 
@@ -64,14 +72,16 @@ Each generated prompt instructs the researcher to:
 - Contractor or freelance rates
 - Equity-heavy total compensation
 
-## Sub-agent isolation
+## Research task boundaries
 
-Each country's prompt is run as a separate, isolated research task. Each agent receives only one country's prompt and must not produce or save results for any other country. If isolation cannot be guaranteed, the assistant shows the prompts and waits for you to bring back results manually before continuing.
+Each country's prompt is run as a separate fresh-context research task. Each agent receives a self-contained brief for one country and is instructed not to read workspace files or other researchers' results. It returns findings only for that country; the parent writes the aggregate research file. Fresh conversation context does not guarantee filesystem isolation.
+
+Before delegation, the parent checks that fresh conversation context and live web research are available. If either capability is unavailable or cannot be established, it shows the prompts and waits for you to bring back results manually before continuing.
 
 ## Output
 
-Results are appended to `sc-step1-salary-research.md` in the workspace as each agent completes. Step 2 reads this file automatically. The assistant does not reproduce the per-country research findings in chat; only a brief summary (how many countries were researched) and confirmation that the file is saved.
+The parent records confirmed targets under a Research scope preface in `sc-step1-salary-research.md`, then collects country blocks using their top-level `Country:` fields. Step 2 reads the file and later appends a separate Validation report; original country text stays unchanged. New results are inserted before any existing report. The assistant shows only a brief researched-country count and save confirmation in chat.
 
 ## Stop condition
 
-The assistant stops and waits at two points: the country-list question (if Country Finder's output exists or none was given cold) and the manual-research fallback (if isolated sub-agents aren't available). Otherwise, once all results are saved, the assistant continues automatically into Step 2 within the same response, without waiting for a new message.
+The assistant stops and waits at two points: the country-list question (if Country Finder's output exists or none was given cold) and the manual-research fallback (if fresh conversation context or live web research is unavailable or cannot be established). Otherwise, once all results are saved, the parent continues automatically into Step 2 within the same response, without waiting for a new message.
