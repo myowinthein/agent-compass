@@ -14,11 +14,11 @@ Finds verified job portals for IT/tech roles in a specified country. Accepts the
 Claude Cowork / Claude Code:
 
 ```
-/claude-compass:portal-finder Germany
-/claude-compass:portal-finder
+/agent-compass:portal-finder Germany
+/agent-compass:portal-finder
 ```
 
-Codex: type `$` and select `portal-finder` from Claude Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
+Codex: type `$` and select `portal-finder` from Agent Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
 
 If you provide a country argument, the assistant uses it directly. If you omit it, the assistant asks first and waits for your answer.
 

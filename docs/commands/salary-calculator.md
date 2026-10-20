@@ -14,10 +14,10 @@ Runs the full Salary Calculator pipeline. Generates ready-to-copy research promp
 Claude Cowork / Claude Code:
 
 ```
-/claude-compass:salary-calculator
+/agent-compass:salary-calculator
 ```
 
-Codex: type `$` and select `salary-calculator` from Claude Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
+Codex: type `$` and select `salary-calculator` from Agent Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
 
 Run it once per session. The assistant resumes automatically if a `.salary-calculator-state.json` file already exists.
 

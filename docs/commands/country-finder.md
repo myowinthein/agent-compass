@@ -14,10 +14,10 @@ Runs the full Country Finder pipeline. Collects your criteria, discovers candida
 Claude Cowork / Claude Code:
 
 ```
-/claude-compass:country-finder
+/agent-compass:country-finder
 ```
 
-Codex: type `$` and select `country-finder` from Claude Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
+Codex: type `$` and select `country-finder` from Agent Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
 
 Run it once per session. The assistant resumes automatically if a `.country-finder-state.json` file already exists.
 

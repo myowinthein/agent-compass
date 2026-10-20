@@ -4,7 +4,7 @@
 
 ## Who We Are
 
-claude-compass is an open source plugin pack for Claude Cowork, Claude Code, and Codex, maintained by Myo Win Thein, providing career research workflows for globally-minded IT/tech job seekers to discover remote-hire and visa-sponsorship countries, calculate local-market salaries, find verified job portals, and screen job descriptions against their resume. This policy covers both the claude-compass documentation site (hosted on GitHub Pages) and the claude-compass plugin itself.
+agent-compass is an open source plugin pack for Claude Cowork, Claude Code, and Codex, maintained by Myo Win Thein, providing career research workflows for globally-minded IT/tech job seekers to discover remote-hire and visa-sponsorship countries, calculate local-market salaries, find verified job portals, and screen job descriptions against their resume. This policy covers both the agent-compass documentation site (hosted on GitHub Pages) and the agent-compass plugin itself.
 
 ## What Data We Collect
 
@@ -44,4 +44,4 @@ We may update this policy from time to time. Material changes will be reflected 
 
 ## Contact
 
-For questions about this Privacy Policy, open an issue at https://github.com/myowinthein/claude-compass/issues.
+For questions about this Privacy Policy, open an issue at https://github.com/myowinthein/agent-compass/issues.

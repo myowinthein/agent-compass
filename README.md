@@ -4,11 +4,11 @@ nav_order: 1
 permalink: /
 ---
 
-# claude-compass
+# agent-compass
 
 Trust your compass.
 
-<img src="docs/images/banner.jpg" alt="claude-compass" width="600">
+<img src="docs/images/banner.jpg" alt="agent-compass" width="600">
 
 A plugin for Claude Cowork, Claude Code, and Codex, built for globally-minded IT/tech job seekers: find remote-hire countries, visa sponsors, and local-market salaries.
 
@@ -21,14 +21,14 @@ A plugin for Claude Cowork, Claude Code, and Codex, built for globally-minded IT
 1. Open **Claude Desktop** and switch to the **Cowork** tab.
 2. Open **Customize** (left sidebar), then the **Plugins** tab.
 3. Click the **Add** button and select **Add marketplace**.
-4. Click **Add from a repository** and paste `myowinthein/claude-compass`.
-5. Once the marketplace is added, find the **claude-compass** card and click **+** to install.
+4. Click **Add from a repository** and paste `myowinthein/agent-compass`.
+5. Once the marketplace is added, find the **agent-compass** card and click **+** to install.
 
 ### Claude Code
 
 ```text
-/plugin marketplace add myowinthein/claude-compass
-/plugin install claude-compass@claude-compass-marketplace
+/plugin marketplace add myowinthein/agent-compass
+/plugin install agent-compass@agent-compass-marketplace
 ```
 
 ### Codex
@@ -36,13 +36,13 @@ A plugin for Claude Cowork, Claude Code, and Codex, built for globally-minded IT
 Add the same repository marketplace and install the plugin:
 
 ```bash
-codex plugin marketplace add myowinthein/claude-compass
-codex plugin add claude-compass@claude-compass-marketplace
+codex plugin marketplace add myowinthein/agent-compass
+codex plugin add agent-compass@agent-compass-marketplace
 ```
 
-Then start a new chat in a writable folder for your career research. In the desktop app, you can also open the Plugins directory, select the added marketplace, and install Claude Compass there.
+Then start a new chat in a writable folder for your career research. In the desktop app, you can also open the Plugins directory, select the added marketplace, and install Agent Compass there.
 
-For local development, replace `myowinthein/claude-compass` in the marketplace-add command with the absolute path to this checkout. Local changes must be refreshed/reinstalled before the installed copy sees them.
+For local development, replace `myowinthein/agent-compass` in the marketplace-add command with the absolute path to this checkout. Local changes must be refreshed/reinstalled before the installed copy sees them.
 
 The existing Claude-compatible manifest is shared by both platforms; there is no second plugin metadata source. See the [OpenAI packaging documentation](https://developers.openai.com/plugins/build/plugins) for compatibility and marketplace support.
 
@@ -53,22 +53,22 @@ The existing Claude-compatible manifest is shared by both platforms; there is no
    _You'll see the marketplace entry at the top and your installed plugins as cards below._
 3. To **update**:
    - Click **3 dots (…)** on the marketplace entry and select **Check for updates** (or enable **Sync automatically**).
-   - Click the settings icon on the **claude-compass** card, then click **Update**.
+   - Click the settings icon on the **agent-compass** card, then click **Update**.
      _The Update button only appears after the marketplace has been synced._
-4. To **uninstall**: click **3 dots (⋮)** on the **claude-compass** card and click **Uninstall**.
+4. To **uninstall**: click **3 dots (⋮)** on the **agent-compass** card and click **Uninstall**.
 
 ### Update / Uninstall in Codex
 
 ```bash
-codex plugin marketplace upgrade claude-compass-marketplace
-codex plugin add claude-compass@claude-compass-marketplace
+codex plugin marketplace upgrade agent-compass-marketplace
+codex plugin add agent-compass@agent-compass-marketplace
 ```
 
-For uninstalling, run `codex plugin remove claude-compass@claude-compass-marketplace` or remove the plugin in the desktop Plugins directory.
+For uninstalling, run `codex plugin remove agent-compass@agent-compass-marketplace` or remove the plugin in the desktop Plugins directory.
 
 ## Usage
 
-The four command names are the same on both platforms. In Cowork or Claude Code, type `/` and choose the command under Claude Compass, or use `/claude-compass:country-finder`. In Codex CLI, type `$` and choose the matching skill (for example `country-finder`, which may be displayed with the `claude-compass:` namespace), or open `/skills`. In the desktop app, select the skill from the composer. The host controls the invocation prefix: Claude uses `/`, Codex CLI uses `$`. See [Codex skill invocation](https://learn.chatgpt.com/docs/build-skills) and [Cowork plugin commands](https://support.claude.com/en/articles/13837440-use-plugins-in-claude).
+The four command names are the same on both platforms. In Cowork or Claude Code, type `/` and choose the command under Agent Compass, or use `/agent-compass:country-finder`. In Codex CLI, type `$` and choose the matching skill (for example `country-finder`, which may be displayed with the `agent-compass:` namespace), or open `/skills`. In the desktop app, select the skill from the composer. The host controls the invocation prefix: Claude uses `/`, Codex CLI uses `$`. See [Codex skill invocation](https://learn.chatgpt.com/docs/build-skills) and [Cowork plugin commands](https://support.claude.com/en/articles/13837440-use-plugins-in-claude).
 
 | Command | What it does |
 |---|---|
@@ -96,10 +96,10 @@ Country Finder, Salary Calculator, and Portal Finder require live web access. Wh
 
 Run `ruby scripts/validate_plugin.rb` to check entry points, resource references, and a relocated installation. Run `bundle exec rake test` for the documentation site. Contributor guidance lives in `AGENTS.md`; `CLAUDE.md` imports it.
 
-Issues and pull requests are welcome at [github.com/myowinthein/claude-compass/issues](https://github.com/myowinthein/claude-compass/issues).
+Issues and pull requests are welcome at [github.com/myowinthein/agent-compass/issues](https://github.com/myowinthein/agent-compass/issues).
 
 ## License
 
-[MIT](https://github.com/myowinthein/claude-compass/blob/main/LICENSE)
+[MIT](https://github.com/myowinthein/agent-compass/blob/main/LICENSE)
 
 <!-- last-reviewed: 0db57abc536b929c52e12ed4aa460d700b71c8c7 -->
