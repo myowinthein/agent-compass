@@ -12,7 +12,7 @@ Trust your compass.
 
 A plugin for Claude Cowork, Claude Code, and Codex, built for globally-minded IT/tech job seekers: find remote-hire countries, visa sponsors, and local-market salaries.
 
-**[Documentation site](https://myowinthein.github.io/claude-compass)**
+**[Documentation site](https://myowinthein.github.io/agent-compass)**
 
 ## Installation
 
@@ -72,10 +72,10 @@ The four command names are the same on both platforms. In Cowork or Claude Code,
 
 | Command | What it does |
 |---|---|
-| [`/country-finder`](https://myowinthein.github.io/claude-compass/docs/commands/country-finder.html) | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
-| [`/salary-calculator`](https://myowinthein.github.io/claude-compass/docs/commands/salary-calculator.html) | Calculate realistic local-market salaries for your target role. |
-| [`/portal-finder`](https://myowinthein.github.io/claude-compass/docs/commands/portal-finder.html) | Find verified job portals for IT/tech roles in a specific country, grouped by type. |
-| [`/job-screener`](https://myowinthein.github.io/claude-compass/docs/commands/job-screener.html) | Screen a job description against your resume and get a structured apply / maybe / skip verdict. |
+| [`/country-finder`](https://myowinthein.github.io/agent-compass/docs/commands/country-finder.html) | Discover countries for remote hire and visa sponsorship, scored against your criteria. |
+| [`/salary-calculator`](https://myowinthein.github.io/agent-compass/docs/commands/salary-calculator.html) | Calculate realistic local-market salaries for your target role. |
+| [`/portal-finder`](https://myowinthein.github.io/agent-compass/docs/commands/portal-finder.html) | Find verified job portals for IT/tech roles in a specific country, grouped by type. |
+| [`/job-screener`](https://myowinthein.github.io/agent-compass/docs/commands/job-screener.html) | Screen a job description against your resume and get a structured apply / maybe / skip verdict. |
 
 Judgment-heavy and arithmetic-heavy steps can be routed to specialist subagents. Claude offers Opus at each eligible step; Codex offers a specialist using your current or configured Codex model and reasoning settings. Delegation is optional, and final ranking and salary verification always run. If the host cannot delegate, the current model runs the step.
 
