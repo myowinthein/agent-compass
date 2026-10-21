@@ -21,7 +21,7 @@ output, error, status = Open3.capture3(
 assert.call(status.success?, "Validator failed under US-ASCII defaults: #{output}#{error}")
 
 manifest = JSON.parse(root.join(".claude-plugin/plugin.json").read(encoding: "UTF-8"))
-assert.call(manifest.fetch("icon") == "./assets/icon.png", "Claude must reference the shared icon")
+assert.call(manifest.fetch("icon") == "./assets/icon.svg", "Claude must reference the shared SVG icon")
 %w[logo composerIcon].each do |field|
   assert.call(manifest.fetch("interface").fetch(field) == manifest.fetch("icon"),
               "Codex #{field} must reference the same image as Claude")
@@ -32,15 +32,24 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
   %w[.claude-plugin commands workflows prompts skills agents helpers data assets].each do |component|
     FileUtils.cp_r(root.join(component), installation)
   end
-  icon = installation.join("assets/icon.png")
-  original = icon.binread
+  icon = installation.join("assets/icon.svg")
+  original = icon.read(encoding: "UTF-8")
   {
     "missing" => nil,
-    "invalid header" => "not a PNG",
-    "non-square" => original.byteslice(0, 20) + [48].pack("N") + original.byteslice(24..),
-    "too small" => original.byteslice(0, 16) + [32, 32].pack("NN") + original.byteslice(24..),
-    "too large" => original.byteslice(0, 16) + [4097, 4097].pack("NN") + original.byteslice(24..),
-    "oversized file" => original.ljust(5 * 1024 * 1024 + 1, "\0")
+    "malformed XML" => "<svg",
+    "wrong root" => original.sub("<svg ", "<html ").sub("</svg>", "</html>"),
+    "wrong namespace" => original.sub("http://www.w3.org/2000/svg", "https://example.com"),
+    "non-square" => original.sub('height="512"', 'height="256"'),
+    "too small" => original.gsub("512", "32"),
+    "non-numeric dimensions" => original.sub('width="512"', 'width="512px"'),
+    "mismatched viewBox" => original.sub('viewBox="0 0 512 512"', 'viewBox="0 0 256 256"'),
+    "embedded bitmap" => original.sub("</svg>", '<image href="data:image/png;base64,AAAA"/></svg>'),
+    "script" => original.sub("</svg>", "<script>alert(1)</script></svg>"),
+    "event handler" => original.sub("<svg ", '<svg onload="alert(1)" '),
+    "external paint" => original.sub('fill="#35251f"', 'fill="url(https://example.com/paint.svg#colour)"'),
+    "document type" => '<!DOCTYPE svg [<!ENTITY colour "red">]>' + original,
+    "external resource" => original.sub("</svg>", '<use href="https://example.com/icon.svg#needle"/></svg>'),
+    "oversized file" => original.ljust(5 * 1024 * 1024 + 1, " ")
   }.each do |label, bytes|
     bytes ? icon.binwrite(bytes) : icon.delete
     rejected = begin
