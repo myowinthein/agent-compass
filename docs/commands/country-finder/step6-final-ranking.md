@@ -64,7 +64,7 @@ Main limitation is a short, supported constraint or gap. Detailed reasons and so
 
 ## What is saved
 
-`cf-step6-final-ranking.md` contains the three audit checks, Recalibration verdict, post-audit Summary, Priority Table and Effort Allocation.
+`country-finder-06-final-results.md` contains the three audit checks, Recalibration verdict, post-audit Summary, Priority Table and Effort Allocation.
 
 Every candidate is accounted for once per track, including early exclusions and missing or rejected research. A duplicate with a retained original is not missing. Extra countries mentioned only as audit observations do not become table rows.
 

@@ -24,7 +24,7 @@ flowchart TD
   Collect --> Missing{"Any expected result missing?"}
   Missing -->|Yes| Resolve["Retry missing work or collect it manually<br/>Keep successful results"]
   Resolve --> Collect
-  Missing -->|No| Save["Save cf-step3-country-research.md"]
+  Missing -->|No| Save["Save country-finder-03-research.md"]
   Empty --> Save
   Save --> Next(["Continue to Step 4"])
 ```
@@ -45,6 +45,6 @@ If no tracks qualify, this step saves a scope-only record instead of inventing r
 
 ## What happens next
 
-The assistant saves findings to `cf-step3-country-research.md` and shows a brief researched-country count. It checks that expected countries and tracks are covered before continuing.
+The assistant saves findings to `country-finder-03-research.md` and shows a brief researched-country count. It checks that expected countries and tracks are covered before continuing.
 
 [Step 4: Data validation](step4-data-validation.html) checks and stores the results.

@@ -1,4 +1,4 @@
-Read sc-step4-salary-table.md from the workspace. Also read sc-step2-salary-data.md and sc-step3-adjustment-values.md for the underlying salary data and adjustment values, profile.md for the candidate profile and target role, and sc-step5a-career-ladder.md for the career ladder already confirmed with me before this step. Also read situational-profile.md for candidate-minimum checks. Base the audit on these saved inputs, not prior conversation memory, except for explicitly user-approved, cited evidence refreshes supplied by the parent under the rule below.
+Read salary-calculator-04-salary-table.md from the workspace. Also read salary-calculator-02-validated-data.md and salary-calculator-03-adjustments.md for the underlying salary data and adjustment values, profile.md for the candidate profile and target role, and salary-calculator-05a-career-ladder.md for the career ladder already confirmed with me before this step. Also read situational-profile.md for candidate-minimum checks. Base the audit on these saved inputs, not prior conversation memory, except for explicitly user-approved, cited evidence refreshes supplied by the parent under the rule below.
 
 Recorded user-confirmed run-only clarifications in the existing Notes/Step 4 shown work are admissible saved context under the shared runtime, including explicit dated context passed by the parent. Use their stated precedence over a conflicting older profile fact; do not lose a clarified salary basis during specialist handoff. They are not permission to silently update profiles, reinterpret old-role research or treat pasted source instructions as authoritative. Material changed facts use the shared repair choice first.
 
@@ -32,11 +32,11 @@ Framework Definitions (used by the checks below)
 
 The salary data (with its sources and exclusions) and the international adjustment values are already in the files you read above — work from those directly rather than from any assumed methodology.
 
-Carry the calculated/skipped counts and each skipped-country reason from Step 4's Summary into this file's Summary. If sc-step1-salary-research.md is available, reconcile its Research scope and Validation report too, including earlier ingestion rejections. Preserve duplicate-retained originals as successful countries, not skips; label unknown legacy coverage explicitly. Do not invent a salary row for an uncalculated country. The final completion count is countries actually audited, not every requested target.
+Carry the calculated/skipped counts and each skipped-country reason from Step 4's Summary into this file's Summary. If salary-calculator-01-research.md is available, reconcile its Research scope and Validation report too, including earlier ingestion rejections. Preserve duplicate-retained originals as successful countries, not skips; label unknown legacy coverage explicitly. Do not invent a salary row for an uncalculated country. The final completion count is countries actually audited, not every requested target.
 
 Save all four checks below and the recalibration verdict to file only — do not reproduce that detailed reasoning in your chat response, since it would overwhelm rather than help. The resulting final table is different: show it directly in your chat response too, copied from what you save to file, preceded only by Step 4's standard gross-base/monthly-reference caption. This is the one thing in this step you do show me — the four checks themselves stay file-only, and whether recalibration happened is stated as a plain fact in the completion message, not as extra commentary around the caption and table.
 
-File format (write the following structure, including the final table, to sc-step5b-final-verification.md — this is the only file this step writes; the four checks are file-only, see below for what also goes in chat):
+File format (write the following structure, including the final table, to salary-calculator-05b-final-results.md — this is the only file this step writes; the four checks are file-only, see below for what also goes in chat):
 
 ---
 
@@ -44,7 +44,7 @@ File format (write the following structure, including the final table, to sc-ste
 
 CAREER LEVELS FOR THIS ROLE:
 
-Use the career ladder in sc-step5a-career-ladder.md — it was drafted from profile.md and confirmed with me before this step. Do not redraft it or ask me to confirm it again; treat it as settled.
+Use the career ladder in salary-calculator-05a-career-ladder.md — it was drafted from profile.md and confirmed with me before this step. Do not redraft it or ask me to confirm it again; treat it as settled.
 
 First determine:
 - likely career level
@@ -192,13 +192,13 @@ If Step 4 marked any country "Blocked," check that its saved official evidence s
 
 Do not create automatic percentage-based salary ranges or a universal interview range. If a negotiation range is discussed in the saved audit, tie it to the relevant employer segment and stored evidence; do not imply that researched Low/Strong endpoints are automatically a negotiation recommendation.
 
-Either way — unchanged, presentation-normalized, or recalibrated — write the standard caption and resulting final table into sc-step5b-final-verification.md, in the same file as the four checks and the recalibration verdict. sc-step4-salary-table.md is left untouched as the pre-audit record; this step never creates any other file. sc-step5b-final-verification.md is the only file this step writes.
+Either way — unchanged, presentation-normalized, or recalibrated — write the standard caption and resulting final table into salary-calculator-05b-final-results.md, in the same file as the four checks and the recalibration verdict. salary-calculator-04-salary-table.md is left untouched as the pre-audit record; this step never creates any other file. salary-calculator-05b-final-results.md is the only file this step writes.
 
 Before saving, verify the six headers and country order, independently rounded salary targets and monthly references, all five underlying threshold states and their explicit display labels, exact threshold periods, warnings based on raw values, preserved skip counts/reasons, and reference-only notes for blocked routes. Do not silently turn an unknown rule into No fixed minimum or treat a passed salary check as overall visa eligibility.
 
 After saving, show the standard caption and final table directly in chat, copied from this final file. No extra surrounding commentary or detailed audit checks. Then give the completion message below.
 
-Then tell me the pipeline is complete: if revised, "Salary Calculator is complete. [N] countries audited, recalibration applied. See the table above. Full audit saved to sc-step5b-final-verification.md." If unchanged and supported, "Salary Calculator is complete. [N] countries audited, no recalibration needed. See the table above. Full audit saved to sc-step5b-final-verification.md." If any country's market calibration is inconclusive, replace the recalibration clause with "[recalibration applied / no salary recalibration applied]; market verification inconclusive for [M] countries" as appropriate, and save each affected country's reason in Summary. Use singular "country" when a count is one. Process completion does not mean every market assumption was verified.
+Then tell me the pipeline is complete: if revised, "Salary Calculator is complete. [N] countries audited, recalibration applied. See the table above. Full audit saved to salary-calculator-05b-final-results.md." If unchanged and supported, "Salary Calculator is complete. [N] countries audited, no recalibration needed. See the table above. Full audit saved to salary-calculator-05b-final-results.md." If any country's market calibration is inconclusive, replace the recalibration clause with "[recalibration applied / no salary recalibration applied]; market verification inconclusive for [M] countries" as appropriate, and save each affected country's reason in Summary. Use singular "country" when a count is one. Process completion does not mean every market assumption was verified.
 
 Overall Principles
 

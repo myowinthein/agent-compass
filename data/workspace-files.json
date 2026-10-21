@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workflows": {
+    "country-finder": {
+      "state": ".country-finder-state.json",
+      "artifacts": {
+        "criteria": {"step": 1, "current": "country-finder-01-criteria.md", "legacy": "cf-step1-criteria.md"},
+        "candidates": {"step": 2, "current": "country-finder-02-candidates.md", "legacy": "cf-step2-candidates.md"},
+        "research": {"step": 3, "current": "country-finder-03-research.md", "legacy": "cf-step3-country-research.md"},
+        "validated-data": {"step": 4, "current": "country-finder-04-validated-data.md", "legacy": "cf-step4-country-data.md"},
+        "assessment": {"step": 5, "current": "country-finder-05-assessment.md", "legacy": "cf-step5-scoring-results.md"},
+        "final-results": {"step": 6, "current": "country-finder-06-final-results.md", "legacy": "cf-step6-final-ranking.md"}
+      }
+    },
+    "salary-calculator": {
+      "state": ".salary-calculator-state.json",
+      "artifacts": {
+        "research": {"step": 1, "current": "salary-calculator-01-research.md", "legacy": "sc-step1-salary-research.md"},
+        "validated-data": {"step": 2, "current": "salary-calculator-02-validated-data.md", "legacy": "sc-step2-salary-data.md"},
+        "adjustments": {"step": 3, "current": "salary-calculator-03-adjustments.md", "legacy": "sc-step3-adjustment-values.md"},
+        "salary-table": {"step": 4, "current": "salary-calculator-04-salary-table.md", "legacy": "sc-step4-salary-table.md"},
+        "career-ladder": {"step": 5, "current": "salary-calculator-05a-career-ladder.md", "legacy": "sc-step5a-career-ladder.md"},
+        "final-results": {"step": 5, "current": "salary-calculator-05b-final-results.md", "legacy": "sc-step5b-final-verification.md"}
+      }
+    }
+  }
+}

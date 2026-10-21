@@ -1,6 +1,6 @@
-Check whether cf-step5-scoring-results.md exists in the workspace. If it does not exist, stop and tell me: "cf-step5-scoring-results.md was not found. Please ensure Step 5 completed successfully before continuing."
+Check whether country-finder-05-assessment.md exists in the workspace. If it does not exist, stop and tell me: "country-finder-05-assessment.md was not found. Please ensure Step 5 completed successfully before continuing."
 
-Read cf-step5-scoring-results.md from the workspace. Also read cf-step2-candidates.md, cf-step4-country-data.md, cf-step1-criteria.md, situational-profile.md, and profile.md from the workspace. cf-step2-candidates.md is the full candidate universe — use it to detect any country that was a Step 2 candidate but never reached Step 4. Base the audit only on these files, not on prior conversation memory.
+Read country-finder-05-assessment.md from the workspace. Also read country-finder-02-candidates.md, country-finder-04-validated-data.md, country-finder-01-criteria.md, situational-profile.md, and profile.md from the workspace. country-finder-02-candidates.md is the full candidate universe — use it to detect any country that was a Step 2 candidate but never reached Step 4. Base the audit only on these files, not on prior conversation memory.
 
 Use recorded, user-confirmed run-only clarifications under the shared runtime as saved context, not hidden memory. Preserve assessed candidate/role/level, path/location and evidence dates with the file-only audit, outside canonical rendered sections. Material changed-input or contradicted-exclusion issues return to the parent for the shared repair choice before finalisation; never silently override an early reason or rewrite completed outputs.
 
@@ -12,7 +12,7 @@ Goal
 
 Perform a focused audit on the Step 5 results across three checks.
 
-Save the three named audit checks and Recalibration verdict at the top of cf-step6-final-ranking.md, before Summary, Priority Table, and Effort Allocation. All audit details stay file-only. This step writes only that existing final file; leave source research and Step 5 outputs untouched.
+Save the three named audit checks and Recalibration verdict at the top of country-finder-06-final-results.md, before Summary, Priority Table, and Effort Allocation. All audit details stay file-only. This step writes only that existing final file; leave source research and Step 5 outputs untouched.
 
 1. Confidence Calibration Check
 
@@ -20,11 +20,11 @@ For each country marked "High confidence," verify the underlying evidence is gen
 
 2. Missing Candidate Check
 
-Compare cf-step2-candidates.md against the countries that actually reached Step 4 and Step 5, and also consider any country that would commonly be expected to appear but is absent. For each missing country, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap — such as being on a Step 2 candidate list but never researched or never reaching Step 4.
+Compare country-finder-02-candidates.md against the countries that actually reached Step 4 and Step 5, and also consider any country that would commonly be expected to appear but is absent. For each missing country, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap — such as being on a Step 2 candidate list but never researched or never reaching Step 4.
 
 Reconcile this per track, not just per country. Preserve each explicit Step 2 "no" and its recorded reason as Excluded, including timezone rejections; missing downstream research after that rejection is expected, not a process gap. Apply this even when resuming from an older Step 5 output that omitted the earlier exclusion. "no evidence found" or absent research without an explicit rejection remains a missing-data case, not Excluded. Never let an earlier exclusion on one track remove the other track.
 
-If cf-step3-country-research.md exists, read its Validation report and available raw blocks to distinguish never-supplied research from researched data rejected in Step 4. Record the exact rejection reason or state that the legacy ingestion outcome is unknown. A duplicate whose original was retained is not a missing country. Do not reinterpret an ingestion error as an evidence-based country exclusion.
+If country-finder-03-research.md exists, read its Validation report and available raw blocks to distinguish never-supplied research from researched data rejected in Step 4. Record the exact rejection reason or state that the legacy ingestion outcome is unknown. A duplicate whose original was retained is not a missing country. Do not reinterpret an ingestion error as an evidence-based country exclusion.
 
 3. Evidence Misuse Check
 
@@ -73,7 +73,7 @@ Below the Summary in the file, also write this Priority Table. Unlike the Summar
 
 The column order and literal display tokens are defined once in the `country` object of data/output-contracts.json. The renderer also supplies a fixed-header Summary table for newly generated results; legacy Summaries remain model-read and are not rewritten on completed replay.
 
-Read Remote Fit and Sponsorship Fit from this step's post-audit Summary, including every supported recalibration and carried exclusion. The Summary is authoritative for final fit classifications; do not copy a superseded Step 5 rating into this table. Leave cf-step5-scoring-results.md untouched as the pre-audit record.
+Read Remote Fit and Sponsorship Fit from this step's post-audit Summary, including every supported recalibration and carried exclusion. The Summary is authoritative for final fit classifications; do not copy a superseded Step 5 rating into this table. Leave country-finder-05-assessment.md untouched as the pre-audit record.
 
 Fit display:
 - Strong, Moderate, Weak, and Excluded retain their exact Summary classification.
@@ -128,10 +128,10 @@ Effort Allocation
 
 Below the Priority Table in the file only (never shown in chat), add a short paragraph expanding its action labels into a practical plan: focused effort and tailored applications for Focus, well-matched openings for Selective, alerts and occasional exceptional matches for Monitor, no active effort for Deprioritize, and research gaps to resolve for Pending evidence. Use the same candidate-specific evidence as the table; do not contradict its labels or allocate effort by an invented numerical formula.
 
-Before saving, check that the Summary and Priority Table agree on every country's final fits (only "not scored (no data)" becomes Unknown for display), that every candidate is accounted for exactly once, that each Priority follows its decision boundary, that each Main limitation is supported and consistent with the audit, and that counts preserve early exclusions. Save the audit checks, Recalibration verdict, Summary, Priority Table, and Effort Allocation to cf-step6-final-ranking.md in the workspace. Its post-audit Summary is the authoritative classification for later steps or pipelines; prefer it over cf-step5-scoring-results.md if both exist. Salary Calculator still selects countries from this Summary and uses the Priority Table's row order, not its Priority labels or limitation text.
+Before saving, check that the Summary and Priority Table agree on every country's final fits (only "not scored (no data)" becomes Unknown for display), that every candidate is accounted for exactly once, that each Priority follows its decision boundary, that each Main limitation is supported and consistent with the audit, and that counts preserve early exclusions. Save the audit checks, Recalibration verdict, Summary, Priority Table, and Effort Allocation to country-finder-06-final-results.md in the workspace. Its post-audit Summary is the authoritative classification for later steps or pipelines; prefer it over country-finder-05-assessment.md if both exist. Salary Calculator still selects countries from this Summary and uses the Priority Table's row order, not its Priority labels or limitation text.
 
-Keep existing output filenames, Summary classifications, and pipeline state unchanged. Completed runs replay their saved final result under the shared runtime; do not migrate or rewrite an older four-column result merely to apply this presentation change.
+Use the shared runtime's resolved output filename, keeping existing saved names, Summary classifications and pipeline state unchanged. Completed runs replay their saved final result under the shared runtime; do not migrate or rewrite an older four-column result merely to apply this presentation change.
 
-After saving, tell me the pipeline is complete: "Country Finder is complete. Results are saved to cf-step6-final-ranking.md if you want to revisit them later without re-running the pipeline. Review the ranked results above." Do not imply a Focus country or an actionable target exists when all results are Deprioritize or Pending evidence. If every row is Pending evidence, replace the final sentence with "Application priorities are pending evidence; see the saved audit for missing research." If there are no rows, replace it with "No countries could be ranked; see the saved audit for exclusions or missing research."
+After saving, tell me the pipeline is complete: "Country Finder is complete. Results are saved to country-finder-06-final-results.md if you want to revisit them later without re-running the pipeline. Review the ranked results above." Do not imply a Focus country or an actionable target exists when all results are Deprioritize or Pending evidence. If every row is Pending evidence, replace the final sentence with "Application priorities are pending evidence; see the saved audit for missing research." If there are no rows, replace it with "No countries could be ranked; see the saved audit for exclusions or missing research."
 
 Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

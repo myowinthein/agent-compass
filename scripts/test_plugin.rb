@@ -27,6 +27,23 @@ assert.call(manifest.fetch("interface").fetch("displayName") == manifest.fetch("
             "Codex and Claude must use the same display name")
 assert.call(root.join("README.md").read(encoding: "UTF-8").match?(/^# Agent Compass$/),
             "README heading must use the product display name")
+
+registry = JSON.parse(root.join("data/workspace-files.json").read(encoding: "UTF-8"))
+registry.fetch("workflows").each do |workflow, spec|
+  prompt_text = root.glob("prompts/#{workflow}/*.md").map { |file| file.read(encoding: "UTF-8") }.join("\n")
+  docs_text = root.glob("docs/commands/#{workflow}*.md").concat(root.glob("docs/commands/#{workflow}/*.md")).map { |file| file.read(encoding: "UTF-8") }.join("\n")
+  spec.fetch("artifacts").each_value do |artifact|
+    assert.call(prompt_text.include?(artifact.fetch("current")), "Prompt omits current artifact: #{artifact}")
+    assert.call(docs_text.include?(artifact.fetch("current")), "Docs omit current artifact: #{artifact}")
+    assert.call(!prompt_text.include?(artifact.fetch("legacy")), "Legacy alias mapping must stay in the registry")
+    root.glob("helpers/compass_lib/*.py").each do |file|
+      assert.call(!file.read(encoding: "UTF-8").include?(artifact.fetch("legacy")), "Python duplicates the filename registry: #{file}")
+    end
+  end
+  assert.call(root.join("workflows/#{workflow}.md").read(encoding: "UTF-8").include?("skills/workspace-files.md"),
+              "Workflow must resolve legacy filenames before accessing saved outputs")
+end
+
 assert.call(manifest.fetch("icon") == "./assets/icon.svg", "Claude must reference the shared SVG icon")
 %w[logo composerIcon].each do |field|
   assert.call(manifest.fetch("interface").fetch(field) == manifest.fetch("icon"),

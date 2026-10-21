@@ -32,7 +32,7 @@ flowchart TD
 
 ## Confirming your career ladder
 
-The assistant drafts a progression suited to your actual IT/tech role, shows it and waits for confirmation or edits. The confirmed ladder is saved to `sc-step5a-career-ladder.md`.
+The assistant drafts a progression suited to your actual IT/tech role, shows it and waits for confirmation or edits. The confirmed ladder is saved to `salary-calculator-05a-career-ladder.md`.
 
 An existing ladder is reused only when its confirmation, role and target level match this run. The specialist does not ask you to confirm it again.
 
@@ -61,10 +61,10 @@ Approved refreshed evidence is cited in the final audit. Any changed visa state 
 
 ## Your result
 
-`sc-step5b-final-verification.md` saves the four checks, recalibration verdict, standard caption, final table and Summary. It preserves calculated/skipped counts and reasons; no row is invented for an uncalculated country.
+`salary-calculator-05b-final-results.md` saves the four checks, recalibration verdict, standard caption, final table and Summary. It preserves calculated/skipped counts and reasons; no row is invented for an uncalculated country.
 
 Chat shows the saved caption and final table, followed by the audited count and outcome. Inconclusive market findings are disclosed rather than described as verified.
 
-The pre-audit `sc-step4-salary-table.md` stays unchanged. Completed runs replay their saved final result without migration.
+The pre-audit `salary-calculator-04-salary-table.md` stays unchanged. Completed runs replay their saved final result without migration.
 
 For model choices and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).

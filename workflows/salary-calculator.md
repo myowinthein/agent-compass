@@ -4,6 +4,8 @@ Run the full Salary Calculator pipeline, resuming from where it left off if a st
 
 ## Before starting
 
+Resolve this workflow's artifact paths using skills/workspace-files.md before accessing saved outputs. Resolve Country Finder separately when its optional results are used. Canonical names below use those resolved paths on legacy runs.
+
 Check if profile.md exists in the workspace. If it does not, read prompts/shared/resume-extraction-prompt.md and follow it first. Wait for my resume and my confirmation of the extracted profile before continuing.
 
 ## State tracking
@@ -12,11 +14,11 @@ Apply the state tracking instructions in prompts/shared/runtime.md with:
 
 - State file: .salary-calculator-state.json in the workspace.
 - Final step: 5 (career ladder and final verification together).
-- Final output: sc-step5b-final-verification.md in the workspace.
+- Final output: salary-calculator-05b-final-results.md in the workspace.
 
 ## Presentation compatibility
 
-The literal table contract lives in data/output-contracts.json; prompts/salary-calculator/step4-table-calculation.md owns its semantic procedure, and Step 5b audits and presents it. Read the contract as data even during approved manual fallback. Do not duplicate its columns or formulas in host adapters. Keep research field names, output filenames, and pipeline state unchanged. Unfinished legacy runs are interpreted by Step 5b's compatibility rule; completed runs replay the saved final result without migration or new research.
+The literal table contract lives in data/output-contracts.json; prompts/salary-calculator/step4-table-calculation.md owns its semantic procedure, and Step 5b audits and presents it. Read the contract as data even during approved manual fallback. Do not duplicate its columns or formulas in host adapters. Keep research field names and pipeline state unchanged; use the shared filename resolution rather than renaming existing outputs. Unfinished legacy runs are interpreted by Step 5b's compatibility rule; completed runs replay the saved final result without migration or new research.
 
 ## Sequence
 
