@@ -21,7 +21,7 @@ flowchart TD
   Exclude --> Sponsorship["Assess all Sponsorship tracks independently<br/>Keep any visa-pay comparison informational"]
   Fit --> Sponsorship
   Sponsorship --> Coverage["Account for every country on each track<br/>Fit, exclusion or missing-data reason"]
-  Coverage --> Save["Save cf-step5-scoring-results.md<br/>Keep reasoning and evidence in the file"]
+  Coverage --> Save["Save country-finder-05-assessment.md<br/>Keep reasoning and evidence in the file"]
   Save --> Next(["Show brief scored and excluded counts<br/>Continue to the final audit"])
 ```
 
@@ -43,6 +43,6 @@ Salary Calculator's local-employee benchmarks are not evidence of cross-border r
 
 ## What happens next
 
-Full assessments are saved to `cf-step5-scoring-results.md`. Chat shows only brief counts.
+Full assessments are saved to `country-finder-05-assessment.md`. Chat shows only brief counts.
 
 You may choose a [specialist agent]({{ '/docs/specialist-agents.html' | relative_url }}) or keep your current model. Either way, [Step 6: Final Ranking](step6-final-ranking.html) runs next.

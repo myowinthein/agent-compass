@@ -2,6 +2,7 @@
 
 from salary_targets import calculate
 from .common import array, cell, contract, country_map, display_country, fields, identity, named, number, read, require, text, workspace
+from .files import definition, resolve
 
 
 def table(headers, rows, alignment=None):
@@ -144,9 +145,13 @@ def country(payload):
 def check_saved(payload):
     fields(payload, ("workspace", "file", "kind", "render_input"))
     require(payload["kind"] in ("salary", "country"), "Unknown rendered kind")
-    allowed = ("sc-step4-salary-table.md", "sc-step5b-final-verification.md") if payload["kind"] == "salary" else ("cf-step6-final-ranking.md",)
-    require(payload["file"] in allowed, "Unsupported rendered output filename")
-    saved = read(named(workspace(payload["workspace"]), payload["file"])).decode("utf-8").replace("\r\n", "\n")
+    workflow = "salary-calculator" if payload["kind"] == "salary" else "country-finder"
+    allowed = ("salary-table", "final-results") if payload["kind"] == "salary" else ("final-results",)
+    matches = [key for key, artifact in definition(workflow)["artifacts"].items()
+               if key in allowed and payload["file"] in (artifact["current"], artifact["legacy"])]
+    require(len(matches) == 1, "Unsupported rendered output filename")
+    root = workspace(payload["workspace"])
+    saved = read(named(root, resolve(root, workflow)["files"][matches[0]])).decode("utf-8").replace("\r\n", "\n")
     rendered = salary(payload["render_input"]) if payload["kind"] == "salary" else country(payload["render_input"])
     header = rendered["table_markdown"].splitlines()[0] + "\n"
     require(saved.count(header) == 1, "Saved table must occur exactly once")

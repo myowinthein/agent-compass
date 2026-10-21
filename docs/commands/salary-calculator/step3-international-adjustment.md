@@ -19,7 +19,7 @@ flowchart TD
   Basis -->|Yes| Estimate["State the range, typical reduction and evidence basis<br/>Assign label and confidence"]
   Estimate --> Check["Check bounds, midpoint and confidence limits<br/>The helper does not judge evidence quality"]
   Basis -->|No| Unknown["Record Adjustment not estimable<br/>Name the gap; do not substitute 0 percent"]
-  Check --> Save["Save sc-step3-adjustment-values.md"]
+  Check --> Save["Save salary-calculator-03-adjustments.md"]
   Unknown --> Save
   Save --> Next(["Show estimated and unestimable counts<br/>Continue to Step 4"])
 ```
@@ -50,6 +50,6 @@ If no defensible common percentage exists, the result is **Adjustment not estima
 
 ## What happens next
 
-`sc-step3-adjustment-values.md` saves each country's estimate, confidence and reasoning, or its unestimable reason. Chat shows brief counts.
+`salary-calculator-03-adjustments.md` saves each country's estimate, confidence and reasoning, or its unestimable reason. Chat shows brief counts.
 
 You can choose a [specialist agent]({{ '/docs/specialist-agents.html' | relative_url }}) or keep your current model. The workflow then continues to [Step 4: Table calculation](step4-table-calculation.html).

@@ -24,6 +24,27 @@ Keep one candidate and research scope per workspace. Country Finder, Salary Calc
 
 Country Finder and Salary Calculator save checkpoints and results in that workspace. Portal Finder and Job Screener do not use checkpoint files.
 
+### Output filenames
+
+Fresh workflows use `<command>-<step-number>-<content>.md`. Two-digit step numbers keep the files in order, and `final-results` identifies the audited deliverable.
+
+| Country Finder | Salary Calculator |
+|---|---|
+| `country-finder-01-criteria.md` | `salary-calculator-01-research.md` |
+| `country-finder-02-candidates.md` | `salary-calculator-02-validated-data.md` |
+| `country-finder-03-research.md` | `salary-calculator-03-adjustments.md` |
+| `country-finder-04-validated-data.md` | `salary-calculator-04-salary-table.md` |
+| `country-finder-05-assessment.md` | `salary-calculator-05a-career-ladder.md` |
+| `country-finder-06-final-results.md` | `salary-calculator-05b-final-results.md` |
+
+Salary Calculator's `05a` and `05b` remain parts of Step 5. Profiles and checkpoint filenames have not changed.
+
+Existing runs keep their earlier `cf-step…` or `sc-step…` names, including files produced when those runs resume. Names shown on these pages describe fresh runs; completion messages point to the actual saved file. There is no automatic renaming or duplicate copy. Each workflow chooses its names independently, so a new Salary Calculator run can read an older Country Finder result.
+
+If a workspace contains both names for the same output, the assistant stops for clarification without changing either file. A mixed workspace with only one name per output remains usable: existing names are retained and missing outputs use legacy names when any legacy output is present.
+
+Portal Finder and Job Screener continue to return results in chat, without automatic per-country or per-job result files.
+
 ### Starting or resuming a saved workflow
 
 An unfinished run resumes from its next step, keeping successful research. A completed run replays its saved final without restarting or reformatting it.

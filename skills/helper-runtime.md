@@ -19,6 +19,7 @@ python3 -I -B "<plugin-root>/helpers/compass.py" <subcommand>
 
 Read only the applicable interface:
 
+- Current/legacy artifact paths: `skills/workspace-files.md`; `resolve-files` takes `{workspace, workflow}` and writes nothing.
 - Research scope, blocks and storage: `skills/research-helper.md`.
 - Exact salary/range/FX or dated timezone arithmetic: `skills/comparison-helper.md`.
 - Country Finder/Salaries rendering and saved-output checks: `skills/output-helper.md`.
@@ -38,4 +39,4 @@ Failure handling:
 
 Local tool-permission prompts remain the host's decision; one run-scoped fallback choice cannot grant extra filesystem access. No helper validates the truth of research, human approval, legal eligibility or that a saved output belongs to a changed profile.
 
-For an unfinished Country Finder or Salary Calculator resume, and after a stage output is saved but before the parent advances state, use `state-check` with `{workspace, workflow}`. It checks the existing two-field checkpoint and required named files without writing. At a just-finished stage it reports the old checkpoint; the parent must still inspect the new output and obtain required confirmations before updating it. Completed runs replay saved finals without revalidation or migration. If state-check is unavailable, use the explicitly approved manual checks; it never becomes permission to skip a checkpoint.
+For an unfinished Country Finder or Salary Calculator resume, and after a stage output is saved but before the parent advances state, use `state-check` with `{workspace, workflow}`. It resolves current/legacy filenames and checks the existing two-field checkpoint without writing. Its `files`, `naming` and `existing_outputs` fields expose resolved paths and orphan outputs even when state is missing. At a just-finished stage it reports the old checkpoint; the parent must still inspect the new output and obtain required confirmations before updating it. Completed runs replay saved finals without revalidation or migration. If state-check is unavailable, use the explicitly approved manual checks; it never becomes permission to skip a checkpoint.

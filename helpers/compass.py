@@ -21,12 +21,12 @@ def main():
     if sys.version_info < (3, 11):
         emit({"error": {"kind": "runtime_unavailable", "message": "Python 3.11 or newer is required"}}, sys.stderr)
         return 3
-    from compass_lib import money, research, state, tables, timezones
+    from compass_lib import files, money, research, state, tables, timezones
     from compass_lib.common import LIMIT, Problem, loads, require
     commands = {"batch-partition": research.partition, "research-scan": research.scan, "ingest": research.ingest,
                 "compare": money.compare, "adjust-check": money.adjust, "tz-offsets": timezones.offsets,
                 "render-cf": tables.country, "render-salary": tables.salary,
-                "check-saved": tables.check_saved, "state-check": state.check}
+                "check-saved": tables.check_saved, "state-check": state.check, "resolve-files": files.resolve_request}
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=commands)
     arguments = parser.parse_args()

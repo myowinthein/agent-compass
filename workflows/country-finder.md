@@ -4,6 +4,8 @@ Run the full Country Finder pipeline, resuming from where it left off if a state
 
 ## Before starting
 
+Resolve this workflow's artifact paths using skills/workspace-files.md before accessing saved outputs. Canonical names below use those resolved paths on legacy runs.
+
 Check if profile.md exists in the workspace. If it does not, read prompts/shared/resume-extraction-prompt.md and follow it. Wait for the resume and confirmation of the extracted profile, and for profile.md to be saved, before continuing.
 
 ## State tracking
@@ -12,7 +14,7 @@ Apply the state tracking instructions in prompts/shared/runtime.md with:
 
 - State file: .country-finder-state.json in the workspace.
 - Final step: 6.
-- Final output: cf-step6-final-ranking.md in the workspace.
+- Final output: country-finder-06-final-results.md in the workspace.
 
 ## Sequence
 

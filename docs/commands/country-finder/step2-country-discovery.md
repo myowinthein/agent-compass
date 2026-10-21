@@ -26,7 +26,7 @@ flowchart TD
   Research --> Coverage["Collect results and check every country<br/>Resolve missing results"]
   Manual --> Coverage
   Coverage --> TZ["Apply your remote timezone limit, if any<br/>Check relevant hubs and seasonal changes"]
-  TZ --> Save(["Save cf-step2-candidates.md<br/>Continue to Step 3"])
+  TZ --> Save(["Save country-finder-02-candidates.md<br/>Continue to Step 3"])
 ```
 
 ## Choosing countries
@@ -52,6 +52,6 @@ This filter affects Remote only. It is skipped when you chose "no limit".
 
 ## What happens next
 
-Results are saved to `cf-step2-candidates.md`. Chat shows a brief count rather than every finding.
+Results are saved to `country-finder-02-candidates.md`. Chat shows a brief count rather than every finding.
 
 Once all required results are collected, the workflow continues to [Step 3: Research prompt generator](step3-research-prompt-generator.html).

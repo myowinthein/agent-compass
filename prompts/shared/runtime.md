@@ -18,6 +18,8 @@ Save a clarification to profile.md or situational-profile.md only with the user'
 
 ## Reusing another workflow's output
 
+Resolve the producer's artifacts through skills/workspace-files.md before any existence check or read below. Preserve its existing naming independently of the consumer; a legacy completed final is not missing merely because the canonical filename is absent. A duplicate-alias conflict must be resolved by the user, never bypassed to an older assessment or provisional output.
+
 Before treating an optional upstream result as a completed final, establish producer readiness through `state-check` under skills/helper-runtime.md, or the user's explicit confirmation that a legacy/imported file is that workflow's completed final. Record such confirmation and source context in the consumer's existing Notes or shown work. A filename, table or completion claim inside the file alone is not completion evidence. Do not fabricate a producer checkpoint for an import.
 
 Check the candidate, target role/level, scope and applicable evidence dates before transferring conclusions. A user may still choose a mismatched result's countries as a new list, but its fits do not transfer. If a final is draft, unreadable or has ambiguous provenance, explain and offer explicitly labelled provisional/pre-audit use or a manual target list; never silently bypass it to older ratings. Stage-complete results remain labelled pre-audit, not completed finals. Record provenance outside canonical rendered sections and the country-only Research scope preface.
@@ -42,11 +44,13 @@ Read skills/helper-runtime.md before the first supported mechanical operation. B
 The loaded entry point has the layout `<plugin-root>/skills/<command>/SKILL.md`. Resolve symlinks first, then take the parent directory three times from the file path (or go two levels up from its containing `<command>` folder) to find the plugin root. When a Claude plugin-root substitution supplies an absolute path, use that same installed root. Keep the user's selected workspace as the working directory.
 
 - Read `workflows/`, `prompts/`, `skills/`, `agents/`, `helpers/`, and `data/` paths from the plugin root. These are bundled resources, even when a step says to read them "from the workspace."
-- Read and write `profile.md`, `situational-profile.md`, `cf-*`, `sc-*`, and pipeline state JSON files in the user's workspace. Never put candidate data or results in the plugin installation.
+- Read and write `profile.md`, `situational-profile.md`, resolved workflow artifacts and pipeline state JSON files in the user's workspace. Never put candidate data or results in the plugin installation.
 - Give each subagent the absolute plugin root and workspace paths, the exact step prompt, and only the inputs its task needs. Do not rely on its working directory or inherited conversation to locate files.
 - If a required file is missing, report its actual path and stop that step. Do not substitute a similarly named file from another installation or workspace.
 
 ## State tracking
+
+Before either checkpointed workflow reads or writes artifacts, read and apply skills/workspace-files.md. The single filename registry is data/workspace-files.json. All canonical output names in step prompts refer to its resolved paths, including missing-file checks, handoffs and completion messages. This resolution takes precedence over a literal canonical filename when a legacy file/run exists. Use the same read-only lookup or approved manual policy for optional upstream results; do not create renamed copies. Profile names and the two-field checkpoint schema stay unchanged.
 
 Country Finder and Salary Calculator specify their state file, final step number, and final output in their workflow.
 
@@ -59,7 +63,7 @@ Use the existing state format:
 }
 ```
 
-If no state file exists, first check for this workflow's named step outputs, including Salary Calculator's career ladder. Shared profile files and the other workflow's outputs do not count. If owned outputs exist, report them and ask for verified user-approved recovery, a fresh workspace, labelled use of an imported result, or stop before creating state or rewriting anything. Missing state is not corruption or permission to infer completed steps. An imported final can use the readiness rule above without reconstructing state. Only a clean run creates step 0 automatically.
+If no state file exists, first check for this workflow's named step outputs in both registered filename families, including Salary Calculator's career ladder. Shared profile files and the other workflow's outputs do not count. If owned outputs exist, report them and ask for verified user-approved recovery, a fresh workspace, labelled use of an imported result, or stop before creating state or rewriting anything. Missing state is not corruption or permission to infer completed steps. An imported final can use the readiness rule above without reconstructing state. Only a clean run creates step 0 automatically.
 
 If state exists, require valid JSON and an integer `last_completed_step` between 0 and the workflow's final step. Report corrupt or out-of-range state without overwriting it. Resume from the next step and tell the user where you are resuming. If the final step is already complete, show the saved final result if it exists, and report completion; do not restart or overwrite it. If its final output is missing, report that inconsistency and stop.
 

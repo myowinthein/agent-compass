@@ -58,6 +58,6 @@ Some steps offer a [specialist agent]({{ '/docs/specialist-agents.html' | relati
 
 Chat shows Country, Visa salary rule, Mainstream Annual, Premium Annual, Mainstream Monthly and Premium Monthly. Targets stay in local currency and are not raised to satisfy a visa rule or your salary minimum.
 
-The full audit is saved to `sc-step5b-final-verification.md`. An inconclusive audit is stated plainly rather than presented as verified market advice.
+The full audit is saved to `salary-calculator-05b-final-results.md`. An inconclusive audit is stated plainly rather than presented as verified market advice.
 
 Interrupted runs use `.salary-calculator-state.json`. See [shared workspaces and saved results]({{ '/docs/commands#shared-workspaces-and-saved-results' | relative_url }}) for recovery and [Calculation runtime](salary-calculator/step4-table-calculation.html#calculation-runtime) for Python requirements.
