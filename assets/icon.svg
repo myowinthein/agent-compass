@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Agent Compass</title>
+  <desc id="desc">A brown and brass compass with an ivory dial and a red needle, inspired by the compass in the Agent Compass banner.</desc>
+  <circle cx="256" cy="256" r="232" fill="#35251f"/>
+  <circle cx="256" cy="256" r="220" fill="#90603b"/>
+  <path d="M36 256a220 220 0 0 1 440 0h-16a204 204 0 0 0-408 0Z" fill="#bf8e53"/>
+  <circle cx="256" cy="256" r="192" fill="#49382a"/>
+  <circle cx="256" cy="256" r="180" fill="#e8dfc7"/>
+  <path d="M76 256a180 180 0 0 1 360 0h-12a168 168 0 0 0-336 0Z" fill="#d4c6a4"/>
+  <path d="M256 100v28m128 128h28M256 384v28M100 256h28" fill="none" stroke="#514534" stroke-width="14" stroke-linecap="round"/>
+  <path d="m150 150 12 12m188-12-12 12m12 188-12-12m-188 12 12-12" fill="none" stroke="#948568" stroke-width="10" stroke-linecap="round"/>
+  <g transform="rotate(-24 256 256)" stroke="#49382a" stroke-width="8" stroke-linejoin="round">
+    <path d="m256 120 38 136-38 136-38-136Z" fill="#faf4e4"/>
+    <path d="m256 120 38 136h-76Z" fill="#b74636"/>
+    <path d="m256 120 38 136h-38Z" fill="#8f302b" stroke="none"/>
+  </g>
+  <circle cx="256" cy="256" r="18" fill="#49382a"/>
+  <circle cx="256" cy="256" r="9" fill="#c19456"/>
+</svg>
