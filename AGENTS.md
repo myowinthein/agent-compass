@@ -20,8 +20,7 @@ This is the user's preferred pairing with GPT-6.1 Sol at high effort, not a clai
 
 ## Shared sources
 
-- `skills/<command>/SKILL.md`: portable entry points. These only reference the shared runtime and their corresponding workflow.
-- `commands/<command>.md`: legacy command adapters. These only reference the portable entry points and pass through arguments. The manifest's `commands: []` disables their discovery in both hosts; only shared skills are exposed, avoiding duplicate commands and Codex's generated `source-command-*` entries.
+- `skills/<command>/SKILL.md`: the only portable entry points for both hosts. These only reference the shared runtime and their corresponding workflow. Keep the manifest's `commands: []` safeguard and do not reintroduce legacy command adapters or Codex's generated `source-command-*` entries.
 - `workflows/<command>.md`: the single source of orchestration for each workflow.
 - `prompts/<command>/`: canonical step instructions, output formats, and domain decisions.
 - `prompts/shared/runtime.md`: packaged resource paths, workspace state tracking, host-specific delegation, and research fallback.

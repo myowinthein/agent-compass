@@ -38,7 +38,6 @@ exclude:
   - .DS_Store
   - .claude/
   - agents/
-  - commands/
   - data/
   - helpers/
   - prompts/
