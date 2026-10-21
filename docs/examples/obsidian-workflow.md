@@ -8,7 +8,7 @@ permalink: /docs/examples/obsidian-workflow.html
 
 # My Obsidian workflow
 
-This is how I organise my job search. Obsidian and this folder structure are optional, not requirements for Agent Compass. All examples below use fictional data.
+This is how I organise my job search. Obsidian and this folder structure are optional, not requirements for Agent Compass. The people, companies and salary targets in the examples are fictional; the visa salary rules are sourced below.
 
 ## Why I use Obsidian
 
@@ -44,20 +44,21 @@ I save the final priority table from [`country-finder`]({{ '/docs/commands/count
 | 🇩🇪 Germany | 🥇 Focus | Moderate | Strong | Fewer remote roles accept the candidate's location |
 | 🇳🇱 Netherlands | 🥈 Selective | Strong | Unknown | Sponsorship evidence needs further checking |
 
-These are fictional examples, not country recommendations.
-
 ### Salary expectations
 
 I save the final table from [`salary-calculator`]({{ '/docs/commands/salary-calculator.html' | relative_url }}) as a reference for applications and salary discussions.
 
-Gross base salary in local currency. Monthly figures are annual ÷ 12 references, not necessarily payslips; targets are market estimates, not visa-eligibility guarantees.
-
 | Country | Visa salary rule | Mainstream Annual | Premium Annual | Mainstream Monthly | Premium Monthly |
 |---|---|---:|---:|---:|---:|
-| 🇩🇪 Germany (EUR) | Unknown | 60,000 | 78,000 | 5,000 | 6,500 |
-| 🇳🇱 Netherlands (EUR) | Unknown | 65,000 | 84,000 | 5,400 | 7,000 |
+| 🇩🇪 Germany (EUR) | 50,700/yr | 60,000 | 78,000 | 5,000 | 6,500 |
+| 🇳🇱 Netherlands (EUR) | 5,942/mo ⚠️ | 65,000 | 84,000 | 5,400 | 7,000 |
 
-These figures are fictional and do not represent current salaries or visa rules.
+2026 visa salary rules, checked on 21 October 2026:
+
+- 🇩🇪 Germany: [standard EU Blue Card threshold](https://www.arbeitsagentur.de/vor-ort/zav/working-and-living-in-germany/iss-en/issue-03-2026/blue-card), gross annual pay.
+- 🇳🇱 Netherlands: [highly skilled migrant threshold for a first application at age 30 or over](https://ind.nl/en/documents/01-2026/business-newsletter-18-december-2025.pdf), gross monthly pay excluding holiday allowance.
+
+The example assumes 12 equal monthly base payments. ⚠️ marks a Mainstream target below the selected rule. Other routes and applicant categories can have different thresholds.
 
 ### Saved portal searches
 
@@ -69,45 +70,40 @@ For example, this section of `Profile.md` might look like:
 ## Portals
 
 - 🇩🇪 Germany
-    - [x] [Example Jobs](https://example.invalid/germany/backend) (Northstar Labs)
-    - [ ] [Example Tech](https://example.invalid/germany/software)
+    - [x] [LinkedIn](https://www.linkedin.com/jobs/search/?keywords=software%20engineer&location=Germany&sortBy=DD) (Northstar Labs)
+    - [ ] [Arbeitnow](https://www.arbeitnow.com/jobs/php?sort_by=newest)
 - 🇳🇱 Netherlands
-    - [ ] [Example Jobs](https://example.invalid/netherlands/backend)
+    - [ ] [LinkedIn](https://www.linkedin.com/jobs/search/?keywords=software%20engineer&location=Netherlands&sortBy=DD)
 ```
 
-The checkbox tracks whether a search has been reviewed. The company in parentheses marks where the previous scan reached, helping me avoid repeatedly reviewing older results. It does not mean I applied there.
+## My daily job search
 
-My dashboard also holds useful background information and reusable answers to common application questions.
+Each day, I work through the saved portal links:
+
+1. Open a portal search with results sorted newest first.
+2. Copy the company marker from my note and find it in the results.
+3. Review the newer jobs above that company. If I cannot find the marker, I keep reviewing the available results rather than assuming there are no new jobs.
+4. When finished, replace the marker with the company at the top of the latest results and tick the portal's checkbox.
+
+The marker records where my search reached, not a company I necessarily applied to. Some searches, such as LinkedIn AI Search, do not use company markers.
 
 ## My application history
 
-Each country note groups companies by the portal where I applied.
+Before applying, I use [`job-screener`]({{ '/docs/commands/job-screener.html' | relative_url }}) to compare the job with my profile. After I apply, I add the company under the relevant portal in its country note so I do not apply to the same company again by mistake.
 
 For example, `1. 🇩🇪 Germany.md` might contain:
 
 ```markdown
-## Example Jobs
+## LinkedIn
 
 - [ ] Northstar Labs
 - [x] Cedar Systems
 
-## Example Tech
+## Arbeitnow
 
 - [ ] Lantern Studio
 ```
 
-An unchecked company means the application is still open. A checked company means it is closed.
+I leave the company unchecked while the application is open. If I receive a rejection or decide not to continue, I tick its checkbox to mark it closed.
 
 This history is separate from the portal checkboxes: reviewing a search is not the same as applying to a job.
-
-## How the commands fit into my routine
-
-I start with `country-finder`, then use `portal-finder` and `salary-calculator` for my target countries. I collect the useful results in my dashboard.
-
-When I find an interesting opening, I use [`job-screener`]({{ '/docs/commands/job-screener.html' | relative_url }}) to compare it with my profile. After I apply, I record the company in the relevant country note.
-
-I also use a separate personal `job-scan` skill to review saved portal searches and identify jobs worth considering. It checks my application history and updates search progress, but does not apply for me or add companies to my application history. It is not included in Agent Compass.
-
-## Keep the dashboard separate from workflow files
-
-My Obsidian `Profile.md` is a personal dashboard, not Agent Compass's generated `profile.md`. I keep the command workspace separate and preserve its generated filenames. Names that differ only by capitalisation can conflict on macOS.
