@@ -38,6 +38,8 @@ flowchart TD
 
 Sponsorship briefs also embed the supplied age/date reference, residence and work-rights facts needed to check the applicable official threshold category. Unknown facts remain unknown rather than selecting an age-dependent threshold by assumption.
 
+Both tracks receive their relevant settled level, dated experience, location, languages and work status. Remote pay keeps its currency, period, gross/net basis and engagement type, and must apply to the candidate's working location. The existing threshold field retains the shared five visa states and the applicable category, period and official evidence instead of an ambiguous "none known".
+
 ## Prompt structure per country
 
 Each prompt covers only the track(s) Step 2 marked "yes" for that country:
@@ -76,6 +78,8 @@ Each country's prompt is run as a separate fresh-context research task. Each age
 Fresh conversation context does not guarantee filesystem isolation. Before delegation, the parent checks that fresh conversation context and live web research are available. If either capability is unavailable or cannot be established, it shows all prompts and waits for you to bring back results manually.
 
 ## Output
+
+Eligible countries are saved before collection. With zero eligible tracks, a scope-only record leads to an empty stored-data record and a final audit of the known exclusions and gaps. Discovery with no evidence is distinguished from detailed research that was never run; an all-Pending result is valid and does not automatically trigger more research.
 
 - `cf-step3-country-research.md`: per-country research results, appended as each agent completes. The assistant does not reproduce these findings in chat; only a brief summary (countries researched) and confirmation that the file is saved for Step 4 to validate and store.
 

@@ -10,6 +10,7 @@ Rules:
 * If something is unclear, ambiguous, inconsistent, conflicting, or missing, do not silently resolve it. List it under [NEEDS CONFIRMATION]. If conflicting (e.g. two different end dates for the same role), list all versions — do not pick one.
 * Do not improve, rewrite, or embellish anything. This is extraction, not editing.
 * Do not state a total years of experience figure unless the resume states it directly or it can be derived from listed role dates. If deriving it from dates, show the calculation so it can be checked.
+* Count overlapping calendar periods once in a derived total, and state the as-of date used for "Present". Derive skill-specific years only when dated role evidence explicitly links that skill to the period, not from a standalone skills list. Keep uncertain dates/precision under [NEEDS CONFIRMATION]. Preserve stated totals and flag discrepancies for confirmation rather than silently correcting them. Existing profiles are reused with their recorded date basis, not silently aged or rejected.
 * Preserve exact numbers, dates, titles, and technology names as written in the resume.
 * Always output in the exact format below, even if some sections are empty. Mark empty sections as "Not stated."
 

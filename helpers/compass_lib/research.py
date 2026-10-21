@@ -103,24 +103,42 @@ def blocks(raw, scope=None, aliases=None):
 
 def missing_fields(block, workflow, tracks):
     """Missing canonical labels need human semantic review, not guessed synonyms."""
-    value = block["raw"].decode("utf-8").casefold()
     if workflow == "salary-calculator":
-        required = ["mid-size / mainstream local-market tier:", "premium / international / remote-first tier:"]
-        for heading in required:
-            if heading not in value:
-                return [heading]
-        positions = [(label, value.index(label)) for label in required]
-        sections = [value[start + len(label):min([other for _, other in positions if other > start], default=len(value))]
-                    for label, start in positions]
-        return [name for label, section in zip(required, sections)
-                for name in [label + " " + field for field in ("low:", "realistic:", "strong:", "sources:") if field not in section]]
-    required = {
-        "remote": ["remote track", "confirmed salary range:", "hiring prevalence evidence:", "payment structure norms:", "sources:"],
-        "sponsorship": ["sponsorship track", "visa or pathway name:", "minimum salary threshold:", "employer willingness:",
-                        "processing time:", "quota or cap limitations:", "family or dependent provisions:",
-                        "citizenship-specific considerations:", "sources:"],
-    }
-    return [track + ": " + label for track in tracks for label in required[track] if label not in value]
+        required = {heading: ("low", "realistic", "strong", "sources") for heading in
+                    ("mid-size / mainstream local-market tier", "premium / international / remote-first tier")}
+        headings = {heading: heading for heading in required}
+    else:
+        required = {track: labels for track, labels in {
+            "remote": ("confirmed salary range", "hiring prevalence evidence", "payment structure norms", "sources"),
+            "sponsorship": ("visa or pathway name", "minimum salary threshold", "employer willingness",
+                            "processing time", "quota or cap limitations", "family or dependent provisions",
+                            "citizenship-specific considerations", "sources"),
+        }.items() if track in tracks}
+        headings = {track + " track": track for track in ("remote", "sponsorship")}
+    sections, current, fence = {}, None, None
+    for line in block["raw"].decode("utf-8").split("\n"):
+        marker = re.match(r"^ {0,3}(`{3,}|~{3,})([^\r\n]*)", line)
+        if fence:
+            if marker and marker[1][0] == fence[0] and len(marker[1]) >= len(fence) and not marker[2].strip():
+                fence = None
+            continue
+        if marker:
+            fence = marker[1]
+            continue
+        field = re.match(r"^ {0,3}(?:#{1,6}[ \t]+)?(?:[-+*] )?([^:\r\n]+):", line)
+        if not field:
+            continue
+        label = field[1].strip().strip("*_").strip().casefold()
+        heading = re.sub(r" \([^()]*\)$", "", label)
+        if heading in headings:
+            current = headings[heading]
+            sections.setdefault(current, set())
+        elif label in ("notes", "sponsorship salary threshold", "evidence grade"):
+            current = None
+        elif current is not None:
+            sections[current].add(label)
+    return [heading + ": " + label + ":" for heading, labels in required.items()
+            for label in labels if label not in sections.get(heading, set())]
 
 
 def inspect(payload, ingest=False):

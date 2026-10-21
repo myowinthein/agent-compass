@@ -46,6 +46,8 @@ flowchart TD
 
 Before asking cold, the assistant checks for Country Finder's output. When `cf-step6-final-ranking.md` exists, it selects each country with at least one Strong or Moderate final fit exclusively from the post-audit Summary, not the Priority Table, medals, or older ratings. This also handles legacy files whose Summary and Priority Table disagree. If the Summary is missing or unreadable, it explains and asks for your target list rather than silently using pre-audit data.
 
+Before calling a result final, it checks producer completion or your explicit confirmation of an imported final. Draft or mismatched-role output can be used only with clear provenance and your choice; its fit claims do not silently transfer. Stored research invalidated by the audit is Unknown, not independently eligible. Source context is recorded in existing Notes, not in the country-only Research scope preface.
+
 Only when the final file is absent does it use `cf-step5-scoring-results.md`, explicitly identifying that list as pre-audit. It shows the selected list and asks whether to use it as-is, add countries, remove countries, or start fresh. An empty eligible list prompts you to provide targets or stop, never to resurrect superseded ratings. If neither file exists, or you choose to start fresh, it asks for your target list directly.
 
 ## Prompt content

@@ -29,6 +29,8 @@ For legacy reports, the parent shows the affected region and asks what is genera
 
 Check every block against the step's required fields. Missing labels can be a formatting variation, not proof that the data is absent: inspect the raw block. Reject genuinely incomplete data with its exact reason. Only after confirming all required content exists under an unambiguous legacy label may you set `reviewed_fields: true`. This is the model's semantic review, not independent verification of source claims. An unrecognized country cannot be made valid merely by accepting its block.
 
+Field checks are scoped to each CF track or SC tier, outside quoted/fenced examples; SC's trailing threshold, evidence grade and Notes do not supply tier Sources. A newly flagged legacy layout uses the same semantic-review path, not automatic rejection. A country-only Research scope may contain `none` for an empty eligible set; do not add candidate context or origin prose to that block-free preface. Supply context in the brief for the researcher's Notes, or save it later in parent-authored criteria/shown work/audit prose under the shared runtime. Never edit collected Notes or append parent context to raw research.
+
 ## Store
 
 Only the parent runs `ingest`. Reuse the scan request plus its exact `source_hash` and `stored_hash`, and `decisions: [{index: 0, accept: true}, {index: 1, accept: false, reason: "missing Premium sources"}]`, one per block. `reviewed_fields` is an optional boolean on a decision. Discovery scanning cannot ingest. The helper refuses structurally malformed or ineligible Country Finder blocks even if accepted, keeps existing valid originals and reports duplicates. Do not add an out-of-scope salary rejection that the salary step does not require.

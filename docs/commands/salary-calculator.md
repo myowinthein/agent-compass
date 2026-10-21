@@ -23,6 +23,8 @@ Codex: type `$` and select `salary-calculator` from Agent Compass, or use `/skil
 
 Run it once per session. The assistant resumes automatically if a `.salary-calculator-state.json` file already exists.
 
+See [shared workspaces and saved results]({{ '/docs/commands#shared-workspaces-and-saved-results' | relative_url }}) for recovery and clarification handling. Country Finder results are optional, and a draft final is never silently treated as a completed audit.
+
 For model choices, effort settings and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).
 
 Research ingestion, exact comparisons and table rendering use shared Python 3.11+ helpers in both hosts, with no extra packages. The renderer reuses the existing salary arithmetic. If execution is unavailable, the assistant asks before proceeding manually and records the scope of that choice. Research and eligibility judgments remain in the workflow. See [Calculation runtime](salary-calculator/step4-table-calculation.html#calculation-runtime).

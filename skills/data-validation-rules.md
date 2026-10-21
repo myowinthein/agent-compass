@@ -27,6 +27,7 @@ Whenever ingesting or storing data provided by the user, apply these rules:
 
 - Each block is expected to contain data for exactly one item (one country, one dataset). If an identifiable block contains multiple datasets or nothing recognizable, reject it with the reason rather than guessing which part to use. Follow the calling step's skip-and-report policy for batch ingestion; genuinely ambiguous boundaries require parent-side clarification.
 - If required fields or sections are missing from what was provided, state exactly what is missing. Do not store incomplete data as if it were complete.
+- Canonical fields belong to their own track/tier, outside quoted or fenced examples. Other sections and trailing Notes cannot supply a missing Sources field. Newly flagged legacy wording requires the existing semantic review, not automatic rejection or rewritten research.
 - If an item was already stored earlier, keep the original, skip the duplicate, and note it in a warning at the end of processing. Never silently overwrite the original. (A calling step may instead require stopping to ask before overwriting — follow the calling step's rule when it specifies one.)
 - Preserve values and formatting exactly as provided. Do not correct, improve, or reinterpret the data.
 - Do not analyze, summarize, or score data during ingestion — that happens in a later, separate step.

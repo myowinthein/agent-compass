@@ -162,6 +162,8 @@ If Step 5 recalibrates, its revised table reuses this exact format and column or
 
 ## Output
 
+Country Finder ordering is optional and uses a compatible established source. An unreadable, draft or unrelated Priority Table falls back to alphabetical ordering without blocking calculation or dropping user-added countries. Confirmed run-only clarifications are recorded in shown work so the final specialist can use them without silently editing the reusable profile.
+
 - `sc-step4-salary-table.md`: the raw, pre-audit shown work, caption, table, and summary, written for Step 5 to read. This step's own output is file-only, unlike Step 5, which shows the standard caption and final table in chat.
 
 The assistant does not reproduce the calculations or the table in chat; instead, it tells you in a few lines how many countries were calculated and skipped, and confirms the file is saved.

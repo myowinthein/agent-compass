@@ -2,6 +2,8 @@ Check whether cf-step4-country-data.md exists in the workspace. If it does not e
 
 Read cf-step2-candidates.md, cf-step4-country-data.md, cf-step1-criteria.md, and situational-profile.md from the workspace. Use Step 2's full candidate universe to account for each country on each track, and the stored Step 4 data to score eligible tracks.
 
+Preserve the assessed candidate/role/level, location/path and evidence dates from the confirmed criteria/research in file-only context prose. Apply the shared runtime's clarification/repair rule if materially inconsistent with current facts; do not reinterpret old research as a new target.
+
 Keep Remote and Sponsorship scoring completely separate. Use categorical fits and confidence only, never numerical scores, percentages, or a combined priority formula. Step 6 assigns application priorities after its audit; do not convert legacy numeric scores into new fits without supporting stored evidence.
 
 Read and apply skills/salary-comparison-rules.md before judging a salary minimum. A missing exchange rate, ambiguous gross/net basis, or range straddling the floor is an unverified comparison, not proof of failure. If available, read the Validation report in cf-step3-country-research.md to explain missing Step 4 data; distinguish research rejected during ingestion from research never supplied. Keep that report out of the scored datasets.
@@ -15,21 +17,24 @@ Batching rule: score every country's Remote fit first, all the way through, befo
 
 For Remote Track, for each country with Remote data stored:
 
-1. If a minimum monthly salary was specified in the situational profile, check whether it was marked a hard floor or context only. If a hard floor, exclude this country from the Remote results when the confirmed salary falls short, and state the specific gap (e.g. "confirmed salary $X, below your minimum of $Y"). If context only, do not exclude on this basis alone: weigh the confirmed salary against a recruiter-friendly local-market midpoint for this role and note it in the reasoning if it falls meaningfully below that midpoint. If no minimum was specified, skip this check entirely.
+1. If a minimum monthly salary was specified, apply its hard-floor/context-only choice. Only a confirmed comparable Remote pay range entirely below a hard floor excludes the track; state the exact gap. For context only, use a comparable local-market midpoint only if the stored evidence supplies one; otherwise record "context-only minimum; no stored benchmark". Do not invent a midpoint. Salary Calculator's local-employee Mainstream/Premium targets, including remote-first employers, are not Remote offer evidence and cannot establish a Remote salary rejection. If no minimum was specified, skip this check.
 2. If it passes, classify Remote fit as: Strong / Moderate / Weak.
 3. Assign a confidence level: High / Medium / Low.
 4. Give brief reasoning, referencing the actual stored evidence, not assumption.
 
 For Sponsorship Track, for each country with Sponsorship data stored:
 
-1. If a visa minimum salary threshold was reported, prefer a completed sc-step5b-final-verification.md over sc-step4-salary-table.md. Establish completion through `state-check` under skills/helper-runtime.md or explicit trustworthy saved completion metadata; file existence alone is not completion. The model reads the final Recalibration and Step 4 shown work, not Python's parser. Use final raw values for revised segments; reuse Step 4 raw values only for explicitly unchanged segments whose inputs still match. If a completed final was or may have been recalibrated but its raw values cannot be established, do not silently fall back to superseded Step 4 figures. If final is absent, Step 4 raw values may be used; a draft without completion evidence never overrides them. Run `compare` under skills/comparison-helper.md for a comparable numeric check. Missing/ambiguous completion evidence or authoritative raw inputs leaves the comparison unverified. Never judge from rounded salary cells. Keep the threshold informational when no valid comparison can be made, and never turn this note into an exclusion or overall eligibility conclusion.
-2. If it passes, classify Sponsorship fit as: Strong / Moderate / Weak.
+1. Apply skills/sponsorship-threshold-rules.md to any informational visa-pay comparison. Prefer a completed sc-step5b-final-verification.md under the shared runtime's producer-readiness rule; file existence alone is not completion. Check candidate, role/level, benchmark scope, route/category and evidence dates for compatibility. The model reads final Recalibration, separate approved visa evidence updates and Step 4 shown work, not Python's parser. Use final raw values for revised segments and Step 4 raw values only for explicitly unchanged compatible segments. Missing authoritative raw values after possible recalibration never revive superseded targets. If no final exists, stage-complete Step 4 values may be used as labelled pre-audit references; ambiguous/draft provenance leaves the check unverified unless the user explicitly chooses disclosed provisional use.
+   Approved refreshed state/amount/period/eligible-pay facts in a completed final take precedence over older CF facts only for the same candidate/route/category; keep dates and source differences in the scoring notes and leave raw research untouched. Newest date alone does not establish applicability. SC Not applicable for a different intended path does not negate CF's assessed sponsorship route; Blocked is limited to its assessed route. A monthly numeric check needs the official/pay-schedule comparability required by the shared threshold rules; otherwise keep it unverified with known figures/limitations. Run `compare` only for comparable raw amounts, never rounded cells. Missing SC data is normal, not a circular dependency. This note never independently excludes a country, changes market pay or establishes overall visa eligibility.
+2. Independently classify Sponsorship fit as: Strong / Moderate / Weak when applicable evidence supports it; an unverified informational salary check is not a failed track. If all applicable track evidence is unusable, record "not scored (no data)" with the reason rather than inventing Weak. Note explicitly held rights that may make sponsorship unnecessary without automatically excluding the country.
 3. Assign a confidence level: High / Medium / Low.
 4. Give brief reasoning, referencing the actual stored evidence, not assumption. Consider citizenship-specific friction from the situational profile when assessing confidence.
 
 Evidence quality rule (applies to both tracks):
 
 Read and apply skills/evidence-quality-rules.md.
+
+For either track, if all applicable support is unusable, record "not scored (no data)" with the evidence gap, not an invented Weak fit. Successful ingestion alone does not establish applicable evidence.
 
 Exclusion transparency rule:
 

@@ -16,6 +16,8 @@ Apply the state tracking instructions in prompts/shared/runtime.md with:
 
 ## Sequence
 
+Apply the shared runtime's changed-input and repair rule on unfinished resumes. Zero eligible tracks, all rejected detailed research and all-Pending evidence are distinct from an empty country scope. A nonempty candidate universe still reaches the final audit with its exclusions/gaps accounted for, using Step 3's scope-only record when necessary; do not invent scores or automatically research every no-evidence track. An empty scope asks for revised countries or stop before research. Contradicted early exclusions return to the parent for a repair choice rather than being silently overridden.
+
 1. Read prompts/country-finder/step1-criteria-intake.md and follow it exactly.
 2. Read prompts/country-finder/step2-country-discovery.md and follow it exactly.
 3. Read prompts/country-finder/step3-research-prompt-generator.md and follow it exactly.

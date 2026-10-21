@@ -7,8 +7,9 @@ Read situational-profile.md before generating research. If absent, the parent ap
 
 Countries:
 Check whether cf-step6-final-ranking.md exists in the workspace; if not, check cf-step5-scoring-results.md.
-- If the final file exists, select countries exclusively from its post-audit Summary: include each country once if at least one final track is Strong or Moderate. Do not select from the Priority Table, medals, audit prose, or original Step 5 ratings, even if a legacy final file contains conflicting sections. A Weak, Excluded, or not scored track is not eligible by itself. If the Summary is missing or cannot be interpreted, explain the problem and ask me for a target list rather than silently falling back to pre-audit data.
-- Only when the final file is absent, use the scored Strong/Moderate countries from cf-step5-scoring-results.md and explain that this is the pre-audit result.
+- Before transferring fits, apply the shared runtime's producer-readiness and candidate/role/scope compatibility rule. A state-verified completed final or explicitly user-confirmed legacy/imported final is authoritative; a saved draft or a completion claim inside it is not. For unclear/draft/mismatched results, offer labelled provisional use or a manually chosen country list without inheriting unsupported fit claims. Never silently bypass an existing final to old Step 5 ratings. SC remains standalone.
+- For a usable final, select countries exclusively from its post-audit Summary: include each country once if at least one final track is Strong or Moderate. Do not select from the Priority Table, medals, audit prose, or original Step 5 ratings, even if a legacy final file contains conflicting sections. A Weak, Excluded, or not scored track is not eligible by itself, including stored evidence invalidated by the audit. If the Summary is missing or cannot be interpreted, explain and ask for an explicit list or provisional-use choice.
+- Only when the final file is absent, use a ready Step 5 scored Strong/Moderate list as an explicitly pre-audit starting point under the same provenance rule, not a completed CF result.
 - Show the resulting list: "Country Finder found these countries worth calculating salaries for: [list]. Use this list as-is, add to it, remove some, or start fresh?" Wait for my answer. If the eligible list is empty, say no countries currently meet that criterion and ask me to provide a target list or stop; never resurrect an older rating to populate it.
 - If neither file exists, or I choose to start fresh, ask me for my target country list.
 
@@ -84,7 +85,7 @@ Sponsorship salary threshold: [amount] [currency], [annual or monthly], or state
 
 Evidence grade: [High / Medium / Low]
 
-Notes: [confirmed benchmark scope and intended employment path; adjustment evidence or its absence; threshold category, effective date, eligible-pay/annualization basis and limitations; anything relevant not covered above]
+Notes: [confirmed benchmark scope and intended employment path; country-list source/readiness and role compatibility; dated run-only clarifications if any; adjustment evidence or its absence; threshold category, effective date, eligible-pay/annualization basis and limitations; anything relevant not covered above]
 
 If a tier or a single defensible benchmark cannot be established, state what is missing instead of inventing an amount. Step 2 retains its two-tier requirement. These extra descriptions provide research provenance; legacy blocks without them are not automatically rejected, but later calculation must establish material comparability or skip with a reason.
 

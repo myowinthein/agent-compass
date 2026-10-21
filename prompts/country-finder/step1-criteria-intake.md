@@ -8,6 +8,8 @@ These are two separate tracks. Do not blend them. Every question, list, and scor
 CANDIDATE PROFILE:
 Read profile.md from the workspace and use it as the candidate profile.
 
+Settle a materially ambiguous target role or seniority with a targeted question before research, without re-confirming a clear target. Use the desired role if stated, otherwise the current/most recent role; do not infer level solely from years. Save the settled role/level and relevant dated candidate context as prose in the criteria file for later compatibility checks, keeping existing criteria labels unchanged.
+
 CANDIDATE SITUATIONAL PROFILE:
 Read and apply skills/situational-profile-questions.md.
 

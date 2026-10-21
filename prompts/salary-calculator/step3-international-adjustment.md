@@ -2,7 +2,7 @@ Check whether sc-step2-salary-data.md exists in the workspace. If it does not ex
 
 Read sc-step2-salary-data.md and proceed with the international adjustment.
 
-Read situational-profile.md from the workspace and treat it as the single source of truth for location, citizenship, language, and salary minimum. (It was collected by the main command before this step.)
+Read situational-profile.md from the workspace as the saved source for location, citizenship, language and salary minimum. Recorded user-confirmed run-only clarifications under the shared runtime take precedence for this run; preserve their date/scope in the adjustment output without editing the profile. (The main command collected the profile before this step.)
 
 Read profile.md from the workspace and treat it as the single source of truth for the candidate's actual education and experience.
 
@@ -18,7 +18,7 @@ Adjustment percentages are nonnegative reductions from the local-market midpoint
 
 For every numeric estimate, state its evidence basis in the existing explanation: observed local-versus-overseas offer evidence, or a judgmental inference with cited candidate-applicable evidence and an explanation supporting the numerical range. Country reputation, sponsorship cost or generic market difficulty alone does not quantify a pay reduction. Review the stored research and apply skills/evidence-quality-rules.md; do not claim fresh research you did not perform. If the evidence cannot support a percentage, record "Adjustment not estimable" with the reason and missing evidence, omit the numeric range/midpoint/level, and do not invoke `adjust-check` for that country. Step 4 skips it explicitly rather than substituting 0%. A supported 0% remains a numeric estimate and must state its basis. Keep one common percentage for both tiers, but do not generalize tier-specific observations to both without support; if no common estimate is defensible, use the not-estimable path.
 
-Assume the situational profile remains the single source of truth across all countries.
+Use those same confirmed situational facts across countries, including applicable recorded run-only clarifications rather than silently reverting to superseded saved values.
 
 Only vary the adjustment based on country-specific hiring practices, employer behavior, and current market conditions.
 

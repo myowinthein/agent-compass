@@ -11,9 +11,11 @@ Part A — Build the candidate universe (no research needed, apply immediately)
    - Else, read data/default-preferred-countries.md (shipped with the plugin). Show me its countries grouped by continent, and ask: "You didn't specify preferred countries in Step 1 — do you want to proceed with this default list, or provide your own countries?" Wait for my answer before continuing.
      - If I confirm proceeding with the default, the base is every country in data/default-preferred-countries.md.
      - If I provide my own countries instead, the base is that list.
-2. If cf-step1-criteria.md has an Exclude list (not "none"), remove every listed country from the base.
+2. Expand any included/excluded region into an explicit country list before filtering. Ask only when the region boundary is ambiguous or the expansion needs confirmation; do not send a region name to country batching. Remove the excluded countries from the base.
 
-Other than the default-list question above, do this without telling me which source the base came from or asking whether to use it — apply it silently. Show the resulting final country list before continuing.
+Other than the default-list question and any material region clarification, do this without telling me which source the base came from or asking whether to use it — apply it silently. Show the resulting final country list before continuing.
+
+An explicit user-supplied country list and clear exclusions already confirm that scope; do not ask again. Confirm a materially ambiguous region expansion instead. If no countries remain, explain and ask for a revised list or stop before research. Before collecting results, save the confirmed list under `## Research scope` in cf-step2-candidates.md. Keep that preface country-only; candidate context and provenance belong in findings, not extra preface lines. On resume reuse this scope and successful blocks, not just the countries whose tasks returned.
 
 Part B — Research each country for both tracks together
 
@@ -25,21 +27,24 @@ Batch the final country list for parallel research:
 For each batch, generate one ready-to-copy research prompt. Each prompt must embed directly as literal text — never by reference to a label like "the candidate universe" — all of the following, so it can run from its own brief without relying on the parent's conversation:
 
 - The exact list of countries in this batch, and only this batch
-- The candidate's target role and skillset, read from profile.md (use the target or desired role if one is stated; otherwise the current or most recent title)
+- The settled target role/level, relevant experience with its reference date (or unknown), skills, current residence/location, spoken/required work languages, and explicitly held work rights/status from the confirmed profile/criteria and situational profile; embed only facts relevant to this task
 - The minimum monthly salary, currency, gross/net basis, and hard-floor/context-only choice from situational-profile.md, if specified; explicitly mark absent facts as unknown, and state if no minimum was specified
 - The candidate's citizenship, and any noted immigration friction, from situational-profile.md
 
 Each prompt must instruct the researcher to use current web research (prioritizing sources from the last 12 months), not memory or general reputation, and must require the researcher to check, for every country in the batch, both of the following:
 
 Remote suitability:
-- Is remote hiring for this candidate's role and skillset a common, well-established practice in this country, not a rare exception?
+- Do employers in this country commonly hire this role at the stated level while the candidate works from the supplied current location? Require applicable location/region evidence, not domestic-only remote policy. If already in the target country, local remote hiring can qualify; label it accurately.
+- Establish the relevant employee, employer-of-record or contractor route and pay for that population. Local-employee salary or an employer's "remote-first" label alone does not establish cross-border pay or location eligibility.
 - If a minimum monthly salary was specified, does typical remote salary for this role realistically meet or exceed it? Skip this check if none was specified.
+- Salary may make Suitable "no" only for a confirmed hard floor and a valid comparison where the entire comparable range is below it. Context-only, straddling and unverified comparisons are facts in Reason, never salary-based rejections.
 - Evidence must come from remote job boards, remote hiring reports, salary surveys, or company remote-hiring policies.
 
 Sponsorship suitability:
 - Does a real, named, documented work-visa pathway exist where a local employer is the sponsor — a standard employer-sponsored work visa or work permit tied to a job offer? Digital-nomad, remote-worker, long-stay, or self-qualifying visas do not count, even if well-known or highly ranked in search results — they do not involve a local employer sponsoring the candidate, which is what this track requires. If a country has both an employer-sponsored route and a digital-nomad-style visa, evaluate only the employer-sponsored one.
 - Does the candidate's occupation appear on any official shortage-occupation or in-demand skills list, if one exists? Being listed is a positive factor (often easing salary thresholds or approval) and, for the minority of visas that make it an explicit legal requirement, check whether that applies to the pathway already identified. Absence from a shortage list does not by itself make Suitable "no" unless the identified pathway explicitly requires it.
 - Consider citizenship-specific visa reciprocity, restrictions, or friction, based on the situational profile.
+- Embed the relocation timeline and research role-relevant working-language conditions and the explicitly stated status, without inferring work rights or country-wide language barriers from nationality. Existing independent rights may make sponsorship unnecessary for the candidate; note that context without automatically excluding the country or conflating the two tracks.
 - Evidence must come from official government immigration sources, visa program pages, or recruiter sponsorship guides.
 - Do not determine Suitable by comparing a visa's salary threshold to the candidate's own stated minimum salary — that minimum reflects what the candidate would accept, not what a real employer would offer. If a salary threshold applies, note it in the Reason field as a fact for later steps to weigh against real market data; it must never by itself make Suitable "no."
 
@@ -55,7 +60,7 @@ Country: [name]
 
 Remote:
 - Suitable: [yes / no / no evidence found]
-- Reason: [evidence-based reasoning, or "no evidence found"]
+- Reason: [evidence-based reasoning, including candidate location/role scope and material pay/working-language limitations, or "no evidence found"]
 - Source: [name and URL of source, or "none"]
 - Date: [date of source, or "n/a"]
 

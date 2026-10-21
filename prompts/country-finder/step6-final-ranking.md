@@ -2,6 +2,8 @@ Check whether cf-step5-scoring-results.md exists in the workspace. If it does no
 
 Read cf-step5-scoring-results.md from the workspace. Also read cf-step2-candidates.md, cf-step4-country-data.md, cf-step1-criteria.md, situational-profile.md, and profile.md from the workspace. cf-step2-candidates.md is the full candidate universe — use it to detect any country that was a Step 2 candidate but never reached Step 4. Base the audit only on these files, not on prior conversation memory.
 
+Use recorded, user-confirmed run-only clarifications under the shared runtime as saved context, not hidden memory. Preserve assessed candidate/role/level, path/location and evidence dates with the file-only audit, outside canonical rendered sections. Material changed-input or contradicted-exclusion issues return to the parent for the shared repair choice before finalisation; never silently override an early reason or rewrite completed outputs.
+
 Read and apply skills/evidence-quality-rules.md and skills/exclusion-transparency-rules.md when auditing classifications, assigning priorities, and summarizing limitations.
 
 Read data/output-contracts.json as data and skills/output-helper.md. After choosing the evidence-supported final decisions below, use `render-cf` with the full candidate universe, original early exclusions and ingestion dispositions. Save its returned Summary and Priority Table sections verbatim, keep its audit notes with the three checks, and run `check-saved` before completion. Pure helper requests unavailable to a specialist return to the parent under the shared runtime. Under an explicitly approved manual run, read this same contract for the format and perform the same checks; do not claim automated rendering ran.
@@ -40,7 +42,7 @@ If the confidence calibration check found inflated confidence levels, or the evi
 - If the inflated confidence or evidence misuse was masking a genuinely weaker fit, revise the classification too
 - Explain what evidence caused each change
 
-If recalibration is not supported by either check, state explicitly that the Step 5 results remain appropriate, and do not alter them.
+If recalibration is not supported, distinguish evidence-supported unchanged fits from an inconclusive audit, naming each material gap rather than always claiming the results remain appropriate. When the only applicable support for a stored track is invalidated, use "not scored (no data)" with the specific reason; raw ingestion is not proof of usable evidence. Weak requires evidence of a weak fit. Keep original research and Step 5 untouched.
 
 Summary
 
@@ -50,10 +52,12 @@ For each country that has ingested research or a recorded exclusion on at least 
 
 - Use the final classification (Strong / Moderate / Weak / Excluded / not scored (no data)) for each track.
 - "Excluded" means the country was explicitly eliminated on that track in Step 2 or Step 5. Preserve the original reason and hard-rule detail in the file's audit findings; do not substitute a missing-data explanation.
-- "not scored (no data)" means required research was not ingested and no explicit exclusion explains its absence. This is distinct from Excluded and must not be blurred with it.
+- "not scored (no data)" means required research was not ingested or applicable evidence proved unusable, without a supported explicit exclusion. Preserve the precise missing/invalidated-evidence reason; do not relabel a known weak fit or an early exclusion as uncertainty.
 - If Step 6 revised a country's confidence level or classification, keep the short revision note in Recalibration with the audit checks, not inside the verbatim generated Summary sections.
 
 If the Missing Candidate Check identified countries with neither ingested research nor a recorded exclusion on either track, account for them separately. Keep the existing "Flagged but not researched" heading for research genuinely never supplied. Add a file-only note for "Researched but not ingested" with the validation reason when research was rejected, or "Ingestion outcome unknown" for unsupported legacy cases. Do not label rejected research as never researched or put intentionally excluded countries in a process-gap list. These notes do not add Summary fit categories; the Priority Table below renders their missing-data tracks as Unknown.
+
+In those reasons identify the stage: "discovery found no evidence; detailed research not run" is different from no discovery result or rejected detailed research. An all-Pending final is a valid evidence-gap outcome, not a claim every country is unsuitable; do not automatically expand research scope to fix it.
 
 Close the Summary with counts:
 - Remote: [N] scored, [N] excluded, [N] not scored (no data)
