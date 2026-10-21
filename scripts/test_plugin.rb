@@ -21,6 +21,7 @@ output, error, status = Open3.capture3(
 assert.call(status.success?, "Validator failed under US-ASCII defaults: #{output}#{error}")
 
 manifest = JSON.parse(root.join(".claude-plugin/plugin.json").read(encoding: "UTF-8"))
+assert.call(root.glob("commands/**/*.md").empty?, "Remove unused legacy command adapters; shared skills are the only entry points")
 assert.call(manifest["commands"] == [], "Disable legacy command discovery so each shared skill appears only once")
 assert.call(manifest.fetch("name") == "agent-compass", "Keep the technical plugin name unchanged")
 assert.call(manifest.fetch("displayName") == "Agent Compass", "Claude must display Agent Compass")
@@ -53,7 +54,7 @@ end
 
 Dir.mktmpdir("compass-icon-check-") do |temp|
   installation = Pathname(temp)
-  %w[.claude-plugin commands workflows prompts skills agents helpers data assets].each do |component|
+  %w[.claude-plugin workflows prompts skills agents helpers data assets].each do |component|
     FileUtils.cp_r(root.join(component), installation)
   end
   [nil, ["./commands/"]].each do |commands|
@@ -69,6 +70,18 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
     assert.call(rejected, "Validator accepted duplicate legacy command discovery: #{commands.inspect}")
   end
   installation.join(".claude-plugin/plugin.json").write(JSON.pretty_generate(manifest))
+  installation.join("commands/nested").mkpath
+  legacy = installation.join("commands/nested/unused.md")
+  legacy.write("Unused adapter")
+  rejected = begin
+    CompassValidation.validate(installation)
+    false
+  rescue RuntimeError => error
+    error.message == "Legacy command adapters must not be packaged"
+  ensure
+    legacy.delete
+  end
+  assert.call(rejected, "Validator accepted a reintroduced legacy adapter")
   icon = installation.join("assets/icon.svg")
   original = icon.read(encoding: "UTF-8")
   {
