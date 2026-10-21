@@ -9,6 +9,8 @@ has_children: true
 
 Runs the full Salary Calculator pipeline. Generates ready-to-copy research prompts for local-market salary data, ingests your research results, applies an international candidate adjustment, produces a salary table with shown calculations, and audits it with a mandatory final verification. Runs standalone or after Country Finder. Resumes from the last completed step if interrupted.
 
+Both employer segments are local-employee benchmarks, not automatic cross-border remote-pay quotes. The assistant clarifies a materially unclear target role or employment path before research. Unsupported adjustments are recorded as not estimable, not assumed to be 0%.
+
 ## Usage
 
 Claude:
@@ -40,9 +42,13 @@ flowchart TD
 
   S1prep[Collect or reuse situational profile\nbefore threshold research] --> S1
   S1[Step 1: Research prompt generator\nlocal-market salary prompts per country] --> S2
-  S2[Step 2: Data validation\nreads sc-step1-salary-research.md] --> S3
+  S2[Step 2: Data validation\nreads sc-step1-salary-research.md] --> Stored{Any country stored?}
+  Stored -->|yes| S3
+  Stored -->|no| Repair[Keep output and checkpoint\nOffer evidence repair or stop]
   S3[Step 3: International adjustment\ndeep-reasoner agent] --> S4
-  S4[Step 4: Table calculation\ncalculator agent, file-only,\nbrief note in chat] --> Ladder
+  S4[Step 4: Table calculation\ncalculator agent, file-only,\nbrief note in chat] --> Calculated{Any country calculated?}
+  Calculated -->|yes| Ladder
+  Calculated -->|no| Repair
 
   Ladder[Confirm career ladder\non current model, before handoff] --> S5[Step 5: Final Verification\ndeep-reasoner agent, always runs\nChecks file-only, final table\nshown in chat\nOne file: sc-step5b-final-verification.md]
   S5 --> Done([Results delivered])
@@ -70,7 +76,7 @@ Reads `sc-step1-salary-research.md` written by Step 1 and stores each country's 
 
 ### [Step 3: International adjustment](salary-calculator/step3-international-adjustment.html)
 
-Reuses the situational profile collected before Step 1, with parent-side intake only if a legacy resume lacks it. The assistant asks whether to use the **deep-reasoner** subagent (host-specific model and effort); if declined, the step runs with your current model. Estimates an evidence-based nonnegative reduction from the local-market midpoint for each country, not a guaranteed outcome, and shows the reasoning and uncertainty.
+Reuses the situational profile collected before Step 1, with parent-side intake only if a legacy resume lacks it. The assistant asks whether to use the **deep-reasoner** subagent (host-specific model and effort); if declined, the step runs with your current model. Numeric reductions must have a stated observed or inferred evidence basis. Countries without a defensible percentage are marked **Adjustment not estimable** and skipped later with that reason. One common reduction is retained for both employer segments.
 
 ### [Step 4: Table calculation](salary-calculator/step4-table-calculation.html)
 
@@ -78,13 +84,14 @@ The parent runs the shared numeric helper, then offers the **calculator** specia
 
 ### [Step 5: Final Verification](salary-calculator/step5b-final-verification.html)
 
-Always runs after Step 4 completes; this is the only step in the pipeline with no skip option, since it produces the final result. It drafts your career ladder on the current model and waits for your confirmation (saved to `sc-step5a-career-ladder.md`, reused if already confirmed) before any specialist handoff, then asks whether to use the **deep-reasoner** subagent (host-specific model and effort); if declined, the step runs with your current model. Audits the table output for inconsistencies, outliers, or weak evidence, and revises it if the evidence supports doing so. The four detailed checks and the recalibration verdict are file-only, but the resulting final table (unchanged or revised) is shown directly in chat, copied from the file with only its standard gross-base/monthly-reference caption. The completion message afterward states whether salary recalibration occurred; reformatting unfinished legacy results alone is not recalibration. Completed results replay as saved without migration. Everything from this step, including the table, is written to a single file, `sc-step5b-final-verification.md`.
+Mandatory after Step 4 calculates at least one country. It drafts your career ladder on the current model and waits for confirmation before any specialist handoff. An existing ladder is reused only when its confirmed role and level match this run. It then offers the **deep-reasoner** specialist; declining keeps the audit on the current model. The audit uses saved, dated evidence and revises salaries only when supported. Insufficient evidence can produce an inconclusive verdict without invented revisions or a claim that the framework was verified. Detailed checks remain in `sc-step5b-final-verification.md`; chat shows the standard caption, final table and completion message, including an inconclusive outcome when applicable. Completed results replay as saved without migration.
 
 ## Stop conditions
 
 - **Profile not yet uploaded.** The assistant waits; it does not proceed or fill in placeholder data.
 - **Any step instructs the assistant to wait.** The assistant stops and waits. No guessing, no assumptions.
 - **Data validation finds an identifiable malformed block or missing tiers/sources.** It skips the item and records the reason in a consolidated report saved in the research file and carried into the final audit. Genuinely ambiguous block boundaries require clarification rather than guessed parsing.
+- **No usable estimates remain.** After saving the required output and checkpoint, the assistant offers evidence repair or stop before another specialist, career-ladder question or empty final table. Before an approved repair rewrites an affected output, its checkpoint moves before the earliest rerun step. Valid originals and reports remain preserved, including on an unfinished resume; completed runs are not reset automatically.
 
 ## See also
 

@@ -30,7 +30,10 @@ flowchart TD
   SpecialistQ -->|no| CurrentModel[Run with your\ncurrent model]
   DeepReasoner --> Estimate
   CurrentModel --> Estimate
-  Estimate[Estimate adjustment per country\nbased on hiring practices and\nmarket conditions] --> Output[For each country output:\nAdjustment range %\nTypical midpoint %\nLevel: Small / Moderate / Significant\nConfidence: High / Medium / Low\nBrief explanation]
+  Estimate[Review candidate-applicable\nevidence for each country] --> Basis{Percentage\nsupported?}
+  Basis -->|yes| Output[Numeric range and midpoint\nLevel, confidence and evidence basis]
+  Basis -->|no| Unknown[Adjustment not estimable\nRecord missing evidence, not 0 percent]
+  Unknown --> Save
   Output --> Save[Save to sc-step3-adjustment-values.md]
   Save --> Done([Parent continues\ninto Step 4])
 ```
@@ -64,13 +67,17 @@ These are weighed cumulatively rather than each requiring a separately priced co
 
 This is not about tax, cost of living, purchasing power, or permanent residence pathways.
 
+Every numeric estimate records whether it uses observed local-versus-overseas offers or a judgmental inference, with dated evidence and a reason supporting the numerical range. Country reputation or generic sponsorship difficulty does not quantify a discount. Apply factors only to the confirmed employment path. One common percentage is retained for both tiers, but evidence limited to one tier cannot automatically justify both.
+
+When no defensible percentage exists, save **Adjustment not estimable** with the reason and missing evidence. Do not invent a reduction, assume factual 0% or call the numeric helper for that country. Step 4 skips it with that reason. Missing evidence grades stay disclosed as "not provided"; they are neither fabricated Low nor proof of High confidence.
+
 Percentages are nonnegative reductions: 5% means multiply the midpoint by 0.95. A supported 0% is allowed, and estimated ranges stay within 0–15%. Labels are display conventions based on the typical midpoint: Small covers 0–5%, Moderate covers above 5% through 10%, and Significant covers above 10% through 15%. The label does not determine or justify the estimate.
 
 **Guardrails:** the adjustment must never be based on race, ethnicity, passport prestige, or a generic nationality ranking; every adjustment ties to concrete, candidate-applicable friction (visa complexity, sponsorship risk, relocation logistics, language or market unfamiliarity). The typical midpoint adjustment is capped at 15%, and anything above 10% requires citing specific, concrete evidence rather than general market difficulty. If a country's underlying salary data carries a Low evidence grade (from Step 1/Step 2), this step's Confidence for that country is capped at Medium.
 
 **Degree relevance vs. formal recognition:** if a country's visa route has an education requirement, the assistant checks it against the candidate's actual degree(s) in `profile.md` rather than assuming a mismatch based on generic assumptions about the occupation; any one relevant degree is enough, even if the candidate also holds unrelated ones. Formal recognition of a specific degree or institution is a different question that can't be verified through research (it requires a country's actual credential-assessment body); the assistant never asserts pass/fail on this. If a route has a named formal-recognition requirement, it's noted as a plain process caveat in that country's Brief explanation, never as a factor in the adjustment percentage.
 
-**Already resident in a target country:** if the situational profile states you already live in, or already have some form of work authorization for, a country being calculated, relocation friction, remote interview logistics, and perceived hiring risk are weighed much lighter for that country specifically; you aren't relocating and can interview locally. This is independent of sponsorship: if your status there would still require employer sponsorship to take the job, employer willingness to sponsor and visa complexity are still weighed normally. Being already resident reduces relocation-driven friction, not sponsorship-driven friction.
+**Residence and work rights:** apply relocation and interview factors to your actual location and intended path. Work authorization alone does not prove you live locally or can interview locally. Existing residence reduces relocation friction, but any sponsorship still needed for a job change is assessed separately. Missing status is disclosed, not assumed.
 
 ## Output per country
 
@@ -79,6 +86,8 @@ Percentages are nonnegative reductions: 5% means multiply the midpoint by 0.95. 
 - Adjustment level: Small, Moderate, or Significant
 - Confidence: High, Medium, or Low
 - Brief explanation
+
+An unestimable country instead has its name, **Adjustment not estimable**, and the specific evidence gap. Every stored country is accounted for once. Numeric helper checks run only for supported estimates.
 
 Results are saved to `sc-step3-adjustment-values.md` in the workspace. Step 4 reads this file directly. The assistant does not reproduce the per-country adjustment reasoning in chat; only a brief summary (how many countries received an adjustment) and confirmation that the file is saved.
 
