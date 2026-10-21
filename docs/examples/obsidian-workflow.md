@@ -78,7 +78,7 @@ I follow these steps each day:
 3. Find it in the portal's results and review the newer jobs.
 4. Update the company marker and tick the checkbox when I finish.
 
-The checkbox tracks whether a search has been reviewed. The company marker shows where I stopped last time.
+The checkbox tracks whether a search has been reviewed. I use the company name in parentheses as a reference point for my next search, so I can focus on newer jobs.
 
 ## My application history
 
