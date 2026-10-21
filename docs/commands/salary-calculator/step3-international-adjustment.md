@@ -1,6 +1,6 @@
 ---
 title: "Step 3: International adjustment"
-parent: /salary-calculator
+parent: salary-calculator
 grand_parent: Commands
 nav_order: 3
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Step 6: Final Ranking"
-parent: /country-finder
+parent: country-finder
 grand_parent: Commands
 nav_order: 6
 ---

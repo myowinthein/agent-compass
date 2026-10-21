@@ -1,11 +1,11 @@
 ---
-title: /salary-calculator
+title: salary-calculator
 parent: Commands
 nav_order: 3
 has_children: true
 ---
 
-# /salary-calculator
+# salary-calculator
 
 Runs the full Salary Calculator pipeline. Generates ready-to-copy research prompts for local-market salary data, ingests your research results, applies an international candidate adjustment, produces a salary table with shown calculations, and audits it with a mandatory final verification. Runs standalone or after Country Finder. Resumes from the last completed step if interrupted.
 
@@ -33,7 +33,7 @@ Research ingestion, exact comparisons and table rendering use shared Python 3.11
 
 ```mermaid
 flowchart TD
-  Start([User runs /salary-calculator]) --> Profile{profile.md\nexists?}
+  Start([User runs salary-calculator]) --> Profile{profile.md\nexists?}
   Profile -->|no| Extract[Resume extraction,\nwait for upload and confirmation]
   Profile -->|yes| State
   Extract --> State
@@ -97,6 +97,6 @@ Mandatory after Step 4 calculates at least one country. It drafts your career la
 
 ## See also
 
-- [`/country-finder`](country-finder.html): discover which countries are worth calculating salaries for
-- [`/portal-finder`](portal-finder.html): find verified job portals for a specific country
-- [`/job-screener`](job-screener.html): screen job descriptions against your resume profile
+- [`country-finder`](country-finder.html): discover which countries are worth calculating salaries for
+- [`portal-finder`](portal-finder.html): find verified job portals for a specific country
+- [`job-screener`](job-screener.html): screen job descriptions against your resume profile
