@@ -21,6 +21,12 @@ output, error, status = Open3.capture3(
 assert.call(status.success?, "Validator failed under US-ASCII defaults: #{output}#{error}")
 
 manifest = JSON.parse(root.join(".claude-plugin/plugin.json").read(encoding: "UTF-8"))
+assert.call(manifest.fetch("name") == "agent-compass", "Keep the technical plugin name unchanged")
+assert.call(manifest.fetch("displayName") == "Agent Compass", "Claude must display Agent Compass")
+assert.call(manifest.fetch("interface").fetch("displayName") == manifest.fetch("displayName"),
+            "Codex and Claude must use the same display name")
+assert.call(root.join("README.md").read(encoding: "UTF-8").match?(/^# Agent Compass$/),
+            "README heading must use the product display name")
 assert.call(manifest.fetch("icon") == "./assets/icon.svg", "Claude must reference the shared SVG icon")
 %w[logo composerIcon].each do |field|
   assert.call(manifest.fetch("interface").fetch(field) == manifest.fetch("icon"),

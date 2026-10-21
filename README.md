@@ -5,7 +5,7 @@ nav_order: 1
 permalink: /
 ---
 
-# agent-compass
+# Agent Compass
 
 Trust your compass.
 
