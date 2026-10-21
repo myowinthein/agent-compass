@@ -35,6 +35,7 @@ module CompassValidation
     manifest = JSON.parse(read(resource(root, ".claude-plugin/plugin.json")))
     marketplace = JSON.parse(read(resource(root, ".claude-plugin/marketplace.json")))
     check(manifest.fetch("skills") == "./skills/", "Manifest must expose shared skill entry points")
+    check(manifest["commands"] == [], "Disable legacy command discovery so each shared skill appears only once")
     check(manifest.fetch("version").match?(/\A\d+\.\d+\.\d+\z/), "Invalid plugin version")
     entry = marketplace.fetch("plugins").find { |plugin| plugin["name"] == manifest["name"] }
     check(entry, "Marketplace does not expose the plugin")
@@ -166,7 +167,7 @@ module CompassValidation
       Dir.chdir(workspace) { validate(installation) }
       check(workspace.children.empty?, "Package validation wrote candidate workspace data")
     end
-    puts "Validated four shared workflows, both entry-point sets, and a relocated package."
+    puts "Validated four discoverable shared workflows, legacy adapters, and a relocated package."
   end
 end
 
