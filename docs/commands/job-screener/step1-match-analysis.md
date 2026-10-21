@@ -1,6 +1,6 @@
 ---
 title: "Step 1: Match analysis"
-parent: /job-screener
+parent: job-screener
 grand_parent: Commands
 nav_order: 1
 ---

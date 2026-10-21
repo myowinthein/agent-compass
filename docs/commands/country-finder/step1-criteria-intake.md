@@ -1,6 +1,6 @@
 ---
 title: "Step 1: Criteria intake"
-parent: /country-finder
+parent: country-finder
 grand_parent: Commands
 nav_order: 1
 ---

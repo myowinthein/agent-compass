@@ -1,6 +1,6 @@
 ---
 title: "Step 1: Portal research"
-parent: /portal-finder
+parent: portal-finder
 grand_parent: Commands
 nav_order: 1
 ---

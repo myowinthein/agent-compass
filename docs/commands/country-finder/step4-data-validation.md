@@ -1,6 +1,6 @@
 ---
 title: "Step 4: Data validation"
-parent: /country-finder
+parent: country-finder
 grand_parent: Commands
 nav_order: 4
 ---
