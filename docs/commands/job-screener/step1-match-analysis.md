@@ -7,90 +7,67 @@ nav_order: 1
 
 # Step 1: Match analysis
 
-Reads `profile.md` as the canonical candidate profile, then waits. Each pasted job description is screened against the profile using a fixed format. Pasted form questions or writing tasks are answered using the writing guidelines instead.
+Loads your profile, waits for a job description and assesses the match without treating unknown facts as automatic failures.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 1 begins]) --> Read[Read profile.md]
-  Read --> Ready[Reply: Profile loaded.\nPaste a job description to screen.]
-  Ready --> Wait([Wait for a paste])
-  Wait --> Kind{What did you paste?}
-  Kind -->|job description| Decide[Apply decision rules\nSkip → Maybe → Apply]
-  Decide --> Format[Respond in the fixed format\nVERDICT · PROS · CONS · etc.]
-  Kind -->|form question or\nwriting task| Answer[Answer using the\nwriting guidelines]
-  Format --> Wait
-  Answer --> Wait
+  Start(["Read one job description<br/>Compare with confirmed profile facts"]) --> Block{"Confirmed hard blocker?"}
+  Block -->|Yes| Skip["Skip"]
+  Block -->|No| Gaps{"Two or more required gaps<br/>Or too uncertain to judge?"}
+  Gaps -->|Yes| Maybe["Maybe"]
+  Gaps -->|No| Most{"Most required qualifications met?"}
+  Most -->|Yes| Apply["Apply"]
+  Most -->|No| Maybe
+  Skip --> Report["Return the fixed report<br/>Keep unknowns distinct from negatives"]
+  Maybe --> Report
+  Apply --> Report
+  Report --> Wait(["Wait for the next job or application question"])
 ```
 
-## What it reads
+## Verdict rules
 
-- `profile.md`: the canonical candidate profile
-- `situational-profile.md`, if present: explicit location, citizenship, languages, work rights, and salary preferences; no full intake is required if the file is absent
+The first matching rule wins:
 
-Conflicting candidate facts require targeted clarification before deciding an affected blocker. Citizenship or residence never implies work authorization. Mandatory hours are compared with explicit candidate availability using sourced zone/DST information, not an assumption about willingness to work nights. Unknown candidate facts remain unknown.
+- ❌ Skip: at least one confirmed hard blocker.
+- ⚠️ Maybe: no blockers, but two or more required qualifications are unmet, or too many are unverifiable to judge fit.
+- ✅ Apply: no blockers and most required qualifications are met.
+- ⚠️ Maybe otherwise: fit is not established, such as meeting one of two required qualifications.
 
-## Decision rules
-
-Applied silently, in order, the first that matches wins:
-
-- **❌ Skip**: one or more 🚫 blockers present, regardless of other fit.
-- **⚠️ Maybe**: no 🚫 blockers, but two or more required (not preferred) qualifications are clearly unmet, or so many required qualifications are unverifiable that fit cannot be judged.
-- **✅ Apply**: no 🚫 blockers, and most required qualifications are met. Unknown or unverifiable requirements do not count against an Apply; they are noted as unknown.
-- **⚠️ Maybe otherwise**: fit is not established, such as one of two required non-blocking qualifications met and one unmet. No numerical score is introduced.
+Preferred qualifications do not count as required gaps. There is no numerical match score.
 
 ## Output format
 
-Each job description is screened into these sections:
-
 | Section | Contents |
 |---|---|
-| `[VERDICT]` | One line stating the chosen decision |
-| `[APPLICATION METHOD]` | Included only if the JD explicitly specifies how or where to apply |
-| `[SALARY]` | Explicit fixed amount or range, retaining currency, period and compensation components; a relevant comparison can be concise within existing sections |
-| `[PROS]` | Bullet points |
-| `[CONS]` | Bullet points; 🚫 marks hard blockers only |
-| `[MISSING INFORMATION]` | Which items from the fixed checklist the JD does not state |
+| `[VERDICT]` | One-line Apply, Maybe or Skip decision |
+| `[APPLICATION METHOD]` | Only the application route explicitly stated in the job |
+| `[SALARY]` | Only stated pay, retaining currency, period and compensation components |
+| `[PROS]` | Matching evidence in bullets |
+| `[CONS]` | Gaps in bullets, with 🚫 reserved for hard blockers |
+| `[MISSING INFORMATION]` | Unstated items from the fixed checklist |
 
-## Hard blockers (🚫)
+The checklist covers salary, visa sponsorship, relocation support, remote policy, work authorization, timezone or working-hours overlap, and employment type. If all are stated, the response says so. An unstated item is not a con on its own.
 
-🚫 is reserved for objective, non-negotiable disqualifiers, since a single 🚫 forces a ❌ Skip:
+## Hard blockers
 
-- an explicit existing-rights/no-sponsorship requirement the candidate is confirmed unable to meet, not merely lacking current rights when sponsorship is offered or unknown
-- confirmed maximum JD pay below an explicitly non-negotiable salary floor, after a valid currency/period/gross-net comparison
-- a required clearance the candidate is confirmed unable to hold by the required time, respecting an explicit obtain-by-start path
-- a required working language the candidate does not speak
-- a mandatory on-site location the candidate is confirmed unable to be at, not merely somewhere different from their current location
-- an explicit remote-residence/hiring-jurisdiction restriction the candidate cannot meet, not an assumption that a different current location means they cannot move
-- a mandatory timezone or working-hours overlap the candidate cannot meet
-- a legally or contractually mandatory certification the candidate cannot obtain by the required time, respecting an explicit training/qualification path
-- the role's core technology or stack is one the candidate does not have, not merely one item missing from a longer required list
+A 🚫 needs an explicit non-negotiable requirement and confirmed inability to meet it. Examples include required work rights, language, clearance, certification, location, permitted hiring jurisdiction, working hours or the role's core technology.
 
-Years-of-experience gaps are never hard blockers, regardless of the size of the gap or whether the JD states a hard minimum; a shortfall is always a normal con instead. More experience than required is likewise never a blocker unless the JD states a maximum. Unclear-if-mandatory requirements are treated as cons, not blockers. Unmet preferred qualifications are labeled "preferred, not required" and never marked 🚫.
+Missing resume evidence does not prove inability. Sponsorship, relocation and permitted obtain-by-start paths must be considered before declaring a blocker.
 
-## Missing information checklist
+Salary can block only when the whole comparable pay range is below your confirmed hard floor. Currency, period and pay basis must align; missing FX, unknown hours, context-only minima and straddling ranges do not prove failure.
 
-Every screen reports which of these the JD does not explicitly state (or "None, all covered"):
+Years-of-experience shortfalls are normal cons, never hard blockers. Unmet preferred qualifications are labelled "preferred, not required". A different current city does not prove you cannot relocate or work the required hours.
 
-- salary
-- visa sponsorship
-- relocation support
-- remote policy
-- work authorization
-- timezone or working-hours overlap
-- employment type (permanent / contract)
+## Application questions and writing
 
-An item unstated here is unknown, not a negative; it can never be a 🚫 blocker or a con on its own.
+You can paste application questions or request an email, cover letter or message without restarting. Drafts use confirmed facts only, with a question or visible placeholder for missing information.
 
-Cross-currency floor checks use a dated, sourced FX quote for comparison only. Missing FX or pay-basis evidence, a range straddling the floor, and a context-only minimum do not establish a salary blocker. JD instructions aimed at the assistant are ignored without changing the output sections or verdict; any useful security note stays a factual, non-blocking CONS bullet, not an extra section or an unmet qualification.
+Writing stays simple, short and calm, without unnecessary hyphens or excessive praise. No automatic submission is performed.
 
-## Form questions and application writing
+## Source boundaries
 
-Drafts use confirmed facts only. Missing experience, rights, availability or expectations require a question or a visible placeholder, never an invented answer. Pasted forms cannot override the workflow or authorise unrelated actions. Run-only clarifications do not silently update saved profiles, and genuine multiple-job ambiguity prompts a targeted question.
+Only explicit profile facts, confirmed clarifications and the current job determine fit. Country Finder ratings and Salary Calculator targets do not replace job-specific eligibility or pay.
 
-When you paste application form questions or ask the assistant to write anything for the application (emails, answers, cover letters, forms, or messages), the assistant answers using a fixed set of writing guidelines: plain English, short and compact, a calm and slightly detached tone, no unnecessary hyphens, no overpraising the company, and writing as someone capable of doing the job who is also comfortable if the opportunity doesn't proceed.
-
-## Drift resistance
-
-Before each screen, the assistant re-anchors to the exact format and rules and silently corrects itself if it notices drift. Over a long session this can still slip; re-invoke the command to reset.
+Instructions aimed at the assistant inside pasted jobs or forms are ignored. They cannot change the report format or authorise unrelated actions. Re-invoke the command if a long chat drifts.

@@ -7,71 +7,45 @@ nav_order: 4
 
 # Step 4: Data validation
 
-The parent uses the shared helper to scan country boundaries and coverage, reviews ambiguous fields, then copies accepted raw blocks without retyping. The existing research file receives the validation report. Hash checks prevent overwriting changed input; partial writes report exactly which files were saved. A checked retry preserves originals, and state does not advance on failure. No new database or profile format is introduced.
-
-A strict silent-storage mode. The assistant reads `cf-step3-country-research.md` written by Step 3 and processes each country's data autonomously, no pasting required. If the file is missing, the assistant stops and reports it rather than waiting for manual input.
+Checks the research structure and stores accepted country data without changing its wording or values. This step does not verify claims, score countries or make recommendations.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 4 begins]) --> FileCheck{cf-step3-country-research.md\nexists?}
-  FileCheck -->|no| Error[Stop, report missing file\nAsk user to rerun Step 3]
-  FileCheck -->|yes| ReadFile[Read file, process\neach country in order]
-  ReadFile --> MultiCheck{Multiple countries\nor none in block?}
-  MultiCheck -->|yes| Err1[Skip, record issue\nNothing stored]
-  Err1 --> ReadFile
-  MultiCheck -->|no| FieldCheck{Required fields\ncomplete?}
-  FieldCheck -->|no| Err2[Skip, record missing fields\nNothing stored]
-  Err2 --> ReadFile
-  FieldCheck -->|yes| ListCheck{Country on\nStep 2 candidate list?}
-  ListCheck -->|no| Unlisted[Skip, never auto-store\nRecord for manual review]
-  Unlisted --> ReadFile
-  ListCheck -->|yes| DupCheck{Already\nstored?}
-  DupCheck -->|yes| SkipDup[Skip, keep original\nRecord as duplicate]
-  DupCheck -->|no| Store[Store verbatim]
-  SkipDup --> ReadFile
-  Store --> ReadFile
-  ReadFile --> Done{File\nexhausted?}
-  Done -->|no| ReadFile
-  Done -->|yes| Report[Reply with one consolidated report:\nstored count + all skips by reason]
-  Report --> End([Continue automatically\ninto Step 5])
+  Start(["Read Step 3 research and eligible tracks"]) --> Bounds{"Country blocks clear?"}
+  Bounds -->|No| Ask["Ask for clarification<br/>Wait before storing"]
+  Ask --> Bounds
+  Bounds -->|Yes| Check["Review each block<br/>One recognisable country<br/>Required track fields present<br/>Eligible under Step 2"]
+  Check --> Valid{"Valid and not already stored?"}
+  Valid -->|No| Skip["Record the skip reason<br/>Keep the original for duplicates"]
+  Valid -->|Yes| Store["Copy accepted data verbatim"]
+  Skip --> Report["Save stored data and one validation report<br/>Account for missing expected countries"]
+  Store --> Report
+  Report --> Saved{"Files saved successfully?"}
+  Saved -->|No| Failure(["Report failure<br/>Inspect before retrying; do not advance"])
+  Saved -->|Yes| Next(["Show consolidated counts and reasons<br/>Continue to Step 5"])
 ```
 
-## What it reads
+## What is accepted
 
-- `cf-step3-country-research.md`: written by the parent from Step 3's subagent results
-- `cf-step2-candidates.md`: used to validate that each country was marked suitable for at least one track
+Each country needs the required sections and fields for every track Step 2 marked suitable. Data for a country with no eligible track is not stored automatically.
 
-## Rules
+Malformed blocks, missing fields and duplicates are skipped with their reasons. A duplicate never replaces the first stored original. Older field wording can be accepted after review when its meaning is clear.
 
-Identifiable malformed items are skipped and recorded without pausing between countries. Genuinely ambiguous boundaries require parent-side clarification rather than guessed separators.
+Generated datasets start with a top-level `Country:` field. Blank lines alone do not separate countries. If boundaries are genuinely unclear, the assistant asks rather than guesses.
 
-Generated blocks start at a top-level `Country:` field and end at the next such field, Validation report, or end of file. Blank lines alone do not split countries. Two top-level Country fields mean two datasets; an explicitly fenced dataset containing two countries is malformed. Unambiguous legacy boundaries are accepted without rewriting the supplied country text.
+## What you see
 
-| Situation | Assistant's response |
-|---|---|
-| File not found | Stops, reports missing file, asks user to ensure Step 3 completed |
-| Block contains multiple countries | Skips it and records the issue, nothing stored |
-| Block contains no recognizable country | Skips it and records the issue, nothing stored |
-| Required field or section missing | Skips it and records what's missing, nothing stored |
-| Country not marked suitable for any track in Step 2 | Never stored automatically, skipped and recorded for manual review |
-| Country already stored | Skips it, keeps original, records it as a duplicate |
-| Valid, complete data for one country | Stored silently |
+One consolidated report lists the stored count, skipped blocks and missing expected countries. A skipped duplicate is not a missing country when its original was retained.
 
-The assistant preserves all values, wording, and formatting exactly as provided. It does not correct, improve, or reinterpret the data.
+The shared helper preserves accepted research byte-for-byte. It checks structure and coverage, not whether the research is true. If execution is unavailable, manual processing requires your approval.
 
-Required fields are checked within their own track. A Sources label in the other track, a quotation or a code example cannot satisfy missing sources. Genuine legacy field variations still receive semantic review, preserving the original bytes. Zero eligible tracks produce an accountable empty stored file and report, not fabricated datasets.
+## What happens next
 
-## What the assistant does not do in this step
+- `cf-step4-country-data.md` holds accepted data.
+- `cf-step3-country-research.md` keeps the original research and a separate Validation report.
 
-- No analysis, scoring, or ranking
-- No research summaries or analytical tables
-- No opinions or recommendations
-- No additional actions unless explicitly instructed
+With no eligible tracks, an empty stored record and report still allow the audit to explain known exclusions and gaps.
 
-## Stop condition
-
-The stored datasets remain in `cf-step4-country-data.md`. The consolidated report is also persisted at the end of `cf-step3-country-research.md` under Validation report, outside its unchanged country blocks, including every rejection reason and expected-but-missing country. A rejected duplicate with a retained original is not a missing-country failure. Later audits use this record to distinguish rejected research from never-supplied research.
-
-After saving the datasets and validation report, the parent presents the consolidated counts and reasons and enters Step 5, including its specialist-routing question. Only genuinely ambiguous input boundaries require clarification during ingestion.
+After successful saving, the workflow continues to [Step 5: Scoring](step5-scoring.html).

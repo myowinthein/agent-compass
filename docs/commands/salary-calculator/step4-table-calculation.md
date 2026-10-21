@@ -7,126 +7,68 @@ nav_order: 4
 
 # Step 4: Table calculation
 
-Applies the international adjustment and produces a salary table with shown calculations. Claude and Codex use the same bundled Python helper for exact arithmetic. The parent runs it before offering the **calculator** specialist to check the inputs and prepare the table. Declining the specialist keeps the same calculation method on your current model.
-
-For model choices, effort settings and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).
-
-## Calculation runtime
-
-The shared helpers need Python 3.11 or newer and permission to run code in the current environment. There are no additional Python packages to install. The existing per-country salary interface remains available; the shared renderer reuses its arithmetic and produces the caption and table from one readable formatting contract. It does not research visa rules or decide eligibility.
-
-If execution is unavailable, the assistant explains why and asks whether to fix it or calculate manually using the same verified-arithmetic rules. It never silently switches methods. A malformed input must be corrected, not bypassed. The chosen method is recorded in shown work; an explicitly run-scoped manual choice also covers later recalculation. A missing bundled helper is reported as a broken installation.
-
-Candidate-minimum comparisons still require confirmed currency, pay period and gross/base pay. Any FX conversion needs the existing sourced, dated quote. The helper does not fetch rates or infer taxes. A recurring normalized FX amount is verified separately with exact arithmetic, not rounded to fit the helper.
-
-The shared comparison helper also handles exact annual/monthly normalization, salary ranges, direct/reciprocal/cross-rate arithmetic and sourced national-average multiples. It never fetches exchange rates, converts net to gross or chooses a legal category. Recurring results remain exact fractions. Unknown pay bases or missing quotes stay unverified.
-
-Python and approved manual runs read the same formatting contract. The assistant checks the actual saved caption/table against the renderer before advancing the workflow. This catches copy errors, not weak research or incorrect source interpretation. A run-scoped manual choice covers later helper operations without repeating the question for each comparison.
+Applies the supported adjustment to each employer tier and saves a salary table with exact shown work. The final audit presents the table in chat.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 4 begins]) --> FC1{sc-step2-salary-data.md\nexists?}
-  FC1 -->|no| Err1[Stop, report missing file\nAsk user to rerun Step 2]
-  FC1 -->|yes| FC2{sc-step3-adjustment-values.md\nexists?}
-  FC2 -->|no| Err2[Stop, report missing file\nAsk user to rerun Step 3]
-  FC2 -->|yes| ReadFiles[Read both files]
-  ReadFiles --> Qualify{Any comparable data and\nsupported numeric adjustment?}
-  Qualify -->|no| SkipOnly[Parent writes skip-only record\nNo calculator handoff]
-  SkipOnly --> Save
-  Qualify -->|yes| Helper[Parent runs shared numeric helper\nor resolves explicit manual fallback]
-  Helper --> SpecialistQ{Use specialist to\ncheck and prepare table?}
-  SpecialistQ -->|yes| CalcAgent[Route to calculator\nhost-specific model and effort]
-  SpecialistQ -->|no| CurrentModel[Run with your\ncurrent model]
-  CalcAgent --> Order
-  CurrentModel --> Order{cf-step6-final-ranking.md\nexists?}
-  Order -->|yes| OrderCF[Order countries to match\nits Priority Table]
-  Order -->|no| OrderAlpha[Order countries\nalphabetically A→Z]
-  OrderCF --> Check
-  OrderAlpha --> Check{Comparable salary data and\nsupported numeric adjustment?}
-  Check -->|no| Skip[Skip country\nnote reason]
-  Skip --> More
-  Check -->|yes| Midpoint[Market Midpoint =\nRealistic value from salary dataset\nDo not average or derive]
-  Midpoint --> Calc[Check helper inputs against source files\nApply adjustment independently\nto Mainstream and Premium]
-  Calc --> Monthly[Annual: adjusted segment target\nMonthly: raw annual target divided by 12]
-  Monthly --> Legal{Usable sponsorship\nthreshold reported?}
-  Legal -->|no| ShowWork
-  Legal -->|yes| LegalCheck[Compare unrounded Mainstream/Premium\nvs threshold, flag if either falls short]
-  LegalCheck --> ShowWork[Show all calculations\nbefore producing table]
-  ShowWork --> More{More\ncountries?}
-  More -->|yes| Check
-  More -->|no| Table[One row per country\nAnnual and Monthly: single targets]
-  Table --> Summary[Summary: countries calculated,\nskipped with reasons, and any\nhard-floor flag]
-  Summary --> Save[Save to sc-step4-salary-table.md]
-  Save --> Usable{Any country\ncalculated?}
-  Usable -->|yes| Done([Parent continues\ninto Step 5])
-  Usable -->|no| Repair[Keep output and checkpoint\nOffer missing-evidence repair or stop]
+  Start(["Read salary data, adjustments and research coverage"]) --> Eligible{"Any country has comparable data<br/>and a supported numeric adjustment?"}
+  Eligible -->|No| Empty["Save a skip-only record and checkpoint<br/>No empty table or calculator handoff"]
+  Empty --> Repair(["Offer evidence repair or stop"])
+  Eligible -->|Yes| Helper["Run exact shared calculations<br/>Resolve any execution choice before handoff"]
+  Helper --> Model["Offer the optional calculator specialist<br/>Or use your current model"]
+  Model --> Calc["Apply the adjustment to each Realistic amount<br/>Keep raw annual and monthly values"]
+  Calc --> Rules["Check comparable visa rules and your salary floor<br/>Never change targets to clear a minimum"]
+  Rules --> Display["Round display values independently<br/>Render the table in the established country order"]
+  Display --> Save["Save shown work, table and skipped-country reasons<br/>Check the actual saved table"]
+  Save --> Next(["Show brief calculated and skipped counts<br/>Continue to Step 5"])
 ```
 
-## What it reads
+## Calculation runtime
 
-- `sc-step2-salary-data.md`: salary data from Step 2, including each country's sponsorship salary threshold if one was reported
-- `sc-step3-adjustment-values.md`: adjustment figures from Step 3
-- `situational-profile.md`: checked for a hard-floor salary minimum, used only for the flag described under Hard-floor flag below
-- `skills/sponsorship-threshold-rules.md`: governs the Visa salary rule column below
-- `cf-step6-final-ranking.md`: if present, its Priority Table order is used to order this step's output; if absent, countries are ordered alphabetically instead
-- `sc-step1-salary-research.md`: its Research scope and Validation report account for requested targets rejected before calculation
+Claude and Codex use the same bundled Python 3.11+ helpers, with no extra Python packages. The assistant checks inputs against source files, runs exact arithmetic and verifies the saved table. Helpers do not research salaries, choose adjustments or decide visa eligibility.
 
-## Definitions
+If execution is unavailable, you choose whether to fix it or proceed manually under the same rules. There is no silent fallback. A run-scoped manual choice can cover later recalculation; the chosen method is recorded. Invalid inputs still need correction, and missing bundled files require installation repair.
 
-Mainstream and Premium are the former Safe and Stretch segments under clearer names. They describe employer segments, not guarantees. Premium is independently researched, not a generic uplift from Mainstream.
-
-
-| Term | Definition |
-|---|---|
-| **Market Midpoint** | The "Realistic" value for the relevant tier from the salary dataset. Never averaged or estimated. |
-| **Mainstream** | Market Midpoint from the Mid-size / Mainstream Local-Market tier |
-| **Premium** | Market Midpoint from the Premium / International / Remote-first tier |
+Choosing the [calculator specialist]({{ '/docs/specialist-agents.html' | relative_url }}) is separate from choosing a calculation method.
 
 ## Calculation rules
 
-**Annual Target (= Adjusted Midpoint):**
-```
-Annual Target = Market Midpoint × (1 − Adjustment %)
-```
+Mainstream uses the Mainstream tier's researched **Realistic** amount. Premium uses its own tier's Realistic amount, not an uplift from Mainstream.
 
-No automatic −5%/+10% bands or universal interview ranges are generated. Original Low/Realistic/Strong research remains in the stored datasets; any negotiation discussion belongs in the saved audit and needs segment-specific evidence.
-
-**Monthly (a single reference value, not a range):**
-```
+```text
+Annual Target = Realistic amount × (1 − Adjustment %)
 Monthly Reference = unrounded Annual Target ÷ 12
 ```
 
-Monthly values are a reference only and may not represent actual monthly payslips in countries using 13th or 14th salary payments. The adjustment is applied independently to both Mainstream and Premium midpoints.
+The same supported adjustment applies independently to both tiers. A missing or unestimable adjustment is not 0%; that country is skipped.
 
-Comparable minimum checks use raw amounts, never display rounding. Each displayed number is rounded independently only at the end, so recomputing from a displayed Annual Target need not reproduce the displayed monthly reference exactly. Annual salary values round to the nearest 500 and Monthly to the nearest 50, with exact halfway ties rounding upward. Shown work retains the raw values; legal thresholds are never display-rounded.
+Annual display values round to the nearest 500 and monthly values to the nearest 50, with halfway ties upward. Each uses the raw target, so dividing a displayed annual figure by 12 may not reproduce the displayed monthly value.
 
-## Ordering
-
-Countries are ordered to match `cf-step6-final-ranking.md`'s Priority Table if it exists. Calculated countries absent from that table, including user-added targets, follow alphabetically by name. Without the file, all countries are alphabetical (A→Z).
+Monthly figures are references, not necessarily payslips. No automatic percentage ranges are generated.
 
 ## Visa salary rule comparison
 
-For a usable sponsorship threshold, compare raw targets in its verified original period. A monthly check uses annual/12 only when official eligible-pay rules and the researched payment schedule support it. Extra salary payments can make ordinary monthly pay different. If this basis is unknown or the helper cannot represent it, show Unknown and preserve the known threshold and limitation in shown work, without sending a numeric visa comparison. Monthly display references stay annual/12. No market target changes to meet a legal minimum.
+The rule is separate from your market targets:
 
-## Show your work
+| Display | Meaning |
+|---|---|
+| Exact amount with `/yr` or `/mo` | Verified candidate-applicable numeric rule |
+| No fixed minimum | A route exists without a fixed numeric floor; other wage conditions may apply |
+| Not applicable | Your confirmed path does not use employer-sponsored relocation |
+| Unknown | The applicable rule or comparable pay basis cannot be established |
+| Blocked | Official evidence makes the assessed route unavailable to you; the saved explanation says why |
 
-Before producing the table, the assistant checks the helper's echoed inputs against the source files and records the Market Midpoint, Adjustment %, raw and displayed annual/monthly targets for both segments. Raw values can be exact fractions. Shown work also records whether the shared helper or user-approved manual arithmetic was used.
+Numeric checks use unrounded targets and the rule's original period. Monthly checks need an official eligible-pay basis and payment schedule compatible with annual/12; otherwise the compact result is Unknown and the known figure stays in shown work.
 
-Shown work also records the confirmed local-employee benchmark/path, each tier's geography and pay basis, the source/method behind Realistic, and the observed or inferred adjustment basis. Source ranges cannot silently become a new midpoint here. Incompatible units, role scope or Low/Realistic/Strong ordering require clarification or a documented skip, not correction of raw data. Mainstream exceeding Premium alone is not an error.
-
-Countries with missing/non-comparable salary data or an unestimable adjustment are skipped with the reason. An unknown adjustment never becomes 0%.
-
-Confirmed targets and earlier ingestion failures are reconciled against the research scope and validation report too. Every known target is calculated or accounted for as skipped; rejected duplicates with retained originals are not failed countries. The final audit preserves these reasons. Unknown legacy coverage is stated explicitly.
+One ⚠️ means at least one raw target falls below the numeric rule. Equality clears this salary comparison, not overall visa eligibility. A shortfall is not the same as a Blocked route.
 
 ## Table format
 
-One Markdown table with one row per calculated country. A standard caption establishes gross base pay, currency, and reference-only monthly figures:
-
 > Gross base salary in local currency. Monthly figures are annual ÷ 12 references, not necessarily payslips; targets are market estimates, not visa-eligibility guarantees.
 
-These fictional formatting examples are not current market or visa facts. Each displayed annual target also serves as its raw example input. The numeric monthly example assumes an official rule compatible with annual/12 base pay. Their order is illustrative; a real run follows Country Finder or alphabetical ordering.
+These fictional examples show formatting, not current salary or visa facts. Annual amounts also serve as the raw example inputs; the monthly visa example assumes a compatible official pay basis.
 
 | Country | Visa salary rule | Mainstream Annual | Premium Annual | Mainstream Monthly | Premium Monthly |
 |---|---|---:|---:|---:|---:|
@@ -137,37 +79,20 @@ These fictional formatting examples are not current market or visa facts. Each d
 | 🇯🇵 Japan (JPY) | No fixed minimum | 7,800,000 | 10,200,000 | 650,000 | 850,000 |
 | 🇬🇧 United Kingdom (GBP) | Unknown | 60,000 | 78,000 | 5,000 | 6,500 |
 
-- Country flags precede names, followed by the currency code.
-- Four salary columns contain single local-currency targets only: no ranges, currency symbols, repeated codes, or USD conversion.
-- Annual targets round to the nearest 500 and monthly references to the nearest 50, independently, with halfway ties upward. Monthly references use raw annual targets, not displayed values.
-- Country and Visa salary rule are left-aligned; the four numeric columns are right-aligned.
-- The Visa salary rule shows an exact verified figure in its original period, such as `45,300/yr` or `5,331/mo`, never both periods or an unqualified number. One ⚠️ means either raw segment target is below the threshold; the saved Summary identifies which.
-- The other four states display explicitly as **No fixed minimum**, **Not applicable**, **Unknown**, or **Blocked**, not ambiguous dashes or question marks. The stored state names remain unchanged.
-- No fixed minimum does not waive prevailing-wage or other compensation conditions; the saved explanation retains them. A Blocked state concerns the assessed route, not every possible route.
-- No extra columns, citations, footnotes, revision markers, or commentary beyond the standard caption.
+Sources, dates, applicable visa categories, exact shortfalls and additional wage conditions stay in shown work and Summary, not extra table columns.
 
-Neither market target changes to satisfy a visa minimum or candidate floor. The salary-minimum comparison is not overall visa eligibility. Sources, candidate category, effective date, extra wage conditions, and raw comparisons stay in shown work and Summary.
+## Ordering
+
+A compatible, established Country Finder Priority Table supplies row order. User-added countries follow alphabetically. Without usable ordering, all calculated countries are alphabetical; an unrelated or unreadable table never blocks calculation.
 
 ## Hard-floor flag
 
-The assistant reads `situational-profile.md`. If a salary minimum was given there and marked a hard floor, the Summary (not the table itself) lists any country whose raw Mainstream target falls short of it, with the specific gap. Like the Visa salary rule column, this is a flag only, in prose form; Mainstream and Premium are never adjusted because of it.
+A confirmed hard minimum is compared with raw Mainstream pay and flagged in Summary if it falls short. Comparable currency, period and pay basis are required, with a dated sourced exchange rate when needed.
 
-The comparison first aligns currency, period, and gross/base versus net/take-home basis. When currencies differ, the minimum is converted for comparison only using a named, sourced, dated FX quote recorded in shown work or Summary. The table stays in local currency. Missing rates or a non-comparable pay basis make the check unverified, not a proven failure; equality clears the floor. Market figures are never changed to meet it.
+Missing conversion evidence stays unverified. Neither your minimum nor a visa rule changes the market estimates.
 
-## Blocked-route flag
+## What happens next
 
-If any country's Visa salary rule state is "Blocked," the Summary also lists it with its stated reason, noting that country's Mainstream/Premium figures are reference-only for sponsorship purposes, independent of what the numbers themselves say.
+`sc-step4-salary-table.md` saves shown work, the table and calculated/skipped counts. Every known target is calculated or listed with its actual skip reason, including earlier rejected research. Unknown legacy coverage is disclosed.
 
-If Step 5 recalibrates, its revised table reuses this exact format and column order; see [Step 5: Final Verification](step5b-final-verification.html).
-
-## Output
-
-Country Finder ordering is optional and uses a compatible established source. An unreadable, draft or unrelated Priority Table falls back to alphabetical ordering without blocking calculation or dropping user-added countries. Confirmed run-only clarifications are recorded in shown work so the final specialist can use them without silently editing the reusable profile.
-
-- `sc-step4-salary-table.md`: the raw, pre-audit shown work, caption, table, and summary, written for Step 5 to read. This step's own output is file-only, unlike Step 5, which shows the standard caption and final table in chat.
-
-The assistant does not reproduce the calculations or the table in chat; instead, it tells you in a few lines how many countries were calculated and skipped, and confirms the file is saved.
-
-## Stop condition
-
-Normal helper calculation needs no additional confirmation. Execution problems require the explicit fallback choice. After saving the output and checkpoint, the parent continues to mandatory final verification only when at least one country was calculated. With no supported numeric adjustment, the parent saves a skip-only record without an empty table or calculator handoff. It then offers research repair or stop before a ladder question. An approved repair first rewinds the checkpoint before the earliest affected step; valid originals and reports stay preserved.
+Chat shows brief counts, not the pre-audit table. If any country was calculated, continue to [Step 5: Final Verification](step5b-final-verification.html). Otherwise, the assistant offers evidence repair or stop.
