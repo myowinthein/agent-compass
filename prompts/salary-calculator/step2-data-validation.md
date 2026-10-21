@@ -33,4 +33,4 @@ Persist this same consolidated report under `## Validation report` in sc-step1-s
 
 When `ingest` has written that report, persistence is already complete: read it back but do not append another review, alter its bounded generated section or write anything after its closing marker. Present the consolidated inventory in chat without creating a second report.
 
-This data is saved to sc-step2-salary-data.md, which Step 3 will use next. Step complete. Follow the step-completion rule in prompts/shared/runtime.md.
+This data is saved to sc-step2-salary-data.md, which Step 3 will use next. Step complete. Follow the step-completion rule in prompts/shared/runtime.md. If no country was stored, apply the workflow's no-usable-estimates stop before Step 3; the empty stored artifact and Validation report remain valid records, not a completed salary result.
