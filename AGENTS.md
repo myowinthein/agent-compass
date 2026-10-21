@@ -33,6 +33,7 @@ This is the user's preferred pairing with GPT-6.1 Sol at high effort, not a clai
 - `data/output-contracts.json`: single readable source for fixed display tokens, bounds and batching size. Python and approved manual runs read the same file. Prose may explain semantic predicates and docs may show checked examples, but do not duplicate runtime template/enum definitions.
 - `data/default-preferred-countries.md`: shipped Country Finder default search scope.
 - `.claude-plugin/marketplace.json`: shared Claude-compatible marketplace. Do not duplicate the manifest's description or version here.
+- `assets/icon.png`: the single shared plugin icon. The manifest's Claude `icon` and Codex `interface.logo`/`interface.composerIcon` fields point to this same file. Codex reads `interface` from the shared compatibility manifest; Claude ignores that field with an expected validation warning. Do not add a second identity manifest or duplicate the image to remove that warning. Claude's documented icon support is for Anthropic directory listings, not a guarantee for custom GitHub installs.
 
 Keep behavioral instructions in those sources, never copy them into platform adapters. For a change to scoring, evidence handling, sponsorship thresholds, profile intake, or output formatting, read the relevant step and its referenced shared rules before editing. Preserve the existing file names and schemas for candidate profiles, state, and step outputs so users can resume across hosts.
 

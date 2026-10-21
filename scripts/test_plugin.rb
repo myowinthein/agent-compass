@@ -3,6 +3,7 @@ require "json"
 require "pathname"
 require "rbconfig"
 require "yaml"
+require_relative "validate_plugin"
 
 # Checks validation, published examples, and instruction contracts, not LLM behavior.
 root = Pathname(__dir__).parent
@@ -18,6 +19,40 @@ output, error, status = Open3.capture3(
   RbConfig.ruby, "-EUS-ASCII:US-ASCII", root.join("scripts/validate_plugin.rb").to_s
 )
 assert.call(status.success?, "Validator failed under US-ASCII defaults: #{output}#{error}")
+
+manifest = JSON.parse(root.join(".claude-plugin/plugin.json").read(encoding: "UTF-8"))
+assert.call(manifest.fetch("icon") == "./assets/icon.png", "Claude must reference the shared icon")
+%w[logo composerIcon].each do |field|
+  assert.call(manifest.fetch("interface").fetch(field) == manifest.fetch("icon"),
+              "Codex #{field} must reference the same image as Claude")
+end
+
+Dir.mktmpdir("compass-icon-check-") do |temp|
+  installation = Pathname(temp)
+  %w[.claude-plugin commands workflows prompts skills agents helpers data assets].each do |component|
+    FileUtils.cp_r(root.join(component), installation)
+  end
+  icon = installation.join("assets/icon.png")
+  original = icon.binread
+  {
+    "missing" => nil,
+    "invalid header" => "not a PNG",
+    "non-square" => original.byteslice(0, 20) + [48].pack("N") + original.byteslice(24..),
+    "too small" => original.byteslice(0, 16) + [32, 32].pack("NN") + original.byteslice(24..),
+    "too large" => original.byteslice(0, 16) + [4097, 4097].pack("NN") + original.byteslice(24..),
+    "oversized file" => original.ljust(5 * 1024 * 1024 + 1, "\0")
+  }.each do |label, bytes|
+    bytes ? icon.binwrite(bytes) : icon.delete
+    rejected = begin
+      CompassValidation.validate(installation)
+      false
+    rescue RuntimeError
+      true
+    end
+    assert.call(rejected, "Validator accepted a #{label} plugin icon")
+    icon.binwrite(original)
+  end
+end
 
 # Published salary fixtures exercise the compact presentation, exact monthly
 # arithmetic and threshold-warning examples, not live market/visa research.

@@ -40,6 +40,18 @@ module CompassValidation
     check(entry.fetch("source") == "./", "Marketplace must point to this package, not a second copy")
     check(entry.dig("policy", "installation") == "AVAILABLE", "Plugin is not installable in Codex")
     check(!entry.key?("version") && !entry.key?("description"), "Maintain metadata only in plugin.json")
+    icon = resource(root, manifest.fetch("icon"))
+    %w[logo composerIcon].each do |field|
+      check(manifest.fetch("interface").fetch(field) == manifest.fetch("icon"),
+            "Claude and Codex must reference the same icon file")
+    end
+    check(icon.extname == ".png" && icon.size <= 5 * 1024 * 1024, "Plugin icon must be a PNG no larger than 5 MiB")
+    header = icon.binread(24)
+    check(header.bytesize == 24 && header.start_with?("\x89PNG\r\n\x1a\n".b) && header.byteslice(12, 4) == "IHDR",
+          "Invalid plugin icon PNG header")
+    dimensions = header.byteslice(16, 8).unpack("NN")
+    check(dimensions.uniq.length == 1 && (48..4096).cover?(dimensions.first),
+          "Plugin icon must be square and between 48 and 4096 pixels")
     resource(root, "helpers/salary_targets.py")
     resource(root, "helpers/compass.py")
     %w[common money research state tables timezones].each { |name| resource(root, "helpers/compass_lib/#{name}.py") }
@@ -115,7 +127,7 @@ module CompassValidation
       workspace = Pathname(temp).join("candidate workspace")
       installation.mkpath
       workspace.mkpath
-      %w[.claude-plugin commands workflows prompts skills agents helpers data].each do |component|
+      %w[.claude-plugin commands workflows prompts skills agents helpers data assets].each do |component|
         FileUtils.cp_r(Pathname(root).join(component), installation)
       end
       Dir.chdir(workspace) { validate(installation) }
