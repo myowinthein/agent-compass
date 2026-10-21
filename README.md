@@ -31,34 +31,34 @@ You can install Agent Compass in Claude or Codex by following the [setup guide](
 country-finder
 ```
 
-I start here to find countries that match my profile for remote work or visa sponsorship, so I know where to focus my search.
+I start here to [find countries that match my profile](https://myowinthein.github.io/agent-compass/docs/commands/country-finder.html) for remote work or visa sponsorship, so I know where to focus my search.
 
-It asks a few questions about your profile and preferences, then researches the countries and returns a priority table. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/country-finder.html).
+It asks a few questions about your profile and preferences, then researches the countries and returns a priority table.
 
 ```text
 portal-finder
 portal-finder <country>
 ```
 
-Once I know which countries to target, I use this command to find verified job portals for IT and tech roles. From there, I can create accounts and start looking for opportunities.
+Once I know which countries to target, I use this command to [find verified job portals](https://myowinthein.github.io/agent-compass/docs/commands/portal-finder.html) for IT and tech roles. From there, I can create accounts and start looking for opportunities.
 
-Provide one country name, or leave it out and the command will ask before finding its job portals. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/portal-finder.html).
+Provide one country name, or leave it out and the command will ask before finding its job portals.
 
 ```text
 salary-calculator
 ```
 
-I use this command to explore realistic local-market salaries for my role and experience. This gives me a clearer idea of what to ask for when discussing salary expectations.
+I use this command to [explore realistic local-market salaries](https://myowinthein.github.io/agent-compass/docs/commands/salary-calculator.html) for my role and experience. This gives me a clearer idea of what to ask for when discussing salary expectations.
 
-If you’ve already run `country-finder`, it suggests countries from your results. You can keep the list, add or remove countries or start fresh. Otherwise, it asks which countries you want to research. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/salary-calculator.html).
+If you’ve already run `country-finder`, it suggests countries from your results. You can keep the list, add or remove countries or start fresh. Otherwise, it asks which countries you want to research.
 
 ```text
 job-screener
 ```
 
-When I find an interesting job, I use this command to compare its requirements with my profile. Its Apply, Maybe, or Skip recommendation helps me decide whether to apply.
+When I find an interesting job, I use this command to [compare its requirements with my profile](https://myowinthein.github.io/agent-compass/docs/commands/job-screener.html). Its Apply, Maybe, or Skip recommendation helps me decide whether to apply.
 
-Start a dedicated chat and run this command once. Then paste job descriptions one at a time. If the responses stop following the screening format, run the command again. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/job-screener.html).
+Start a dedicated chat and run this command once. Then paste job descriptions one at a time. If the responses stop following the screening format, run the command again.
 
 I also use Obsidian to organise my research and track applications. [See my Obsidian workflow](https://myowinthein.github.io/agent-compass/docs/examples/obsidian-workflow.html) for an optional example.
 
