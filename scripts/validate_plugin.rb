@@ -1,6 +1,7 @@
 require "fileutils"
 require "json"
 require "pathname"
+require "rexml/document"
 require "tmpdir"
 require "yaml"
 
@@ -45,13 +46,26 @@ module CompassValidation
       check(manifest.fetch("interface").fetch(field) == manifest.fetch("icon"),
             "Claude and Codex must reference the same icon file")
     end
-    check(icon.extname == ".png" && icon.size <= 5 * 1024 * 1024, "Plugin icon must be a PNG no larger than 5 MiB")
-    header = icon.binread(24)
-    check(header.bytesize == 24 && header.start_with?("\x89PNG\r\n\x1a\n".b) && header.byteslice(12, 4) == "IHDR",
-          "Invalid plugin icon PNG header")
-    dimensions = header.byteslice(16, 8).unpack("NN")
-    check(dimensions.uniq.length == 1 && (48..4096).cover?(dimensions.first),
-          "Plugin icon must be square and between 48 and 4096 pixels")
+    check(icon.extname == ".svg" && icon.size <= 5 * 1024 * 1024, "Plugin icon must be an SVG no larger than 5 MiB")
+    begin
+      document = REXML::Document.new(read(icon))
+    rescue REXML::ParseException
+      raise "Invalid plugin icon SVG XML"
+    end
+    svg = document.root
+    check(svg && svg.name == "svg" && svg.namespace == "http://www.w3.org/2000/svg", "Invalid plugin icon SVG root")
+    dimensions = %w[width height].map { |field| svg.attributes[field].to_s }
+    check(dimensions.all? { |value| value.match?(/\A\d+(?:\.\d+)?\z/) && value.to_f.finite? && value.to_f >= 48 } &&
+          dimensions.map(&:to_f).uniq.length == 1, "Plugin icon must have square numeric dimensions of at least 48 pixels")
+    check(svg.attributes["viewBox"] == "0 0 #{dimensions.join(' ')}", "Plugin icon viewBox must match its dimensions")
+    check(document.doctype.nil?, "Plugin icon must not declare external entities")
+    document.elements.each("//*") do |element|
+      check(!%w[image script foreignObject].include?(element.name), "Plugin icon must contain only static vector artwork")
+      element.attributes.each_attribute do |attribute|
+        check(!attribute.name.start_with?("on") && attribute.name != "href" && !attribute.value.include?("url("),
+              "Plugin icon must not execute code or load external resources")
+      end
+    end
     resource(root, "helpers/salary_targets.py")
     resource(root, "helpers/compass.py")
     %w[common money research state tables timezones].each { |name| resource(root, "helpers/compass_lib/#{name}.py") }
