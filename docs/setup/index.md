@@ -16,15 +16,13 @@ If you use the terminal on Windows, run the examples in a Bash-compatible shell 
 
 ## Run a command
 
-Type the prefix in the chat input, then select an Agent Compass command. These methods were tested on macOS.
+Type the prefix in the chat input, then select an Agent Compass command.
 
 | Client | Prefix |
 |---|---|
 | Claude desktop and terminal | `/` |
 | Codex terminal | `$` |
 | Codex desktop | `/` or `$` |
-
-For Codex, `$` works in both desktop and terminal. In the terminal, enter these prefixes inside the Claude or Codex session, not at the shell prompt.
 
 ## Plugin names
 
