@@ -1,6 +1,6 @@
 ---
 title: "Step 5: Scoring"
-parent: /country-finder
+parent: country-finder
 grand_parent: Commands
 nav_order: 5
 ---

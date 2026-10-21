@@ -1,11 +1,11 @@
 ---
-title: /country-finder
+title: country-finder
 parent: Commands
 nav_order: 1
 has_children: true
 ---
 
-# /country-finder
+# country-finder
 
 Runs the full Country Finder pipeline. Collects your criteria, discovers candidate countries for remote hire and visa sponsorship as two separate tracks, generates per-country research prompts, validates and stores your results, scores each country against your requirements, and produces a final priority ranking. Resumes from the last completed step if interrupted.
 
@@ -31,7 +31,7 @@ Both hosts use shared Python 3.11+ helpers for batching, research ingestion, com
 
 ```mermaid
 flowchart TD
-  Start([User runs /country-finder]) --> Profile{profile.md\nexists?}
+  Start([User runs country-finder]) --> Profile{profile.md\nexists?}
   Profile -->|no| Extract[Resume extraction,\nwait for upload and confirmation]
   Profile -->|yes| State
   Extract --> State
@@ -94,6 +94,6 @@ Always runs after Step 5 completes; this is the only step in the pipeline with n
 
 ## See also
 
-- [`/salary-calculator`](salary-calculator.html): calculate local-market salaries for countries discovered here
-- [`/portal-finder`](portal-finder.html): find verified job portals for a specific country
-- [`/job-screener`](job-screener.html): screen job descriptions against your resume profile
+- [`salary-calculator`](salary-calculator.html): calculate local-market salaries for countries discovered here
+- [`portal-finder`](portal-finder.html): find verified job portals for a specific country
+- [`job-screener`](job-screener.html): screen job descriptions against your resume profile

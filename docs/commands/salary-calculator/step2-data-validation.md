@@ -1,6 +1,6 @@
 ---
 title: "Step 2: Data validation"
-parent: /salary-calculator
+parent: salary-calculator
 grand_parent: Commands
 nav_order: 2
 ---

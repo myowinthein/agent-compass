@@ -1,6 +1,6 @@
 ---
 title: "Step 2: Country discovery"
-parent: /country-finder
+parent: country-finder
 grand_parent: Commands
 nav_order: 2
 ---

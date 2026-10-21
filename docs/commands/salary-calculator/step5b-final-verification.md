@@ -1,6 +1,6 @@
 ---
 title: "Step 5: Final Verification"
-parent: /salary-calculator
+parent: salary-calculator
 grand_parent: Commands
 nav_order: 5
 ---

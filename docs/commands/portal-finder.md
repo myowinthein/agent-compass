@@ -1,11 +1,11 @@
 ---
-title: /portal-finder
+title: portal-finder
 parent: Commands
 nav_order: 2
 has_children: true
 ---
 
-# /portal-finder
+# portal-finder
 
 Finds verified job portals for IT/tech roles in a specified country. Accepts the country as an optional argument: if omitted, the assistant asks before doing anything. Researches portals online rather than relying on general knowledge, confirming each one actually exists and is active on its own site.
 
@@ -26,7 +26,7 @@ If you provide a country argument, the assistant uses it directly. If you omit i
 
 ```mermaid
 flowchart TD
-  Start([User runs /portal-finder]) --> CountryCheck{Country argument\nprovided?}
+  Start([User runs portal-finder]) --> CountryCheck{Country argument\nprovided?}
   CountryCheck -->|yes| S1
   CountryCheck -->|no| AskCountry[Ask for country, wait]
   AskCountry --> S1
@@ -53,6 +53,6 @@ Researches job portals for IT/tech roles in the target country online. Portals a
 
 ## See also
 
-- [`/country-finder`](country-finder.html): discover which countries are viable for remote hire or visa sponsorship
-- [`/salary-calculator`](salary-calculator.html): calculate realistic local-market salaries for a target country
-- [`/job-screener`](job-screener.html): screen job descriptions against your resume profile
+- [`country-finder`](country-finder.html): discover which countries are viable for remote hire or visa sponsorship
+- [`salary-calculator`](salary-calculator.html): calculate realistic local-market salaries for a target country
+- [`job-screener`](job-screener.html): screen job descriptions against your resume profile

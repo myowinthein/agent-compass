@@ -1,11 +1,11 @@
 ---
-title: /job-screener
+title: job-screener
 parent: Commands
 nav_order: 4
 has_children: true
 ---
 
-# /job-screener
+# job-screener
 
 Screens job descriptions against your resume profile and returns a structured match report: a verdict, pros and cons with hard-blocker tagging, salary and application method when stated, and a fixed missing-information checklist. It also drafts answers to application form questions and other application writing in a consistent tone. Requires a resume. Paste one job description at a time; re-invoke if the session drifts.
 
@@ -25,7 +25,7 @@ Run it once at the top of a chat. The assistant loads your profile and waits. Th
 
 ```mermaid
 flowchart TD
-  Start([User runs /job-screener]) --> Profile{profile.md\nexists?}
+  Start([User runs job-screener]) --> Profile{profile.md\nexists?}
   Profile -->|no| Extract[Resume extraction,\nwait for upload and confirmation]
   Profile -->|yes| Load[Read profile.md\nReply: Profile loaded]
   Extract --> Load
@@ -60,6 +60,6 @@ Unlike Country Finder and Salary Calculator, this command keeps no state file an
 
 ## See also
 
-- [`/country-finder`](country-finder.html): discover which countries are viable for remote hire or visa sponsorship
-- [`/salary-calculator`](salary-calculator.html): calculate realistic local-market salaries for a target country
-- [`/portal-finder`](portal-finder.html): find verified job portals for a specific country
+- [`country-finder`](country-finder.html): discover which countries are viable for remote hire or visa sponsorship
+- [`salary-calculator`](salary-calculator.html): calculate realistic local-market salaries for a target country
+- [`portal-finder`](portal-finder.html): find verified job portals for a specific country
