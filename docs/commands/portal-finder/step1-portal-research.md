@@ -7,57 +7,52 @@ nav_order: 1
 
 # Step 1: Portal research
 
-Researches job portals for IT/tech roles in the target country online. Each portal's existence and activity is confirmed directly on its own site, not from blog posts or listicle articles.
-
-Verification includes current country-relevant tech listings or search/category evidence, not merely a working homepage. Results include useful official links and a verification date; stars reflect observed coverage and usability. Redirects/rebrands of one portal are deduplicated, while separate boards sharing an owner remain distinct.
+Checks portals directly on their own sites and returns useful links for the country you chose.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 1 begins]) --> Research[Research portals online\nfor the target country]
-  Research --> Group[Organize by type into 3 groups\ngeneral · tech · networks]
-  Group --> Flag[Flag top 2–3 per group with ⭐\nFlag caveats with ⚠️]
-  Flag --> Output([Output all groups, stop])
+  Start(["Use the established country"]) --> Browse{"Live browsing available?"}
+  Browse -->|No| Wait["Explain the limit<br/>Wait for access or supplied evidence"]
+  Wait --> Supplied["Label supplied evidence and its date<br/>Do not call it live verified"]
+  Browse -->|Yes| Check["Check official country, tech or job-search pages<br/>A working homepage alone is insufficient"]
+  Check --> Access{"Country-relevant coverage verifiable?"}
+  Access -->|No| Retry["Try another relevant public page<br/>On the same official domain"]
+  Retry --> Verified{"Now verified?"}
+  Verified -->|No| Note["Keep out of verified groups<br/>Name the access or coverage limit"]
+  Verified -->|Yes| Keep
+  Access -->|Yes| Keep["Keep useful official links and verification date<br/>Deduplicate redirects and rebrands"]
+  Keep --> Group["Group verified portals by type<br/>Star useful starting picks"]
+  Note --> Result
+  Group --> Result(["Return results and coverage notes<br/>Stop after this response"])
+  Supplied --> Result
 ```
-
-## What it uses
-
-- Country: established before this step runs
 
 ## Groups
 
-Portals are organized **by type** into these three mutually exclusive groups, in this order:
+Each portal appears once, under its type:
 
-1. **General job boards**: broad portals that list many fields including tech
-2. **Tech-specific boards**: boards built for IT, software, data, or related tech roles
-3. **Professional & community networks**: professional networks and community-run boards where tech roles are posted (e.g. LinkedIn, Wellfound, startup "who's hiring" boards, active local developer communities)
+1. General job boards: broad job sites with tech listings.
+2. Tech-specific boards: sites focused on IT, software, data or related roles.
+3. Professional & community networks: professional networks and community-run boards.
 
-Government and official employment-service portals are deliberately excluded: they tend to be citizen/PR-oriented or geared toward expat/relocation information rather than reliable third-party job listings.
+Country-dedicated or global scope is noted per entry, not used as a separate group. Remote-first boards are grouped by their focus. A genuine exception can have an extra group; empty groups are not padded with invented entries.
 
-Each portal goes in exactly one group. Geographic scope (country-dedicated vs global/multi-country) is not a group; it is noted per portal, since it changes how much of a portal's listings are relevant. Remote-first boards are placed under General or Tech-specific by their focus, not a separate group. If a portal fits none of the three, it gets its own clearly named group rather than being forced in. If no portals fit a group, that group is omitted rather than padded with weak entries.
+Government and official employment-service portals are excluded by this workflow.
 
-## Per-portal output
+## What you receive
 
-For each portal:
-- Name, with its official URL in parentheses right after (e.g. LinkedIn (linkedin.com)), the portal's own domain, not a search engine result or aggregator link
-- Scope: country-dedicated or global/multi-country
-- One-line description of its real strength for an IT/tech job seeker
+Each entry has the portal name, an official URL, its geographic scope and one line about its practical strength. Useful country or category links are preferred over generic homepages.
 
-Within each group, ⭐ marks the 2–3 portals to start with first.
+⭐ marks the 2–3 verified starting picks within each group, or fewer when fewer qualify. A verification date accompanies live results.
 
-A smaller verified group stars only the entries that actually verified, never invented quota-fillers. If one site is blocked or behind login, the assistant tries another relevant public page on its official domain. A portal that remains unverifiable is excluded from the verified groups but named in a short coverage warning with the access limitation. Failed access is not evidence that the portal is dead or unsuitable; other verified results remain usable.
+⚠️ covers relevant restrictions, deprecated sites, shared ownership or verification limits. Login access and eligibility for a particular job are separate questions.
 
-## Warning flags
+## Partial or unavailable access
 
-⚠️ flags anything outside the structure but worth knowing:
-- Portal is dead or deprecated despite still ranking in searches
-- Two portals in the list are owned by the same parent company
-- Portal is restricted to citizens or residents and not open to foreign applicants
-- Any significant caveat affecting an international candidate
+An inaccessible portal is named in a coverage note, not presented as verified or declared inactive. Other verified results remain usable.
 
-## Stop condition
+Without browsing, supplied sources are labelled **user-supplied; not live verified**, with their evidence date, separately from live-verified recommendations. Unverified entries do not receive verified starting-pick stars.
 
-Login access does not establish eligibility for a job. Without browsing, supplied evidence is labelled as user-supplied and not live verified, separate from verified recommendations. If nothing verifies, the result says so and explains the coverage limits. No profile intake is added.
-
-The assistant outputs all groups in a single response, in order from group 1 to 3, then stops. No follow-up advice or recommendations are added.
+If nothing can be verified, the response says so and explains the limits rather than claiming a successful search.

@@ -7,25 +7,49 @@ permalink: /docs/specialist-agents.html
 
 # Specialist agents
 
-Country Finder and Salary Calculator can offer a specialist agent for steps that involve judgement or calculations. You can accept the offer or keep using your current model.
+Country Finder and Salary Calculator can offer an optional specialist for judgement-heavy or calculation steps. You can accept or keep using your current model.
 
 ## Requested models
 
-| Specialist | Claude | Codex |
-|---|---|---|
-| `deep-reasoner` | Opus, high effort | `gpt-6.1-sol`, high effort |
-| `calculator` | Opus, max effort | `gpt-6.1-sol`, max effort |
+| Specialist | Claude | Codex | Used for |
+|---|---|---|---|
+| `deep-reasoner` | Opus, high effort | `gpt-6.1-sol`, high effort | Country scoring and final ranking; salary adjustment and final verification |
+| `calculator` | Opus, max effort | `gpt-6.1-sol`, max effort | Checking salary inputs and preparing the table |
 
-The `deep-reasoner` handles country scoring, final ranking, international salary adjustment and final salary verification. The `calculator` checks salary inputs and prepares the table using the parent's shared-helper results. Both hosts use the same arithmetic and table renderer; choosing a specialist does not change the calculation method.
+These are requested settings, not guaranteed availability. Matching effort labels do not imply equal capability or token usage across providers.
 
-These are the settings Agent Compass requests, not a guarantee that every client or account can use them. Matching effort labels do not imply equal capability or token usage across providers. Codex requests the model and effort explicitly rather than inheriting session defaults.
+## Flow
+
+```mermaid
+flowchart TD
+  Start(["A step offers a specialist"]) --> Available{"Requested model and effort selectable?"}
+  Available -->|Yes| Offer["Name the role, model and effort<br/>Explain extra tokens and possible cost or time"]
+  Offer --> Choice{"Use the specialist?"}
+  Choice -->|No| Current["Complete the step on your current model"]
+  Choice -->|Yes| Task["Run only the approved step"]
+  Available -->|No| Alternative["Explain the limit<br/>Wait for your choice of available settings"]
+  Alternative -->|Current model| Current
+  Alternative -->|Available specialist| Task
+  Task --> Success{"Handoff succeeds?"}
+  Success -->|No| Retry["Report failure<br/>Wait for retry or another choice"]
+  Retry --> Choice
+  Success -->|Yes| Return["Return the output to the main conversation"]
+  Current --> Check["Check the result and continue the workflow"]
+  Return --> Check
+```
 
 ## Your choice
 
-Before each handoff, the assistant names the specialist, model and effort. It explains that delegation uses additional tokens and that higher effort may increase cost and response time, then asks for your approval.
+Approval applies to the offered step unless you explicitly choose a wider scope. Unavailable settings and failed handoffs are reported; the assistant does not silently substitute another model.
 
-If you decline, the current model completes the step. Final ranking and salary verification still run. Salary calculations use the shared Python helper; unavailable execution requires a separate choice before verified manual arithmetic. See [Calculation runtime]({{ '/docs/commands/salary-calculator/step4-table-calculation.html#calculation-runtime' | relative_url }}).
+Declining a specialist never skips scoring, final ranking or final salary verification. It also does not change your main conversation's model or persistent settings.
 
-If delegation or the requested settings are unavailable, the assistant explains the limitation and waits for you to choose an alternative or your current model. It does not silently substitute settings. A failed handoff also requires your choice before continuing.
+## Calculator versus Python helper
 
-Specialist routing does not change your main conversation's model or persistent settings. Research tasks are handled separately and do not inherit these specialist settings.
+The calculator is an AI specialist, not the arithmetic engine. Both hosts use the same local Python helpers whether or not you accept it.
+
+The main conversation prepares numeric results, and the specialist checks them against the saved inputs. If more calculation is needed, it returns the request before completing the step.
+
+Unavailable Python execution needs a separate manual-fallback choice. See [Calculation runtime]({{ '/docs/commands/salary-calculator/step4-table-calculation.html#calculation-runtime' | relative_url }}).
+
+Research tasks are separate from these specialists and do not inherit their model settings.
