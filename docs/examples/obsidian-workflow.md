@@ -51,7 +51,7 @@ I save the final table from [`salary-calculator`]({{ '/docs/commands/salary-calc
 | Country | Visa salary rule | Mainstream Annual | Premium Annual | Mainstream Monthly | Premium Monthly |
 |---|---|---:|---:|---:|---:|
 | 🇩🇪 Germany (EUR) | 50,700/yr | 60,000 | 78,000 | 5,000 | 6,500 |
-| 🇳🇱 Netherlands (EUR) | 5,942/mo ⚠️ | 65,000 | 84,000 | 5,400 | 7,000 |
+| 🇳🇱 Netherlands (EUR) | 71,304/yr | 65,000 | 84,000 | 5,400 | 7,000 |
 
 ### Saved portal searches
 
@@ -71,16 +71,14 @@ For example, this section of `Profile.md` might look like:
 
 ## My daily job search
 
-Each day, I:
+I follow these steps each day:
 
 1. Open each saved portal link.
 2. Copy the marked company name from my note.
 3. Find it in the portal's results and review the newer jobs.
 4. Update the company marker and tick the checkbox when I finish.
 
-The checkbox tracks whether a search has been reviewed. The company in parentheses marks where the previous scan reached, helping me avoid repeatedly reviewing older results. It does not mean I applied there.
-
-My dashboard also holds useful background information and reusable answers to common application questions.
+The checkbox tracks whether a search has been reviewed. The company marker shows where I stopped last time.
 
 ## My application history
 
