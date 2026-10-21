@@ -8,7 +8,7 @@ permalink: /docs/examples/obsidian-workflow.html
 
 # My Obsidian workflow
 
-This is how I organise my job search. Obsidian and this folder structure are optional, not requirements for Agent Compass. The people, companies and salary targets in the examples are fictional.
+This is how I organise my job search. Obsidian and this folder structure are optional, not requirements for Agent Compass. All examples below use fictional data.
 
 ## Why I use Obsidian
 
@@ -63,26 +63,30 @@ For example, this section of `Profile.md` might look like:
 ## Portals
 
 - 🇩🇪 Germany
-    - [x] [LinkedIn](https://www.linkedin.com/jobs/search/?keywords=software%20engineer&location=Germany&sortBy=DD) (Northstar Labs)
-    - [ ] [Arbeitnow](https://www.arbeitnow.com/jobs/php?sort_by=newest) (Lantern Studio)
+    - [x] [Example Jobs](https://example.invalid/germany/backend) (Northstar Labs)
+    - [ ] [Example Tech](https://example.invalid/germany/software) (Lantern Studio)
 - 🇳🇱 Netherlands
-    - [ ] [LinkedIn](https://www.linkedin.com/jobs/search/?keywords=software%20engineer&location=Netherlands&sortBy=DD) (Cedar Systems)
+    - [ ] [Example Jobs](https://example.invalid/netherlands/backend) (Cedar Systems)
 ```
 
 ## My daily job search
 
-Each day, I work through the saved portal links:
+Each day, I:
 
-1. Open a portal search with results sorted newest first.
-2. Copy the company marker from my note and find it in the results.
-3. Review the newer jobs above that company. If I cannot find the marker, I keep reviewing the available results rather than assuming there are no new jobs.
-4. When finished, replace the marker with the company at the top of the latest results and tick the portal's checkbox.
+1. Open each saved portal link.
+2. Copy the marked company name from my note.
+3. Find it in the portal's results and review the newer jobs.
+4. Update the company marker and tick the checkbox when I finish.
 
-The marker records where my search reached, not a company I necessarily applied to. Some searches, such as LinkedIn AI Search, do not use company markers.
+The checkbox tracks whether a search has been reviewed. The company in parentheses marks where the previous scan reached, helping me avoid repeatedly reviewing older results. It does not mean I applied there.
+
+My dashboard also holds useful background information and reusable answers to common application questions.
 
 ## My application history
 
-Before applying, I use [`job-screener`]({{ '/docs/commands/job-screener.html' | relative_url }}) to compare the job with my profile. After I apply, I add the company under the relevant portal in its country note so I do not apply to the same company again by mistake.
+Each country note groups companies by the portal where I applied.
+
+Before applying, I use [`job-screener`]({{ '/docs/commands/job-screener.html' | relative_url }}) to compare the job with my profile. After applying, I add the company under the relevant portal so I do not apply to the same company again by mistake.
 
 For example, `1. 🇩🇪 Germany.md` might contain:
 
@@ -97,6 +101,6 @@ For example, `1. 🇩🇪 Germany.md` might contain:
 - [ ] Lantern Studio
 ```
 
-I leave the company unchecked while the application is open. If I receive a rejection or decide not to continue, I tick its checkbox to mark it closed.
+An unchecked company means the application is still open. A checked company means it is closed. I tick the company's checkbox when I receive a rejection or decide not to continue.
 
 This history is separate from the portal checkboxes: reviewing a search is not the same as applying to a job.
