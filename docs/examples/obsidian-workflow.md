@@ -8,7 +8,7 @@ permalink: /docs/examples/obsidian-workflow.html
 
 # My Obsidian workflow
 
-This is how I organise my job search. Obsidian and this folder structure are optional, not requirements for Agent Compass. The people, companies and salary targets in the examples are fictional; the visa salary rules are sourced below.
+This is how I organise my job search. Obsidian and this folder structure are optional, not requirements for Agent Compass. The people, companies and salary targets in the examples are fictional.
 
 ## Why I use Obsidian
 
@@ -53,13 +53,6 @@ I save the final table from [`salary-calculator`]({{ '/docs/commands/salary-calc
 | 🇩🇪 Germany (EUR) | 50,700/yr | 60,000 | 78,000 | 5,000 | 6,500 |
 | 🇳🇱 Netherlands (EUR) | 5,942/mo ⚠️ | 65,000 | 84,000 | 5,400 | 7,000 |
 
-2026 visa salary rules, checked on 21 October 2026:
-
-- 🇩🇪 Germany: [standard EU Blue Card threshold](https://www.arbeitsagentur.de/vor-ort/zav/working-and-living-in-germany/iss-en/issue-03-2026/blue-card), gross annual pay.
-- 🇳🇱 Netherlands: [highly skilled migrant threshold for a first application at age 30 or over](https://ind.nl/en/documents/01-2026/business-newsletter-18-december-2025.pdf), gross monthly pay excluding holiday allowance.
-
-The example assumes 12 equal monthly base payments. ⚠️ marks a Mainstream target below the selected rule. Other routes and applicant categories can have different thresholds.
-
 ### Saved portal searches
 
 I use [`portal-finder`]({{ '/docs/commands/portal-finder.html' | relative_url }}) to discover relevant portals, then save links to searches filtered for my role and target country.
@@ -71,9 +64,9 @@ For example, this section of `Profile.md` might look like:
 
 - 🇩🇪 Germany
     - [x] [LinkedIn](https://www.linkedin.com/jobs/search/?keywords=software%20engineer&location=Germany&sortBy=DD) (Northstar Labs)
-    - [ ] [Arbeitnow](https://www.arbeitnow.com/jobs/php?sort_by=newest)
+    - [ ] [Arbeitnow](https://www.arbeitnow.com/jobs/php?sort_by=newest) (Lantern Studio)
 - 🇳🇱 Netherlands
-    - [ ] [LinkedIn](https://www.linkedin.com/jobs/search/?keywords=software%20engineer&location=Netherlands&sortBy=DD)
+    - [ ] [LinkedIn](https://www.linkedin.com/jobs/search/?keywords=software%20engineer&location=Netherlands&sortBy=DD) (Cedar Systems)
 ```
 
 ## My daily job search
