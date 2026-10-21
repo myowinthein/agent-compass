@@ -1,4 +1,8 @@
-Read sc-step4-salary-table.md from the workspace. Also read sc-step2-salary-data.md and sc-step3-adjustment-values.md for the underlying salary data and adjustment values, profile.md for the candidate profile and target role, and sc-step5a-career-ladder.md for the career ladder already confirmed with me before this step. Also read situational-profile.md for candidate-minimum checks. Base the audit only on these files, not on prior conversation memory.
+Read sc-step4-salary-table.md from the workspace. Also read sc-step2-salary-data.md and sc-step3-adjustment-values.md for the underlying salary data and adjustment values, profile.md for the candidate profile and target role, and sc-step5a-career-ladder.md for the career ladder already confirmed with me before this step. Also read situational-profile.md for candidate-minimum checks. Base the audit on these saved inputs, not prior conversation memory, except for explicitly user-approved, cited evidence refreshes supplied by the parent under the rule below.
+
+This is a dated audit of saved evidence, not a live legal or market re-check. Preserve the benchmark scope, role/level, pay/geography basis, adjustment provenance and source as-of/effective dates recorded in Step 4. If materially incompatible or missing inputs prevent a valid calculation, return that issue to the parent for repair rather than inventing comparable facts. If current route status is essential but cannot be established, return a blocked evidence-refresh request under workflows/salary-calculator.md. The parent offers refresh, dated snapshot with its limitation, or stop. An approved refresh arrives as cited task context, not an overwritten research/Step 4 file; record the source, access/as-of dates, changed scope and any resulting checks in this final audit only. A specialist does not ask the user or save a partial final while blocked. Never claim that reading a saved source is fresh verification.
+
+Approved refreshed evidence takes precedence over older saved visa facts for the same candidate/pathway. If it changes a visa state, amount, period or eligible-pay basis, newly render and check the final table with that evidence instead of copying Step 4 or reusing Step 1's superseded threshold. Record this evidence-only update separately from market salary recalibration; unchanged market inputs retain their raw targets and earlier files remain untouched.
 
 Read prompts/salary-calculator/step4-table-calculation.md for the canonical segment definitions, arithmetic, caption, and six-column output format, and apply skills/sponsorship-threshold-rules.md, skills/salary-comparison-rules.md, and skills/evidence-quality-rules.md. Do not infer current visa rules from legacy table shorthand.
 
@@ -59,6 +63,7 @@ Determine whether the overall framework is:
 - slightly inflated
 - heavily inflated
 - under market
+- inconclusive from available evidence
 
 Evaluate whether the following legitimately increase compensation expectations:
 - years of experience
@@ -104,6 +109,7 @@ Evaluate:
 - overseas hiring realism
 - interview conversion impact
 - the underlying salary data's evidence grade from Step 2, if provided — a Low grade should temper how confidently this country's positioning is stated, even if the classification itself doesn't change
+- the adjustment's observed versus inferred basis and confidence, including a missing evidence grade; do not convert unknown provenance into a confident market claim
 
 Use approximate percentile bands rather than precise percentiles only when the stored evidence provides a representative compensation distribution or published percentiles comparable to the candidate's target role, seniority, location, and company tier. Cite that evidence and explain material comparability limits. Salary ranges, individual job postings, or the analyst-selected Low/Realistic/Strong values alone do not establish a percentile distribution.
 
@@ -120,19 +126,20 @@ Classify Mainstream as:
 - recruiter comfortable
 - appropriately calibrated
 - slightly aggressive but realistic
-- strong senior pricing
+- strong pricing for the target level
 - top tier compensation
 
 Classify Premium as:
 - realistic stretch
-- strong senior stretch
+- strong stretch for the target level
 - elite employer compensation
 - high end specialist compensation
-- international remote premium compensation
+- international-employer local-market premium compensation
 
 For both Mainstream and Premium, distinguish between:
 - commonly achievable
 - theoretically achievable
+- not established from available evidence
 
 ---
 
@@ -165,21 +172,21 @@ Only if the evidence genuinely supports recalibration:
 - adjust the affected segment targets upward or downward where supported by stored evidence
 - prioritize recruiter comfort
 - prioritize interview conversion
-- prioritize sponsorship realism
+- keep sponsorship salary requirements separate from market-price revisions
 - prioritize broad market achievability
 - prioritize realistic overseas positioning
 
-If recalibration is not supported, explicitly state that the existing framework remains appropriate and preserve its salary estimates. If Step 4 already uses the current format and passes the method/input verification above, copy its caption and table unchanged. For an unfinished legacy run, read Safe as Mainstream and Stretch as Premium, remove displayed ranges, and render the current Step 4 caption and six-column format in this final file only. Recover raw target arithmetic from stored salary data and adjustments, never from rounded display values, and recover the visa rule from underlying threshold data under the shared rules. If an underlying threshold state or period cannot be established, show Unknown and preserve the limitation in Summary. Formatting-only normalization is not salary recalibration. Leave the legacy Step 4 file untouched.
+If recalibration is not supported, preserve valid salary estimates but distinguish evidence supporting the existing framework from evidence too limited to establish its market calibration. Only the first warrants "the existing framework remains appropriate"; for the second record "unchanged, market verification inconclusive" per affected country with the specific evidence gap. Lack of evidence for a revision is not evidence of appropriateness, and uncertainty must not manufacture a new salary. If Step 4 already uses the current format and passes the method/input verification above, copy its caption and table unchanged. For an unfinished legacy run, read Safe as Mainstream and Stretch as Premium, remove displayed ranges, and render the current Step 4 caption and six-column format in this final file only. Recover raw target arithmetic from stored salary data and adjustments, never from rounded display values, and recover the visa rule from underlying threshold data under the shared rules. If an underlying threshold state, period or eligible-pay basis cannot be established, show Unknown and preserve the limitation in Summary. Formatting-only normalization is not salary recalibration. Leave the legacy Step 4 file untouched.
 
 If recalibration is required, generate a revised table using the current six-column format and original country order specified by Step 4, including the Visa salary rule column and standard caption. Read and apply skills/sponsorship-threshold-rules.md and recompute that column against the revised raw Mainstream and Premium targets, using the same threshold data from Step 1. A country's Visa salary rule result from Step 4 does not carry forward automatically — recalibration can push a figure below a threshold it previously cleared, or above one it previously missed, so it must be re-evaluated against whatever the revised figures actually are. This revised table becomes the final table.
 
-If Step 4 flagged any country as below the candidate's hard-floor salary minimum, re-check that flag against any revised Mainstream value too, and restate it in this file's Summary if it still applies. Never adjust Mainstream or Premium to clear it, the same principle as the Visa salary rule column.
+Re-check the candidate's hard-floor salary minimum for every revised Mainstream value. Restate every resulting failure in this file's Summary, including newly introduced shortfalls as well as surviving Step 4 flags; distinguish resolved and unverified comparisons. Never adjust Mainstream or Premium to clear it, the same principle as the Visa salary rule column.
 
 For every newly rendered final table, apply Step 4's unrounded calculation and display-rounding rules, and skills/salary-comparison-rules.md for every candidate-minimum check. Reuse the recorded dated FX quote and pay basis unless explicitly refreshed; record unverified comparisons rather than inferring a failed floor from missing normalization evidence. Preserve the same skipped-country accounting whether or not recalibration occurs.
 
 For recalibrated targets, record each affected segment's revised raw annual target, raw monthly reference, independent display rounding, and visa/minimum comparison arithmetic in this file's Recalibration section. Do not overwrite Step 4's calculations or write another output file.
 
-If Step 4 marked any country "Blocked," verify that classification is still correct against current evidence (a route can open or close), carry it into the revised table's Visa salary rule column exactly as "Blocked" if it still applies, and restate the reference-only note in this file's Summary. Never let a Blocked country's attractive Mainstream/Premium figures override the block in the final table or Summary.
+If Step 4 marked any country "Blocked," check that its saved official evidence supports that classification for the recorded as-of date and candidate/pathway. Retain the supported dated snapshot as "Blocked" and its reference-only note in Summary; do not assert it is freshly confirmed today. Report any unresolved current-status limitation. A route can open or close, but passage of time alone does not prove it changed; use the parent-side refresh rule above if current status is essential or the stored classification is unsupported. Never let attractive salary figures override a supported block or generalize it to unassessed routes.
 
 Do not create automatic percentage-based salary ranges or a universal interview range. If a negotiation range is discussed in the saved audit, tie it to the relevant employer segment and stored evidence; do not imply that researched Low/Strong endpoints are automatically a negotiation recommendation.
 
@@ -189,7 +196,7 @@ Before saving, verify the six headers and country order, independently rounded s
 
 After saving, show the standard caption and final table directly in chat, copied from this final file. No extra surrounding commentary or detailed audit checks. Then give the completion message below.
 
-Then tell me the pipeline is complete: if revised, "Salary Calculator is complete. [N] countries audited, recalibration applied. See the table above. Full audit saved to sc-step5b-final-verification.md." If not revised, "Salary Calculator is complete. [N] countries audited, no recalibration needed. See the table above. Full audit saved to sc-step5b-final-verification.md." Use singular "country" when N is one.
+Then tell me the pipeline is complete: if revised, "Salary Calculator is complete. [N] countries audited, recalibration applied. See the table above. Full audit saved to sc-step5b-final-verification.md." If unchanged and supported, "Salary Calculator is complete. [N] countries audited, no recalibration needed. See the table above. Full audit saved to sc-step5b-final-verification.md." If any country's market calibration is inconclusive, replace the recalibration clause with "[recalibration applied / no salary recalibration applied]; market verification inconclusive for [M] countries" as appropriate, and save each affected country's reason in Summary. Use singular "country" when a count is one. Process completion does not mean every market assumption was verified.
 
 Overall Principles
 

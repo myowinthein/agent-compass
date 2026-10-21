@@ -7,7 +7,7 @@ nav_order: 1
 
 # Step 1: Research prompt generator
 
-Generates one ready-to-copy research prompt per target country, runs each as a fresh-context research task, and saves the results to `sc-step1-salary-research.md`. The assistant does not estimate salaries itself; every number comes from real web research.
+Generates one ready-to-copy research prompt per target country, runs each as a fresh-context research task, and saves the results to `sc-step1-salary-research.md`. Figures must be supported by dated research, with any analyst-selected estimate distinguished from a published statistic.
 
 ## Flow
 
@@ -18,8 +18,9 @@ flowchart TD
   CFCheck -->|yes| Offer[Show Strong/Moderate countries\nfrom that file: use, add, remove, or start fresh?]
   CFCheck -->|no| AskList[Ask for target\ncountry list]
   Offer -->|start fresh| AskList
-  Offer -->|use/adjust| ForEach
-  AskList --> ForEach[For each country:\ngenerate research prompt]
+  Offer -->|use/adjust| Scope
+  AskList --> Scope[Settle role/level, local-employee\nbenchmark scope and intended path\nClarify only material ambiguity]
+  Scope --> ForEach[For each country:\ngenerate research prompt]
   ForEach --> Prompt[Prompt instructs researcher to find\nlocal-market salary only\nexcluding expat · FAANG · US-skewed\ncontractor · equity-heavy data]
   Prompt --> Tiers[Request two company tiers:\nMid-size / Mainstream Local-Market\nPremium / International / Remote-first]
   Tiers --> Grade[Request evidence grade:\nHigh / Medium / Low]
@@ -49,6 +50,8 @@ Only when the final file is absent does it use `cf-step5-scoring-results.md`, ex
 
 ## Prompt content
 
+Both employer tiers describe local employee gross-base pay for work in the target country, not an automatic quote for remote work from your home country. An international or remote-first company can still use local payroll. The assistant confirms a materially unclear target role, level or intended employment path before research, without repeating already clear answers. If you need actual cross-border pay, it offers these local benchmarks as context or stops rather than presenting them as remote-offer estimates.
+
 Each country brief embeds role, seniority, relevant years and skills as literal text, plus the relevant age/date reference and immigration-status facts. Researchers do not need workspace-file access or prior conversation. Official threshold categories are checked against those facts; unknown or declined age/status cannot justify selecting a cheaper category. An unconfirmable applicable figure stays Unknown, not Blocked or an invented number.
 
 Each generated prompt instructs the researcher to:
@@ -60,10 +63,14 @@ Each generated prompt instructs the researcher to:
   - **Mid-size / Mainstream Local-Market**: typical local employers
   - **Premium / International / Remote-first**: higher-paying segment
 - Provide a national range and major tech hub range if salary varies significantly by city
-- Include practical Low, Realistic, and Strong figures within each tier
-- Cite sources with dates
+- Provide single Low, Realistic and Strong annual amounts, retaining published ranges as supporting evidence
+- State the geography, hours, pay basis/period and any verified normalization for each tier
+- Explain the source and method behind each amount, distinguishing published statistics from analyst-selected estimates
+- Cite dated local-versus-overseas offer evidence if available, or explicitly record its absence for Step 3
 - Report the country's government-mandated minimum salary threshold for employer-sponsored work-visa relocation as one of five states (see `skills/sponsorship-threshold-rules.md`): a verified figure, "no fixed threshold," "not applicable" (most remote and contractor arrangements), "unknown" if a plausible route exists but the figure couldn't be confirmed, or "blocked" if a real route exists but is currently unavailable to this candidate (e.g. exhausted quota, paused category, an eligibility cutoff), with the concrete reason stated
 - Self-assess an evidence grade (High / Medium / Low) based on source count and consistency
+
+Monthly visa rules also need an official eligible-pay and payment-schedule basis supporting the comparison. Annual salary divided by 12 is not automatically the legally qualifying monthly amount. Missing or incompatible bases leave the comparison Unknown, with known figures retained in the saved explanation.
 
 **Excluded from research:**
 - levels.fyi and FAANG-only data
@@ -84,4 +91,4 @@ The parent records confirmed targets under a Research scope preface in `sc-step1
 
 ## Stop condition
 
-The assistant stops and waits at two points: the country-list question (if Country Finder's output exists or none was given cold) and the manual-research fallback (if fresh conversation context or live web research is unavailable or cannot be established). Otherwise, once all results are saved, the parent continues automatically into Step 2 within the same response, without waiting for a new message.
+The assistant waits for country confirmation, any material role/pathway clarification, and manual research results when fresh-context browsing is unavailable. It does not add questions when the necessary facts are already confirmed. Once all results are saved, the parent continues into Step 2.

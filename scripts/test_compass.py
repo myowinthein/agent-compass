@@ -151,6 +151,15 @@ class CompassCLI(unittest.TestCase):
         payload["rows"][0]["visa"]["amount"] = "58250"
         self.assertNotIn("⚠️", self.invoke("render-salary", payload)["result"]["markdown"])
 
+    def test_unverified_monthly_basis_keeps_salary_without_visa_pass(self):
+        payload = self.salary_request()
+        row = payload["rows"][0]
+        row["calculation"]["segments"] = {"mainstream": {"raw_annual_target": "60000"}, "premium": {"raw_annual_target": "84000"}}
+        row["visa"] = {"state": "Unknown"}
+        result = self.invoke("render-salary", payload)["result"]
+        self.assertIn("| 🇩🇪 Germany (EUR) | Unknown | 60,000 | 84,000 | 5,000 | 7,000 |", result["markdown"])
+        self.assertEqual(result["calculations"][0]["segments"]["mainstream"]["comparisons"], {})
+
     @staticmethod
     def country_request():
         return {"expected": ["Germany", "Netherlands", "Canada"], "early_exclusions": {"Germany": {"remote": "outside timezone limit"}}, "decisions": [
@@ -228,6 +237,30 @@ class CompassCLI(unittest.TestCase):
                 result = self.invoke("research-scan", {"workspace": directory, "workflow": "salary-calculator", "expected": ["Germany", "France"]}, code)
                 if code == 0:
                     self.assertEqual(len(result["result"]["blocks"]), expected)
+
+    def test_provenance_notes_preserve_raw_and_legacy_compatibility(self):
+        with tempfile.TemporaryDirectory() as directory:
+            raw = self.salary_block() + self.salary_block("Netherlands").replace(
+                b"- Sources:", b"- Benchmark basis: DUMMY national full-time annual gross base\r\n- Estimate method: DUMMY analyst selection, not a published median\r\n- Sources:")
+            Path(directory, "sc-step1-salary-research.md").write_bytes(raw)
+            payload = {"workspace": directory, "workflow": "salary-calculator", "expected": ["Germany", "Netherlands"]}
+            scan = self.invoke("research-scan", payload)["result"]
+            self.assertTrue(all(not block["missing_fields"] for block in scan["blocks"]))
+            self.invoke("ingest", {**payload, "source_hash": scan["source_hash"], "stored_hash": None,
+                "decisions": [{"index": 0, "accept": True}, {"index": 1, "accept": True}]})
+            self.assertEqual(Path(directory, "sc-step2-salary-data.md").read_bytes(), raw)
+
+    def test_empty_ingestion_is_a_record_not_a_completed_salary_run(self):
+        with tempfile.TemporaryDirectory() as directory:
+            Path(directory, "sc-step1-salary-research.md").write_bytes(self.salary_block())
+            payload = {"workspace": directory, "workflow": "salary-calculator", "expected": ["Germany"]}
+            scan = self.invoke("research-scan", payload)["result"]
+            result = self.invoke("ingest", {**payload, "source_hash": scan["source_hash"], "stored_hash": None,
+                "decisions": [{"index": 0, "accept": False, "reason": "DUMMY unusable research"}]})["result"]
+            self.assertEqual((result["stored"], Path(directory, "sc-step2-salary-data.md").read_bytes()), (0, b""))
+            Path(directory, ".salary-calculator-state.json").write_text('{"last_completed_step":2,"updated_at":"2026-10-21T00:00:00Z"}', encoding="utf-8")
+            state = self.invoke("state-check", {"workspace": directory, "workflow": "salary-calculator"})["result"]
+            self.assertEqual((state["status"], state["completed"]), ("in_progress", False))
 
     def test_appended_research_after_report_is_not_deleted(self):
         with tempfile.TemporaryDirectory() as directory:

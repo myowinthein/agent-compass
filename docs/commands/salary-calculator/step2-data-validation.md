@@ -32,7 +32,9 @@ flowchart TD
   ReadFile --> Done{File\nexhausted?}
   Done -->|no| ReadFile
   Done -->|yes| Report[Reply with one consolidated report:\nstored count + all skips by reason]
-  Report --> End([Continue automatically\ninto Step 3])
+  Report --> Usable{Any country\nstored?}
+  Usable -->|yes| End([Continue automatically\ninto Step 3])
+  Usable -->|no| Repair[Keep report and checkpoint\nOffer missing-evidence repair or stop]
 ```
 
 ## What it reads
@@ -77,4 +79,4 @@ The consolidated Validation report is also saved at the end of `sc-step1-salary-
 
 ## Stop condition
 
-Other than clarifying genuinely ambiguous boundaries, this step has no interactive checkpoint. After processing the blocks, the parent saves stored data and the validation report, presents the consolidated counts and reasons, then enters Step 3 and its specialist-routing question.
+After processing the blocks, the parent saves the data, report and completed checkpoint. If any country is stored, it enters Step 3. If none is stored, it offers missing-evidence repair or stop before another specialist or career-ladder question. The empty data file and report remain legitimate records. Ambiguous boundaries still require clarification; repair never silently overwrites valid originals or resets completed runs.

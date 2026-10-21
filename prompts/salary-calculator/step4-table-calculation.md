@@ -4,9 +4,9 @@ Check whether sc-step3-adjustment-values.md exists in the workspace. If it does 
 
 If both files exist, read them. Using the adjustment values from sc-step3-adjustment-values.md and the salary data from sc-step2-salary-data.md, calculate adjusted salary targets for each country.
 
-Read and apply skills/salary-calculation-helper.md. The parent runs the shared numeric helper before an optional calculator handoff; both hosts use the same implementation. Use its exact results for every supported calculation in this step. Manual arithmetic requires the explicit user choice described there. Do not compute by intuition; precision takes priority over speed.
+Read and apply skills/salary-calculation-helper.md. The parent first checks whether any country qualifies under the data/comparability rules below, then runs the shared numeric helper before an optional calculator handoff. If none qualify, save a skip-only record with every country/reason and a zero-calculated Summary, complete this checkpoint and apply the workflow's no-usable-estimates stop; no empty table or calculator handoff is needed. Both hosts otherwise use the same implementation and its exact results for every supported calculation. Manual arithmetic requires the explicit user choice described there. Do not compute by intuition; precision takes priority over speed.
 
-Read data/output-contracts.json as data and skills/output-helper.md. The parent prepares `render-salary` inputs/results with the numeric work, and supplies them to any specialist. Use the canonical returned caption/table, then run `check-saved` on the saved file before completion. A specialist needing revised helper work returns a pending request, never improvises. Under approved manual fallback, read the same contract and follow the identical presentation/check rules without claiming automation ran.
+When at least one row qualifies, read data/output-contracts.json as data and skills/output-helper.md. The parent prepares `render-salary` inputs/results with the numeric work, and supplies them to any specialist. Use the canonical returned caption/table, then run `check-saved` on the saved table before completion. Skip-only records have no rendered table and do not invoke `render-salary` or `check-saved`; verify their skip coverage and checkpoint instead. A specialist needing revised helper work returns a pending request, never improvises. Under approved manual fallback, read the same contract and follow the identical presentation/check rules without claiming automation ran.
 
 Read situational-profile.md. Note whether a salary minimum was given there and, if so, whether it was marked a hard floor or context only — this is used only for the flag described under Summary below, never to change Mainstream or Premium.
 
@@ -17,9 +17,11 @@ Read and apply skills/salary-comparison-rules.md for the candidate's minimum, in
 Only calculate countries that have BOTH:
 
 - salary data
-- international candidate adjustment data
+- a supported numeric international candidate adjustment, including a supported zero
 
-Skip countries with missing data.
+Skip countries with missing data or "Adjustment not estimable", preserving the stated reason. Never convert an unestimable adjustment into 0% or produce a partial-tier row.
+
+Before preparing helper inputs, read only the benchmark-scope and benchmark-metadata requirements in prompts/salary-calculator/step1-research-prompt-generator.md as reference; do not execute its country questions or research orchestration. Establish each tier's actual role/level, geography, hours, local currency and annual gross-base normalization, and trace its single Realistic amount to the recorded source/method. Legacy metadata can be recovered from the stored evidence but not invented. Flag incompatible units, pay components or role scope and Low > Realistic or Realistic > Strong; ask for a material clarification or skip with the reason rather than sorting, correcting or deriving missing values. Different stated geographies require disclosure and a comparable explanation, not automatic rejection. Mainstream above Premium alone is not a contradiction and must not be corrected to force a tier ordering.
 
 Also read the Research scope and Validation report in sc-step1-salary-research.md if available. Reconcile the confirmed scope, research/ingestion rejections, salary datasets, and adjustment datasets: every expected country must be calculated or listed as skipped with its actual reason. Do not fabricate table rows for rejected data or count a rejected duplicate whose original survived as a skipped country. If legacy scope/report information is missing, say which coverage or ingestion outcome cannot be established instead of silently claiming complete coverage.
 
@@ -41,7 +43,7 @@ Calculation Rules
 
 Annual Target = Market Midpoint x (1 - Adjustment %)
 
-2. Keep both Annual Targets unrounded internally. Monthly Reference = unrounded Annual Target / 12. Use these raw amounts for sponsorship-threshold and candidate-minimum comparisons, never displayed rounded figures.
+2. Keep both Annual Targets unrounded internally. Monthly Reference = unrounded Annual Target / 12. Use raw amounts, never displayed rounded figures, for sponsorship-threshold and candidate-minimum comparisons only when comparable under the relevant shared rules.
 
 3. Round each displayed salary independently, once, at final formatting using the salary increments and tie rule in data/output-contracts.json. Use decimal/rational or otherwise verified arithmetic to avoid floating-point tie errors. Recomputing Monthly from the displayed Annual may differ from the displayed Monthly; retain the raw calculation.
 
@@ -54,6 +56,8 @@ File format (write this structure to sc-step4-salary-table.md; only a brief calc
 Show Your Work
 
 For every country and segment, record Market Midpoint, typical midpoint Adjustment %, raw Annual Target, raw Monthly Reference, and independently rounded display values. Record the sourced threshold in its original period, applicable candidate category, effective date and official source, comparison arithmetic, and which segment misses it when applicable. Keep any additional wage conditions visible in the saved explanation.
+
+Preserve the confirmed local-employee benchmark scope, intended path, geography/pay basis and Realistic selection method, plus Step 3's observed/inferred adjustment basis and confidence limits. Numeric monthly visa checks need the eligibility/annualization confirmation in skills/sponsorship-threshold-rules.md; otherwise render Unknown and explain the unavailable comparison, not an annual/12 pass. Do not describe an inferred adjustment as a measured overseas-pay penalty.
 
 Include the calculation-method disclosure from skills/salary-calculation-helper.md. Check the helper's echoed inputs against the source files and preserve exact fractional raw amounts when needed.
 
@@ -81,7 +85,7 @@ For each Blocked route, retain its concrete reason and state that both salary ta
 
 Save shown work, caption, table, and Summary to sc-step4-salary-table.md in the workspace. Keep the original research, profile files, and state schema unchanged.
 
-In chat, do not reproduce calculations or the table; Step 5 always runs next and presents the final caption and table. Give only a brief calculated/skipped count and confirmation that results are saved to sc-step4-salary-table.md.
+In chat, do not reproduce calculations or the table. Give only a brief calculated/skipped count and confirmation that results are saved to sc-step4-salary-table.md. If none were calculated, apply the workflow's no-usable-estimates stop; otherwise Step 5 runs next and presents the final caption and table.
 
 Do not perform additional analysis, ranking, or recommendations.
 

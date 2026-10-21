@@ -9,7 +9,7 @@ description: Governs how Salary Calculator collects and compares government-mand
 
 A sponsorship salary threshold is a legally mandated minimum salary a country requires an employer to pay in order to sponsor this candidate's work visa. It is a hard eligibility rule, not a market benchmark and not the same thing as an international-candidate negotiation adjustment.
 
-It is scoped to employer-sponsored work-visa relocation only. It does not apply to remote or independent-contractor arrangements — most remote hiring uses one of these, so most countries and roles will have no threshold to report at all.
+It is scoped to employer-sponsored work-visa relocation only, not a confirmed cross-border remote or independent-contractor arrangement outside that route. An employer being international or remote-first does not establish the candidate's employment path or where they work. Use the confirmed path and status; an unknown path is not evidence for Not applicable.
 
 Only report a threshold as a usable number if it is:
 - A specific fixed figure in local currency, or
@@ -36,13 +36,16 @@ For each country, report:
 - The threshold figure (local currency), or which of the four non-numeric states applies (No fixed threshold / Not applicable / Unknown / Blocked)
 - Whether that figure is annual or monthly
 - The official government source and how recent it is
+- For a monthly rule, what pay components and payment schedule the official monthly amount counts, and whether raw annual base / 12 is an eligible comparable amount for the researched salary basis; otherwise preserve the missing or incompatible basis
 - If Blocked, the concrete reason (e.g. quota exhausted, category paused, an eligibility cutoff this candidate doesn't meet)
 
 ## How to compare
 
 Compare both Mainstream and Premium Annual Targets with the applicable threshold using unrounded computed values. The displayed salary rounding from data/output-contracts.json must never decide a borderline result. Equality clears this salary-minimum comparison.
 
-Use the threshold's verified original period. For a monthly threshold X, compare each raw Annual Target / 12 with X; for an annual threshold, compare the raw Annual Target directly. Record any annual/monthly conversion in shown work, not a second number in the compact table cell. Check comparable currency and eligible pay components first; an unconfirmable base-pay comparison stays Unknown rather than an invented pass or failure.
+Use the threshold's verified original period. For an annual threshold, compare the raw Annual Target directly after confirming comparable eligible components. For a monthly threshold X, compare raw Annual Target / 12 with X only when the official monthly definition and the researched pay schedule support that annualization. Extra guaranteed payments or a different legal definition of ordinary monthly base can make that reference incomparable. A monthly display reference is not proof of eligible monthly pay.
+
+Record the official pay/annualization basis and any conversion in shown work, not a second number in the compact table cell. If the basis is unknown or cannot be represented by the helper's annual/12 comparison, use Unknown for the compact visa result and omit the numeric visa request to the helper/renderer. Retain any known original figure, period, source and reason in shown work. Do not change the threshold's original period or pretend the helper checked a different legal-pay formula. The salary targets and their annual/12 display references remain unchanged. Completed legacy outputs replay as saved; an unfinished legacy monthly check needs this comparability established before claiming a verified numeric result.
 
 ## Result states
 
