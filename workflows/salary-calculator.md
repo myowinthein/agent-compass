@@ -16,7 +16,7 @@ Apply the state tracking instructions in prompts/shared/runtime.md with:
 
 ## Presentation compatibility
 
-The table contract lives in prompts/salary-calculator/step4-table-calculation.md; Step 5b audits and presents it. Do not duplicate its columns or formulas in host adapters. Keep research field names, output filenames, and pipeline state unchanged. Unfinished legacy runs are interpreted by Step 5b's compatibility rule; completed runs replay the saved final result without migration or new research.
+The literal table contract lives in data/output-contracts.json; prompts/salary-calculator/step4-table-calculation.md owns its semantic procedure, and Step 5b audits and presents it. Read the contract as data even during approved manual fallback. Do not duplicate its columns or formulas in host adapters. Keep research field names, output filenames, and pipeline state unchanged. Unfinished legacy runs are interpreted by Step 5b's compatibility rule; completed runs replay the saved final result without migration or new research.
 
 ## Sequence
 

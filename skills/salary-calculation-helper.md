@@ -7,7 +7,7 @@ description: Shared numeric helper interface for Salary Calculator Step 4 and St
 
 Use this procedure for newly calculated Step 4 targets and any newly rendered Step 5b targets, including recalibration and unfinished legacy presentation. Completed workflows still replay their saved final result without running calculations again.
 
-Step 4's prompt remains the human-readable calculation and presentation contract. Both hosts use the same bundled `helpers/salary_targets.py` implementation. It performs arithmetic only: it does not research, choose visa states, interpret eligibility, parse workspace Markdown or render tables.
+Read skills/helper-runtime.md for execution and the shared run-scoped fallback. Step 4's prompt owns the semantic calculation procedure; data/output-contracts.json owns the literal formatting and mechanical bounds. Both hosts reuse `helpers/salary_targets.py` for arithmetic. The shared `render-salary` operation in helpers/compass.py calls that same implementation and renders the canonical table under skills/output-helper.md. Neither researches, chooses visa states or interprets eligibility.
 
 ## Execution and handoff
 
@@ -43,20 +43,20 @@ Use this shape with actual values from the stored research and adjustments. This
 }
 ```
 
-- Both segments are required. For initial targets, use the researched Market Midpoint and Step 3's typical adjustment, expressed as percentage points (`"6.8"`, not `"0.068"`). Use the country's same adjustment independently for both segments. Adjustments stay within Step 3's 0-15% policy.
+- Both segments are required. For initial targets, use the researched Market Midpoint and Step 3's typical adjustment, expressed as percentage points (`"6.8"`, not `"0.068"`). Use the country's same adjustment independently for both segments. Adjustments stay within the readable contract's bounds.
 - For an evidence-supported recalibrated segment, replace its entire object with `{"raw_annual_target": "60000"}`. Keep the other segment's original inputs unless it is also revised. Do not supply both a raw target and midpoint/adjustment, derive a revision from a rounded display value or bypass Step 3's cap by inventing a raw target.
 - All amounts and percentages are nonnegative plain decimal strings, at most 100 characters, without separators, exponents or surrounding whitespace. JSON numeric amounts, fractions, NaN and infinity are rejected. `schema_version` is the integer `1`.
 - `comparisons` is optional. Its only supported entries are `visa` and `candidate_minimum`, each with all four fields shown above. Period is `annual` or `monthly`; currency must exactly match the targets and pay basis must be confirmed `gross_base`. No FX, tax or eligible-component conversion is inferred.
 - Supply `visa` only for a verified, comparable numeric threshold. Keep No fixed threshold, Not applicable, Unknown and Blocked in the existing research and apply `skills/sponsorship-threshold-rules.md` in prose. Never invent a zero threshold for them.
 - Supply `candidate_minimum` only after establishing an exactly comparable amount under `skills/salary-comparison-rules.md`. Record any sourced, dated FX normalization in existing shown work. Do not round a recurring FX result to fit this interface; verify such a comparison separately with exact arithmetic and disclose that method. An unknown rate or pay basis remains unverified, not a proven shortfall.
 
-FX normalization and resolution of national-average multiples are outside this Phase 1 helper. If arithmetic is still needed at this step, use exact calculation tools and record their inputs/results. If only model-done arithmetic is available, obtain the same explicit manual approval described below first. Reciprocal or cross-rate calculations can recur; never truncate them to manufacture an exact decimal input.
+For FX normalization, exact ranges, recurring intermediate amounts and national-average multiples, use `compare` under skills/comparison-helper.md. Do not truncate its rational result to fit the older per-country input. Save the separate exact comparison and dated source in the existing shown work. Manual processing follows the same run-scoped approval, never an extra consent prompt for each operation.
 
 ## Result and failure handling
 
 On success, stdout contains `input` (the supplied values unchanged) and `segments`. Each segment returns `raw_annual`, `raw_monthly`, integer `annual_display` and `monthly_display`, and `comparisons`. Each requested comparison contains `target_in_period`, `meets` and `shortfall` in that comparison's period. Raw amounts and shortfalls are exact strings, either integers or `numerator/denominator` fractions; retain them in shown work, never round them before comparing. Equality gives `meets: true`. A comparison result is not overall visa eligibility.
 
-Check the echoed country, segment inputs, currency, pay basis and periods against the source files before using the result. A successful calculation cannot establish that its inputs were transcribed correctly or that the research is reliable. Format display integers and choose table labels under Step 4 and the shared threshold rules, not a second renderer.
+Check the echoed country, segment inputs, currency, pay basis and periods against the source files before using the result. A successful calculation cannot establish that its inputs were transcribed correctly or that the research is reliable. Use the shared renderer and check the saved result under skills/output-helper.md, not host-specific formatting code.
 
 - Exit `2` with `invalid_input` on stderr means fix the malformed or contradictory input from its source, or ask the parent for missing facts. It is not permission to bypass validation with manual arithmetic. Leave state unchanged while unresolved.
 - An invocation/usage error without that JSON error is a command problem to diagnose, not a successful calculation or a reason to bypass input validation.

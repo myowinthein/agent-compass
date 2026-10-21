@@ -16,7 +16,7 @@ Country Finder and Salary Calculator can offer a specialist agent for steps that
 | `deep-reasoner` | Opus, high effort | `gpt-6.1-sol`, high effort |
 | `calculator` | Opus, max effort | `gpt-6.1-sol`, max effort |
 
-The `deep-reasoner` handles country scoring, final ranking, international salary adjustment and final salary verification. The `calculator` checks salary inputs and prepares the table using the parent's shared-helper results. Both hosts use the same numeric helper; choosing a specialist does not change its arithmetic.
+The `deep-reasoner` handles country scoring, final ranking, international salary adjustment and final salary verification. The `calculator` checks salary inputs and prepares the table using the parent's shared-helper results. Both hosts use the same arithmetic and table renderer; choosing a specialist does not change the calculation method.
 
 These are the settings Agent Compass requests, not a guarantee that every client or account can use them. Matching effort labels do not imply equal capability or token usage across providers. Codex requests the model and effort explicitly rather than inheriting session defaults.
 

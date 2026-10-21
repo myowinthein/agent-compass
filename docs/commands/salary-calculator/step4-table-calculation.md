@@ -13,13 +13,15 @@ For model choices, effort settings and approval, see [Specialist agents]({{ '/do
 
 ## Calculation runtime
 
-The helper needs Python 3.11 or newer and permission to run code in the current environment. It reads one country's inputs and returns numbers without writing files, researching visa rules or choosing table labels. There are no additional Python packages to install.
+The shared helpers need Python 3.11 or newer and permission to run code in the current environment. There are no additional Python packages to install. The existing per-country salary interface remains available; the shared renderer reuses its arithmetic and produces the caption and table from one readable formatting contract. It does not research visa rules or decide eligibility.
 
 If execution is unavailable, the assistant explains why and asks whether to fix it or calculate manually using the same verified-arithmetic rules. It never silently switches methods. A malformed input must be corrected, not bypassed. The chosen method is recorded in shown work; an explicitly run-scoped manual choice also covers later recalculation. A missing bundled helper is reported as a broken installation.
 
 Candidate-minimum comparisons still require confirmed currency, pay period and gross/base pay. Any FX conversion needs the existing sourced, dated quote. The helper does not fetch rates or infer taxes. A recurring normalized FX amount is verified separately with exact arithmetic, not rounded to fit the helper.
 
-FX normalization and national-average multiples are outside this helper. Arithmetic still needed for them uses exact calculation tools with recorded inputs/results, or the same explicit manual approval if only model-done arithmetic is available.
+The shared comparison helper also handles exact annual/monthly normalization, salary ranges, direct/reciprocal/cross-rate arithmetic and sourced national-average multiples. It never fetches exchange rates, converts net to gross or chooses a legal category. Recurring results remain exact fractions. Unknown pay bases or missing quotes stay unverified.
+
+Python and approved manual runs read the same formatting contract. The assistant checks the actual saved caption/table against the renderer before advancing the workflow. This catches copy errors, not weak research or incorrect source interpretation. A run-scoped manual choice covers later helper operations without repeating the question for each comparison.
 
 ## Flow
 

@@ -23,7 +23,7 @@ Run it once per session. The assistant resumes automatically if a `.salary-calcu
 
 For model choices, effort settings and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).
 
-Salary calculations use one shared Python 3.11+ helper in both hosts, with no extra packages. If code execution is unavailable, the assistant asks before using verified manual arithmetic and records that choice. Research and eligibility judgments remain in the workflow. See [Calculation runtime](salary-calculator/step4-table-calculation.html#calculation-runtime).
+Research ingestion, exact comparisons and table rendering use shared Python 3.11+ helpers in both hosts, with no extra packages. The renderer reuses the existing salary arithmetic. If execution is unavailable, the assistant asks before proceeding manually and records the scope of that choice. Research and eligibility judgments remain in the workflow. See [Calculation runtime](salary-calculator/step4-table-calculation.html#calculation-runtime).
 
 ## Flow
 
