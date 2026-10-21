@@ -6,6 +6,8 @@ If it exists, read it and process each country's data from that file sequentiall
 
 Behavior rules:
 
+Parent: use skills/research-helper.md to scan and review every block, then run `ingest` with the exact hashes, Research scope (or null for genuinely unknown legacy scope) and block decisions. It copies accepted raw slices and updates only the existing generated report. Read back both files and present the consolidated inventory below. A legacy label variation needs genuine semantic review, not an automatic skip or acceptance. A partial failure leaves state unchanged; inspect and rescan before a safe retry. Under an approved manual run, follow all existing rules below without claiming Python ran.
+
 * Read and apply the cross-pipeline data validation rules in skills/data-validation-rules.md, then follow the additional rules below.
 * Read and silently store the salary data.
 * Each block is expected to contain salary data for exactly one country.
@@ -28,5 +30,7 @@ Skipped — missing required tier or sources: [country or "none"], with what was
 Skipped — duplicate: [country or "none"].
 
 Persist this same consolidated report under `## Validation report` in sc-step1-salary-research.md using skills/data-validation-rules.md. Use the Research scope preface, when present, to account for confirmed countries whose results never arrived. If a legacy file lacks scope, report that coverage is unknown rather than inventing a target list. Preserve the raw research and stored data unchanged; a duplicate with a retained original is not a missing-country failure.
+
+When `ingest` has written that report, persistence is already complete: read it back but do not append another review, alter its bounded generated section or write anything after its closing marker. Present the consolidated inventory in chat without creating a second report.
 
 This data is saved to sc-step2-salary-data.md, which Step 3 will use next. Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

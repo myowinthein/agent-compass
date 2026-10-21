@@ -7,6 +7,8 @@ nav_order: 3
 
 # Step 3: International adjustment
 
+A shared helper checks the supplied range, midpoint, display label and confidence cap before the estimate is accepted. It checks required evidence presence, not whether that evidence is convincing. The assistant still selects and justifies the estimate; Python never assigns a discount or invents market evidence.
+
 Estimates the realistic hiring discount an overseas candidate may face when negotiating with local employers, compared to a local candidate at the same level. Reuses the situational profile collected before Step 1, then asks whether to use the **deep-reasoner** subagent (host-specific model and effort). If you decline, the step runs with your current model.
 
 For model choices, effort settings and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).

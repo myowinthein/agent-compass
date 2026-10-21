@@ -5,6 +5,8 @@ description: Governs data validation behavior across Country Finder and Salary C
 
 # Data Validation Rules
 
+Use `skills/research-helper.md` for the parent's `research-scan` and `ingest` operations. The existing policies below still govern semantic review; Python checks boundaries/coverage and copies approved raw slices, not the truth of findings. Under an explicitly approved manual run, apply these same policies without claiming automated ingestion ran.
+
 ## Country-block boundaries
 
 Generated research keeps the existing `Country: [name]` field as its delimiter: put it at the start of a line, outside quotes or code fences. A block ends immediately before the next such `Country:` line, before a top-level `## Validation report` section, or at end of file. Blank lines and horizontal rules alone are not country boundaries. Ignore an optional `## Research scope` preface before the first country; it is metadata, not a dataset.
