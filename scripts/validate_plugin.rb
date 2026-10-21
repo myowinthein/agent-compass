@@ -36,6 +36,7 @@ module CompassValidation
     marketplace = JSON.parse(read(resource(root, ".claude-plugin/marketplace.json")))
     check(manifest.fetch("skills") == "./skills/", "Manifest must expose shared skill entry points")
     check(manifest["commands"] == [], "Disable legacy command discovery so each shared skill appears only once")
+    check(root.glob("commands/**/*.md").empty?, "Legacy command adapters must not be packaged")
     check(manifest.fetch("version").match?(/\A\d+\.\d+\.\d+\z/), "Invalid plugin version")
     entry = marketplace.fetch("plugins").find { |plugin| plugin["name"] == manifest["name"] }
     check(entry, "Marketplace does not expose the plugin")
@@ -95,10 +96,9 @@ module CompassValidation
           "Unexpected compact table contract")
 
     workflows = root.glob("workflows/*.md").map { |file| file.basename(".md").to_s }.sort
-    commands = root.glob("commands/*.md").map { |file| file.basename(".md").to_s }.sort
     skills = root.glob("skills/*/SKILL.md").map { |file| file.parent.basename.to_s }.sort
-    check(workflows.length == 4 && workflows == commands && commands == skills,
-          "Claude commands, portable skills, and workflows must expose the same four names")
+    check(workflows.length == 4 && workflows == skills,
+          "Portable skills and workflows must expose the same four names")
 
     skills.each do |name|
       skill = resource(root, "skills/#{name}/SKILL.md")
@@ -115,11 +115,6 @@ module CompassValidation
       check(targets.include?(root.join("workflows/#{name}.md")), "Skill bypasses shared workflow: #{name}")
       check(targets.include?(root.join("prompts/shared/runtime.md")), "Skill omits shared runtime: #{name}")
 
-      command = resource(root, "commands/#{name}.md")
-      body = read(command).sub(/\A---\n.*?\n---\n/m, "").strip
-      check(body.include?("${CLAUDE_PLUGIN_ROOT}/skills/#{name}/SKILL.md"),
-            "Claude command does not load the shared skill: #{name}")
-      check(body.lines.length <= 3, "Command duplicates orchestration instead of pointing to it: #{name}")
     end
 
     root.glob("agents/*.md").each do |agent|
@@ -138,7 +133,7 @@ module CompassValidation
       check(!read(agent).include?(read(procedure).strip), "Agent duplicates specialist procedure: #{role}")
     end
 
-    root.glob("{commands,workflows,prompts,skills,agents}/**/*.md").each do |file|
+    root.glob("{workflows,prompts,skills,agents}/**/*.md").each do |file|
       read(file).scan(%r{(?<![\w.-])(?:workflows|prompts|skills|agents|data|helpers)/[\w./-]+\.(?:md|py|json)}).uniq.each do |path|
         resource(root, path)
       end
@@ -161,13 +156,13 @@ module CompassValidation
       workspace = Pathname(temp).join("candidate workspace")
       installation.mkpath
       workspace.mkpath
-      %w[.claude-plugin commands workflows prompts skills agents helpers data assets].each do |component|
+      %w[.claude-plugin workflows prompts skills agents helpers data assets].each do |component|
         FileUtils.cp_r(Pathname(root).join(component), installation)
       end
       Dir.chdir(workspace) { validate(installation) }
       check(workspace.children.empty?, "Package validation wrote candidate workspace data")
     end
-    puts "Validated four discoverable shared workflows, legacy adapters, and a relocated package."
+    puts "Validated four shared skill entry points, workflows, and a relocated package."
   end
 end
 
