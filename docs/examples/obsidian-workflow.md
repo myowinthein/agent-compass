@@ -82,7 +82,7 @@ The checkbox tracks whether a search has been reviewed. I use the company name i
 
 ## My application history
 
-Each country note groups companies by the portal where I applied.
+I keep a note for each country and organise my applications by job portal.
 
 Before applying, I use [`job-screener`]({{ '/docs/commands/job-screener.html' | relative_url }}) to compare the job with my profile. After applying, I add the company under the relevant portal so I do not apply to the same company again by mistake.
 
@@ -100,5 +100,3 @@ For example, `1. 🇩🇪 Germany.md` might contain:
 ```
 
 An unchecked company means the application is still open. A checked company means it is closed. I tick the company's checkbox when I receive a rejection or decide not to continue.
-
-This history is separate from the portal checkboxes: reviewing a search is not the same as applying to a job.
