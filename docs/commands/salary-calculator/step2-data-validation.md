@@ -13,7 +13,7 @@ Checks the research structure and stores accepted salary data unchanged. It does
 
 ```mermaid
 flowchart TD
-  Start(["Read sc-step1-salary-research.md"]) --> Bounds{"Country boundaries clear?"}
+  Start(["Read salary-calculator-01-research.md"]) --> Bounds{"Country boundaries clear?"}
   Bounds -->|No| Ask["Ask for clarification<br/>Wait before storing"]
   Ask --> Bounds
   Bounds -->|Yes| Review["Review each country<br/>Both employer tiers and their sources"]
@@ -43,8 +43,8 @@ The shared helper copies accepted blocks byte-for-byte and checks coverage. If s
 
 ## What happens next
 
-- `sc-step2-salary-data.md` contains accepted data.
-- `sc-step1-salary-research.md` retains the original research and a separate Validation report.
+- `salary-calculator-02-validated-data.md` contains accepted data.
+- `salary-calculator-01-research.md` retains the original research and a separate Validation report.
 
 The report carries missing-country and rejection reasons into later summaries. A duplicate whose original was kept is not a failed country.
 

@@ -1,13 +1,13 @@
-Check whether cf-step1-criteria.md exists in the workspace. If it does not exist, stop and tell me: "cf-step1-criteria.md was not found. Please ensure Step 1 completed successfully before continuing."
+Check whether country-finder-01-criteria.md exists in the workspace. If it does not exist, stop and tell me: "country-finder-01-criteria.md was not found. Please ensure Step 1 completed successfully before continuing."
 
-Read cf-step1-criteria.md, profile.md, and situational-profile.md from the workspace.
+Read country-finder-01-criteria.md, profile.md, and situational-profile.md from the workspace.
 
 Read and apply skills/salary-comparison-rules.md for any salary-minimum comparison. Include its applicable normalization/FX requirements directly in each generated research brief so the researcher need not read bundled files. Never reject Remote suitability because unlike currencies or pay bases could not be compared.
 
 Part A — Build the candidate universe (no research needed, apply immediately)
 
 1. Determine the base:
-   - If cf-step1-criteria.md has an Include list (not "none"), the base is that Include list. Apply this silently.
+   - If country-finder-01-criteria.md has an Include list (not "none"), the base is that Include list. Apply this silently.
    - Else, read data/default-preferred-countries.md (shipped with the plugin). Show me its countries grouped by continent, and ask: "You didn't specify preferred countries in Step 1 — do you want to proceed with this default list, or provide your own countries?" Wait for my answer before continuing.
      - If I confirm proceeding with the default, the base is every country in data/default-preferred-countries.md.
      - If I provide my own countries instead, the base is that list.
@@ -15,7 +15,7 @@ Part A — Build the candidate universe (no research needed, apply immediately)
 
 Other than the default-list question and any material region clarification, do this without telling me which source the base came from or asking whether to use it — apply it silently. Show the resulting final country list before continuing.
 
-An explicit user-supplied country list and clear exclusions already confirm that scope; do not ask again. Confirm a materially ambiguous region expansion instead. If no countries remain, explain and ask for a revised list or stop before research. Before collecting results, save the confirmed list under `## Research scope` in cf-step2-candidates.md. Keep that preface country-only; candidate context and provenance belong in findings, not extra preface lines. On resume reuse this scope and successful blocks, not just the countries whose tasks returned.
+An explicit user-supplied country list and clear exclusions already confirm that scope; do not ask again. Confirm a materially ambiguous region expansion instead. If no countries remain, explain and ask for a revised list or stop before research. Before collecting results, save the confirmed list under `## Research scope` in country-finder-02-candidates.md. Keep that preface country-only; candidate context and provenance belong in findings, not extra preface lines. On resume reuse this scope and successful blocks, not just the countries whose tasks returned.
 
 Part B — Research each country for both tracks together
 
@@ -75,14 +75,14 @@ Output:
 - One ready-to-copy research prompt per batch, clearly labeled with the batch's region (or batch number, if unbatched by region) and the exact countries it covers
 - Do not attempt to answer the research questions yourself in this step
 
-Parent: run the generated prompts using the research-delegation rule in prompts/shared/runtime.md, including its capability checks, task-brief rules, and manual fallback. Each task covers exactly the countries in its assigned batch. The parent collects the returned country results into cf-step2-candidates.md in the workspace.
+Parent: run the generated prompts using the research-delegation rule in prompts/shared/runtime.md, including its capability checks, task-brief rules, and manual fallback. Each task covers exactly the countries in its assigned batch. The parent collects the returned country results into country-finder-02-candidates.md in the workspace.
 
 Part C — Mark timezone suitability
 
 Before Part C, run `research-scan` under skills/research-helper.md with stage discovery and the full confirmed expected list. Resolve ambiguous boundaries and missing researcher results before completing this step; preserve successful results. This scan does not store, verify facts or apply timezone decisions.
 
-Read and apply skills/timezone-rules.md. If cf-step1-criteria.md has a maximum timezone difference, assess relevant job hubs against my current location over the rule's reference period. Only for a supported whole-country failure, overwrite Remote "Suitable" with "no — outside your max timezone of [N] hours," replacing whatever Part B found for Remote, and record the reference date, zones/hubs, seasonal difference range, and maximum in Reason. Preserve the existing answer fields. If only some locations pass, retain any otherwise-supported Remote suitability conditionally and name those locations in Reason; if timezone evidence is insufficient, mark the timezone check unverified rather than creating a rejection. Never change Sponsorship suitability for timezone. If no maximum was provided, skip this part entirely.
+Read and apply skills/timezone-rules.md. If country-finder-01-criteria.md has a maximum timezone difference, assess relevant job hubs against my current location over the rule's reference period. Only for a supported whole-country failure, overwrite Remote "Suitable" with "no — outside your max timezone of [N] hours," replacing whatever Part B found for Remote, and record the reference date, zones/hubs, seasonal difference range, and maximum in Reason. Preserve the existing answer fields. If only some locations pass, retain any otherwise-supported Remote suitability conditionally and name those locations in Reason; if timezone evidence is insufficient, mark the timezone check unverified rather than creating a rejection. Never change Sponsorship suitability for timezone. If no maximum was provided, skip this part entirely.
 
-Once cf-step2-candidates.md exists in the workspace, and Part C has been applied if applicable, tell me in a few lines: how many countries were researched, how many came back Suitable on each track, and that the full per-country findings are saved to cf-step2-candidates.md for Step 3 to use. Do not reproduce the per-country Suitable/Reason/Source/Date findings in this summary.
+Once country-finder-02-candidates.md exists in the workspace, and Part C has been applied if applicable, tell me in a few lines: how many countries were researched, how many came back Suitable on each track, and that the full per-country findings are saved to country-finder-02-candidates.md for Step 3 to use. Do not reproduce the per-country Suitable/Reason/Source/Date findings in this summary.
 
 Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

@@ -43,8 +43,8 @@ The shared helper preserves accepted research byte-for-byte. It checks structure
 
 ## What happens next
 
-- `cf-step4-country-data.md` holds accepted data.
-- `cf-step3-country-research.md` keeps the original research and a separate Validation report.
+- `country-finder-04-validated-data.md` holds accepted data.
+- `country-finder-03-research.md` keeps the original research and a separate Validation report.
 
 With no eligible tracks, an empty stored record and report still allow the audit to explain known exclusions and gaps.
 

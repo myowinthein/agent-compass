@@ -1,6 +1,6 @@
-Check whether cf-step2-candidates.md exists in the workspace. If it does not exist, stop and tell me: "cf-step2-candidates.md was not found. Please ensure Step 2 completed successfully before continuing."
+Check whether country-finder-02-candidates.md exists in the workspace. If it does not exist, stop and tell me: "country-finder-02-candidates.md was not found. Please ensure Step 2 completed successfully before continuing."
 
-Read cf-step2-candidates.md, profile.md, and situational-profile.md from the workspace. For each country recorded in cf-step2-candidates.md, generate one ready-to-copy research prompt, based on its Remote and Sponsorship "Suitable" values from Step 2:
+Read country-finder-02-candidates.md, profile.md, and situational-profile.md from the workspace. For each country recorded in country-finder-02-candidates.md, generate one ready-to-copy research prompt, based on its Remote and Sponsorship "Suitable" values from Step 2:
 
 - If only Remote is "yes," generate a prompt with the Remote Track section only.
 - If only Sponsorship is "yes," generate a prompt with the Sponsorship Track section only.
@@ -62,10 +62,10 @@ Output:
 - One ready-to-copy research prompt per country, clearly labeled with the country name and which track(s) it covers
 - Do not attempt to answer the research questions yourself in this step
 
-Parent: run the generated prompts using the research-delegation rule in prompts/shared/runtime.md, including its capability checks, task-brief rules, and manual fallback. Each task covers exactly one country. The parent collects the returned results into cf-step3-country-research.md in the workspace.
+Parent: run the generated prompts using the research-delegation rule in prompts/shared/runtime.md, including its capability checks, task-brief rules, and manual fallback. Each task covers exactly one country. The parent collects the returned results into country-finder-03-research.md in the workspace.
 
 The parent embeds the shared threshold states and relevant instructions as literal text, not the template's resource path. Before collection, record eligible countries in a country-only `## Research scope` preface in this file. If no track is eligible, write `## Research scope` followed by `none` and run the scan with `expected: []` and `required_tracks: {}`; there are no research tasks to await. Step 4 creates the legitimate empty stored record/report so Steps 5-6 can account for early exclusions and discovery-only evidence gaps. Do not claim those countries were never checked in discovery.
 
-Once all results are saved to cf-step3-country-research.md, tell me in a few lines how many countries were researched and that the full per-country findings are saved there for Step 4 to validate and store. Do not reproduce the per-country research findings in this summary. Step complete. Follow the step-completion rule in prompts/shared/runtime.md.
+Once all results are saved to country-finder-03-research.md, tell me in a few lines how many countries were researched and that the full per-country findings are saved there for Step 4 to validate and store. Do not reproduce the per-country research findings in this summary. Step complete. Follow the step-completion rule in prompts/shared/runtime.md.
 
 Before marking completion, run `research-scan` under skills/research-helper.md using the Step 2 eligible countries and their expected tracks. Resolve missing results before continuing; ingestion itself belongs to Step 4. The shared explicit manual fallback applies if execution is unavailable.

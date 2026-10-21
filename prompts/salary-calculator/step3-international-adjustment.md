@@ -1,6 +1,6 @@
-Check whether sc-step2-salary-data.md exists in the workspace. If it does not exist, stop and tell me: "sc-step2-salary-data.md was not found. Please ensure Step 2 completed successfully before continuing."
+Check whether salary-calculator-02-validated-data.md exists in the workspace. If it does not exist, stop and tell me: "salary-calculator-02-validated-data.md was not found. Please ensure Step 2 completed successfully before continuing."
 
-Read sc-step2-salary-data.md and proceed with the international adjustment.
+Read salary-calculator-02-validated-data.md and proceed with the international adjustment.
 
 Read situational-profile.md from the workspace as the saved source for location, citizenship, language and salary minimum. Recorded user-confirmed run-only clarifications under the shared runtime take precedence for this run; preserve their date/scope in the adjustment output without editing the profile. (The main command collected the profile before this step.)
 
@@ -65,6 +65,6 @@ Important:
 
 Keep the output compact and present the results country by country.
 
-Save the full adjustment output to sc-step3-adjustment-values.md in the workspace.
+Save the full adjustment output to salary-calculator-03-adjustments.md in the workspace.
 
 Tell me in a few lines how many countries received a numeric estimate and how many were not estimable, and that the full results are saved for Step 4 to apply. Do not reproduce the per-country adjustment reasoning in this summary. Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

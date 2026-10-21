@@ -29,6 +29,8 @@ The helper returns `summary_markdown`, `table_markdown`, combined `markdown`, `c
 
 ## Verify the saved file
 
+Apply skills/workspace-files.md first. `check-saved` accepts either registered spelling of an allowed artifact and checks its resolved existing file, not a second copy. Duplicate aliases stop with a conflict even when their contents match.
+
 After saving a newly rendered result, run `check-saved` with `{workspace, file, kind, render_input}`. File is the existing Step 4 or final salary file for kind salary, or the final Country Finder file for kind country. `render_input` is the exact renderer request without its outer schema_version. The helper regenerates only its own canonical sections and compares against the actual saved text, including row coverage. It writes nothing and does not verify audit truth. Correct a save/rendering mismatch before the parent advances state; do not rewrite raw research or pre-audit files to make a check pass.
 
 Saved-table checks ignore only CRLF versus LF and an absent final newline; cell contents, columns and row coverage must still match. Research ingestion remains byte-preserving and does not use this line-ending normalization.

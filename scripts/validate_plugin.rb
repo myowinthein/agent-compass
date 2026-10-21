@@ -68,7 +68,26 @@ module CompassValidation
     end
     resource(root, "helpers/salary_targets.py")
     resource(root, "helpers/compass.py")
-    %w[common money research state tables timezones].each { |name| resource(root, "helpers/compass_lib/#{name}.py") }
+    %w[common files money research state tables timezones].each { |name| resource(root, "helpers/compass_lib/#{name}.py") }
+    registry = JSON.parse(read(resource(root, "data/workspace-files.json")))
+    check(registry.fetch("schema_version") == 1 && registry.fetch("workflows").keys.sort == %w[country-finder salary-calculator],
+          "Unknown workspace filename registry")
+    filenames = []
+    registry.fetch("workflows").each do |workflow, spec|
+      check(spec.fetch("state") == ".#{workflow}-state.json", "Keep checkpoint filenames unchanged")
+      artifacts = spec.fetch("artifacts")
+      steps = artifacts.values.map { |artifact| artifact.fetch("step") }
+      check(!steps.empty? && steps.all? { |step| step.is_a?(Integer) && step.positive? } && steps.uniq.sort == (1..steps.max).to_a &&
+            artifacts.fetch("final-results").fetch("step") == steps.max, "Invalid artifact checkpoint membership")
+      artifacts.each_value do |artifact|
+        check(artifact.keys.sort == %w[current legacy step] &&
+              artifact.fetch("current").match?(/\A#{workflow}-#{format('%02d', artifact.fetch('step'))}[ab]?-[a-z]+(?:-[a-z]+)*\.md\z/),
+              "Invalid current artifact filename")
+        check(artifact.fetch("legacy").match?(/\A[a-z0-9]+(?:-[a-z0-9]+)*\.md\z/), "Invalid legacy artifact filename")
+        filenames.concat(artifact.values_at("current", "legacy"))
+      end
+    end
+    check(filenames.uniq.length == filenames.length, "Artifact filenames must be globally unique")
     contract = JSON.parse(read(resource(root, "data/output-contracts.json")))
     check(contract.fetch("schema_version") == 1, "Unknown output contract")
     check(contract.fetch("salary").fetch("headers").length == 6 && contract.fetch("country").fetch("headers").length == 5,

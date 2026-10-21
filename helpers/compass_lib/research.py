@@ -6,12 +6,7 @@ import tempfile
 
 from .common import (LIMIT, Problem, array, cell, contract, country_map, digest, fields, identity, named,
                      read, require, text, workspace)
-
-
-FILES = {
-    "country-finder": ("cf-step3-country-research.md", "cf-step4-country-data.md"),
-    "salary-calculator": ("sc-step1-salary-research.md", "sc-step2-salary-data.md"),
-}
+from .files import resolve
 
 
 def partition(payload):
@@ -148,13 +143,13 @@ def inspect(payload, ingest=False):
         required += ("source_hash", "stored_hash", "decisions")
     fields(payload, required, optional)
     workflow = payload["workflow"]
-    require(workflow in FILES, "Unknown research workflow")
     require(payload.get("stage", "research") in ("research", "discovery"), "Unknown research stage")
     discovery = payload.get("stage") == "discovery"
     require(not discovery or workflow == "country-finder" and not ingest, "Discovery scanning is read-only Country Finder only")
     root = workspace(payload["workspace"])
-    source = named(root, "cf-step2-candidates.md" if discovery else FILES[workflow][0])
-    stored = named(root, FILES[workflow][1])
+    layout = resolve(root, workflow)["files"]
+    source = named(root, layout["candidates" if discovery else "research"])
+    stored = named(root, layout["validated-data"])
     raw = read(source)
     old = read(stored) if stored.exists() and not discovery else b""
     aliases = payload.get("aliases")

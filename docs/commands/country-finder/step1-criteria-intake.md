@@ -26,7 +26,7 @@ flowchart TD
   Criteria --> CriteriaClear{"All criteria answered clearly?"}
   CriteriaClear -->|No| ClarifyCriteria["Ask for clarification<br/>Wait for your answer"]
   ClarifyCriteria --> CriteriaClear
-  CriteriaClear -->|Yes| Save["Save preferences and target role<br/>cf-step1-criteria.md<br/>Confirm it was saved"]
+  CriteriaClear -->|Yes| Save["Save preferences and target role<br/>country-finder-01-criteria.md<br/>Confirm it was saved"]
   Save --> Continue(["Continue automatically to Step 2<br/>Country discovery"])
 ```
 
@@ -53,6 +53,6 @@ If an answer is unclear, the assistant asks for clarification before continuing.
 
 ## What happens next
 
-Your preferences are saved to `cf-step1-criteria.md`. A new situational profile is saved to `situational-profile.md` for reuse.
+Your preferences are saved to `country-finder-01-criteria.md`. A new situational profile is saved to `situational-profile.md` for reuse.
 
 The workflow then continues to [Step 2: Country discovery](step2-country-discovery.html).

@@ -25,7 +25,7 @@ flowchart TD
   Cap -->|No| Manual["Show prompts<br/>Wait for manual results"]
   Tasks --> Collect["Save scope and country findings<br/>Resolve missing results"]
   Manual --> Collect
-  Collect --> Next(["Save sc-step1-salary-research.md<br/>Continue to Step 2"])
+  Collect --> Next(["Save salary-calculator-01-research.md<br/>Continue to Step 2"])
 ```
 
 ## Choosing countries
@@ -55,6 +55,6 @@ The applicable rule records a verified amount and period, or a distinct non-nume
 
 ## What happens next
 
-Findings and an evidence grade are saved to `sc-step1-salary-research.md`. Chat shows a brief count.
+Findings and an evidence grade are saved to `salary-calculator-01-research.md`. Chat shows a brief count.
 
 Once all expected results are collected, the workflow continues to [Step 2: Data validation](step2-data-validation.html).

@@ -51,6 +51,171 @@ class CompassCLI(unittest.TestCase):
             self.assertEqual(result["status"], "missing")
             self.assertEqual(list(Path(directory).iterdir()), [])
 
+    def test_fresh_filename_resolution_is_read_only_and_workflow_scoped(self):
+        for workflow, research_file, final_file in (
+                ("country-finder", "country-finder-03-research.md", "country-finder-06-final-results.md"),
+                ("salary-calculator", "salary-calculator-01-research.md", "salary-calculator-05b-final-results.md")):
+            with self.subTest(workflow=workflow), tempfile.TemporaryDirectory() as directory:
+                result = self.invoke("resolve-files", {"workspace": directory, "workflow": workflow})["result"]
+                self.assertEqual(result["files"]["research"], research_file)
+                self.assertEqual(result["files"]["final-results"], final_file)
+                self.assertEqual((result["naming"], result["existing_outputs"]), ("current", []))
+                self.assertEqual(list(Path(directory).iterdir()), [])
+
+    def test_legacy_resume_keeps_remaining_filenames_without_copies(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            root.joinpath("cf-step1-criteria.md").write_bytes(b"DUMMY criteria\r\n")
+            before = {p.name: p.read_bytes() for p in root.iterdir()}
+            result = self.invoke("resolve-files", {"workspace": directory, "workflow": "country-finder"})["result"]
+            self.assertEqual(result["files"]["final-results"], "cf-step6-final-ranking.md")
+            self.assertEqual(result["naming"], "legacy")
+            other = self.invoke("resolve-files", {"workspace": directory, "workflow": "salary-calculator"})["result"]
+            self.assertEqual(other["naming"], "current")
+            self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+
+    def test_duplicate_filename_aliases_stop_even_when_identical(self):
+        for content in (b"DUMMY original", b"DUMMY conflicting"):
+            with self.subTest(content=content), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                root.joinpath("cf-step6-final-ranking.md").write_bytes(b"DUMMY original")
+                root.joinpath("country-finder-06-final-results.md").write_bytes(content)
+                before = {p.name: p.read_bytes() for p in root.iterdir()}
+                for command in ("resolve-files", "state-check"):
+                    self.invoke(command, {"workspace": directory, "workflow": "country-finder"}, 5)
+                self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+
+    def test_mixed_nonduplicate_names_keep_existing_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            root.joinpath("sc-step1-salary-research.md").write_bytes(self.salary_block())
+            root.joinpath("salary-calculator-02-validated-data.md").write_bytes(self.salary_block())
+            result = self.invoke("resolve-files", {"workspace": directory, "workflow": "salary-calculator"})["result"]
+            self.assertEqual(result["naming"], "mixed")
+            self.assertEqual(result["files"]["validated-data"], "salary-calculator-02-validated-data.md")
+            self.assertEqual(result["files"]["final-results"], "sc-step5b-final-verification.md")
+            self.assertEqual(len(list(root.iterdir())), 2)
+
+    def test_cross_workflow_completed_handoffs_choose_names_independently(self):
+        registry = json.loads((ROOT / "data" / "workspace-files.json").read_text(encoding="utf-8"))["workflows"]
+        for producer_style, consumer_style in (("legacy", "current"), ("current", "legacy")):
+            with self.subTest(producer=producer_style), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                producer = registry["country-finder"]
+                for artifact in producer["artifacts"].values():
+                    root.joinpath(artifact[producer_style]).write_bytes(b"DUMMY saved country result\r\n")
+                root.joinpath(producer["state"]).write_text(
+                    '{"last_completed_step":6,"updated_at":"2026-10-22T00:00:00Z"}', encoding="utf-8")
+                consumer = registry["salary-calculator"]
+                root.joinpath(consumer["artifacts"]["research"][consumer_style]).write_bytes(self.salary_block())
+                before = {p.name: p.read_bytes() for p in root.iterdir()}
+                final = self.invoke("state-check", {"workspace": directory, "workflow": "country-finder"})["result"]
+                destination = self.invoke("resolve-files", {"workspace": directory, "workflow": "salary-calculator"})["result"]
+                self.assertTrue(final["completed"])
+                self.assertEqual(final["files"]["final-results"], producer["artifacts"]["final-results"][producer_style])
+                self.assertEqual(destination["files"]["final-results"], consumer["artifacts"]["final-results"][consumer_style])
+                self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+
+    def test_missing_state_reports_orphan_final_and_ladder_without_creating_state(self):
+        for filename in ("sc-step5a-career-ladder.md", "salary-calculator-05a-career-ladder.md",
+                         "sc-step5b-final-verification.md", "salary-calculator-05b-final-results.md"):
+            with self.subTest(filename=filename), tempfile.TemporaryDirectory() as directory:
+                path = Path(directory, filename)
+                path.write_bytes(b"DUMMY imported result\r\n")
+                result = self.invoke("state-check", {"workspace": directory, "workflow": "salary-calculator"})["result"]
+                self.assertEqual((result["status"], result["completed"], result["existing_outputs"]), ("missing", False, [filename]))
+                self.assertEqual([p.name for p in Path(directory).iterdir()], [filename])
+
+    def test_alias_added_after_scan_blocks_ingestion_without_writes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            root.joinpath("salary-calculator-01-research.md").write_bytes(self.salary_block())
+            payload = {"workspace": directory, "workflow": "salary-calculator", "expected": ["Germany"]}
+            scan = self.invoke("research-scan", payload)["result"]
+            root.joinpath("sc-step1-salary-research.md").write_bytes(self.salary_block())
+            before = {p.name: p.read_bytes() for p in root.iterdir()}
+            self.invoke("ingest", {**payload, "source_hash": scan["source_hash"], "stored_hash": scan["stored_hash"],
+                "decisions": [{"index": 0, "accept": True}]}, 5)
+            self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+
+    def test_current_discovery_uses_candidates_without_ingestion(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory, "country-finder-02-candidates.md")
+            path.write_bytes(b"Country: Germany\nRemote:\n- Suitable: yes\nSponsorship:\n- Suitable: yes\n")
+            result = self.invoke("research-scan", {"workspace": directory, "workflow": "country-finder",
+                "stage": "discovery", "expected": ["Germany"]})["result"]
+            self.assertEqual(result["blocks"][0]["country"], "Germany")
+            self.assertEqual([p.name for p in Path(directory).iterdir()], [path.name])
+
+    def test_filename_resolution_rejects_unsafe_aliases_and_uncheckpointed_workflows(self):
+        for filename in ("country-finder-06-final-results.md", "cf-step6-final-ranking.md"):
+            with self.subTest(filename=filename), tempfile.TemporaryDirectory() as directory, tempfile.TemporaryDirectory() as outside:
+                target = Path(outside, "private.md")
+                target.write_bytes(b"DUMMY private text")
+                try:
+                    Path(directory, filename).symlink_to(target)
+                except OSError:
+                    self.skipTest("Symlink creation not permitted on this platform")
+                self.invoke("resolve-files", {"workspace": directory, "workflow": "country-finder"}, 2)
+                self.assertEqual(target.read_bytes(), b"DUMMY private text")
+        with tempfile.TemporaryDirectory() as directory:
+            for workflow in ("portal-finder", "job-screener", "../country-finder"):
+                self.invoke("resolve-files", {"workspace": directory, "workflow": workflow}, 2)
+            Path(directory, "country-finder-01-criteria.md").mkdir()
+            self.invoke("resolve-files", {"workspace": directory, "workflow": "country-finder"}, 2)
+
+    def test_checkpoint_completion_supports_both_filename_families(self):
+        registry = json.loads((ROOT / "data" / "workspace-files.json").read_text(encoding="utf-8"))
+        for workflow, definition in registry["workflows"].items():
+            for spelling in ("current", "legacy"):
+                for step in range(1, max(a["step"] for a in definition["artifacts"].values()) + 1):
+                    with self.subTest(workflow=workflow, spelling=spelling, step=step), tempfile.TemporaryDirectory() as directory:
+                        root = Path(directory)
+                        for artifact in definition["artifacts"].values():
+                            if artifact["step"] <= step:
+                                root.joinpath(artifact[spelling]).write_bytes(b"DUMMY saved result\r\n")
+                        root.joinpath(definition["state"]).write_text(json.dumps({
+                            "last_completed_step": step, "updated_at": "2026-10-22T00:00:00Z"}), encoding="utf-8")
+                        before = {p.name: p.read_bytes() for p in root.iterdir()}
+                        result = self.invoke("state-check", {"workspace": directory, "workflow": workflow})["result"]
+                        self.assertEqual(result["status"], "complete" if step == max(a["step"] for a in definition["artifacts"].values()) else "in_progress")
+                        self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+
+    def test_current_research_ingestion_preserves_bytes_and_uses_no_legacy_copies(self):
+        for workflow, source_name, stored_name, raw, tracks in (
+                ("salary-calculator", "salary-calculator-01-research.md", "salary-calculator-02-validated-data.md", self.salary_block(), {}),
+                ("country-finder", "country-finder-03-research.md", "country-finder-04-validated-data.md", self.country_block(), {"Germany": ["remote", "sponsorship"]})):
+            with self.subTest(workflow=workflow), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                root.joinpath(source_name).write_bytes(raw)
+                payload = {"workspace": directory, "workflow": workflow, "expected": ["Germany"]}
+                if tracks:
+                    payload["required_tracks"] = tracks
+                for iteration in range(2):
+                    scan = self.invoke("research-scan", payload)["result"]
+                    result = self.invoke("ingest", {**payload, "source_hash": scan["source_hash"], "stored_hash": scan["stored_hash"],
+                        "decisions": [{"index": 0, "accept": True}]})["result"]
+                    self.assertEqual(root.joinpath(stored_name).read_bytes(), raw)
+                    if iteration:
+                        self.assertEqual(result["written_paths"], [])
+                self.assertEqual({p.name for p in root.iterdir()}, {source_name, stored_name})
+
+    def test_saved_render_checks_resolve_current_and_legacy_names(self):
+        for kind, request, current, legacy in (
+                ("salary", self.salary_request(), "salary-calculator-04-salary-table.md", "sc-step4-salary-table.md"),
+                ("salary", self.salary_request(), "salary-calculator-05b-final-results.md", "sc-step5b-final-verification.md"),
+                ("country", self.country_request(), "country-finder-06-final-results.md", "cf-step6-final-ranking.md")):
+            rendered = self.invoke("render-" + ("salary" if kind == "salary" else "cf"), request)["result"]["markdown"]
+            for existing in (current, legacy):
+                with self.subTest(kind=kind, existing=existing), tempfile.TemporaryDirectory() as directory:
+                    path = Path(directory, existing)
+                    path.write_text(rendered, encoding="utf-8")
+                    before = path.read_bytes()
+                    for requested in (current, legacy):
+                        self.assertTrue(self.invoke("check-saved", {"workspace": directory, "file": requested,
+                            "kind": kind, "render_input": request})["result"]["valid"])
+                    self.assertEqual((path.read_bytes(), len(list(Path(directory).iterdir()))), (before, 1))
+
     def test_strict_schema(self):
         self.invoke("batch-partition", {"groups": [], "unexpected": True}, 2)
 
@@ -535,6 +700,14 @@ class CompassCLI(unittest.TestCase):
             env = {**os.environ, "LC_ALL": "C", "PYTHONIOENCODING": "ascii"}
             result = self.invoke("render-salary", self.salary_request(), cli=install / "helpers" / "compass.py", env=env)
             self.assertIn("🇩🇪", result["result"]["markdown"])
+            consumer = Path(directory, "candidate wörkspace")
+            consumer.mkdir()
+            consumer.joinpath("cf-step6-final-ranking.md").write_bytes(b"DUMMY legacy final\r\n")
+            for workflow in ("country-finder", "salary-calculator"):
+                result = self.invoke("resolve-files", {"workspace": str(consumer), "workflow": workflow},
+                                     cli=install / "helpers" / "compass.py", env=env)["result"]
+                self.assertEqual(result["naming"], "legacy" if workflow == "country-finder" else "current")
+            self.assertEqual([p.name for p in consumer.iterdir()], ["cf-step6-final-ranking.md"])
             self.assertFalse(list(install.rglob("__pycache__")))
 
 

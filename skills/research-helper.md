@@ -13,13 +13,15 @@ Run `batch-partition` with `groups: [{region, countries: [name, ...]}, ...]` aft
 
 ## Scan and review
 
+Resolve current/legacy paths under skills/workspace-files.md first. Scanning and ingestion use the same registry and preserve the run's existing names; they never create current-name copies of legacy datasets.
+
 Run `research-scan` with:
 
 ```json
 {"schema_version":1,"workspace":"<absolute consumer directory>","workflow":"salary-calculator","expected":["Germany"]}
 ```
 
-`workflow` is `country-finder` or `salary-calculator`. Expected is the confirmed scope, or `null` only when legacy coverage genuinely cannot be established. Country Finder research requires explicit `required_tracks: {"Germany": ["remote", "sponsorship"]}` from Step 2's eligible tracks, or an empty object when none are eligible. Omitting that field is an input error, not permission to reject every country. Supply only eligible countries there. Optional `aliases` uses the same mapping as batching. For the earlier Country Finder discovery collection, add `stage: "discovery"`; it scans `cf-step2-candidates.md` read-only instead of the later country research, without requiring tracks.
+`workflow` is `country-finder` or `salary-calculator`. Expected is the confirmed scope, or `null` only when legacy coverage genuinely cannot be established. Country Finder research requires explicit `required_tracks: {"Germany": ["remote", "sponsorship"]}` from Step 2's eligible tracks, or an empty object when none are eligible. Omitting that field is an input error, not permission to reject every country. Supply only eligible countries there. Optional `aliases` uses the same mapping as batching. For the earlier Country Finder discovery collection, add `stage: "discovery"`; it scans `country-finder-02-candidates.md` read-only instead of the later country research, without requiring tracks.
 
 The normal scan reads the workflow's existing aggregate research and stored-data files, returning `source_hash`, `stored_hash` (null if absent), block indices/line numbers/hashes, structural issues, missing canonical labels, duplicates and missing coverage. It follows `skills/data-validation-rules.md`. A standalone manual dataset fence may use `research`, `text`, `markdown`, `md` or no language; quotes and ordinary inner code examples are not new countries. An explicit `research` fence denotes a separate dataset. Ambiguous mixed/legacy boundaries need clarification.
 
