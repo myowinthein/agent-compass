@@ -21,6 +21,7 @@ output, error, status = Open3.capture3(
 assert.call(status.success?, "Validator failed under US-ASCII defaults: #{output}#{error}")
 
 manifest = JSON.parse(root.join(".claude-plugin/plugin.json").read(encoding: "UTF-8"))
+assert.call(manifest["commands"] == [], "Disable legacy command discovery so each shared skill appears only once")
 assert.call(manifest.fetch("name") == "agent-compass", "Keep the technical plugin name unchanged")
 assert.call(manifest.fetch("displayName") == "Agent Compass", "Claude must display Agent Compass")
 assert.call(manifest.fetch("interface").fetch("displayName") == manifest.fetch("displayName"),
@@ -55,6 +56,19 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
   %w[.claude-plugin commands workflows prompts skills agents helpers data assets].each do |component|
     FileUtils.cp_r(root.join(component), installation)
   end
+  [nil, ["./commands/"]].each do |commands|
+    changed_manifest = manifest.dup
+    commands.nil? ? changed_manifest.delete("commands") : changed_manifest["commands"] = commands
+    installation.join(".claude-plugin/plugin.json").write(JSON.pretty_generate(changed_manifest))
+    rejected = begin
+      CompassValidation.validate(installation)
+      false
+    rescue RuntimeError => error
+      error.message == "Disable legacy command discovery so each shared skill appears only once"
+    end
+    assert.call(rejected, "Validator accepted duplicate legacy command discovery: #{commands.inspect}")
+  end
+  installation.join(".claude-plugin/plugin.json").write(JSON.pretty_generate(manifest))
   icon = installation.join("assets/icon.svg")
   original = icon.read(encoding: "UTF-8")
   {
