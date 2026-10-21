@@ -6,6 +6,11 @@ task :plugin_test do
   sh "python3 -B scripts/test_compass.py"
 end
 
+desc "Check native Claude and Codex command discovery with temporary installs"
+task :client_test do
+  ruby "scripts/check_clients.rb"
+end
+
 desc "Build the Jekyll site and validate it with HTML-Proofer"
 task :docs_test do
   sh "node --test scripts/test_theme_switcher.cjs"

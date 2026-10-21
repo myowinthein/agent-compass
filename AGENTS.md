@@ -21,7 +21,7 @@ This is the user's preferred pairing with GPT-6.1 Sol at high effort, not a clai
 ## Shared sources
 
 - `skills/<command>/SKILL.md`: portable entry points. These only reference the shared runtime and their corresponding workflow.
-- `commands/<command>.md`: Claude command adapters. These only reference the portable entry points and pass through arguments.
+- `commands/<command>.md`: legacy command adapters. These only reference the portable entry points and pass through arguments. The manifest's `commands: []` disables their discovery in both hosts; only shared skills are exposed, avoiding duplicate commands and Codex's generated `source-command-*` entries.
 - `workflows/<command>.md`: the single source of orchestration for each workflow.
 - `prompts/<command>/`: canonical step instructions, output formats, and domain decisions.
 - `prompts/shared/runtime.md`: packaged resource paths, workspace state tracking, host-specific delegation, and research fallback.
@@ -48,6 +48,7 @@ Bundled resources are read from the installed plugin root. Candidate data and ou
 - `python3 -B scripts/test_compass.py`: offline consumer checks for shared operations, byte-preserving ingestion, golden tables, exact comparisons, read-only state, legacy boundaries, encoding, failure/retry and relocated packaging. Fixtures are temporary and fictional, not live browser evidence.
 - `bundle exec rake test`: validate the plugin, build the Jekyll site, and check its internal HTML links/images/scripts. Required after documentation or site configuration changes.
 - `claude plugin validate .claude-plugin/plugin.json` and `claude plugin validate skills`: native manifest and skill validation when the `claude` CLI is available.
+- `bundle exec rake client_test`: optional native discovery regression check requiring both CLIs. Uses a temporary Codex installation and Claude's `--plugin-dir`, checks the actual Codex `skills/list` catalog (not just `plugin/read`) and requires exactly four workflow entries in each client. No model calls or changes to user installations. After updating installed copies, `ruby scripts/check_clients.rb --installed` checks their inventories instead.
 
 `docs/` is both user documentation and the GitHub Pages site. Update affected pages whenever behavior changes; search references across `docs/`, `workflows/`, `prompts/`, and `skills/`. Keep documentation summaries explanatory; runtime rules belong in prompts. Prose in `docs/` avoids em dashes.
 
