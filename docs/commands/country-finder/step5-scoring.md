@@ -53,7 +53,7 @@ flowchart TD
 - `cf-step2-candidates.md`: the full candidate universe and recorded per-track exclusions, including timezone rejections
 - `cf-step1-criteria.md`: timezone limit (informational, already applied in Step 2)
 - `situational-profile.md`: salary minimum (optional, skipped if not specified) and citizenship-specific friction
-- `sc-step4-salary-table.md`: Salary Calculator's final figures, if present, used to check Sponsorship-track visa salary thresholds
+- `sc-step5b-final-verification.md`: completed Salary Calculator audit, when available, for authoritative raw targets; `sc-step4-salary-table.md` is the pre-audit source for unchanged segments or when no final exists
 
 ## Batching rule
 
@@ -72,7 +72,7 @@ For each country with Remote data stored:
 
 For each country with Sponsorship data stored:
 
-1. If a visa minimum salary threshold was reported, check whether `sc-step4-salary-table.md` exists and covers this country. If it does, note whether those figures clear the threshold. If it doesn't exist or doesn't cover this country, note the threshold as informational only.
+1. If a visa minimum salary threshold was reported, prefer a completed Salary Calculator final audit. File existence alone does not establish completion. Use final raw targets for revised segments and Step 4 raw targets only for explicitly unchanged segments with matching inputs, or when no final exists. Missing final raw values after possible recalibration must not silently resurrect older figures. Ambiguous completion or comparison evidence stays unverified; rounded cells never decide clearance. This remains an informational note, not a country exclusion or overall eligibility finding.
 2. Classify Sponsorship fit as **Strong**, **Moderate**, or **Weak**.
 3. Assign confidence: **High**, **Medium**, or **Low**.
 4. Give brief reasoning referencing actual stored evidence, including any citizenship-specific friction from the situational profile.

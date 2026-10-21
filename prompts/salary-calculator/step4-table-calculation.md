@@ -6,6 +6,8 @@ If both files exist, read them. Using the adjustment values from sc-step3-adjust
 
 Read and apply skills/salary-calculation-helper.md. The parent runs the shared numeric helper before an optional calculator handoff; both hosts use the same implementation. Use its exact results for every supported calculation in this step. Manual arithmetic requires the explicit user choice described there. Do not compute by intuition; precision takes priority over speed.
 
+Read data/output-contracts.json as data and skills/output-helper.md. The parent prepares `render-salary` inputs/results with the numeric work, and supplies them to any specialist. Use the canonical returned caption/table, then run `check-saved` on the saved file before completion. A specialist needing revised helper work returns a pending request, never improvises. Under approved manual fallback, read the same contract and follow the identical presentation/check rules without claiming automation ran.
+
 Read situational-profile.md. Note whether a salary minimum was given there and, if so, whether it was marked a hard floor or context only — this is used only for the flag described under Summary below, never to change Mainstream or Premium.
 
 Read and apply skills/sponsorship-threshold-rules.md for the Visa salary rule column. This shared rule is the canonical source of its display states, period labels, and warning behavior.
@@ -41,7 +43,7 @@ Annual Target = Market Midpoint x (1 - Adjustment %)
 
 2. Keep both Annual Targets unrounded internally. Monthly Reference = unrounded Annual Target / 12. Use these raw amounts for sponsorship-threshold and candidate-minimum comparisons, never displayed rounded figures.
 
-3. Round each displayed salary independently, once, at final formatting: Annual to nearest 500; Monthly to nearest 50; exact halfway ties upward for nonnegative amounts. Use decimal/rational or otherwise verified arithmetic to avoid floating-point tie errors. Recomputing Monthly from the displayed Annual may differ from the displayed Monthly; retain the raw calculation.
+3. Round each displayed salary independently, once, at final formatting using the salary increments and tie rule in data/output-contracts.json. Use decimal/rational or otherwise verified arithmetic to avoid floating-point tie errors. Recomputing Monthly from the displayed Annual may differ from the displayed Monthly; retain the raw calculation.
 
 4. Do not generate automatic -5%/+10% ranges or a universal interview range. Retain the original researched Low/Realistic/Strong figures in their existing research and stored-data files; they are not automatically a negotiation range. Any discussion of a negotiation range belongs in the saved audit, tied to the applicable employer segment and actual evidence, not an invented percentage band.
 
@@ -57,13 +59,7 @@ Include the calculation-method disclosure from skills/salary-calculation-helper.
 
 Table
 
-Put this exact caption immediately before the table:
-
-Gross base salary in local currency. Monthly figures are annual ÷ 12 references, not necessarily payslips; targets are market estimates, not visa-eligibility guarantees.
-
-Use ONLY these columns, in this exact order:
-
-| Country | Visa salary rule | Mainstream Annual | Premium Annual | Mainstream Monthly | Premium Monthly |
+Copy the renderer's complete `markdown`, using the single canonical caption, column order and alignment from the `salary` object in data/output-contracts.json. Do not maintain another template here.
 
 - One row per calculated country, in the order specified above.
 - Place the flag before the country name and put the local currency code after it, e.g. "🇩🇪 Germany (EUR)".
@@ -71,17 +67,6 @@ Use ONLY these columns, in this exact order:
 - Right-align the four numeric salary columns; left-align Country and Visa salary rule.
 - Render Visa salary rule using skills/sponsorship-threshold-rules.md: a period-labeled exact threshold, or the distinct explicit state label. Do not replace it with a status-only check.
 - No extra columns, inline citations, revision markers, or footnotes. Explanations and sources stay in Show Your Work and Summary.
-
-Formatting examples only, not current market or visa facts. Each displayed Annual Target is also its raw input in these examples; a real run still computes Monthly and threshold checks before rounding. Their order is illustrative; a real run follows Country Finder or alphabetical ordering.
-
-| Country | Visa salary rule | Mainstream Annual | Premium Annual | Mainstream Monthly | Premium Monthly |
-|---|---|---:|---:|---:|---:|
-| 🇩🇪 Germany (EUR) | 45,300/yr | 59,500 | 74,500 | 4,950 | 6,200 |
-| 🇳🇱 Netherlands (EUR) | 5,331/mo ⚠️ | 56,500 | 70,000 | 4,700 | 5,850 |
-| 🇺🇸 United States (USD) | Not applicable | 140,000 | 175,000 | 11,650 | 14,600 |
-| 🇦🇺 Australia (AUD) | Blocked | 95,000 | 118,000 | 7,900 | 9,850 |
-| 🇯🇵 Japan (JPY) | No fixed minimum | 7,800,000 | 10,200,000 | 650,000 | 850,000 |
-| 🇬🇧 United Kingdom (GBP) | Unknown | 60,000 | 78,000 | 5,000 | 6,500 |
 
 Summary
 

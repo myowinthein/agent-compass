@@ -7,6 +7,8 @@ nav_order: 4
 
 # Step 4: Data validation
 
+The parent uses the shared helper to scan country boundaries and coverage, reviews ambiguous fields, then copies accepted raw blocks without retyping. The existing research file receives the validation report. Hash checks prevent overwriting changed input; partial writes report exactly which files were saved. A checked retry preserves originals, and state does not advance on failure. No new database or profile format is introduced.
+
 A strict silent-storage mode. The assistant reads `cf-step3-country-research.md` written by Step 3 and processes each country's data autonomously, no pasting required. If the file is missing, the assistant stops and reports it rather than waiting for manual input.
 
 ## Flow

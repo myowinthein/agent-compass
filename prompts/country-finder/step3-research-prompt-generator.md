@@ -63,3 +63,5 @@ Output:
 Parent: run the generated prompts using the research-delegation rule in prompts/shared/runtime.md, including its capability checks, task-brief rules, and manual fallback. Each task covers exactly one country. The parent collects the returned results into cf-step3-country-research.md in the workspace.
 
 Once all results are saved to cf-step3-country-research.md, tell me in a few lines how many countries were researched and that the full per-country findings are saved there for Step 4 to validate and store. Do not reproduce the per-country research findings in this summary. Step complete. Follow the step-completion rule in prompts/shared/runtime.md.
+
+Before marking completion, run `research-scan` under skills/research-helper.md using the Step 2 eligible countries and their expected tracks. Resolve missing results before continuing; ingestion itself belongs to Step 4. The shared explicit manual fallback applies if execution is unavailable.

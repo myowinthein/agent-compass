@@ -7,6 +7,8 @@ nav_order: 2
 
 # Step 2: Data validation
 
+The shared helper copies accepted raw blocks byte-for-byte and updates the existing research file's validation report. The assistant still reviews legacy field variations and decides whether required content exists. Missing optional threshold/evidence fields do not reject a country. Stale input or a partial write is reported without advancing state; a checked retry preserves the first valid original.
+
 A strict silent-storage mode. The assistant reads `sc-step1-salary-research.md` written by Step 1 and processes each country's data automatically, no pasting required. If the file is missing, the assistant stops and reports it rather than waiting for manual input.
 
 ## Flow

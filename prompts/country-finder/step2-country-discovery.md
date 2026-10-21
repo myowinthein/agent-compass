@@ -19,8 +19,8 @@ Part B — Research each country for both tracks together
 
 Batch the final country list for parallel research:
 
-- data/default-preferred-countries.md is organized under `##` region headings — if the base came from it, preserve those regions, but split any region larger than 15 countries into numbered sub-batches of at most 15.
-- If the final list has no usable region grouping, split it into batches of at most 15 countries each in list order. There is no total batch cap; queue batches within the client's concurrency limit and never drop a country to fit agent slots.
+- Read skills/research-helper.md and run `batch-partition` on the confirmed list, preserving the `##` regions from data/default-preferred-countries.md when applicable. Its maximum comes from data/output-contracts.json; chunks are contiguous in list order, not balanced. For an ungrouped list, use one batch-group label. Use the returned complete expected list for coverage.
+- There is no total batch cap; queue batches within the client's concurrency limit and never drop a country to fit agent slots. Approved manual fallback uses this same readable contract and partition rule.
 
 For each batch, generate one ready-to-copy research prompt. Each prompt must embed directly as literal text — never by reference to a label like "the candidate universe" — all of the following, so it can run from its own brief without relying on the parent's conversation:
 
@@ -73,6 +73,8 @@ Output:
 Parent: run the generated prompts using the research-delegation rule in prompts/shared/runtime.md, including its capability checks, task-brief rules, and manual fallback. Each task covers exactly the countries in its assigned batch. The parent collects the returned country results into cf-step2-candidates.md in the workspace.
 
 Part C — Mark timezone suitability
+
+Before Part C, run `research-scan` under skills/research-helper.md with stage discovery and the full confirmed expected list. Resolve ambiguous boundaries and missing researcher results before completing this step; preserve successful results. This scan does not store, verify facts or apply timezone decisions.
 
 Read and apply skills/timezone-rules.md. If cf-step1-criteria.md has a maximum timezone difference, assess relevant job hubs against my current location over the rule's reference period. Only for a supported whole-country failure, overwrite Remote "Suitable" with "no — outside your max timezone of [N] hours," replacing whatever Part B found for Remote, and record the reference date, zones/hubs, seasonal difference range, and maximum in Reason. Preserve the existing answer fields. If only some locations pass, retain any otherwise-supported Remote suitability conditionally and name those locations in Reason; if timezone evidence is insufficient, mark the timezone check unverified rather than creating a rejection. Never change Sponsorship suitability for timezone. If no maximum was provided, skip this part entirely.
 

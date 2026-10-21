@@ -75,17 +75,17 @@ If recalibration is not supported by either check, Step 5 results are explicitly
 
 After the recalibration verdict, the assistant writes a Summary into the file (not shown in chat; the Priority Table below is the only thing from this step shown in chat) that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track, each country showing its Remote and Sponsorship fit side by side.
 
-| Country | Remote | Sponsorship |
+| Country | Remote fit | Sponsorship fit |
 |---|---|---|
-| Example A | Strong, High | Moderate, Medium |
-| Example B | Excluded | Strong, High |
-| Example C | not scored (no data) | Weak, Low |
+| Example A | Strong | Moderate |
+| Example B | Excluded | Strong |
+| Example C | not scored (no data) | Weak |
 
 Rules for the table:
 
 - **Excluded**: the country was explicitly eliminated on that track in Step 2 or Step 5. The audit preserves the recorded reason and hard-rule detail.
 - **not scored (no data)**: required research was not ingested and no explicit rejection explains its absence. This is distinct from Excluded.
-- If Step 6 revised a country's confidence level or classification, a short one-line note appears beneath it.
+- If Step 6 revised a country's confidence level or classification, the explanation stays in the saved Recalibration audit, outside the canonical Summary sections.
 
 The Summary includes countries with ingested research or a recorded exclusion on at least one track. Other candidates are accounted for in separate audit notes: **Flagged but not researched** is reserved for research genuinely never supplied, not research rejected during ingestion. Intentionally excluded countries are not put in that process-gap list.
 
@@ -98,6 +98,8 @@ The section closes with counts:
 Each Step 2 candidate is counted once per track, including missing-data cases in the separate list. Early rejections count as excluded, not missing data. Any additional expected-but-absent countries are discussed separately from these totals.
 
 The Summary itself contains no ranking, recommendations, or interpretation beyond the classifications above; ranking is reserved for the Priority Table below.
+
+For new runs, the shared renderer produces the Summary, coverage counts and Priority Table from the same post-audit decisions, and checks the actual saved sections. It rejects contradictory priority/fit combinations but never chooses a fit or priority. The assistant reads legacy Summaries directly; completed outputs are not migrated.
 
 ## Priority Table
 

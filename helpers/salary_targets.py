@@ -7,6 +7,7 @@ Policy and presentation: prompts/salary-calculator/step4-table-calculation.md.
 import argparse
 from fractions import Fraction
 import json
+from pathlib import Path
 import re
 import sys
 
@@ -57,6 +58,7 @@ def calculate(payload):
                 comparison["pay_basis"] != payload["pay_basis"]):
             raise ValueError("Comparison currency and pay basis must match the targets; no implicit FX or tax conversion")
 
+    policy = contract()
     results = {}
     adjustments = set()
     for name, segment in payload["segments"].items():
@@ -66,8 +68,8 @@ def calculate(payload):
         else:
             fields(segment, ("market_midpoint", "adjustment_percent"))
             adjustment = decimal(segment["adjustment_percent"])
-            if adjustment > 15:
-                raise ValueError("adjustment_percent must be between 0 and 15 under Step 3's policy")
+            if adjustment > Fraction(policy["adjustment"]["maximum"]):
+                raise ValueError("adjustment_percent exceeds Step 3's contract bound")
             adjustments.add(adjustment)
             if len(adjustments) > 1:
                 raise ValueError("Both initial segments must use the country's same typical adjustment")
@@ -79,8 +81,8 @@ def calculate(payload):
             checks[label] = {"target_in_period": str(target), "meets": target >= minimum,
                              "shortfall": str(max(minimum - target, Fraction(0)))}
         results[name] = {"raw_annual": str(annual), "raw_monthly": str(annual / 12),
-                         "annual_display": rounded(annual, 500),
-                         "monthly_display": rounded(annual / 12, 50), "comparisons": checks}
+                         "annual_display": rounded(annual, policy["salary"]["annual_increment"]),
+                         "monthly_display": rounded(annual / 12, policy["salary"]["monthly_increment"]), "comparisons": checks}
     return {"input": payload, "segments": results}
 
 
@@ -95,6 +97,12 @@ def unique_object(pairs):
 
 def reject_number(value):
     raise ValueError("JSON floats and nonfinite numbers are not supported; use plain decimal strings")
+
+
+def contract():
+    """One readable contract for both Python and approved manual processing."""
+    return json.loads((Path(__file__).resolve().parents[1] / "data" / "output-contracts.json").read_text(encoding="utf-8"),
+                      object_pairs_hook=unique_object, parse_float=reject_number, parse_constant=reject_number)
 
 
 def main():

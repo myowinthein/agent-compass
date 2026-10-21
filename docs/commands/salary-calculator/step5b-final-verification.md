@@ -7,6 +7,8 @@ nav_order: 5
 
 # Step 5: Final Verification
 
+The shared renderer produces newly revised or legacy-normalized tables from exact raw inputs. A read-only check compares the actual saved result with that rendering before completion. The assistant owns the audit and evidence judgments. Python and approved manual runs read the same contract, and the pre-audit Step 4 file remains unchanged.
+
 An independent audit of the salary table from Step 4. Always runs; this is the only step in the pipeline with no skip option, since it produces the pipeline's final result. The four detailed checks are file-only, like Step 4's own work, but the resulting final table is the one thing this step does show you, copied from the file into chat with only Step 4's standard gross-base/monthly-reference caption. Whether recalibration happened is stated as a plain fact in the completion message afterward, not as extra commentary attached to the caption and table. Everything (checks, verdict, and table) is written to a single file, `sc-step5b-final-verification.md`; this step never creates more than one file. The assistant asks whether to use the **deep-reasoner** subagent (host-specific model and effort) for higher reasoning accuracy. If you decline, the step runs with your current model.
 
 For model choices, effort settings and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).

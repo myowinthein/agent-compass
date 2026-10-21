@@ -6,6 +6,8 @@ If it exists, read it and process each country's data from that file sequentiall
 
 Behavior rules:
 
+Parent: use skills/research-helper.md to scan and review every block, then run `ingest` with the exact hashes, expected eligible countries, required tracks and block decisions. It copies accepted raw slices and updates only the existing generated report. Read back both files and present the consolidated inventory below. A legacy label variation needs genuine semantic review, not an automatic skip or acceptance. A partial failure leaves state unchanged; inspect and rescan before a safe retry. Under an approved manual run, follow all existing rules below without claiming Python ran.
+
 * Read and apply the cross-pipeline data validation rules in skills/data-validation-rules.md, then follow the additional rules below.
 * Read and silently store the data.
 * Identify country blocks using skills/data-validation-rules.md, not chat-message boundaries. Each block is expected to contain data for exactly one country.
@@ -29,6 +31,8 @@ Skipped — duplicate: [country or "none"].
 Skipped — not on either candidate list: [country or "none"]. Review these and tell me if any should be added.
 
 Persist this same consolidated report under `## Validation report` in cf-step3-country-research.md using skills/data-validation-rules.md. Keep the country research and stored output unchanged; record any expected Step 2 eligible countries for which no block arrived. This makes ingestion failures available to later steps without a new dataset or state schema.
+
+When `ingest` has written that report, persistence is already complete: read it back but do not append another review, alter its bounded generated section or write anything after its closing marker. Present the consolidated inventory in chat without creating a second report.
 
 This data is saved to cf-step4-country-data.md, which Step 5 will score next.
 

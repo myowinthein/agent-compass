@@ -40,21 +40,17 @@ For each country, report:
 
 ## How to compare
 
-Compare both Mainstream and Premium Annual Targets with the applicable threshold using unrounded computed values. The displayed salary rounding (nearest 500 annual, nearest 50 monthly) must never decide a borderline result. Equality clears this salary-minimum comparison.
+Compare both Mainstream and Premium Annual Targets with the applicable threshold using unrounded computed values. The displayed salary rounding from data/output-contracts.json must never decide a borderline result. Equality clears this salary-minimum comparison.
 
 Use the threshold's verified original period. For a monthly threshold X, compare each raw Annual Target / 12 with X; for an annual threshold, compare the raw Annual Target directly. Record any annual/monthly conversion in shown work, not a second number in the compact table cell. Check comparable currency and eligible pay components first; an unconfirmable base-pay comparison stays Unknown rather than an invented pass or failure.
 
 ## Result states
 
-The following rendering is canonical for the **Visa salary rule** column. Stored research keeps the original five state names; these are presentation labels, not new research fields.
+Read data/output-contracts.json as data for the exact `salary.visa_labels`, numeric state, period suffixes and warning token. Use skills/output-helper.md to render them; the same contract is readable without Python. Stored research keeps the original five state names, not new dataset fields.
 
-- **No fixed threshold**: show `No fixed minimum`. Preserve any prevailing-wage, occupation-rate, or other compensation conditions in the saved shown work/audit. This is not a claim that no pay requirements apply.
-- **Not applicable**: show `Not applicable`, only when the confirmed employment path does not use employer-sponsored relocation.
-- **Unknown**: show `Unknown`, never a dash, N/A, a guessed figure, or a claimed block.
-- **Blocked**: show `Blocked`, even if a numeric threshold is known. Retain the concrete candidate-specific route-blocking reason in the saved Summary. Do not claim every possible immigration route is blocked from evidence about the assessed route only.
-- **Verified numeric**: show the exact verified figure in its original period with `/yr` or `/mo`, e.g. `45,300/yr` or `5,331/mo`. Never display-round a legal threshold, show an unqualified number, or duplicate both period equivalents in the cell. Candidate category, source, effective date, and any additional conditions stay in the existing shown work/audit.
-  - If both raw segment targets meet the threshold, show the numeric rule without a warning.
-  - If either raw target falls short, append a single ⚠️ and identify the affected segment(s) with the raw comparison in the saved Summary. This warning concerns the salary minimum only, not overall visa eligibility.
+For a route with no fixed threshold, preserve any prevailing-wage or other compensation conditions in shown work: absence of a fixed number is not absence of all pay rules. Not applicable requires a confirmed path outside employer-sponsored relocation. Unknown must not become a dash, a guess or a claimed block. A Blocked route retains its concrete reason and reference-only note even if a number is known; never generalize to unassessed routes.
+
+For a verified number, display the exact figure in its original period using the contract suffix, without display-rounding or showing both period equivalents. Keep category, source, effective date and additional conditions in shown work. The renderer appends one warning only when either raw target misses the salary minimum; identify the affected segments and exact shortfall in Summary. A passed comparison is not overall visa eligibility.
 
 Never adjust Mainstream or Premium targets to meet a visa minimum. Market estimates and the visa rule remain separate facts. A threshold shortfall is not a blocked route: a higher actual offer may satisfy the salary requirement. A Blocked route does not zero or change salary estimates; they remain reference-only for sponsorship through that route.
 

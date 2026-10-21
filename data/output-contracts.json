@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "batch_maximum": 15,
+  "salary": {
+    "caption": "Gross base salary in local currency. Monthly figures are annual ÷ 12 references, not necessarily payslips; targets are market estimates, not visa-eligibility guarantees.",
+    "headers": ["Country", "Visa salary rule", "Mainstream Annual", "Premium Annual", "Mainstream Monthly", "Premium Monthly"],
+    "alignment": ["---", "---", "---:", "---:", "---:", "---:"],
+    "annual_increment": 500,
+    "monthly_increment": 50,
+    "ties": "halfway_up",
+    "visa_labels": {"No fixed threshold": "No fixed minimum", "Not applicable": "Not applicable", "Unknown": "Unknown", "Blocked": "Blocked"},
+    "numeric_state": "Verified numeric",
+    "period_suffixes": {"annual": "/yr", "monthly": "/mo"},
+    "warning": "⚠️"
+  },
+  "country": {
+    "headers": ["Country", "Priority", "Remote Fit", "Sponsorship Fit", "Main limitation"],
+    "summary_headers": ["Country", "Remote fit", "Sponsorship fit"],
+    "fits": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "excluded": "Excluded", "missing": "not scored (no data)"},
+    "missing_display": "Unknown",
+    "priorities": ["🥇 Focus", "🥈 Selective", "🥉 Monitor", "🎗️ Deprioritize", "Pending evidence"]
+  },
+  "adjustment": {
+    "minimum": "0",
+    "maximum": "15",
+    "bands": [{"label": "Small", "maximum": "5"}, {"label": "Moderate", "maximum": "10"}, {"label": "Significant", "maximum": "15"}],
+    "evidence_above": "10",
+    "confidence": ["High", "Medium", "Low"],
+    "low_evidence_confidence_cap": "Medium"
+  }
+}

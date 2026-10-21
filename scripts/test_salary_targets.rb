@@ -21,9 +21,9 @@ calculate = lambda do |input|
   JSON.parse(output)
 end
 round_to = ->(value, step) { (value / step).round * step }
-policy = root.join("prompts/salary-calculator/step4-table-calculation.md").read(encoding: "UTF-8")
-annual_increment = Integer(policy.match(/Annual to nearest (\d+)/)[1])
-monthly_increment = Integer(policy.match(/Monthly to nearest (\d+)/)[1])
+policy = JSON.parse(root.join("data/output-contracts.json").read(encoding: "UTF-8"))
+annual_increment = policy.fetch("salary").fetch("annual_increment")
+monthly_increment = policy.fetch("salary").fetch("monthly_increment")
 fixtures = JSON.parse(root.join("scripts/fixtures/salary-targets-demo.json").read(encoding: "UTF-8"))
 
 fixtures.fetch("cases").each do |fixture|
@@ -135,6 +135,7 @@ Dir.mktmpdir("compass-helper-test-") do |temp|
   installation.mkpath
   workspace.mkpath
   FileUtils.cp_r(root.join("helpers"), installation)
+  FileUtils.cp_r(root.join("data"), installation)
   installed_helper = installation.join("helpers/salary_targets.py")
   before = installation.glob("**/*").select(&:file?).to_h { |path| [path.relative_path_from(installation).to_s, path.binread] }
   installation.glob("**/*").reverse_each { |path| path.chmod(path.directory? ? 0o555 : 0o444) }
@@ -152,4 +153,24 @@ Dir.mktmpdir("compass-helper-test-") do |temp|
   end
 end
 
-puts "Passed #{checks} salary-helper checks with six fictional countries, recalibration and invalid inputs (not desktop install tests)."
+# Independent seeded comparisons also cover exact recurring FX normalization.
+random = Random.new(2081)
+100.times do
+  low = random.rand(1..100_000)
+  high = low + random.rand(0..20_000)
+  amount = random.rand(1..10_000)
+  rate = Rational(random.rand(1..1000), random.rand(1..1000))
+  expected = amount * 12 * rate
+  input = { "schema_version" => 1,
+            "pay" => { "low" => low.to_s, "high" => high.to_s, "currency" => "EUR", "period" => "annual", "basis" => "gross_base" },
+            "minimum" => { "amount" => amount.to_s, "currency" => "USD", "period" => "monthly", "basis" => "gross_base", "hard_floor" => true },
+            "quotes" => [{ "base" => "USD", "quote" => "EUR", "rate" => rate.to_s, "date" => "2026-10-21", "source" => "https://example.invalid/dummy" }] }
+  output, error, status = Open3.capture3("python3", "-I", "-B", root.join("helpers/compass.py").to_s, "compare", stdin_data: JSON.generate(input))
+  assert.call(status.success?, "Comparison failed: #{error}")
+  result = JSON.parse(output).fetch("result")
+  assert.call(Rational(result.fetch("normalized_minimum")) == expected, "Recurring normalization differs from Ruby oracle")
+  assert.call(result.fetch("outcome") == (low >= expected ? "pass" : high < expected ? "fail" : "uncertain"),
+              "Range comparison differs from independent oracle")
+end
+
+puts "Passed #{checks} salary/FX-helper checks with fictional inputs and an independent Ruby oracle (not desktop install tests)."

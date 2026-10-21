@@ -2,6 +2,8 @@ Read sc-step4-salary-table.md from the workspace. Also read sc-step2-salary-data
 
 Read prompts/salary-calculator/step4-table-calculation.md for the canonical segment definitions, arithmetic, caption, and six-column output format, and apply skills/sponsorship-threshold-rules.md, skills/salary-comparison-rules.md, and skills/evidence-quality-rules.md. Do not infer current visa rules from legacy table shorthand.
 
+Read data/output-contracts.json as data and skills/output-helper.md. Use `render-salary` for any newly calculated/legacy-normalized table, preserving the existing country order, and `check-saved` before the parent completes this final step. The same contract remains readable during an explicitly approved manual run; no second template is introduced.
+
 For every newly rendered table, use the same helper procedure in skills/salary-calculation-helper.md, including parent-executed calculation requests and its explicit manual fallback. Recalibrated segments supply revised raw annual targets, never rounded display values; unaffected segments retain their source inputs. Record the method and exact results in Recalibration. Do not save helper JSON, change Step 4's file or finalize an audit while a calculation request is pending. An unchanged current-format table may be copied without a new invocation only if its shown work records the shared helper or explicit user-approved manual method and its inputs still match the source files. Otherwise verify it through the helper procedure first, even when its columns already match. Correct any arithmetic error in the final file only and distinguish that correction from evidence-based market recalibration.
 
 Goal
@@ -187,7 +189,7 @@ Before saving, verify the six headers and country order, independently rounded s
 
 After saving, show the standard caption and final table directly in chat, copied from this final file. No extra surrounding commentary or detailed audit checks. Then give the completion message below.
 
-Then tell me the pipeline is complete: if revised, "Salary Calculator is complete. [N] countries audited, recalibration applied — see the table above. Full audit saved to sc-step5b-final-verification.md." If not revised, "Salary Calculator is complete. [N] countries audited, no recalibration needed — see the table above. Full audit saved to sc-step5b-final-verification.md."
+Then tell me the pipeline is complete: if revised, "Salary Calculator is complete. [N] countries audited, recalibration applied. See the table above. Full audit saved to sc-step5b-final-verification.md." If not revised, "Salary Calculator is complete. [N] countries audited, no recalibration needed. See the table above. Full audit saved to sc-step5b-final-verification.md." Use singular "country" when N is one.
 
 Overall Principles
 

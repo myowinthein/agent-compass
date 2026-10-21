@@ -4,6 +4,8 @@ Read cf-step5-scoring-results.md from the workspace. Also read cf-step2-candidat
 
 Read and apply skills/evidence-quality-rules.md and skills/exclusion-transparency-rules.md when auditing classifications, assigning priorities, and summarizing limitations.
 
+Read data/output-contracts.json as data and skills/output-helper.md. After choosing the evidence-supported final decisions below, use `render-cf` with the full candidate universe, original early exclusions and ingestion dispositions. Save its returned Summary and Priority Table sections verbatim, keep its audit notes with the three checks, and run `check-saved` before completion. Pure helper requests unavailable to a specialist return to the parent under the shared runtime. Under an explicitly approved manual run, read this same contract for the format and perform the same checks; do not claim automated rendering ran.
+
 Goal
 
 Perform a focused audit on the Step 5 results across three checks.
@@ -49,7 +51,7 @@ For each country that has ingested research or a recorded exclusion on at least 
 - Use the final classification (Strong / Moderate / Weak / Excluded / not scored (no data)) for each track.
 - "Excluded" means the country was explicitly eliminated on that track in Step 2 or Step 5. Preserve the original reason and hard-rule detail in the file's audit findings; do not substitute a missing-data explanation.
 - "not scored (no data)" means required research was not ingested and no explicit exclusion explains its absence. This is distinct from Excluded and must not be blurred with it.
-- If Step 6 revised a country's confidence level or classification, add a single short note beneath it.
+- If Step 6 revised a country's confidence level or classification, keep the short revision note in Recalibration with the audit checks, not inside the verbatim generated Summary sections.
 
 If the Missing Candidate Check identified countries with neither ingested research nor a recorded exclusion on either track, account for them separately. Keep the existing "Flagged but not researched" heading for research genuinely never supplied. Add a file-only note for "Researched but not ingested" with the validation reason when research was rejected, or "Ingestion outcome unknown" for unsupported legacy cases. Do not label rejected research as never researched or put intentionally excluded countries in a process-gap list. These notes do not add Summary fit categories; the Priority Table below renders their missing-data tracks as Unknown.
 
@@ -65,7 +67,7 @@ Priority Table
 
 Below the Summary in the file, also write this Priority Table. Unlike the Summary, show this table directly in your chat response too — this is the only thing from this step shown in chat.
 
-Columns: Country | Priority | Remote Fit | Sponsorship Fit | Main limitation
+The column order and literal display tokens are defined once in the `country` object of data/output-contracts.json. The renderer also supplies a fixed-header Summary table for newly generated results; legacy Summaries remain model-read and are not rewritten on completed replay.
 
 Read Remote Fit and Sponsorship Fit from this step's post-audit Summary, including every supported recalibration and carried exclusion. The Summary is authoritative for final fit classifications; do not copy a superseded Step 5 rating into this table. Leave cf-step5-scoring-results.md untouched as the pre-audit record.
 
@@ -116,10 +118,7 @@ Formatting rules:
 - Do not add scores, percentages, redundant track words such as Both, citations, asterisks, or footnotes anywhere in the table. Explanatory prose belongs only in Main limitation.
 - Output only the table for this section, with no surrounding commentary.
 
-Use this exact header:
-
-| Country | Priority | Remote Fit | Sponsorship Fit | Main limitation |
-|---|---|---|---|---|
+Use the contract's exact header, produced by `render-cf`, rather than a second template.
 
 Effort Allocation
 

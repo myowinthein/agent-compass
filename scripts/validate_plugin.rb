@@ -41,6 +41,12 @@ module CompassValidation
     check(entry.dig("policy", "installation") == "AVAILABLE", "Plugin is not installable in Codex")
     check(!entry.key?("version") && !entry.key?("description"), "Maintain metadata only in plugin.json")
     resource(root, "helpers/salary_targets.py")
+    resource(root, "helpers/compass.py")
+    %w[common money research state tables timezones].each { |name| resource(root, "helpers/compass_lib/#{name}.py") }
+    contract = JSON.parse(read(resource(root, "data/output-contracts.json")))
+    check(contract.fetch("schema_version") == 1, "Unknown output contract")
+    check(contract.fetch("salary").fetch("headers").length == 6 && contract.fetch("country").fetch("headers").length == 5,
+          "Unexpected compact table contract")
 
     workflows = root.glob("workflows/*.md").map { |file| file.basename(".md").to_s }.sort
     commands = root.glob("commands/*.md").map { |file| file.basename(".md").to_s }.sort
@@ -87,8 +93,13 @@ module CompassValidation
     end
 
     root.glob("{commands,workflows,prompts,skills,agents}/**/*.md").each do |file|
-      read(file).scan(%r{(?<![\w.-])(?:workflows|prompts|skills|agents|data|helpers)/[\w./-]+\.(?:md|py)}).uniq.each do |path|
+      read(file).scan(%r{(?<![\w.-])(?:workflows|prompts|skills|agents|data|helpers)/[\w./-]+\.(?:md|py|json)}).uniq.each do |path|
         resource(root, path)
+      end
+      [contract.fetch("salary").fetch("caption"),
+       "| #{contract.fetch('salary').fetch('headers').join(' | ')} |",
+       "| #{contract.fetch('country').fetch('headers').join(' | ')} |"].each do |template|
+        check(!read(file).include?(template), "Duplicate runtime template; reference output-contracts.json: #{file}")
       end
     end
     root.glob("docs/**/*.md").each do |file|

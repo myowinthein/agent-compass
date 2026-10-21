@@ -84,4 +84,6 @@ Parent: run the generated prompts using the research-delegation rule in prompts/
 
 Before collecting results, record the confirmed target countries under a `## Research scope` preface in sc-step1-salary-research.md so validation and later audits can account for omitted or rejected countries after a resume. Keep the existing Country fields and dataset structure; collect blocks under the shared data-validation boundaries.
 
+After collection and before completion, run `research-scan` under skills/research-helper.md with that confirmed scope. Resolve ambiguous boundaries or missing researcher results without dropping successful blocks. Step 2 owns ingestion. The shared explicit manual fallback applies if execution is unavailable.
+
 Once all results are saved to sc-step1-salary-research.md, tell me in a few lines: how many countries were researched, and that the full results are saved for Step 2 to validate and store. Do not reproduce the per-country research findings in this summary. Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

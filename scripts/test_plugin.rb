@@ -1,4 +1,5 @@
 require "open3"
+require "json"
 require "pathname"
 require "rbconfig"
 require "yaml"
@@ -20,13 +21,27 @@ assert.call(status.success?, "Validator failed under US-ASCII defaults: #{output
 
 # Published salary fixtures exercise the compact presentation, exact monthly
 # arithmetic and threshold-warning examples, not live market/visa research.
-salary_header = "| Country | Visa salary rule | Mainstream Annual | Premium Annual | Mainstream Monthly | Premium Monthly |"
+contract = JSON.parse(root.join("data/output-contracts.json").read(encoding: "UTF-8"))
+salary_header = "| #{contract.fetch('salary').fetch('headers').join(' | ')} |"
 salary_examples = []
-%w[
-  prompts/salary-calculator/step4-table-calculation.md
-  docs/commands/salary-calculator/step4-table-calculation.md
-].each do |relative|
-  text = root.join(relative).read(encoding: "UTF-8:UTF-8")
+docs = root.join("docs/commands/salary-calculator/step4-table-calculation.md").read(encoding: "UTF-8:UTF-8")
+render_input = { "schema_version" => 1, "rows" => [], "priority_order" => [] }
+docs.lines.grep(/^\| [🇦-🇿]{2} /).each do |line|
+  country, rule, annual, premium, = line.strip.split("|").drop(1).map(&:strip)
+  name, currency = country.match(/\A(.*?) \(([A-Z]{3})\)\z/).captures
+  render_input["priority_order"] << name
+  visa = if (match = rule.match(/\A([\d,]+)\/(yr|mo)/))
+    { "state" => "Verified numeric", "amount" => match[1].delete(","), "period" => match[2] == "yr" ? "annual" : "monthly", "currency" => currency, "pay_basis" => "gross_base" }
+  else
+    { "state" => contract.fetch("salary").fetch("visa_labels").key(rule), "reason" => "Fictional example only" }
+  end
+  render_input["rows"] << { "country" => name, "visa" => visa, "calculation" => {
+    "schema_version" => 1, "country" => name, "currency" => currency, "pay_basis" => "gross_base",
+    "segments" => { "mainstream" => { "raw_annual_target" => annual.delete(",") }, "premium" => { "raw_annual_target" => premium.delete(",") } } } }
+end
+rendered, error, status = Open3.capture3("python3", "-I", "-B", root.join("helpers/compass.py").to_s, "render-salary", stdin_data: JSON.generate(render_input))
+assert.call(status.success?, "Documented salary rendering failed: #{error}")
+{ "documentation" => docs, "consumer renderer" => JSON.parse(rendered).dig("result", "markdown") }.each do |relative, text|
   assert.call(text.include?(salary_header), "Missing compact salary header: #{relative}")
   assert.call(!text.include?("Lower Range =") && !text.include?("Upper Range ="),
               "Superseded automatic range formula remains: #{relative}")
@@ -59,7 +74,7 @@ salary_examples = []
   assert.call(states.uniq.sort == ["Verified numeric", "No fixed minimum", "Not applicable", "Unknown", "Blocked"].sort,
               "Salary examples must cover all five underlying threshold states")
 end
-assert.call(salary_examples[0] == salary_examples[1], "Salary prompt and documentation examples differ")
+assert.call(salary_examples[0] == salary_examples[1], "Salary renderer and documentation examples differ")
 
 # Independent raw/display reference: a rounded annual target must not feed
 # monthly conversion or turn a real threshold shortfall into a false pass.
@@ -93,7 +108,7 @@ final_docs = root.join("docs/commands/country-finder/step6-final-ranking.md").re
 priorities = ["🥇 Focus", "🥈 Selective", "🥉 Monitor", "🎗️ Deprioritize", "Pending evidence"]
 fits = %w[Strong Moderate Weak Excluded Unknown]
 [final_prompt, final_docs].each do |text|
-  assert.call(text.include?(priority_header), "Missing five-column Country Finder header")
+  assert.call(text.include?(priority_header) || text.include?("data/output-contracts.json"), "Missing Country Finder contract")
   assert.call(!text.include?(old_header), "Superseded Country Finder table header remains")
   priorities.each { |value| assert.call(text.include?(value), "Missing priority: #{value}") }
 end

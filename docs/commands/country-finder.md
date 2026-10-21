@@ -23,6 +23,8 @@ Run it once per session. The assistant resumes automatically if a `.country-find
 
 For model choices, effort settings and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).
 
+Both hosts use shared Python 3.11+ helpers for batching, research ingestion, comparisons and final tables, with no extra packages. Research, fit and priority judgments remain with the assistant. If execution is unavailable, it asks before using the same rules manually. Existing profiles and checkpoints stay compatible; completed results are not rewritten.
+
 ## Flow
 
 ```mermaid
