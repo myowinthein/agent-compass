@@ -12,6 +12,12 @@ git-auto-commit: true
 readme-style: custom
 ```
 
+## Contributor review preference
+
+When consulting Claude for project reviews or discussions, explicitly use Claude Opus 5.5 at high effort: `claude --model claude-opus-5-5 --effort high`. Record the requested settings and check the returned model metadata. If the requested configuration is unavailable, ask before substituting another model or effort.
+
+This is the user's preferred pairing with GPT-6.1 Sol at high effort, not a claim of equivalent capability or reasoning budget. It does not change the plugin's bundled specialist routing or global client settings.
+
 ## Shared sources
 
 - `skills/<command>/SKILL.md`: portable entry points. These only reference the shared runtime and their corresponding workflow.
