@@ -46,12 +46,14 @@ If `situational-profile.md` does not exist, the assistant asks eight questions a
 4. Languages spoken
 5. Required work environment language
 6. Minimum acceptable monthly salary and currency, plus whether it's a hard floor or context only, or "not specified" to skip salary filtering
-7. Existing residency or work authorization in any target country, and status there (independent work rights, a visa requiring sponsorship to change jobs, student visa, etc.), or "not applicable"
+7. Current residence and explicitly held work rights or immigration status relevant to the search, even before choosing targets; "none" and "unknown" are distinct
 8. Date of birth or current age, since some visa salary thresholds vary by age, or "prefer not to say" to skip age-based threshold checks
 
 These answers persist across sessions and are reused across workflows. Salary comparisons align currency, period, and gross/base versus net/take-home basis; only a hard floor can justify a minimum-pay rejection, and an unverified comparison is not a failure. Existing residency/work authorization informs both threshold categories and relocation friction. A supplied age is dated, and age/status-dependent visa thresholds are checked against the official category. Unknown or declined age is not guessed; an unconfirmable applicable figure stays Unknown. Existing profiles are reused, with only material missing details clarified when needed.
 
 ## Criteria questions
+
+A materially unclear target role or seniority is clarified before research. The settled scope is saved with the criteria; clear answers do not need repeated confirmation. Existing work rights are not inferred from citizenship, and a legacy "not applicable" answer does not establish no rights anywhere.
 
 The assistant asks all questions before proceeding. Vague answers are rejected; the assistant asks again until it receives a specific value or an explicit "no limit" / "not specified."
 

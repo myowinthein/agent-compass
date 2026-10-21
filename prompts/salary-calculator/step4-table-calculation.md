@@ -10,6 +10,8 @@ When at least one row qualifies, read data/output-contracts.json as data and ski
 
 Read situational-profile.md. Note whether a salary minimum was given there and, if so, whether it was marked a hard floor or context only — this is used only for the flag described under Summary below, never to change Mainstream or Premium.
 
+Apply user-confirmed run-only clarifications under the shared runtime, recording their date/scope in Show Your Work for the final audit. Do not silently revert to a superseded salary basis or write the clarification into collected research/profile files.
+
 Read and apply skills/sponsorship-threshold-rules.md for the Visa salary rule column. This shared rule is the canonical source of its display states, period labels, and warning behavior.
 
 Read and apply skills/salary-comparison-rules.md for the candidate's minimum, including currency/period/basis normalization and comparison-only FX. Record the dated rate and unrounded calculation in Show Your Work or Summary, not the salary table. An unavailable or non-comparable minimum check is unverified, not a proven shortfall.
@@ -26,9 +28,9 @@ Before preparing helper inputs, read only the benchmark-scope and benchmark-meta
 Also read the Research scope and Validation report in sc-step1-salary-research.md if available. Reconcile the confirmed scope, research/ingestion rejections, salary datasets, and adjustment datasets: every expected country must be calculated or listed as skipped with its actual reason. Do not fabricate table rows for rejected data or count a rejected duplicate whose original survived as a skipped country. If legacy scope/report information is missing, say which coverage or ingestion outcome cannot be established instead of silently claiming complete coverage.
 
 Ordering: check whether cf-step6-final-ranking.md exists in the workspace.
-- If it exists, read its Priority Table and order the countries in this step's output to match that table's order, top to bottom.
+- If it is a compatible source under the shared runtime's producer-readiness rule and recorded country-list provenance, use its readable Priority Table order, top to bottom. Do not silently switch to a newly appeared draft or unrelated role's ranking.
 - Append calculated countries not present in that Priority Table afterward, alphabetically by country name. Do not omit user-added countries.
-- If it does not exist, order countries alphabetically by country name (A→Z).
+- If it does not exist, has unreadable ordering or is not a compatible established source, order countries alphabetically by country name (A→Z). Ordering is cosmetic and never blocks calculation or omits a user-added country.
 
 Definitions
 

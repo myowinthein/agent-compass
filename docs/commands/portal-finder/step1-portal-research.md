@@ -9,6 +9,8 @@ nav_order: 1
 
 Researches job portals for IT/tech roles in the target country online. Each portal's existence and activity is confirmed directly on its own site, not from blog posts or listicle articles.
 
+Verification includes current country-relevant tech listings or search/category evidence, not merely a working homepage. Results include useful official links and a verification date; stars reflect observed coverage and usability. Redirects/rebrands of one portal are deduplicated, while separate boards sharing an owner remain distinct.
+
 ## Flow
 
 ```mermaid
@@ -55,5 +57,7 @@ A smaller verified group stars only the entries that actually verified, never in
 - Any significant caveat affecting an international candidate
 
 ## Stop condition
+
+Login access does not establish eligibility for a job. Without browsing, supplied evidence is labelled as user-supplied and not live verified, separate from verified recommendations. If nothing verifies, the result says so and explains the coverage limits. No profile intake is added.
 
 The assistant outputs all groups in a single response, in order from group 1 to 3, then stops. No follow-up advice or recommendations are added.

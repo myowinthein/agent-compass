@@ -24,7 +24,7 @@ flowchart TD
   C2 --> C3[Check 3: Evidence misuse check\nDomestic-vs-cross-border, route-vs-willingness,\none vacancy-vs-market-depth]
   C3 --> Recal{Inflated confidence or\nevidence misuse found?}
   Recal -->|yes| Revise[Revise confidence levels\nor classifications, explain each change]
-  Recal -->|no| Confirm[Confirm Step 5 results\nare appropriate, no changes]
+  Recal -->|no| Confirm[Distinguish supported unchanged\nfrom inconclusive audit]
   Revise --> Summary[Summary: countries grouped\nby row, both tracks side by side\nfile-only]
   Confirm --> Summary
   Summary --> Priority[Priority Table: action priority\nfinal fits and main limitation]
@@ -69,7 +69,7 @@ If the confidence calibration check found inflated confidence levels, or the evi
 - If inflated confidence or evidence misuse was masking a genuinely weaker fit, the classification is revised too
 - Each change is explained with the evidence that caused it
 
-If recalibration is not supported by either check, Step 5 results are explicitly confirmed as appropriate and left unchanged.
+When no revision is supported, the audit distinguishes supported unchanged results from an inconclusive finding. If the only applicable evidence is invalidated, the track becomes not scored/Unknown with its reason, not an invented Weak fit. Original research and Step 5 remain unchanged.
 
 ## Summary
 
@@ -84,12 +84,14 @@ After the recalibration verdict, the assistant writes a Summary into the file (n
 Rules for the table:
 
 - **Excluded**: the country was explicitly eliminated on that track in Step 2 or Step 5. The audit preserves the recorded reason and hard-rule detail.
-- **not scored (no data)**: required research was not ingested and no explicit rejection explains its absence. This is distinct from Excluded.
+- **not scored (no data)**: required research was not ingested or proved unusable, without a supported explicit exclusion. The audit records the actual evidence gap. This is distinct from Excluded and a supported Weak fit.
 - If Step 6 revised a country's confidence level or classification, the explanation stays in the saved Recalibration audit, outside the canonical Summary sections.
 
 The Summary includes countries with ingested research or a recorded exclusion on at least one track. Other candidates are accounted for in separate audit notes: **Flagged but not researched** is reserved for research genuinely never supplied, not research rejected during ingestion. Intentionally excluded countries are not put in that process-gap list.
 
 The audit reads Step 3's persisted Validation report when available. Rejected data is noted as **Researched but not ingested**, with its exact reason, rather than never researched. Legacy cases without enough evidence are labeled **Ingestion outcome unknown**. These notes do not add Summary fit categories. Their missing-data tracks appear as Unknown in the Priority Table; a duplicate whose original survived does not become a missing country.
+
+Reasons identify the stage, such as discovery finding no evidence before detailed research. Changed inputs or evidence contradicting an early exclusion return to the parent for a repair choice. The audit does not silently undo an earlier reason or restart completed results.
 
 The section closes with counts:
 - Remote: [N] scored, [N] excluded, [N] not scored (no data)
