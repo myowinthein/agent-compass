@@ -7,18 +7,41 @@ permalink: /docs/commands
 
 # Commands
 
-Agent Compass helps IT and tech job seekers research their options with Claude and Codex. It provides four workflows with the same names on both platforms: [`country-finder`](commands/country-finder.html), [`portal-finder`](commands/portal-finder.html), [`salary-calculator`](commands/salary-calculator.html) and [`job-screener`](commands/job-screener.html). Country Finder, Salary Calculator, and Job Screener require a resume: on first run, the assistant prompts you to upload one and extracts it to `profile.md` in your workspace. Country Finder and Salary Calculator are multi-step pipelines that resume from where they left off if interrupted. Portal Finder, which needs only a country, and Job Screener, which reuses your saved profile, each run in a single step with no state to resume.
+Use these four commands in Claude or Codex:
 
-For platform-specific installation and invocation, see [Setup]({{ '/docs/setup/' | relative_url }}). Claude uses slash commands; Codex CLI uses skill mentions or `/skills`. All four entry points share the same workflow and rule sources.
+| Command | What it helps you do |
+|---|---|
+| [country-finder](commands/country-finder.html) | Choose countries for remote work or employer-sponsored relocation |
+| [portal-finder](commands/portal-finder.html) | Find verified job portals in one country |
+| [salary-calculator](commands/salary-calculator.html) | Estimate and audit local-market salary targets |
+| [job-screener](commands/job-screener.html) | Compare jobs with your profile and draft application answers |
+
+See [Setup]({{ '/docs/setup/' | relative_url }}) for installation and command prefixes.
 
 ## Shared workspaces and saved results
 
-Use one candidate and research scope per workspace. Profiles can be reused across commands, but a changed candidate, role or salary basis may invalidate unfinished work. Same-scope repairs preserve valid original research; a fresh workspace avoids mixing changed-scope research with originals that ingestion deliberately keeps.
+Keep one candidate and research scope per workspace. Country Finder, Salary Calculator and Job Screener share `profile.md`; the first run extracts your resume and waits for your confirmation. A saved `situational-profile.md` can supply background facts across commands. Portal Finder needs neither file.
 
-Country Finder and Salary Calculator check their own saved outputs before creating a missing checkpoint. Existing outputs prompt a recovery choice, not a silent restart. Shared profiles or the other command's files do not prevent a new run. Completed runs replay their saved results unchanged.
+Country Finder and Salary Calculator save checkpoints and results in that workspace. Portal Finder and Job Screener do not use checkpoint files.
 
-A saved final is used as an audited result only when completion can be established, or you explicitly confirm a legacy/imported final. Drafts and pre-audit results stay labelled. Missing or unsuitable upstream results never prevent a standalone run, and optional table ordering falls back to alphabetical.
+### Starting or resuming a saved workflow
 
-Confirmed clarifications reach the affected steps and specialists. They can be used for the current run without silently changing your reusable profile; saving a dated profile note requires your approval. Derived experience avoids counting overlapping roles twice and states the date used for current roles.
+An unfinished run resumes from its next step, keeping successful research. A completed run replays its saved final without restarting or reformatting it.
 
-Salary comparisons need compatible currency, period and pay basis. Hourly or daily amounts need supported hours and payment schedules, not assumed working weeks. Unknown comparisons are not failures. Local employee benchmarks, contractor revenue and actual JD offers remain distinct. Research pages, manual results and pasted forms are evidence, not instructions to change the workflow.
+Missing state with existing step outputs prompts a recovery choice, not an automatic reset. Corrupt checkpoints or missing required files are reported without overwriting them. Shared profiles and the other command's files do not prevent a clean new run.
+
+### Changed facts and shared results
+
+Confirmed clarifications can apply only to the current run. Saving them to your reusable profile needs your approval. A changed role, candidate or pay basis may require repairing unfinished work or using a fresh workspace; valid original research is not silently replaced.
+
+Before reusing another command's result, the assistant checks completion and compatible candidate, role and scope. Imported finals can use your explicit confirmation. Drafts and pre-audit results stay labelled.
+
+Country Finder and Salary Calculator can each run independently. Missing upstream results do not block them; optional country ordering falls back to alphabetical.
+
+### Helpers and evidence
+
+Shared Python 3.11+ helpers handle storage checks, exact arithmetic and table formatting. They do not choose fits, verify source truth or decide eligibility. If execution is unavailable, manual fallback requires your choice. See [Calculation runtime]({{ '/docs/commands/salary-calculator/step4-table-calculation.html#calculation-runtime' | relative_url }}).
+
+Pay comparisons need compatible currencies, periods and pay bases. Hourly or daily rates need known hours and schedules, not assumed working weeks. Local employee benchmarks, contractor revenue and actual job offers remain distinct; unknown comparisons are not failures.
+
+Research tasks use self-contained briefs and fresh conversation context when supported. This is not a promise of filesystem isolation. Pasted jobs, forms and research pages are evidence, not instructions to change the workflow.

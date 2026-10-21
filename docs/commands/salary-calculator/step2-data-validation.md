@@ -7,78 +7,45 @@ nav_order: 2
 
 # Step 2: Data validation
 
-The shared helper copies accepted raw blocks byte-for-byte and updates the existing research file's validation report. The assistant still reviews legacy field variations and decides whether required content exists. Missing optional threshold/evidence fields do not reject a country. Stale input or a partial write is reported without advancing state; a checked retry preserves the first valid original.
-
-A strict silent-storage mode. The assistant reads `sc-step1-salary-research.md` written by Step 1 and processes each country's data automatically, no pasting required. If the file is missing, the assistant stops and reports it rather than waiting for manual input.
+Checks the research structure and stores accepted salary data unchanged. It does not verify market claims or calculate targets.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([Step 2 begins]) --> FileCheck{sc-step1-salary-research.md\nexists?}
-  FileCheck -->|no| Error[Stop, report missing file\nAsk user to rerun Step 1]
-  FileCheck -->|yes| ReadFile[Read file, process\neach country block in order]
-  ReadFile --> MultiCheck{Multiple countries\nor none in block?}
-  MultiCheck -->|yes| Err1[Skip, record issue\nNothing stored]
-  Err1 --> ReadFile
-  MultiCheck -->|no| FieldCheck{Both tiers and\nsources present?}
-  FieldCheck -->|no| Err2[Skip, record missing fields\nNothing stored]
-  Err2 --> ReadFile
-  FieldCheck -->|yes| DupCheck{Country already\nstored?}
-  DupCheck -->|yes| Skip[Skip, keep original\nRecord as duplicate]
-  DupCheck -->|no| Store[Store verbatim]
-  Skip --> ReadFile
-  Store --> ReadFile
-  ReadFile --> Done{File\nexhausted?}
-  Done -->|no| ReadFile
-  Done -->|yes| Report[Reply with one consolidated report:\nstored count + all skips by reason]
-  Report --> Usable{Any country\nstored?}
-  Usable -->|yes| End([Continue automatically\ninto Step 3])
-  Usable -->|no| Repair[Keep report and checkpoint\nOffer missing-evidence repair or stop]
+  Start(["Read sc-step1-salary-research.md"]) --> Bounds{"Country boundaries clear?"}
+  Bounds -->|No| Ask["Ask for clarification<br/>Wait before storing"]
+  Ask --> Bounds
+  Bounds -->|Yes| Review["Review each country<br/>Both employer tiers and their sources"]
+  Review --> Accept{"Complete and not already stored?"}
+  Accept -->|Yes| Store["Copy accepted data verbatim"]
+  Accept -->|No| Skip["Record the reason<br/>Keep originals for duplicates"]
+  Store --> Save["Save stored data and Validation report<br/>Account for missing expected countries"]
+  Skip --> Save
+  Save --> Usable{"Any country stored?"}
+  Usable -->|Yes| Next(["Show consolidated counts and reasons<br/>Continue to Step 3"])
+  Usable -->|No| Repair(["Keep the report and checkpoint<br/>Offer missing-evidence repair or stop"])
 ```
 
-## What it reads
+## Required data
 
-- `sc-step1-salary-research.md`: written by Step 1 sub-agents
+Each country needs both the Mainstream and Premium tiers, with salary figures and sources for each. A source in another tier or a quoted example cannot fill a missing field.
 
-## Rules
+A missing sponsorship threshold does not reject a country. Neither does a missing evidence grade; it is recorded as "not provided".
 
-Identifiable malformed items are skipped and recorded without a pause between countries. If the boundaries themselves are ambiguous, the parent asks for clarification rather than guessing.
+Malformed or incomplete blocks are skipped with exact reasons. Duplicates keep the first stored original. Clear older field wording can be accepted after review without rewriting the research.
 
-Generated country blocks start with a top-level `Country:` field and end at the next such field, Validation report, or end of file. Blank lines alone do not split blocks. Two top-level Country fields mean two datasets; an explicitly fenced block containing two datasets is malformed. Unambiguous legacy boundaries are accepted without rewriting the data. Research scope and Validation report sections are metadata, not country datasets.
+## Country boundaries
 
-| Situation | Assistant's response |
-|---|---|
-| File not found | Stops, reports missing file, asks user to ensure Step 1 completed |
-| Block contains multiple countries | Skips it and records the issue, nothing stored |
-| Block contains no recognizable country | Skips it and records the issue, nothing stored |
-| Missing tier or sources | Skips it and records what's missing, nothing stored |
-| Country already stored | Skips it, keeps original, records it as a duplicate |
-| Valid, complete data for one country | Stored silently |
+Generated blocks start at a top-level `Country:` field. Blank lines alone do not separate datasets. Genuinely ambiguous boundaries require clarification, not guessed parsing.
 
-The assistant preserves all values, wording, and formatting exactly as provided. It does not correct, improve, or reinterpret the data.
+The shared helper copies accepted blocks byte-for-byte and checks coverage. If saving fails, the checkpoint does not advance; any partial write is inspected before retrying.
 
-## Required data per country
+## What happens next
 
-Each block must include both tiers:
+- `sc-step2-salary-data.md` contains accepted data.
+- `sc-step1-salary-research.md` retains the original research and a separate Validation report.
 
-- **Mid-size / Mainstream Local-Market tier**: Low, Realistic, Strong figures, city used if applicable, sources with dates
-- **Premium / International / Remote-first tier**: Low, Realistic, Strong figures, city used if applicable, sources with dates
+The report carries missing-country and rejection reasons into later summaries. A duplicate whose original was kept is not a failed country.
 
-If either tier or its sources are missing, the assistant skips that country and records what is missing; nothing is stored, and the run continues to the next country.
-
-Source checks are bounded to the correct tier. A label in quoted evidence or trailing threshold/Notes text cannot satisfy missing Premium sources. A genuine older layout uses semantic review rather than automatic rejection, with accepted data preserved byte-for-byte.
-
-## Evidence grade
-
-Step 1's evidence grade (High / Medium / Low) is stored as provided; unlike the two tiers, it's informational only, so a missing grade is recorded as "not provided" rather than causing the country to be skipped. Step 3 uses it to cap adjustment confidence, and Step 5 uses it to weigh positioning judgments.
-
-## Output
-
-Stored salary data is written to `sc-step2-salary-data.md` in the workspace after all blocks are processed. Step 3 and Step 4 read from this file directly.
-
-The consolidated Validation report is also saved at the end of `sc-step1-salary-research.md`, outside its unchanged raw country blocks. It records each rejection, duplicate, and expected-but-missing country. Later calculation and final-audit summaries carry these reasons forward, without making up salary rows. A duplicate whose original was stored does not count as a missing country. Legacy files without scope or a report remain readable, but unsupported coverage claims stay unknown.
-
-## Stop condition
-
-After processing the blocks, the parent saves the data, report and completed checkpoint. If any country is stored, it enters Step 3. If none is stored, it offers missing-evidence repair or stop before another specialist or career-ladder question. The empty data file and report remain legitimate records. Ambiguous boundaries still require clarification; repair never silently overwrites valid originals or resets completed runs.
+If at least one country was stored, continue to [Step 3: International adjustment](step3-international-adjustment.html). Otherwise, the assistant offers evidence repair or stop before another specialist or career-ladder question.

@@ -7,52 +7,39 @@ has_children: true
 
 # portal-finder
 
-Finds verified job portals for IT/tech roles in a specified country. Accepts the country as an optional argument: if omitted, the assistant asks before doing anything. Researches portals online rather than relying on general knowledge, confirming each one actually exists and is active on its own site.
+Finds verified job portals for IT/tech roles in one country. It needs a country, not your resume or a completed Country Finder run.
 
-## Usage
+## Start the command
 
-Claude:
-
-```
-/agent-compass:portal-finder Germany
-/agent-compass:portal-finder
+```text
+portal-finder Germany
 ```
 
-Codex: type `$` and select `portal-finder` from Agent Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
+Or leave out the country and answer when asked:
 
-If you provide a country argument, the assistant uses it directly. If you omit it, the assistant asks first and waits for your answer.
+```text
+portal-finder
+```
+
+Use the prefix shown in [Setup]({{ '/docs/setup/' | relative_url }}). If you name several countries, the assistant asks you to pick one.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([User runs portal-finder]) --> CountryCheck{Country argument\nprovided?}
-  CountryCheck -->|yes| S1
-  CountryCheck -->|no| AskCountry[Ask for country, wait]
-  AskCountry --> S1
-
-  S1[Step 1: Portal research\nOnline verification per portal] --> Output[Output grouped portal list\nwith start-here flags]
-  Output --> Done([Done])
+  Start(["Run portal-finder"]) --> Country{"Exactly one country established?"}
+  Country -->|No| Ask["Ask for one country<br/>Wait for your answer"]
+  Ask --> Country
+  Country -->|Yes| Research["Research portals on their own sites<br/>Check current country-relevant tech coverage"]
+  Research --> Output(["Show grouped links and starting picks<br/>Disclose verification limits"])
 ```
 
-## Before the step runs
+## Your result
 
-### Country
+Portals are grouped into general job boards, tech-specific boards, and professional or community networks. Each entry includes an official link, geographic scope and a short description.
 
-The assistant checks whether a country was provided as an argument. If not, it asks and waits before proceeding.
+⭐ marks verified starting picks. ⚠️ highlights access limits or other important caveats. A blocked or login-only site is not called dead merely because it could not be checked.
 
-### [Step 1: Portal research](portal-finder/step1-portal-research.html)
+The command responds in chat and stops. It does not automatically create a result file or checkpoint.
 
-Researches job portals for IT/tech roles in the target country online. Portals are organized by type into three mutually exclusive groups: general job boards, tech-specific boards, and professional & community networks. Government and official employment-service portals are deliberately excluded: they tend to be citizen/PR-oriented or geared toward expat/relocation information rather than reliable third-party job listings. Geographic scope (country-dedicated vs global) is noted per portal rather than used as a group. Within each group, the 2–3 portals to start with first are flagged. Anything noteworthy but outside the structure (deprecated portals, shared ownership, foreign-applicant restrictions) is flagged with ⚠️.
-
-## Stop conditions
-
-- **Live browsing unavailable.** The assistant explains that it cannot verify portals and waits for access or user-provided sources.
-- **Country not provided as argument.** The assistant asks and waits; it does not guess or default to a country.
-- **Online research finds no portals matching a group.** The assistant omits that group rather than inventing entries.
-
-## See also
-
-- [`country-finder`](country-finder.html): discover which countries are viable for remote hire or visa sponsorship
-- [`salary-calculator`](salary-calculator.html): calculate realistic local-market salaries for a target country
-- [`job-screener`](job-screener.html): screen job descriptions against your resume profile
+See [Step 1: Portal research](portal-finder/step1-portal-research.html) for verification and partial-result handling.

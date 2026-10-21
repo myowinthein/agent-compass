@@ -7,59 +7,44 @@ has_children: true
 
 # job-screener
 
-Screens job descriptions against your resume profile and returns a structured match report: a verdict, pros and cons with hard-blocker tagging, salary and application method when stated, and a fixed missing-information checklist. It also drafts answers to application form questions and other application writing in a consistent tone. Requires a resume. Paste one job description at a time; re-invoke if the session drifts.
+Compares job descriptions with your profile and returns a compact Apply, Maybe or Skip report. It can also help draft application answers and messages.
 
-## Usage
+## Start the command
 
-Claude:
-
-```
-/agent-compass:job-screener
+```text
+job-screener
 ```
 
-Codex: type `$` and select `job-screener` from Agent Compass, or use `/skills`. In the desktop app, select the skill from the composer. Both entry points run the same workflow.
+Use the prefix shown in [Setup]({{ '/docs/setup/' | relative_url }}).
 
-Run it once at the top of a chat. The assistant loads your profile and waits. Then paste a job description to get a screen, or paste application form questions to get drafted answers.
+A dedicated chat is useful. Run the command once, then paste one job description at a time. You do not need to repeat it for every job in that chat.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start([User runs job-screener]) --> Profile{profile.md\nexists?}
-  Profile -->|no| Extract[Resume extraction,\nwait for upload and confirmation]
-  Profile -->|yes| Load[Read profile.md\nReply: Profile loaded]
-  Extract --> Load
-  Load --> Wait([Wait for a paste])
-  Wait --> Kind{What did you paste?}
-  Kind -->|job description| Screen[Screen against profile\nusing the fixed format]
-  Kind -->|form question or\nwriting task| Answer[Answer using the\nwriting guidelines]
+  Start(["Run job-screener"]) --> Profile["Load profile.md<br/>Or extract your resume and wait for confirmation"]
+  Profile --> Context["Reuse situational-profile.md if present<br/>Clarify only material missing or conflicting facts"]
+  Context --> Wait(["Profile loaded<br/>Wait for your paste"])
+  Wait --> Kind{"What did you send?"}
+  Kind -->|One job description| Screen["Screen this job using the fixed report format"]
+  Kind -->|Application questions or writing| Draft["Draft from confirmed facts<br/>Ask or use placeholders for missing details"]
+  Kind -->|Several jobs or unclear mix| Ask["Ask which to handle first"]
   Screen --> Wait
-  Answer --> Wait
+  Draft --> Wait
+  Ask --> Wait
 ```
 
-## Before the step runs
+## Your result
 
-### Profile check
+Each job gets a verdict, pros, cons and missing-information checklist. Salary and application method appear only when the job states them. 🚫 identifies a confirmed hard blocker, not every gap in your profile.
 
-Checks for `profile.md` in the workspace. If absent, reads `prompts/shared/resume-extraction-prompt.md`, waits for the user to provide their resume as an attachment, pasted text, or a readable local file, and waits until `profile.md` is produced. The profile is reused on all subsequent runs without re-extraction.
+An existing situational profile supplies known work rights, location, languages and salary preferences. You do not need to complete a separate intake just to screen a job.
 
-### [Step 1: Match analysis](job-screener/step1-match-analysis.html)
+Application drafts use your confirmed facts and simple, compact English. The command does not submit applications automatically.
 
-Reads `profile.md` as the canonical candidate profile, replies "Profile loaded. Paste a job description to screen," then waits. Each pasted job description is screened against the profile using a fixed output format. Pasted form questions or writing tasks are answered using the writing guidelines instead.
+See [Step 1: Match analysis](job-screener/step1-match-analysis.html) for verdict rules and the report format.
 
-An existing situational profile is reused for explicit work rights, location, languages, and salary preferences. Its absence does not trigger full intake or imply missing authorization. Currency/pay-basis and timezone/DST checks require enough evidence to establish a blocker; unknown facts stay unknown.
+## Continuing the chat
 
-## Stop conditions
-
-- **Resume not yet provided.** The assistant waits for the upload before profile.md can be created, the same resume-extraction step shared with Country Finder and Salary Calculator.
-- **Waiting for a paste.** After replying "Profile loaded," the assistant waits for you to paste a job description or application question; it does not screen or answer anything until you paste something.
-
-## No state file
-
-Unlike Country Finder and Salary Calculator, this command keeps no state file and nothing to resume. Each screen is independent. If the session drifts off the format over a long run, re-invoke the command; it reloads the profile and format cheaply, since `profile.md` already exists.
-
-## See also
-
-- [`country-finder`](country-finder.html): discover which countries are viable for remote hire or visa sponsorship
-- [`salary-calculator`](salary-calculator.html): calculate realistic local-market salaries for a target country
-- [`portal-finder`](portal-finder.html): find verified job portals for a specific country
+There is no checkpoint file; each job is assessed independently. Keep pasting jobs or application questions in the same chat. If the format drifts, run the command again to reload its instructions and profile.
