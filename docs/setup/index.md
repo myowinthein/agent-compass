@@ -14,6 +14,18 @@ The desktop guides were tested on macOS. The steps should be similar on other su
 
 If you use the terminal on Windows, run the examples in a Bash-compatible shell with `grep` available.
 
+## Run a command
+
+Type the prefix in the chat input, then select an Agent Compass command. These methods were tested on macOS.
+
+| Client | Prefix |
+|---|---|
+| Claude desktop and terminal | `/` |
+| Codex terminal | `$` |
+| Codex desktop | `/` or `$` |
+
+For Codex, `$` works in both desktop and terminal. In the terminal, enter these prefixes inside the Claude or Codex session, not at the shell prompt.
+
 ## Plugin names
 
 The guides use these names to identify the source, marketplace and plugin.

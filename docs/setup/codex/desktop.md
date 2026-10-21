@@ -17,7 +17,7 @@ Read the [Setup notes]({{ '/docs/setup/' | relative_url }}) before starting.
 2. Choose **Add → Add a marketplace**. Enter `myowinthein/agent-compass` in **Source**, then click **Add marketplace**.
 3. Select **Personal** and find the Compass marketplace. Click **+** beside Compass to install it. It may appear as `agent-compass` or **Agent Compass**.
 4. Open Compass under **Installed**. Check its **Version** and that all four skills are enabled.
-5. Start a fresh chat in your job search workspace. Type `$` and filter by `country`, `portal`, `salary`, or `job` to find the workflows.
+5. Start a fresh chat in your job search workspace. Type `$` and filter by `country`, `portal`, `salary`, or `job` to find the workflows. You can also use `/` in the desktop app.
 
 ## Update
 
