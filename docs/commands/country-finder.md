@@ -21,6 +21,8 @@ Codex: type `$` and select `country-finder` from Agent Compass, or use `/skills`
 
 Run it once per session. The assistant resumes automatically if a `.country-finder-state.json` file already exists.
 
+See [shared workspaces and saved results]({{ '/docs/commands#shared-workspaces-and-saved-results' | relative_url }}) for missing checkpoints, changed profiles, imported results and run-only clarifications. Empty research results are accounted for rather than turned into invented fits.
+
 For model choices, effort settings and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).
 
 Both hosts use shared Python 3.11+ helpers for batching, research ingestion, comparisons and final tables, with no extra packages. Research, fit and priority judgments remain with the assistant. If execution is unavailable, it asks before using the same rules manually. Existing profiles and checkpoints stay compatible; completed results are not rewritten.

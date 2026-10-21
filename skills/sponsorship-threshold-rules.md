@@ -1,6 +1,6 @@
 ---
 name: Sponsorship Threshold Rules
-description: Governs how Salary Calculator collects and compares government-mandated minimum salary thresholds for employer-sponsored work visas. Applies to Salary Calculator steps 1, 4, and 5b.
+description: Shared candidate-specific employer-sponsored visa salary states, research and eligible-pay comparison rules for Salary Calculator and Country Finder.
 ---
 
 # Sponsorship Threshold Rules
@@ -15,7 +15,7 @@ Only report a threshold as a usable number if it is:
 - A specific fixed figure in local currency, or
 - A clearly computable multiple of a stated national average that you can resolve into an actual number
 
-Classify every country into exactly one of five states, never collapsing them into each other:
+Classify each assessed country/path into exactly one of five states, never collapsing them into each other:
 - **Verified numeric**: a specific fixed figure (or a computable multiple you resolved into one) is confirmed.
 - **No fixed threshold**: an employer-sponsored route exists but has no fixed numeric minimum, e.g. it relies on an unstated "prevailing wage" test instead.
 - **Not applicable**: the confirmed employment path doesn't use employer-sponsored relocation (most remote and contractor arrangements).

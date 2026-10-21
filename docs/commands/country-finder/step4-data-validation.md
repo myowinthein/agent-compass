@@ -61,6 +61,8 @@ Generated blocks start at a top-level `Country:` field and end at the next such 
 
 The assistant preserves all values, wording, and formatting exactly as provided. It does not correct, improve, or reinterpret the data.
 
+Required fields are checked within their own track. A Sources label in the other track, a quotation or a code example cannot satisfy missing sources. Genuine legacy field variations still receive semantic review, preserving the original bytes. Zero eligible tracks produce an accountable empty stored file and report, not fabricated datasets.
+
 ## What the assistant does not do in this step
 
 - No analysis, scoring, or ranking

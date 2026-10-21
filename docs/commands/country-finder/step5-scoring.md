@@ -23,7 +23,7 @@ flowchart TD
   Carry --> Remote[Score eligible Remote-track countries first]
   Remote --> SalCheck{Salary minimum\nspecified?}
   SalCheck -->|yes, hard floor| RSalary{Salary meets\nthe minimum?}
-  SalCheck -->|yes, context only| RContext[Weigh against recruiter-friendly\nmidpoint, note but don't exclude]
+  SalCheck -->|yes, context only| RContext[Use stored comparable midpoint\nif available, never exclude]
   SalCheck -->|no| RClassify
   RSalary -->|no| RExclude[Exclude, state specific gap]
   RSalary -->|yes| RClassify[Classify: Strong / Moderate / Weak\nAssign confidence: High / Medium / Low]
@@ -63,7 +63,7 @@ All Remote-track countries are scored first, all the way through, before Sponsor
 
 For each country with Remote data stored:
 
-1. If a minimum monthly salary was specified in the situational profile, check whether it was marked a hard floor or context only. If a hard floor, exclude when the confirmed salary falls short, stating the specific gap (e.g. "confirmed salary $X, below your minimum of $Y"). If context only, weigh the confirmed salary against a recruiter-friendly local-market midpoint instead of excluding on this basis alone. If no minimum was specified, skip this check entirely.
+1. Apply a stated hard floor only to comparable Remote pay, excluding only when the entire range falls short. Context-only minima never exclude: use a stored comparable midpoint if available, otherwise note the missing benchmark. Salary Calculator's local-employee targets are not remote-offer evidence. If no minimum was specified, skip the check.
 2. If it passes: classify Remote fit as **Strong**, **Moderate**, or **Weak**.
 3. Assign confidence: **High**, **Medium**, or **Low**.
 4. Give brief reasoning referencing actual stored evidence, not assumption.
@@ -76,6 +76,8 @@ For each country with Sponsorship data stored:
 2. Classify Sponsorship fit as **Strong**, **Moderate**, or **Weak**.
 3. Assign confidence: **High**, **Medium**, or **Low**.
 4. Give brief reasoning referencing actual stored evidence, including any citizenship-specific friction from the situational profile.
+
+Optional Salary Calculator references use the shared completion/provenance rule and must match the candidate, role, benchmark scope and assessed visa route/category. Read approved final visa updates as well as salary recalibration; a newer date alone does not prove applicability. Monthly legal-pay comparisons require the official payment basis, not an automatic annual/12 assumption. A different path's Not applicable state does not negate the sponsorship route, and a Blocked state applies only to its assessed route. Missing or incompatible references remain informational and unverified.
 
 ## Evidence quality rule
 

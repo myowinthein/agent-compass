@@ -288,6 +288,81 @@ class CompassCLI(unittest.TestCase):
             self.invoke("research-scan", {"workspace": directory, "workflow": "country-finder", "expected": ["Germany"]}, 2)
             self.assertFalse(Path(directory, "cf-step4-country-data.md").exists())
 
+    @staticmethod
+    def country_block():
+        return ("Country: Germany\nRemote Track:\n- Confirmed salary range: DUMMY 50000 EUR annual gross base\n"
+                "- Hiring prevalence evidence: DUMMY\n- Payment structure norms: DUMMY employee\n"
+                "- Sources: DUMMY https://example.invalid/remote\nSponsorship Track:\n"
+                "- Visa or pathway name: DUMMY route\n- Minimum salary threshold: Unknown\n"
+                "- Employer willingness: DUMMY\n- Processing time: Unknown\n- Quota or cap limitations: Unknown\n"
+                "- Family or dependent provisions: Unknown\n- Citizenship-specific considerations: Unknown\n"
+                "- Sources: DUMMY https://example.invalid/sponsor\n").encode("utf-8")
+
+    def test_cf_required_fields_are_track_scoped(self):
+        raw = self.country_block().replace(b"- Sources: DUMMY https://example.invalid/sponsor\n", b"")
+        self.assertIn("sponsorship: sources:", research.missing_fields(
+            {"raw": raw}, "country-finder", ["remote", "sponsorship"]))
+
+    def test_salary_required_sources_exclude_trailing_metadata(self):
+        for trailer in (b"Notes: sources: DUMMY\n", b"Sponsorship salary threshold: Unknown; sources: DUMMY\n",
+                        b"Evidence grade: Low; sources: DUMMY\n"):
+            with self.subTest(trailer=trailer):
+                raw = self.salary_block().replace(b"- Sources: DUMMY https://example.invalid/b\r\n", b"") + trailer
+                self.assertIn("premium / international / remote-first tier: sources:",
+                              research.missing_fields({"raw": raw}, "salary-calculator", []))
+
+    def test_required_labels_in_quoted_or_fenced_evidence_do_not_count(self):
+        for quote in (b"> - Sources: DUMMY\n", b"```text\n- Sources: DUMMY\n```\n",
+                      b"~~~markdown\n- Sources: DUMMY\n~~~\n", b"- Reason: Example Sources: DUMMY\n"):
+            with self.subTest(quote=quote):
+                raw = self.country_block().replace(b"- Sources: DUMMY https://example.invalid/sponsor\n", quote)
+                self.assertIn("sponsorship: sources:", research.missing_fields(
+                    {"raw": raw}, "country-finder", ["remote", "sponsorship"]))
+
+    def test_common_field_emphasis_and_template_headings(self):
+        for workflow, raw, tracks in (("country-finder", self.country_block(), ["remote", "sponsorship"]),
+                                      ("salary-calculator", self.salary_block(), [])):
+            for bullet in ("-", "*", "+"):
+                with self.subTest(workflow=workflow, bullet=bullet):
+                    value = raw.decode("utf-8").replace("Remote Track:", "Remote Track (include only if applicable):").replace(
+                        "Sponsorship Track:", "Sponsorship Track (include only if applicable):")
+                    value = "\n".join((bullet + " **" + line[2:].split(":", 1)[0] + ":**" + line.split(":", 1)[1]
+                                       if line.startswith("- ") else "**" + line.rstrip("\r") + "**"
+                                       if "tier:" in line.casefold() or "track (" in line.casefold() else line)
+                                      for line in value.split("\n"))
+                    self.assertEqual(research.missing_fields({"raw": value.encode("utf-8")}, workflow, tracks), [])
+
+    def test_legacy_fields_need_review_and_preserve_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            raw = self.salary_block().replace(b"- Sources:", b"- References:")
+            path = Path(directory, "sc-step1-salary-research.md")
+            path.write_bytes(raw)
+            payload = {"workspace": directory, "workflow": "salary-calculator", "expected": ["Germany"]}
+            scan = self.invoke("research-scan", payload)["result"]
+            request = {**payload, "source_hash": scan["source_hash"], "stored_hash": None,
+                       "decisions": [{"index": 0, "accept": True}]}
+            self.invoke("ingest", request, 4)
+            request["decisions"][0]["reviewed_fields"] = True
+            self.invoke("ingest", request)
+            self.assertEqual(Path(directory, "sc-step2-salary-data.md").read_bytes(), raw)
+
+    def test_cf_zero_eligible_scope_is_an_accountable_record(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory, "cf-step3-country-research.md")
+            source.write_text("## Research scope\nnone\n", encoding="utf-8")
+            payload = {"workspace": directory, "workflow": "country-finder", "expected": [], "required_tracks": {}}
+            scan = self.invoke("research-scan", payload)["result"]
+            result = self.invoke("ingest", {**payload, "source_hash": scan["source_hash"], "stored_hash": None,
+                                            "decisions": []})["result"]
+            self.assertEqual((result["stored"], Path(directory, "cf-step4-country-data.md").read_bytes()), (0, b""))
+
+    def test_unusable_stored_cf_track_stays_unknown(self):
+        payload = self.country_request()
+        payload["decisions"][2].update(remote="not scored (no data)", remote_reason="DUMMY evidence inapplicable",
+                                       priority="Pending evidence", limitation="Remote evidence inapplicable")
+        result = self.invoke("render-cf", payload)["result"]
+        self.assertIn("| 🇨🇦 Canada | Pending evidence | Unknown | Excluded |", result["table_markdown"])
+
     def test_metadata_only_scope_reports_missing_results(self):
         with tempfile.TemporaryDirectory() as directory:
             Path(directory, "sc-step1-salary-research.md").write_text("## Research scope\nGermany\n", encoding="utf-8")

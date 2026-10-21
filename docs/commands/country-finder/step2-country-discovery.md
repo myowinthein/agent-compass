@@ -49,7 +49,9 @@ No research needed; pure filtering logic, applied immediately:
 1. **Base list**: the Step 1 Include list if one was given; otherwise the assistant shows you the shipped `data/default-preferred-countries.md` grouped by continent and asks whether to proceed with it or provide your own countries instead, waiting for your answer either way.
 2. If an Exclude list was given, those countries are removed from the resulting base.
 
-Other than the default-list question above, this all happens silently; the assistant never announces which source it's using as the base or asks whether to use it. The resulting final country list is shown before research begins.
+Except for the default-list question or a material region clarification, this happens without a redundant confirmation. The resulting final country list is shown before research begins.
+
+Regions are expanded to explicit countries, with a targeted question for an ambiguous boundary. A clear list you supplied already confirms the scope. The list is saved before research so an interrupted batch cannot disappear on resume. If exclusions leave no countries, you choose a revised list or stop.
 
 ## Part B: Research sub-agents
 
@@ -58,6 +60,8 @@ The final list is batched by region when using the shipped list, but any region 
 Each sub-agent's prompt embeds, as literal text (never by reference), the exact countries in its batch, the candidate's target role and skillset from `profile.md`, the minimum monthly salary from `situational-profile.md` (if specified), and the candidate's citizenship and any noted immigration friction. This keeps the prompt self-contained without relying on the parent's conversation. Researchers are instructed not to read workspace files or other researchers' results; fresh conversation context does not guarantee filesystem isolation.
 
 Each agent checks **both** tracks for every country in its batch, not just one track:
+
+Briefs also carry the relevant location, settled level, dated experience, languages and stated work status. Remote evidence must apply to hiring someone working from that location, with the engagement and pay basis identified. A local remote job can qualify when you already live there; domestic-only evidence is not cross-border evidence. Language findings are role-specific, not assumptions about a whole country.
 
 **Remote suitability**: is remote hiring for this role a common, well-established practice? If a salary minimum was specified, does typical remote pay meet it? Evidence from remote job boards, hiring reports, salary surveys, or company remote policies.
 

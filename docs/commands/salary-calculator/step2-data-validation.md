@@ -67,6 +67,8 @@ Each block must include both tiers:
 
 If either tier or its sources are missing, the assistant skips that country and records what is missing; nothing is stored, and the run continues to the next country.
 
+Source checks are bounded to the correct tier. A label in quoted evidence or trailing threshold/Notes text cannot satisfy missing Premium sources. A genuine older layout uses semantic review rather than automatic rejection, with accepted data preserved byte-for-byte.
+
 ## Evidence grade
 
 Step 1's evidence grade (High / Medium / Low) is stored as provided; unlike the two tiers, it's informational only, so a missing grade is recorded as "not provided" rather than causing the country to be skipped. Step 3 uses it to cap adjustment confidence, and Step 5 uses it to weigh positioning judgments.
