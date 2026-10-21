@@ -60,6 +60,8 @@ When I find an interesting job, I use this command to compare its requirements w
 
 Start a dedicated chat and run this command once. Then paste job descriptions one at a time. If the responses stop following the screening format, run the command again. [Read the full guide](https://myowinthein.github.io/agent-compass/docs/commands/job-screener.html).
 
+I also use Obsidian to organise my research and track applications. [See my Obsidian workflow](https://myowinthein.github.io/agent-compass/docs/examples/obsidian-workflow.html) for an optional example.
+
 ## Help me improve it
 
 If something does not work or you have an idea that would make your job search easier, [share it on GitHub](https://github.com/myowinthein/agent-compass/issues).
