@@ -51,6 +51,102 @@ class CompassCLI(unittest.TestCase):
             self.assertEqual(result["status"], "missing")
             self.assertEqual(list(Path(directory).iterdir()), [])
 
+    def test_research_scope_retains_requested_countries_not_only_salary_rows(self):
+        for filename in ("salary-calculator-01-research.md", "sc-step1-salary-research.md"):
+            with self.subTest(filename=filename), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                root.joinpath(filename).write_text(
+                    "## Research scope\n- 🇩🇪 Germany\n- 🇫🇷 France\n\nCountry: Germany\nDUMMY incomplete salary data\n",
+                    encoding="utf-8")
+                root.joinpath(".salary-calculator-state.json").write_bytes(b"DUMMY unfinished/corrupt state")
+                before = {p.name: p.read_bytes() for p in root.iterdir()}
+                result = self.invoke("research-scope", {"workspace": directory, "workflow": "salary-calculator"})["result"]
+                self.assertEqual((result["status"], result["countries"], result["source"]),
+                                 ("available", ["🇩🇪 Germany", "🇫🇷 France"], filename))
+                self.assertFalse(result["human_confirmation_checked"])
+                self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+
+    def test_research_scope_normalizes_legacy_lists_without_rewriting_them(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory, "sc-step1-salary-research.md")
+            raw = "\ufeff## Research scope\r\nGermany 🇩🇪, France\r\n🇩🇪 GERMANY\r\nUSA\r\nUnited States\r\n\r\n```research\r\nCountry: Canada\r\n```\r\n".encode("utf-8")
+            path.write_bytes(raw)
+            result = self.invoke("research-scope", {"workspace": directory, "workflow": "salary-calculator",
+                "aliases": {"USA": "United States"}})["result"]
+            self.assertEqual(result["countries"], ["Germany 🇩🇪", "France", "USA"])
+            self.assertEqual(path.read_bytes(), raw)
+
+    def test_research_scope_missing_or_empty_never_infers_a_list_from_salary_data(self):
+        for raw, status in ((None, "missing_file"), (self.salary_block(), "missing_scope"),
+                            (b"## Research scope\nnone\n", "empty"), (b"## Research scope\n\n", "empty"),
+                            (b"DUMMY prose\n## Research scope\nCanada\n", "missing_scope")):
+            with self.subTest(status=status, raw=raw), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                if raw is not None:
+                    root.joinpath("salary-calculator-01-research.md").write_bytes(raw)
+                root.joinpath("salary-calculator-05b-final-results.md").write_bytes(b"DUMMY final table: Germany")
+                before = {p.name: p.read_bytes() for p in root.iterdir()}
+                result = self.invoke("research-scope", {"workspace": directory, "workflow": "salary-calculator"})["result"]
+                self.assertEqual((result["status"], result["countries"]), (status, []))
+                self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+
+    def test_research_scope_ambiguous_metadata_needs_clarification(self):
+        for scope in ("Germany\nNotes: DUMMY old context\n", "none\nGermany\n", "Germany,\n",
+                      "- \n", "| Country | Salary |\n", "Germany\n## Research scope\nFrance\n"):
+            with self.subTest(scope=scope), tempfile.TemporaryDirectory() as directory:
+                path = Path(directory, "salary-calculator-01-research.md")
+                path.write_text("## Research scope\n" + scope, encoding="utf-8")
+                before = path.read_bytes()
+                self.invoke("research-scope", {"workspace": directory, "workflow": "salary-calculator"}, 4)
+                self.assertEqual(path.read_bytes(), before)
+
+    def test_research_scope_rejects_duplicate_filenames_and_unsafe_paths(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for filename in ("salary-calculator-01-research.md", "sc-step1-salary-research.md"):
+                root.joinpath(filename).write_bytes(b"## Research scope\nGermany\n")
+            self.invoke("research-scope", {"workspace": directory, "workflow": "salary-calculator"}, 5)
+        with tempfile.TemporaryDirectory() as directory, tempfile.TemporaryDirectory() as outside:
+            target = Path(outside, "private.md")
+            target.write_bytes(b"DUMMY private content")
+            try:
+                Path(directory, "salary-calculator-01-research.md").symlink_to(target)
+            except OSError:
+                self.skipTest("Symlink creation not permitted on this platform")
+            self.invoke("research-scope", {"workspace": directory, "workflow": "salary-calculator"}, 2)
+            self.assertEqual(target.read_bytes(), b"DUMMY private content")
+
+    def test_salary_scope_handoff_keeps_country_finder_scope_independent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            root.joinpath("sc-step1-salary-research.md").write_bytes(b"## Research scope\nGermany, France\n")
+            root.joinpath("country-finder-01-criteria.md").write_bytes(b"DUMMY confirmed include: France, Canada; exclude: Germany\n")
+            before = {p.name: p.read_bytes() for p in root.iterdir()}
+            offered = self.invoke("research-scope", {"workspace": directory, "workflow": "salary-calculator"})["result"]
+            self.assertEqual(offered["countries"], ["Germany", "France"])
+            # The parent applies the user's changes/exclusions, not the scope reader.
+            confirmed = ["France", "Canada"]
+            batches = self.invoke("batch-partition", {"groups": [{"region": "Selected", "countries": confirmed}]})["result"]
+            self.assertEqual(batches["expected"], confirmed)
+            self.assertEqual(self.invoke("resolve-files", {"workspace": directory, "workflow": "country-finder"})["result"]["naming"], "current")
+            self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+
+    def test_salary_ingestion_preserves_the_full_handoff_list_after_rejection(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            root.joinpath("salary-calculator-01-research.md").write_bytes(
+                b"## Research scope\n- Germany\n- France\n\n" + self.salary_block() +
+                b"\nCountry: France\nDUMMY missing both salary tiers\n")
+            payload = {"workspace": directory, "workflow": "salary-calculator", "expected": ["Germany", "France"]}
+            scan = self.invoke("research-scan", payload)["result"]
+            ingested = self.invoke("ingest", {**payload, "source_hash": scan["source_hash"], "stored_hash": scan["stored_hash"],
+                "decisions": [{"index": 0, "accept": True}, {"index": 1, "accept": False, "reason": "Missing salary tiers"}]})["result"]
+            self.assertEqual(ingested["stored"], 1)
+            before = {p.name: p.read_bytes() for p in root.iterdir()}
+            offered = self.invoke("research-scope", {"workspace": directory, "workflow": "salary-calculator"})["result"]
+            self.assertEqual(offered["countries"], ["Germany", "France"])
+            self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+
     def test_fresh_filename_resolution_is_read_only_and_workflow_scoped(self):
         for workflow, research_file, final_file in (
                 ("country-finder", "country-finder-03-research.md", "country-finder-06-final-results.md"),
@@ -707,7 +803,11 @@ class CompassCLI(unittest.TestCase):
                 result = self.invoke("resolve-files", {"workspace": str(consumer), "workflow": workflow},
                                      cli=install / "helpers" / "compass.py", env=env)["result"]
                 self.assertEqual(result["naming"], "legacy" if workflow == "country-finder" else "current")
-            self.assertEqual([p.name for p in consumer.iterdir()], ["cf-step6-final-ranking.md"])
+            consumer.joinpath("sc-step1-salary-research.md").write_text("## Research scope\n- 🇩🇪 Germany\n- 🇫🇷 France\n", encoding="utf-8")
+            offered = self.invoke("research-scope", {"workspace": str(consumer), "workflow": "salary-calculator"},
+                                  cli=install / "helpers" / "compass.py", env=env)["result"]
+            self.assertEqual(offered["countries"], ["🇩🇪 Germany", "🇫🇷 France"])
+            self.assertEqual(sorted(p.name for p in consumer.iterdir()), ["cf-step6-final-ranking.md", "sc-step1-salary-research.md"])
             self.assertFalse(list(install.rglob("__pycache__")))
 
 

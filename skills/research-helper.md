@@ -7,6 +7,16 @@ description: Shared batching, country-block scanning and byte-preserving ingesti
 
 Apply `skills/helper-runtime.md` first. All requests below also include `schema_version: 1`.
 
+## Read a saved country list
+
+Run `research-scope` with `{workspace, workflow: "salary-calculator"}` for Country Finder's optional names-only handoff. It resolves current/legacy research filenames through the shared registry and reads only the leading `## Research scope` as country labels. The result contains `status` (`available`, `missing_file`, `missing_scope` or `empty`), `source`, `naming`, `countries`, `human_confirmation_checked: false` and a `source_hash` when a file exists. It does not read checkpoint contents, infer completion or approve reuse.
+
+Fresh scopes use one country per bullet line. The reader also accepts older plain country lines/comma-separated lists, UTF-8 BOM and CRLF; it removes repeated flag/case variants while preserving first-seen labels and order. Optional `aliases` uses the same explicitly confirmed mapping as batching. It stops at the next research block, fence or section, never taking countries from salary results or a generated report. Review labels semantically as country names before offering them; structural parsing cannot establish their truth or interpret an ambiguous comma in a legacy name. Ambiguous metadata needs clarification, not silent repair or a truncated suggestion.
+
+The parent still prioritizes an explicit Include list, waits for a keep/edit/replace/default choice, applies exclusions and records an accepted choice in Country Finder's existing criteria. Missing/unrecoverable scope falls back to asking for countries or the default list, not extracting a partial list from the final salary table. Declining the optional source never blocks standalone Country Finder. A recorded list can be used before salary research finishes because no salary findings or eligibility conclusions transfer. On resume, preserve the already confirmed Country Finder scope.
+
+This operation writes nothing and requires no new consumer file. Under explicitly approved manual fallback, inspect the same resolved research preface, preserve every selected country and apply the same confirmation and missing/ambiguous-source rules. Never invent completion or rename a legacy file to make it readable.
+
 ## Batching
 
 Run `batch-partition` with `groups: [{region, countries: [name, ...]}, ...]` after the user confirms the scope. For an ungrouped list, use one numbered region label. Optional `aliases` maps explicitly confirmed spellings directly to canonical names. Regions and country order are preserved, with contiguous chunks bounded by the contract's `batch_maximum`; do not balance or drop countries. Use returned `expected` for coverage and embed each returned batch's literal countries in its research brief. No prompt generation or research happens in Python.

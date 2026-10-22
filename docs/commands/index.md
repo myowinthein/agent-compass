@@ -55,7 +55,9 @@ Missing state with existing step outputs prompts a recovery choice, not an autom
 
 Confirmed clarifications can apply only to the current run. Saving them to your reusable profile needs your approval. A changed role, candidate or pay basis may require repairing unfinished work or using a fresh workspace; valid original research is not silently replaced.
 
-Before reusing another command's result, the assistant checks completion and compatible candidate, role and scope. Imported finals can use your explicit confirmation. Drafts and pre-audit results stay labelled.
+Before transferring another command's conclusions, the assistant checks completion and compatible candidate, role and scope. Imported finals can use your explicit confirmation. Drafts and pre-audit results stay labelled.
+
+Either research command can run first. Salary Calculator can suggest countries from Country Finder's results. Country Finder can offer Salary Calculator's recorded target list when you have not supplied an include list. Both wait for your country choice. Reusing names does not require completed salary research or transfer its conclusions; Country Finder still assesses both paths independently.
 
 Country Finder and Salary Calculator can each run independently. Missing upstream results do not block them; optional country ordering falls back to alphabetical.
 

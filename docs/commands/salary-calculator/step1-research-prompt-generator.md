@@ -55,6 +55,6 @@ The applicable rule records a verified amount and period, or a distinct non-nume
 
 ## What happens next
 
-Findings and an evidence grade are saved to `salary-calculator-01-research.md`. Chat shows a brief count.
+The confirmed country list, findings and an evidence grade are saved to `salary-calculator-01-research.md`. The list keeps all selected countries even when some salary data is later skipped. Country Finder can offer those names as an optional starting list. Chat shows a brief count.
 
 Once all expected results are collected, the workflow continues to [Step 2: Data validation](step2-data-validation.html).
