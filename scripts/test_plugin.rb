@@ -57,6 +57,20 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
   %w[.claude-plugin workflows prompts skills agents helpers data assets].each do |component|
     FileUtils.cp_r(root.join(component), installation)
   end
+  %w[plugin.json .codex-plugin/plugin.json .agents/plugins/marketplace.json].each do |path|
+    alternate = installation.join(path)
+    alternate.parent.mkpath
+    alternate.write(JSON.generate(manifest))
+    rejected = begin
+      CompassValidation.validate(installation)
+      false
+    rescue RuntimeError => error
+      error.message == "Keep one shared Claude/Codex manifest and marketplace; alternate metadata can shadow them"
+    ensure
+      alternate.delete
+    end
+    assert.call(rejected, "Validator accepted shadowing metadata: #{path}")
+  end
   [nil, ["./commands/"]].each do |commands|
     changed_manifest = manifest.dup
     commands.nil? ? changed_manifest.delete("commands") : changed_manifest["commands"] = commands
