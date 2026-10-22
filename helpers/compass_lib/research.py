@@ -28,6 +28,51 @@ def partition(payload):
     return {"batches": batches, "expected": expected}
 
 
+def scope(payload):
+    """Read country labels only, without inferring completed research or approval."""
+    fields(payload, ("workspace", "workflow"), ("aliases",))
+    root = workspace(payload["workspace"])
+    layout = resolve(root, payload["workflow"])
+    path = named(root, layout["files"]["research"])
+    result = {"source": path.name, "naming": layout["naming"], "countries": [],
+              "human_confirmation_checked": False}
+    if not path.exists():
+        return {**result, "status": "missing_file"}
+    raw = read(path)
+    result["source_hash"] = digest(raw)
+    lines = raw.decode("utf-8-sig").lstrip().splitlines()
+    if not lines or lines[0].rstrip() != "## Research scope":
+        return {**result, "status": "missing_scope"}
+    countries, seen, empty = [], set(), False
+    for line in lines[1:]:
+        line = line.strip()
+        if not line:
+            continue
+        if line == "## Research scope":
+            raise Problem("needs_clarification", "Repeated Research scope heading")
+        if line.startswith(("Country:", "## ")) or re.match(r"^(?:`{3,}|~{3,})", line):
+            break
+        bullet = re.match(r"^[-*][ \t]+(.*)$", line)
+        values = [bullet[1]] if bullet else line.split(",")
+        for value in values:
+            name = value.strip()
+            if not name or name in ("-", "*") or re.search(r"[:|`#<>*;\[\]]", name):
+                raise Problem("needs_clarification", "Research scope must contain only country names")
+            if name.casefold() == "none":
+                empty = True
+                continue
+            try:
+                key = identity(name, payload.get("aliases"))
+            except ValueError as error:
+                raise Problem("needs_clarification", str(error)) from error
+            if key not in seen:
+                countries.append(name)
+                seen.add(key)
+    if empty and countries:
+        raise Problem("needs_clarification", "Research scope mixes none with country names")
+    return {**result, "status": "available" if countries else "empty", "countries": countries}
+
+
 def blocks(raw, scope=None, aliases=None):
     """Return source slices, not reconstructed datasets. Never infer prose boundaries."""
     lines = re.findall(r"[^\n]*\n|[^\n]+$", raw.decode("utf-8"))

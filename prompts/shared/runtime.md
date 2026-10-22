@@ -24,6 +24,8 @@ Before treating an optional upstream result as a completed final, establish prod
 
 Check the candidate, target role/level, scope and applicable evidence dates before transferring conclusions. A user may still choose a mismatched result's countries as a new list, but its fits do not transfer. If a final is draft, unreadable or has ambiguous provenance, explain and offer explicitly labelled provisional/pre-audit use or a manual target list; never silently bypass it to older ratings. Stage-complete results remain labelled pre-audit, not completed finals. Record provenance outside canonical rendered sections and the country-only Research scope preface.
 
+Names-only handoff: Country Finder may offer Salary Calculator's recorded research scope when no explicit Include list was supplied. This is a proposal of country names, not reuse of a completed final or its conclusions, so it does not require salary completion or a valid salary checkpoint. Disclose an unfinished/imported scope where known and wait for an explicit keep/edit/replace/default choice; file contents and helper output never establish user approval. Save an accepted choice in Country Finder's existing criteria, not in Salary Calculator or a new sidecar. Never transfer salary-based eligibility, silently discard requested countries missing from the salary table, create a dependency on Salary Calculator, or change a resumed/completed Country Finder run just because the salary list changed.
+
 Optional ordering is cosmetic: use compatible established source order, otherwise alphabetical order. Missing upstream files or an unusable Priority Table never block a standalone workflow. Do not make Job Screener depend on salary targets or Portal Finder depend on a profile.
 
 ## Step completion

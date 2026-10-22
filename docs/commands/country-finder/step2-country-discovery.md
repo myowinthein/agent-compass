@@ -15,7 +15,12 @@ Checks which countries have a supported remote-hiring or employer-sponsored path
 flowchart TD
   Start(["Read your profile and criteria"]) --> List{"Countries specified?"}
   List -->|Yes| Scope["Expand regions and apply exclusions<br/>Clarify ambiguous boundaries"]
-  List -->|No| Default["Show the default list<br/>Wait for your list or approval"]
+  List -->|No| Salary{"Saved Salary Calculator country list?"}
+  Salary -->|Yes| Offer["Offer the saved target countries, names only<br/>Wait: keep, edit, replace or choose default"]
+  Offer -->|Keep, edit or replace| Confirm["Save your country choice in criteria"]
+  Confirm --> Scope
+  Offer -->|Default| Default["Show the default list<br/>Wait for your list or approval"]
+  Salary -->|No usable list| Default
   Default --> Scope
   Scope --> Empty{"Any countries left?"}
   Empty -->|No| Revise(["Ask for a revised list or stop"])
@@ -31,9 +36,13 @@ flowchart TD
 
 ## Choosing countries
 
-Your include list is used first. If you did not provide one, the assistant shows the shipped default list and waits for your approval or an alternative.
+Your include list is used first. Otherwise, the assistant can offer the countries you selected in Salary Calculator. You can keep the list, add or remove countries, provide a new list or choose Country Finder's default list. It waits for your answer before researching.
+
+The suggestion comes from Salary Calculator's saved research scope, including countries whose salary data was later skipped. Salary research need not be complete, because only country names are reused, not salary figures or visa conclusions. If the original list is missing or unclear, you can provide countries or choose the default list instead.
 
 Regions are expanded into countries, then exclusions are removed. A clear list you already supplied does not need another confirmation.
+
+Your accepted saved-list or replacement choice is recorded in the existing criteria file. An interrupted run keeps its confirmed scope; later Salary Calculator changes do not replace it.
 
 ## What gets checked
 

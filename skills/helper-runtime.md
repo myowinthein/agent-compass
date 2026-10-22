@@ -20,7 +20,7 @@ python3 -I -B "<plugin-root>/helpers/compass.py" <subcommand>
 Read only the applicable interface:
 
 - Current/legacy artifact paths: `skills/workspace-files.md`; `resolve-files` takes `{workspace, workflow}` and writes nothing.
-- Research scope, blocks and storage: `skills/research-helper.md`.
+- Research scope, blocks and storage: `skills/research-helper.md`; read-only `research-scope` can extract a saved country list without requiring completed research.
 - Exact salary/range/FX or dated timezone arithmetic: `skills/comparison-helper.md`.
 - Country Finder/Salaries rendering and saved-output checks: `skills/output-helper.md`.
 - Existing per-country salary arithmetic: `skills/salary-calculation-helper.md`.

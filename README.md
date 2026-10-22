@@ -35,6 +35,8 @@ I start here to [find countries that match my profile](https://myowinthein.githu
 
 It asks a few questions about your profile and preferences, then researches the countries and returns a priority table.
 
+If you ran `salary-calculator` first, it can suggest your saved target countries for you to confirm or edit.
+
 ```text
 portal-finder
 portal-finder <country>
