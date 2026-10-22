@@ -32,6 +32,10 @@ module CompassValidation
 
   def validate(root)
     root = Pathname(root).realpath
+    %w[plugin.json .codex-plugin/plugin.json .agents/plugins/marketplace.json].each do |path|
+      check(!root.join(path).exist? && !root.join(path).symlink?,
+            "Keep one shared Claude/Codex manifest and marketplace; alternate metadata can shadow them")
+    end
     manifest = JSON.parse(read(resource(root, ".claude-plugin/plugin.json")))
     marketplace = JSON.parse(read(resource(root, ".claude-plugin/marketplace.json")))
     check(manifest.fetch("skills") == "./skills/", "Manifest must expose shared skill entry points")
