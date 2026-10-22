@@ -6,6 +6,8 @@ Run the full Country Finder pipeline, resuming from where it left off if a state
 
 Resolve this workflow's artifact paths using skills/workspace-files.md before accessing saved outputs. Canonical names below use those resolved paths on legacy runs.
 
+Step 2 may offer Salary Calculator's saved research scope as an optional country list when no explicit Include list was supplied. Resolve that producer separately only when needed; missing salary files never block Country Finder. Reuse names only after confirmation, not salary-based fit or eligibility conclusions.
+
 Check if profile.md exists in the workspace. If it does not, read prompts/shared/resume-extraction-prompt.md and follow it. Wait for the resume and confirmation of the extracted profile, and for profile.md to be saved, before continuing.
 
 ## State tracking

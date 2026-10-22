@@ -28,6 +28,8 @@ Phase 3 — Country preferences:
 1. Are there any countries or regions you would particularly like included? (list them, or say "none")
 2. Are there any countries or regions you want excluded entirely? (list them, or say "none")
 
+An explicit Include list takes priority. If Include is "none", leave it as "none" here; Step 2 can offer Salary Calculator's saved country list before the default list. Do not treat "none" as approval to import countries or re-ask an already explicit list.
+
 Standing rule (applies for the rest of this conversation, not just this step):
 
 If I answer any question with a vague word instead of a specific value or clear answer (examples: "close," "good," "high," "reasonable," "flexible"), do not accept it and do not continue. Ask me to restate it as an exact number, currency, or clear answer before proceeding.

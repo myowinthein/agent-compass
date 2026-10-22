@@ -51,6 +51,8 @@ You can skip the salary minimum or choose not to share your age. If your target 
 
 If an answer is unclear, the assistant asks for clarification before continuing.
 
+If you leave the include list as "none", Step 2 can offer Salary Calculator's saved countries for you to confirm or edit before showing the default list.
+
 ## What happens next
 
 Your preferences are saved to `country-finder-01-criteria.md`. A new situational profile is saved to `situational-profile.md` for reuse.
