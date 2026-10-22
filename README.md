@@ -23,7 +23,7 @@ I kept refining prompts to get better answers. I also had to save those prompts 
 
 That’s why I built Agent Compass. I wanted to turn those prompts into workflows I could use throughout my job search and share with others starting a similar journey.
 
-You can install Agent Compass in Claude or Codex by following the [setup guide](https://myowinthein.github.io/agent-compass/docs/setup/), which also lists supported versions and required tools.
+You can install Agent Compass in Claude or Codex by following the [setup guide](https://myowinthein.github.io/agent-compass/docs/setup/).
 
 ## How I use it
 
