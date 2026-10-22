@@ -14,26 +14,6 @@ The desktop guides were tested on macOS. The steps should be similar on other su
 
 If you use the terminal on Windows, run the examples in a Bash-compatible shell with `grep` available.
 
-## Requirements
-
-| Platform | Terminal | Desktop app |
-|---|---|---|
-| Claude | 2.1.292 | 3.1623.1 |
-| Codex | 0.163.0 | 26.1013.40934 |
-
-Versions recorded on 22 October 2026. Desktop versions refer to the installed macOS apps.
-
-Claude and Codex sometimes change their plugin formats. Agent Compass has been updated to use the formats supported by the versions above. These are compatibility references, not confirmed minimum versions. Older clients may still install the plugin, but it may not work properly.
-
-Check your terminal versions with:
-
-```bash
-claude --version
-codex --version
-```
-
-The shared helpers need Python 3.11+ and code execution. If these are unavailable, the workflow asks before using its manual fallback. Research steps also need browsing or their documented manual research path.
-
 ## Run a command
 
 Type the prefix in the chat input, then select an Agent Compass command.
