@@ -16,14 +16,14 @@ If you use the terminal on Windows, run the examples in a Bash-compatible shell 
 
 ## Requirements
 
-| Client | Minimum supported CLI version |
-|---|---|
-| Claude terminal | 2.1.292 |
-| Codex terminal | 0.163.0 |
+| Platform | Terminal | Desktop app (macOS) |
+|---|---|---|
+| Claude | 2.1.292 | 3.1623.1 |
+| Codex | 0.163.0 | 26.1013.40934 |
 
-Verified on 22 October 2026 through package and startup/preflight checks. These are our support baselines, not the first versions that introduced plugins. Older versions may work but are not covered by those checks. Full workflow results also depend on the available tools and model access.
+Versions recorded on 22 October 2026. Desktop versions refer to the installed macOS apps.
 
-Desktop apps have separate version numbers. Use a current desktop release with plugin support; the CLI versions above do not apply to desktop apps.
+Claude and Codex sometimes change their plugin formats. Agent Compass has been updated to use the formats supported by the versions above. These are compatibility references, not confirmed minimum versions. Older clients may still install the plugin, but it may not work properly.
 
 Check your terminal versions with:
 
