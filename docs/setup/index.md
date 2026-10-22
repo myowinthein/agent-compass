@@ -16,7 +16,7 @@ If you use the terminal on Windows, run the examples in a Bash-compatible shell 
 
 ## Requirements
 
-| Platform | Terminal | Desktop app (macOS) |
+| Platform | Terminal | Desktop app |
 |---|---|---|
 | Claude | 2.1.292 | 3.1623.1 |
 | Codex | 0.163.0 | 26.1013.40934 |
