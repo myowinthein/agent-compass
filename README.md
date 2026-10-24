@@ -11,7 +11,9 @@ Trust your compass.
 
 <img src="docs/images/banner.jpg" alt="agent-compass" width="600">
 
-A plugin for Claude and Codex that helps IT and tech job seekers find countries for remote work or visa sponsorship, compare salaries, find job portals, and screen job descriptions.
+Agent Compass is a plugin for IT and tech job seekers who use Claude or Codex.
+
+It helps you figure out which countries suit your profile for remote work or visa sponsorship, where to look for jobs and what salary to ask for. When you find an interesting role, it compares the job description with your profile to help you decide whether to apply.
 
 **[Documentation site](https://myowinthein.github.io/agent-compass)**
 
