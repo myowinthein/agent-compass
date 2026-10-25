@@ -18,6 +18,7 @@ task :docs_test do
   require "html-proofer"
   require "yaml"
   sh "bundle exec jekyll build"
+  sh "node --test scripts/test_setup_redirects.cjs"
 
   baseurl = YAML.safe_load_file("_config.yml").fetch("baseurl", "").to_s
   url_swaps = baseurl.empty? ? {} : { /\A#{Regexp.escape(baseurl)}\// => "/" }

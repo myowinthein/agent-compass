@@ -1,13 +1,8 @@
 ---
-layout: default
+layout: redirect
 title: Desktop app
-parent: Setup
-nav_order: 1
 nav_exclude: true
 search_exclude: true
 permalink: /docs/setup/claude/desktop.html
+redirect_to: /docs/setup/claude.html#desktop
 ---
-
-# Claude desktop app
-
-{% include setup/claude-desktop.md %}
