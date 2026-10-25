@@ -30,7 +30,7 @@ flowchart TD
 
 ## Choosing countries
 
-A completed, compatible Country Finder result can supply countries with at least one Strong or Moderate fit. Selection uses its post-audit Summary, not medals or older ratings.
+A completed, compatible Country Finder result can supply countries with at least one Strong or Moderate fit. Selection uses its [post-audit Summary](../country-finder/step6-final-ranking.html#using-the-result), not medals or older ratings.
 
 You can keep that list, add or remove countries, or start fresh. Only when the final is absent can a ready Step 5 result supply an explicitly pre-audit starting point. Draft, unclear or mismatched results require a disclosed choice rather than silently transferring their fit claims.
 

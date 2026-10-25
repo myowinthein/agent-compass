@@ -31,7 +31,7 @@ Claude and Codex use the same bundled Python 3.11+ helpers, with no extra Python
 
 If execution is unavailable, you choose whether to fix it or proceed manually under the same rules. There is no silent fallback. A run-scoped manual choice can cover later recalculation; the chosen method is recorded. Invalid inputs still need correction, and missing bundled files require installation repair.
 
-Choosing the [calculator specialist]({{ '/docs/specialist-agents.html' | relative_url }}) is separate from choosing a calculation method.
+Choosing the [calculator specialist]({{ '/docs/specialist-agents.html' | relative_url }}#calculator-versus-python-helper) is separate from choosing a calculation method.
 
 ## Calculation rules
 
@@ -83,7 +83,7 @@ Sources, dates, applicable visa categories, exact shortfalls and additional wage
 
 ## Ordering
 
-A compatible, established Country Finder Priority Table supplies row order. User-added countries follow alphabetically. Without usable ordering, all calculated countries are alphabetical; an unrelated or unreadable table never blocks calculation.
+A compatible, established [Country Finder Priority Table](../country-finder/step6-final-ranking.html#priority-table) supplies row order. User-added countries follow alphabetically. Without usable ordering, all calculated countries are alphabetical; an unrelated or unreadable table never blocks calculation.
 
 ## Hard-floor flag
 

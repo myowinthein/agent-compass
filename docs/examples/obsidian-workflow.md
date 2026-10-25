@@ -37,7 +37,7 @@ For someone pursuing multiple roles, I separate the histories into folders such 
 
 ### Countries to target
 
-I save the final priority table from [`country-finder`]({{ '/docs/commands/country-finder.html' | relative_url }}) so I can see where to focus my search.
+I save the final [priority table]({{ '/docs/commands/country-finder/step6-final-ranking.html' | relative_url }}#priority-table) from `country-finder` so I can see where to focus my search.
 
 ```markdown
 ## Countries to target
@@ -50,7 +50,7 @@ I save the final priority table from [`country-finder`]({{ '/docs/commands/count
 
 ### Salary expectations
 
-I save the final table from [`salary-calculator`]({{ '/docs/commands/salary-calculator.html' | relative_url }}) as a reference for applications and salary discussions.
+I save the final [table]({{ '/docs/commands/salary-calculator/step4-table-calculation.html' | relative_url }}#table-format) from `salary-calculator` as a reference for applications and salary discussions.
 
 ```markdown
 ## Salary expectations

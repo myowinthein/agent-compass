@@ -12,7 +12,7 @@ See [My Obsidian setup]({{ '/docs/examples/obsidian-workflow.html' | relative_ur
 
 ## Opening my saved searches
 
-I start in the `Portals` section of `Profile.md` and follow the links from top to bottom.
+I start in the [`Portals`]({{ '/docs/examples/obsidian-workflow.html' | relative_url }}#saved-portal-searches) section of `Profile.md` and follow the links from top to bottom.
 
 1. Open each saved portal link in the browser.
 2. Copy the company name in parentheses next to the link.
@@ -24,7 +24,7 @@ I start in the `Portals` section of `Profile.md` and follow the links from top t
 
 1. When a job looks interesting, use [`job-screener`]({{ '/docs/commands/job-screener.html' | relative_url }}) to compare it with my profile.
 2. Read the detailed analysis and apply if the job seems like a good match.
-3. Add the company name under the relevant portal in that country's note in the `Applications` folder.
+3. Add the company name under the relevant portal in that country's note in the [`Applications`]({{ '/docs/examples/obsidian-workflow.html' | relative_url }}#my-application-history) folder.
 
 This history helps me track my applications. If I am unsure whether I have already applied to a company, I check here before applying again.
 

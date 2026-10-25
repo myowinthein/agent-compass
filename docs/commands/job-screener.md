@@ -15,7 +15,7 @@ Compares job descriptions with your profile and returns a compact Apply, Maybe o
 job-screener
 ```
 
-Use the prefix shown in [Setup]({{ '/docs/setup/' | relative_url }}).
+Use the prefix shown in [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command).
 
 A dedicated chat is useful. Run the command once, then paste one job description at a time. You do not need to repeat it for every job in that chat.
 

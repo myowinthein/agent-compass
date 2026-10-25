@@ -54,4 +54,4 @@ We may update this policy from time to time. Material changes will be reflected 
 
 ## Contact
 
-For questions about this Privacy Policy, open an issue at https://github.com/myowinthein/agent-compass/issues.
+For questions about this Privacy Policy, open an issue at <https://github.com/myowinthein/agent-compass/issues>.

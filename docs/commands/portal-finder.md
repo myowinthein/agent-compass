@@ -21,7 +21,7 @@ Or leave out the country and answer when asked:
 portal-finder
 ```
 
-Use the prefix shown in [Setup]({{ '/docs/setup/' | relative_url }}). If you name several countries, the assistant asks you to pick one.
+Use the prefix shown in [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). If you name several countries, the assistant asks you to pick one.
 
 ## Flow
 

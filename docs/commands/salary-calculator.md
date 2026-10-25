@@ -17,7 +17,7 @@ Mainstream and Premium are two local-employee employer segments. Both describe p
 salary-calculator
 ```
 
-Use the prefix shown in [Setup]({{ '/docs/setup/' | relative_url }}). There is no country argument; the workflow asks you to choose countries.
+Use the prefix shown in [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). There is no country argument; the workflow asks you to choose countries.
 
 It loads your saved resume profile, or extracts your resume and waits for confirmation. Your situational profile is collected or reused before research.
 
