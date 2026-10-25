@@ -51,7 +51,7 @@ Each entry has the portal name, an official URL, its geographic scope and one li
 
 ## Partial or unavailable access
 
-An inaccessible portal is named in a coverage note, not presented as verified or declared inactive. Other verified results remain usable.
+An inaccessible portal is named in a coverage note, not presented as verified or declared inactive. A homepage with IT marketing text or category links is not enough when the relevant search or job pages cannot be checked. Adding a caveat does not qualify it for a verified group or ⭐. Other verified results remain usable.
 
 Without browsing, supplied sources are labelled **user-supplied; not live verified**, with their evidence date, separately from live-verified recommendations. Unverified entries do not receive verified starting-pick stars.
 

@@ -29,4 +29,6 @@ Account/login access and legal eligibility for a particular job are separate fac
 
 Output the groups in one response, in order from group 1 to 3. Any additional group created per the exception above (a portal that fits none of the three) is output last, after group 3. If a group has no portal that verifies for this country, omit it (or leave it empty with a brief note) rather than inventing entries. Do not add advice, recommendations, or commentary beyond what is asked here.
 
+Before sending, check every grouped entry and every ⭐ against an opened official country/category/search/job page showing current country-relevant IT/tech coverage. Homepage-only evidence, including IT marketing banners or category links, does not pass. If deeper pages time out or remain inaccessible, move the entry out of the verified groups into a coverage note; adding a caveat does not make it verified. An accessible search page with limited public listings may qualify for that observed coverage, with its access limit stated.
+
 Step complete — stop here.
