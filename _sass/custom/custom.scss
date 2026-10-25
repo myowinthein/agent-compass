@@ -33,3 +33,48 @@
 .theme-switcher[hidden] {
   display: none;
 }
+
+.setup-tabs__list {
+  display: flex;
+  gap: $sp-4;
+  margin: $sp-4 0;
+  border-bottom: 1px solid $border-color;
+
+  button {
+    padding: $sp-2 $sp-3;
+    color: $body-text-color;
+    background: transparent;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    font: inherit;
+    cursor: pointer;
+
+    &[aria-selected="true"] {
+      color: $link-color;
+      border-bottom-color: currentColor;
+      font-weight: 600;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $link-color;
+      outline-offset: 2px;
+    }
+  }
+}
+
+.setup-tabs__list[hidden],
+.setup-tabs__panel[hidden],
+.setup-tabs[data-enhanced] .setup-tabs__heading {
+  display: none;
+}
+
+@media print {
+  .setup-tabs__list {
+    display: none;
+  }
+
+  .setup-tabs__panel[hidden],
+  .setup-tabs[data-enhanced] .setup-tabs__heading {
+    display: block;
+  }
+}

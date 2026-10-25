@@ -1,0 +1,18 @@
+{% assign desktop_path = 'setup/' | append: include.platform | append: '-desktop.md' %}
+{% assign terminal_path = 'setup/' | append: include.platform | append: '-terminal.md' %}
+{% capture desktop_content %}{% include {{ desktop_path }} %}{% endcapture %}
+{% capture terminal_content %}{% include {{ terminal_path }} %}{% endcapture %}
+<div class="setup-tabs" data-setup-tabs>
+  <div class="setup-tabs__list" role="tablist" aria-label="Setup method" data-setup-tablist hidden>
+    <button type="button" id="desktop-tab" role="tab" aria-controls="desktop" data-setup-tab>Desktop app</button>
+    <button type="button" id="terminal-tab" role="tab" aria-controls="terminal" data-setup-tab>Terminal</button>
+  </div>
+  <section id="desktop" class="setup-tabs__panel" data-setup-panel>
+    <h2 class="setup-tabs__heading">Desktop app</h2>
+    {{ desktop_content | markdownify | replace: 'id="', 'id="desktop-' }}
+  </section>
+  <section id="terminal" class="setup-tabs__panel" data-setup-panel>
+    <h2 class="setup-tabs__heading">Terminal</h2>
+    {{ terminal_content | markdownify | replace: 'id="', 'id="terminal-' }}
+  </section>
+</div>
