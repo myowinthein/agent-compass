@@ -36,4 +36,4 @@ We may update this Disclaimer from time to time. Material changes will be reflec
 
 ## Contact
 
-For questions about this Disclaimer, open an issue at https://github.com/myowinthein/agent-compass/issues.
+For questions about this Disclaimer, open an issue at <https://github.com/myowinthein/agent-compass/issues>.

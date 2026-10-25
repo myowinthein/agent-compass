@@ -36,7 +36,7 @@ flowchart TD
 
 ## Choosing countries
 
-Your include list is used first. Otherwise, the assistant can offer the countries you selected in Salary Calculator. You can keep the list, add or remove countries, provide a new list or choose Country Finder's default list. It waits for your answer before researching.
+Your include list is used first. Otherwise, the assistant can offer the countries you selected in [Salary Calculator](../salary-calculator/step1-research-prompt-generator.html#choosing-countries). You can keep the list, add or remove countries, provide a new list or choose Country Finder's default list. It waits for your answer before researching.
 
 The suggestion comes from Salary Calculator's saved research scope, including countries whose salary data was later skipped. Salary research need not be complete, because only country names are reused, not salary figures or visa conclusions. If the original list is missing or unclear, you can provide countries or choose the default list instead.
 

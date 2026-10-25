@@ -15,7 +15,7 @@ Finds countries worth targeting for remote work or employer-sponsored relocation
 country-finder
 ```
 
-Use the prefix for your app or terminal shown in [Setup]({{ '/docs/setup/' | relative_url }}). No country argument is needed.
+Use the prefix for your app or terminal shown in [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). No country argument is needed.
 
 Have your resume ready if you have not saved a profile yet. The assistant extracts it, waits for your confirmation and saves `profile.md` in your workspace.
 

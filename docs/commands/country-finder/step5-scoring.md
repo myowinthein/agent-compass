@@ -37,7 +37,7 @@ An explicit Step 2 rejection remains Excluded with its original reason. A reject
 
 For Remote, only a comparable pay range entirely below your hard floor can trigger exclusion. A context-only minimum, missing exchange rate or range crossing the floor cannot establish failure.
 
-For Sponsorship, a compatible Salary Calculator result can provide an informational visa-pay comparison. It is optional and does not independently exclude a country or prove visa eligibility. A completed final takes precedence over its pre-audit figures; missing or incompatible data stays unverified.
+For Sponsorship, a compatible Salary Calculator result can provide an informational [visa-pay comparison](../salary-calculator/step4-table-calculation.html#visa-salary-rule-comparison). It is optional and does not independently exclude a country or prove visa eligibility. A completed final takes precedence over its pre-audit figures; missing or incompatible data stays unverified.
 
 Salary Calculator's local-employee benchmarks are not evidence of cross-border remote offers.
 
