@@ -70,7 +70,7 @@ job-screener
 
 Start a dedicated chat and run this command once. Then paste job descriptions one at a time. If the responses stop following the screening format, run the command again.
 
-I also use Obsidian to organise my research and track applications. [See my Obsidian workflow](https://myowinthein.github.io/agent-compass/docs/examples/obsidian-workflow.html) for an optional example.
+See [Examples](https://myowinthein.github.io/agent-compass/docs/examples/) for optional guides to my Obsidian setup and daily job search routine.
 
 ## Help me improve it
 
