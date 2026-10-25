@@ -62,4 +62,4 @@ The full audit is saved to `salary-calculator-05b-final-results.md`. An inconclu
 
 If you run Salary Calculator first, [country-finder](country-finder.html) can offer your saved target countries for confirmation. It reuses the names only and assesses remote work and sponsorship separately.
 
-Interrupted runs use `.salary-calculator-state.json`. See [shared workspaces and saved results]({{ '/docs/commands#shared-workspaces-and-saved-results' | relative_url }}) for recovery and [Calculation runtime](salary-calculator/step4-table-calculation.html#calculation-runtime) for Python requirements.
+Interrupted runs use `.salary-calculator-state.json`. See [Calculation runtime](salary-calculator/step4-table-calculation.html#calculation-runtime) for Python requirements.

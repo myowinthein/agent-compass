@@ -53,4 +53,4 @@ The table shows each country's application priority, Remote Fit, Sponsorship Fit
 
 The full audit is saved to `country-finder-06-final-results.md`. You can use its results as an optional starting point for [salary-calculator](salary-calculator.html), or choose a country for [portal-finder](portal-finder.html).
 
-Interrupted runs use `.country-finder-state.json` to resume. See [shared workspaces and saved results]({{ '/docs/commands#shared-workspaces-and-saved-results' | relative_url }}) for recovery and changed inputs.
+Interrupted runs use `.country-finder-state.json` to resume.
