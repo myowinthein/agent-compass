@@ -8,11 +8,9 @@ permalink: /docs/setup/
 
 # Setup
 
-Agent Compass works with Claude and Codex. For either platform, you can install, update and uninstall the plugin through the desktop app or terminal. Choose whichever you prefer.
+Agent Compass works with Claude and Codex. For either platform, you can install, update and uninstall the plugin through the desktop app or terminal.
 
-The desktop guides were tested on macOS. The steps should be similar on other supported operating systems, though menus and buttons may move as the apps are updated. Terminal commands tend to stay more consistent across releases and operating systems.
-
-If you use the terminal on Windows, run the examples in a Bash-compatible shell with `grep` available.
+The desktop guides were tested on macOS. The steps should be similar on other supported operating systems, though menus and buttons may move as the apps are updated. The terminal examples use a Bash-compatible shell with `grep` available.
 
 ## Run a command
 
