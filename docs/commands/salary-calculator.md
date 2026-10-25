@@ -46,11 +46,11 @@ The numbered path shows a new run. An interrupted run continues from its next un
 
 ## What to expect
 
-[Research](salary-calculator/step1-research-prompt-generator.html) starts with countries you confirm. Country Finder can suggest a list, but is not required. Research covers two employer tiers, your role and level, dated sources and applicable visa salary rules.
+[Step 1: Research prompt generator](salary-calculator/step1-research-prompt-generator.html) starts with countries you confirm. Country Finder can suggest a list, but is not required. Research covers two employer tiers, your role and level, dated sources and applicable visa salary rules.
 
-[Validation](salary-calculator/step2-data-validation.html) preserves accepted research. [International adjustment](salary-calculator/step3-international-adjustment.html) estimates a supported reduction from local benchmarks; missing evidence is not treated as 0%.
+[Step 2: Data validation](salary-calculator/step2-data-validation.html) preserves accepted research. [Step 3: International adjustment](salary-calculator/step3-international-adjustment.html) estimates a supported reduction from local benchmarks; missing evidence is not treated as 0%.
 
-[Calculation](salary-calculator/step4-table-calculation.html) produces annual targets and monthly references. The [final verification](salary-calculator/step5b-final-verification.html) checks positioning and calibration after you confirm the career ladder.
+[Step 4: Table calculation](salary-calculator/step4-table-calculation.html) produces annual targets and monthly references. [Step 5: Final verification](salary-calculator/step5b-final-verification.html) checks positioning and calibration after you confirm the career ladder.
 
 Some steps offer a [specialist agent]({{ '/docs/specialist-agents.html' | relative_url }}). Declining does not skip the step or change the shared arithmetic.
 

@@ -1,11 +1,11 @@
 ---
-title: "Step 6: Final Ranking"
+title: "Step 6: Final ranking"
 parent: country-finder
 grand_parent: Commands
 nav_order: 6
 ---
 
-# Step 6: Final Ranking
+# Step 6: Final ranking
 
 Audits the assessments and turns them into a practical application priority for each country. This step always runs, even if you decline a specialist.
 

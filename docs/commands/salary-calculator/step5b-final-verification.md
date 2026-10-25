@@ -1,11 +1,11 @@
 ---
-title: "Step 5: Final Verification"
+title: "Step 5: Final verification"
 parent: salary-calculator
 grand_parent: Commands
 nav_order: 5
 ---
 
-# Step 5: Final Verification
+# Step 5: Final verification
 
 Checks whether the salary framework fits your target role and the saved evidence. It runs whenever at least one country has been calculated.
 

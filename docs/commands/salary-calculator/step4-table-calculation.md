@@ -95,4 +95,4 @@ Missing conversion evidence stays unverified. Neither your minimum nor a visa ru
 
 `salary-calculator-04-salary-table.md` saves shown work, the table and calculated/skipped counts. Every known target is calculated or listed with its actual skip reason, including earlier rejected research. Unknown legacy coverage is disclosed.
 
-Chat shows brief counts, not the pre-audit table. If any country was calculated, continue to [Step 5: Final Verification](step5b-final-verification.html). Otherwise, the assistant offers evidence repair or stop.
+Chat shows brief counts, not the pre-audit table. If any country was calculated, continue to [Step 5: Final verification](step5b-final-verification.html). Otherwise, the assistant offers evidence repair or stop.
