@@ -34,6 +34,14 @@
   display: none;
 }
 
+.home-content {
+  h1,
+  h2 {
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid $border-color;
+  }
+}
+
 .setup-tabs__list {
   display: flex;
   gap: $sp-4;
