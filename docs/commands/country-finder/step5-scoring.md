@@ -45,4 +45,4 @@ Salary Calculator's local-employee benchmarks are not evidence of cross-border r
 
 Full assessments are saved to `country-finder-05-assessment.md`. Chat shows only brief counts.
 
-You may choose a [specialist agent]({{ '/docs/specialist-agents.html' | relative_url }}) or keep your current model. Either way, [Step 6: Final Ranking](step6-final-ranking.html) runs next.
+You may choose a [specialist agent]({{ '/docs/specialist-agents.html' | relative_url }}) or keep your current model. Either way, [Step 6: Final ranking](step6-final-ranking.html) runs next.

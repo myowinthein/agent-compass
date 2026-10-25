@@ -37,13 +37,13 @@ The numbered path shows a new run. An interrupted run continues from its next un
 
 ## What to expect
 
-[Criteria intake](country-finder/step1-criteria-intake.html) asks about your background, timezone preference, relocation timeline and countries to include or exclude.
+[Step 1: Criteria intake](country-finder/step1-criteria-intake.html) asks about your background, timezone preference, relocation timeline and countries to include or exclude.
 
-[Country discovery](country-finder/step2-country-discovery.html) uses your include list first. Otherwise, it can offer countries saved by Salary Calculator for you to keep or edit, or you can choose the default list. Both paths are assessed independently of any salary results.
+[Step 2: Country discovery](country-finder/step2-country-discovery.html) uses your include list first. Otherwise, it can offer countries saved by Salary Calculator for you to keep or edit, or you can choose the default list. Both paths are assessed independently of any salary results.
 
-[Detailed research](country-finder/step3-research-prompt-generator.html) then covers only the tracks found suitable. If fresh-context browsing is unavailable, you receive research prompts and the assistant waits for results.
+[Step 3: Research prompt generator](country-finder/step3-research-prompt-generator.html) then covers only the tracks found suitable. If fresh-context browsing is unavailable, you receive research prompts and the assistant waits for results.
 
-[Validation](country-finder/step4-data-validation.html) preserves accepted research and reports skipped data. [Scoring](country-finder/step5-scoring.html) assesses each track independently. The [final audit](country-finder/step6-final-ranking.html) checks the evidence and produces your Priority Table.
+[Step 4: Data validation](country-finder/step4-data-validation.html) preserves accepted research and reports skipped data. [Step 5: Scoring](country-finder/step5-scoring.html) assesses each track independently. [Step 6: Final ranking](country-finder/step6-final-ranking.html) checks the evidence and produces your Priority Table.
 
 Scoring and the final audit may offer a [specialist agent]({{ '/docs/specialist-agents.html' | relative_url }}). Declining keeps the step on your current model.
 
