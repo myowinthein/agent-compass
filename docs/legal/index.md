@@ -7,3 +7,5 @@ permalink: /docs/legal/
 ---
 
 # Legal
+
+Legal information and policies for using Agent Compass and its documentation.
