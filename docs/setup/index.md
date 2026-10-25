@@ -3,6 +3,7 @@ layout: default
 title: Setup
 nav_order: 2
 has_children: true
+has_toc: false
 permalink: /docs/setup/
 ---
 
@@ -31,3 +32,10 @@ The guides use these names to identify the source, marketplace and plugin.
 | Repository | `myowinthein/agent-compass` | GitHub source used to add the marketplace. |
 | Marketplace | `agent-compass-marketplace` | Catalog containing the plugin. |
 | Plugin | `agent-compass` | Package containing the four workflows. |
+
+---
+
+## Table of contents
+
+- [Claude]({{ '/docs/setup/claude.html' | relative_url }})
+- [Codex]({{ '/docs/setup/codex.html' | relative_url }})
