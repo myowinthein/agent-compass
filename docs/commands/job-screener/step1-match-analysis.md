@@ -48,6 +48,8 @@ Preferred qualifications do not count as required gaps. There is no numerical ma
 | `[CONS]` | Gaps in bullets, with 🚫 reserved for hard blockers |
 | `[MISSING INFORMATION]` | Unstated items from the fixed checklist |
 
+The bracketed headers appear exactly as shown, without an introduction or closing commentary. The same format applies to each new job in the chat.
+
 The checklist covers salary, visa sponsorship, relocation support, remote policy, work authorization, timezone or working-hours overlap, and employment type. If all are stated, the response says so. An unstated item is not a con on its own.
 
 ## Hard blockers
@@ -58,7 +60,7 @@ Missing resume evidence does not prove inability. Sponsorship, relocation and pe
 
 Salary can block only when the whole comparable pay range is below your confirmed hard floor. Currency, period and pay basis must align; missing FX, unknown hours, context-only minima and straddling ranges do not prove failure.
 
-Years-of-experience shortfalls are normal cons, never hard blockers. Unmet preferred qualifications are labelled "preferred, not required". A different current city does not prove you cannot relocate or work the required hours.
+Years-of-experience shortfalls are normal cons, never hard blockers. Unmet preferred qualifications are labelled "preferred, not required". A different current city does not prove you cannot relocate or work the required hours. No relocation support does not prove inability to move, and a work-rights or language blocker does not create a separate location blocker.
 
 ## Application questions and writing
 

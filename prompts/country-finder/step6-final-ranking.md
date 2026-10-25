@@ -134,4 +134,6 @@ Use the shared runtime's resolved output filename, keeping existing saved names,
 
 After saving, tell me the pipeline is complete: "Country Finder is complete. Results are saved to country-finder-06-final-results.md if you want to revisit them later without re-running the pipeline. Review the ranked results above." Do not imply a Focus country or an actionable target exists when all results are Deprioritize or Pending evidence. If every row is Pending evidence, replace the final sentence with "Application priorities are pending evidence; see the saved audit for missing research." If there are no rows, replace it with "No countries could be ranked; see the saved audit for exclusions or missing research."
 
+Final response gate: after saving and checking the result, construct the chat reply from only the Priority Table and the completion message above, using the resolved saved filename. Do not append audit findings, scoring-change commentary, check summaries, file lists or execution notes. Keep those details in the saved file even when recalibration occurred. This gate applies to the parent presenting its own result or a specialist's return.
+
 Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

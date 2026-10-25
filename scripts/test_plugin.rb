@@ -232,6 +232,28 @@ scoring = root.join("prompts/country-finder/step5-scoring.md").read(encoding: "U
 assert.call(scoring.include?('never numerical scores, percentages, or a combined priority formula'),
             "Step 5 must not invent numerical fits or priorities")
 
+# Prompt guards are static regressions; native client tests must also check
+# actual replies against these boundaries.
+{
+  "portal-finder/step1-portal-research.md" => [
+    "Homepage-only evidence, including IT marketing banners or category links, does not pass",
+    "move the entry out of the verified groups into a coverage note"
+  ],
+  "job-screener/step1-match-analysis.md" => [
+    "No relocation support is not inability to relocate",
+    "A separate work-rights or language blocker does not establish a location blocker",
+    "Start directly with the literal `[VERDICT]` header",
+    "Do not replace the bracketed headers with bold text or Markdown headings"
+  ],
+  "country-finder/step6-final-ranking.md" => [
+    "Final response gate",
+    "Do not append audit findings, scoring-change commentary, check summaries, file lists or execution notes"
+  ]
+}.each do |path, guards|
+  text = root.join("prompts", path).read(encoding: "UTF-8")
+  assert.call(guards.all? { |guard| text.include?(guard) }, "Missing final-response regression guard: #{path}")
+end
+
 discovery = root.join("prompts/country-finder/step2-country-discovery.md").read(encoding: "UTF-8:UTF-8")
 runtime = root.join("prompts/shared/runtime.md").read(encoding: "UTF-8:UTF-8")
 salary_intake = root.join("prompts/salary-calculator/step1-research-prompt-generator.md").read(encoding: "UTF-8:UTF-8")
