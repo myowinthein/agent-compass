@@ -2,6 +2,21 @@
 
 Run the full Salary Calculator pipeline, resuming from where it left off if a state file exists.
 
+## Question points
+
+Use [QM](../prompts/shared/question-mechanism.md) and the shared runtime's common question map. These forms also govern the named supporting prompts; ask only when their existing conditions require it.
+
+| Trigger and owner | Preferred form and answer needed |
+|---|---|
+| New situational profile; skills/situational-profile-questions.md | Input for the eight existing situational questions, including units, country/status pairs and age/date reference. Single for hard floor versus context-only if a salary minimum is supplied. Preserve unknown/none/not specified and declined age; reuse saved answers without full intake. |
+| Target role/level or intended employment path; prompts/salary-calculator/step1-research-prompt-generator.md | Input for unresolved role/level; Single for sponsored local employment versus local benchmarks without sponsorship assessment when path is unclear. For an actual cross-border-pay request, preserve local-context/stop scope choices. |
+| Country Finder provenance and proposed countries; prompts/salary-calculator/step1-research-prompt-generator.md | Use the common upstream map, then Single for as-is/add/remove/start fresh with the full list visible. Add uses Input; remove uses Multi explicitly naming countries to remove; fresh or absent results uses Input. An empty eligible list offers a target list or stop without reviving older ratings. |
+| Research collection, validation and unusable estimates; prompts/salary-calculator/step1-research-prompt-generator.md, prompts/salary-calculator/step2-data-validation.md and Sequence below | Use the common research/helper map. Single for missing-evidence repair versus stop when nothing is usable; Input for missing results or facts. Preserve required reports/checkpoints and do not ask a career-ladder or specialist question on this exit. |
+| Adjustment/calculation missing context, invalid units or changed scope; prompts/salary-calculator/step3-international-adjustment.md and prompts/salary-calculator/step4-table-calculation.md | Input for material facts; use the common repair/helper forms for affected work or unavailable execution. Show actual manual-calculation limits; existing unknown/skipped outcomes do not force intake or extra approvals. |
+| Career ladder; prompts/salary-calculator/step5a-career-ladder.md | Review of the full proposed ladder before saving; Input for corrections or material mismatch with a saved ladder, then show the revision for confirmation. Reuse an established confirmed ladder for the same target. |
+| Evidence-refresh blocked return; prompts/salary-calculator/step5b-final-verification.md and Sequence below | Single for refresh, dated snapshot with limitation, or stop; Input for supplied evidence when needed. If refresh remains unavailable, ask snapshot/stop without looping. Preserve earlier files and leave the audit checkpoint pending. |
+| Specialist handoffs and new numeric requests; Sequence below | Use the common routing/helper map. Selecting a specialist never confirms the ladder or missing evidence; an approved continuation adds no duplicate routing question. |
+
 ## Before starting
 
 Resolve this workflow's artifact paths using skills/workspace-files.md before accessing saved outputs. Resolve Country Finder separately when its optional results are used. Canonical names below use those resolved paths on legacy runs.

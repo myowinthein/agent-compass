@@ -2,6 +2,22 @@
 
 Apply these instructions for all four Compass workflows in Claude or Codex.
 
+## Questions
+
+Before the first actual user question, read [Question mechanism (QM)](question-mechanism.md) from this installed package. Use the common map below and the selected workflow's **Question points** map for its supporting prompts too. The parent owns every question; specialists return the missing facts or proposed decision without asking. Keep the existing timing, required answers, explicit approvals and checkpoint rules. A presentation alternative changes no research scope, candidate fact, saved file or permission. Do not load QM or ask a question for a completed replay or other path with no question.
+
+| Shared trigger and owner | Preferred form and answer needed |
+|---|---|
+| Missing resume; prompts/shared/resume-extraction-prompt.md | Input for a resume via normal chat, paste or supplied readable local path; Review of the full extracted profile before saving, with Input for corrections and a new shown revision. |
+| Material missing/conflicting candidate facts; Candidate clarifications below | Input for only the unresolved facts, with units/reference date where needed. If saving a clarification is proposed, Review of the exact dated profile note; a run-only answer alone never approves persistence. |
+| Duplicate artifact aliases or changed resolved paths; skills/workspace-files.md | Input clarifying the intended artifact and user-managed resolution. Wait until a single spelling remains and paths are reconciled; a picker answer does not authorize merging, deleting or migrating files. |
+| Imported/ambiguous upstream completion, compatibility or provenance; Reusing another workflow's output below | Review of the specific imported-final claim when confirmation is needed; Single for labelled provisional/names-only use versus a manual list or declining the optional source, then Input/Multi for that list. No confirmation transfers unrelated conclusions. |
+| Owned outputs without state; State tracking below | Single for the existing recovery, fresh-workspace, imported-result or stop routes; Review of any concrete recovery/preservation action requiring approval. Corrupt state or missing completed output is a reported blocker, not a reset menu. |
+| Material changed input, contradicted exclusion or incompatible saved work; State tracking below | Input for unresolved facts, then Review of the targeted rerun/preservation plan when required, including earliest affected step and retained originals. Multi only if the existing repair offers independent targets. Never silently reset a completed run. |
+| Specialist selection, unavailable configuration or failed handoff; Specialist routing below | Single for the actual offered configurations/current model or retry routes; Input for an explicitly requested alternative. Show role/model/effort/cost context. A pending helper return stays within the approved assignment and creates no repeat routing question. |
+| Helper unavailable or ambiguous data/report boundaries; skills/helper-runtime.md and skills/research-helper.md | Single for repair execution versus approved manual processing; Input for missing facts or source boundaries. Review of any proposed legacy-report reframing/removal with findings preserved. Reuse a valid run-scoped manual choice; invalid data/package defects do not become fallback questions. |
+| Missing/failed research or live browsing unavailable; Research below | Single for available retry/manual/access remedies where a choice is needed; Input for the exact missing results or supplied sources through normal chat/paste/path. Preserve successes and wait for required results. No questionnaire can certify source truth or make a partial batch complete. |
+
 ## Checkpoints
 
 The parent orchestrator runs each workflow's numbered steps in order; do not skip, combine, or summarize their instructions to save time. The parent stops and waits whenever a step asks the user a question. Never supply placeholder answers or assume candidate data. Apply the step-completion rule below after each step. If a specialist encounters missing or ambiguous input, it reports the issue to the parent, which asks the user rather than guessing.

@@ -104,6 +104,21 @@ module CompassValidation
     check(workflows.length == 4 && workflows == skills,
           "Portable skills and workflows must expose the same four names")
 
+    resource(root, "prompts/shared/question-mechanism.md")
+    check(read(resource(root, "prompts/shared/runtime.md")).include?("[Question mechanism (QM)](question-mechanism.md)"),
+          "Shared runtime must load QM before asking questions")
+    workflows.each do |name|
+      body = read(resource(root, "workflows/#{name}.md"))
+      check(body.match?(/^## Question points$/) && body.include?("[QM](../prompts/shared/question-mechanism.md)"),
+            "Workflow must map question points through shared QM: #{name}")
+    end
+    root.glob("{workflows,prompts,skills}/**/*.md").each do |file|
+      next if file == root.join("prompts/shared/question-mechanism.md")
+
+      check(!read(file).match?(/\b(?:AskUserQuestion|request_user_input(?:_async)?|multiSelect)\b/),
+            "Keep native question fields in shared QM: #{file.relative_path_from(root)}")
+    end
+
     skills.each do |name|
       skill = resource(root, "skills/#{name}/SKILL.md")
       metadata = frontmatter(skill)
