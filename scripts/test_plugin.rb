@@ -57,6 +57,63 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
   %w[.claude-plugin workflows prompts skills agents helpers data assets].each do |component|
     FileUtils.cp_r(root.join(component), installation)
   end
+  # Broken/relocated installations must not silently drop QM or regain
+  # host-specific question instructions. These checks exercise packaging,
+  # not native rendering or model compliance with the Markdown contract.
+  qm = installation.join("prompts/shared/question-mechanism.md")
+  original_qm = qm.read(encoding: "UTF-8")
+  qm.delete
+  rejected = begin
+    CompassValidation.validate(installation)
+    false
+  rescue RuntimeError => error
+    error.message.start_with?("Missing packaged resource:") && error.message.include?("question-mechanism.md")
+  ensure
+    qm.write(original_qm)
+  end
+  assert.call(rejected, "Validator accepted a package without QM")
+
+  question_mutations = {
+    "prompts/shared/runtime.md" => [
+      ["missing lazy QM load", ->(body) { body.sub("[Question mechanism (QM)](question-mechanism.md)", "question guidance") },
+       "Shared runtime must load QM before asking questions"]
+    ],
+    "workflows/country-finder.md" => [
+      ["missing question map", ->(body) { body.sub("## Question points", "## Choices") },
+       "Workflow must map question points through shared QM:"],
+      ["missing QM reference", ->(body) { body.sub("[QM](../prompts/shared/question-mechanism.md)", "question guidance") },
+       "Workflow must map question points through shared QM:"]
+    ]
+  }
+  {
+    "workflows/portal-finder.md" => "AskUserQuestion",
+    "prompts/country-finder/step1-criteria-intake.md" => "request_user_input",
+    "prompts/shared/runtime.md" => "request_user_input_async",
+    "skills/situational-profile-questions.md" => "multiSelect"
+  }.each do |path, field|
+    (question_mutations[path] ||= []) << [field, ->(body) { body + "\nUse #{field} here.\n" },
+                                         "Keep native question fields in shared QM:"]
+  end
+  question_mutations.each do |path, cases|
+    file = installation.join(path)
+    original_body = file.read(encoding: "UTF-8")
+    cases.each do |label, mutate, expected|
+      changed = mutate.call(original_body)
+      assert.call(changed != original_body, "QM fixture made no change: #{label}")
+      file.write(changed)
+      rejected = begin
+        CompassValidation.validate(installation)
+        false
+      rescue RuntimeError => error
+        error.message.start_with?(expected)
+      ensure
+        file.write(original_body)
+      end
+      assert.call(rejected, "Validator accepted #{label} in #{path}")
+    end
+  end
+  assert.call(CompassValidation.validate(installation), "Restored QM package must validate")
+
   %w[plugin.json .codex-plugin/plugin.json .agents/plugins/marketplace.json].each do |path|
     alternate = installation.join(path)
     alternate.parent.mkpath
