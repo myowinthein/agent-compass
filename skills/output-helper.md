@@ -25,6 +25,8 @@ Run `render-cf` after the audit with:
 - `early_exclusions`: `{countryName: {remote: "exact earlier reason", sponsorship: "exact earlier reason"}}`; include only actual excluded tracks, or an empty object. Read these from Step 2, do not infer them from missing research.
 - `decisions`: one object per expected country, in the model's evidence-led within-priority order: `{country, remote, sponsorship, priority, limitation, ingestion}`. Use the contract's Summary fit labels, not the table-only missing display. For an excluded/missing track include `remote_reason` or `sponsorship_reason`; preserve each early reason exactly. `ingestion` is stored/not_supplied/rejected/unknown; wholly missing countries also need `ingestion_reason`.
 
+Scoring either track requires stored research, even when the other track is excluded. Correct a contradictory request before saving or completing the step.
+
 The helper returns `summary_markdown`, `table_markdown`, combined `markdown`, `counts` and `audit_notes`. Preserve the separate notes for wholly unresearched/rejected research. Put `audit_notes` with the three file-only audit checks, then copy the complete `markdown` verbatim as contiguous Summary and Priority Table sections, followed by the existing Effort Allocation. It counts each candidate once per track and rejects contradictions; the model still chooses fits/priorities and within-bucket order. It sorts priority buckets stably and Pending evidence alphabetically ignoring flags. Show only `table_markdown` in chat, then the step's completion message.
 
 ## Verify the saved file
