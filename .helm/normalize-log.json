@@ -1,0 +1,12 @@
+{
+  "schema_version": 2,
+  "branches": {
+    "main": {
+      "last_checked_commit": "6769b30620f00a0081438639f2abca74e27c842b",
+      "last_checked_date": "2026-10-28",
+      "review_kind": "semantic",
+      "review_contract": 1,
+      "policy_fingerprint": "8569264213b3e26839c9463f83cc3486604fe2ab7417e1ab28e0241b2b55c440"
+    }
+  }
+}
