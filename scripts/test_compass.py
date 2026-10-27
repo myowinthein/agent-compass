@@ -508,6 +508,51 @@ class CompassCLI(unittest.TestCase):
                 if code == 0:
                     self.assertEqual(len(result["result"]["blocks"]), expected)
 
+    def test_ingest_rejects_structural_issues_despite_acceptance(self):
+        for label, invalid, country, reason, valid_country, expected, missing in (
+            ("multiple countries in one dataset", b"```research\nCountry: Germany\nCountry: France\n```\n\n",
+             "Germany", "Explicit dataset must contain exactly one country", "Netherlands",
+             ["Germany", "France", "Netherlands"], ["Germany", "France"]),
+            ("flag without a country name", self.salary_block("🇩🇪"), "🇩🇪", "Unrecognizable country",
+             "Germany", ["Germany"], []),
+        ):
+            with self.subTest(case=label), tempfile.TemporaryDirectory() as directory:
+                source = Path(directory, "sc-step1-salary-research.md")
+                valid = self.salary_block(valid_country) + b"\n"
+                raw = invalid + valid
+                source.write_bytes(raw)
+                payload = {"workspace": directory, "workflow": "salary-calculator", "expected": expected}
+                scan = self.invoke("research-scan", payload)["result"]
+                self.assertEqual(len(scan["blocks"]), 2)
+                self.assertEqual(scan["blocks"][0]["issues"], [reason])
+                result = self.invoke("ingest", {**payload, "source_hash": scan["source_hash"], "stored_hash": None,
+                    "decisions": [{"index": index, "accept": True, "reviewed_fields": True} for index in (0, 1)]})["result"]
+                self.assertEqual(result["stored"], 1)
+                self.assertEqual(result["rejected"], [{"index": 0, "country": country, "reason": reason}])
+                self.assertEqual(result["expected_not_stored"], missing)
+                self.assertEqual(Path(directory, "sc-step2-salary-data.md").read_bytes(), valid)
+                self.assertEqual(source.read_bytes().partition(b"## Validation report\n")[0], raw)
+
+    def test_ingest_rejects_ineligible_country_despite_acceptance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory, "cf-step3-country-research.md")
+            valid = self.country_block() + b"\n"
+            invalid = valid.replace(b"Country: Germany", b"Country: Canada", 1)
+            raw = invalid + valid
+            source.write_bytes(raw)
+            payload = {"workspace": directory, "workflow": "country-finder", "expected": ["Canada", "Germany"],
+                       "required_tracks": {"Germany": ["remote", "sponsorship"]}}
+            scan = self.invoke("research-scan", payload)["result"]
+            self.assertEqual(len(scan["blocks"]), 2)
+            self.assertEqual(scan["blocks"][0]["issues"], ["Country not eligible on either track"])
+            result = self.invoke("ingest", {**payload, "source_hash": scan["source_hash"], "stored_hash": None,
+                "decisions": [{"index": index, "accept": True, "reviewed_fields": True} for index in (0, 1)]})["result"]
+            self.assertEqual(result["stored"], 1)
+            self.assertEqual(result["rejected"], [{"index": 0, "country": "Canada", "reason": "Country not eligible on either track"}])
+            self.assertEqual(result["expected_not_stored"], ["Canada"])
+            self.assertEqual(Path(directory, "cf-step4-country-data.md").read_bytes(), valid)
+            self.assertEqual(source.read_bytes().partition(b"## Validation report\n")[0], raw)
+
     def test_provenance_notes_preserve_raw_and_legacy_compatibility(self):
         with tempfile.TemporaryDirectory() as directory:
             raw = self.salary_block() + self.salary_block("Netherlands").replace(
