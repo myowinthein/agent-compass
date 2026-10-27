@@ -121,10 +121,11 @@ def country(payload):
         require(priority in priorities[:3] if usable else priority == priorities[-1] if fits["missing"] in values else priority == priorities[-2],
                 "Priority contradicts the final track states")
         require(decision["ingestion"] in ("stored", "not_supplied", "rejected", "unknown"), "Unknown ingestion disposition")
+        require(decision["ingestion"] == "stored" or all(f in (fits["excluded"], fits["missing"]) for f in values),
+                "Scored tracks need stored research")
         if decision["ingestion"] == "stored" or fits["excluded"] in values:
             summary.append([name, *values])
         else:
-            require(all(f == fits["missing"] for f in values), "Scored tracks need stored research")
             heading = {"not_supplied": "Flagged but not researched", "rejected": "Researched but not ingested", "unknown": "Ingestion outcome unknown"}[decision["ingestion"]]
             notes.setdefault(heading, []).append(name + ": " + text(decision.get("ingestion_reason")))
         candidates.append((priorities.index(priority), key, [name, priority,

@@ -517,6 +517,48 @@ class CompassCLI(unittest.TestCase):
         payload["early_exclusions"]["🇩🇪 Germany"] = {"sponsorship": "other reason"}
         self.invoke("render-cf", payload, 2)
 
+    def test_country_scored_track_requires_stored_research_with_an_exclusion(self):
+        for excluded, scored in (("remote", "sponsorship"), ("sponsorship", "remote")):
+            for fit, priority in (("Strong", "🥇 Focus"), ("Moderate", "🥉 Monitor"), ("Weak", "🎗️ Deprioritize")):
+                for ingestion in ("stored", "not_supplied", "rejected", "unknown"):
+                    with self.subTest(excluded=excluded, scored=fit, ingestion=ingestion):
+                        decision = {"country": "Germany 🇩🇪", excluded: "Excluded", scored: fit,
+                                    "priority": priority, "limitation": "DUMMY track limitation", "ingestion": ingestion,
+                                    excluded + "_reason": "DUMMY early exclusion"}
+                        payload = {"expected": ["Germany"], "early_exclusions": {"Germany": {excluded: "DUMMY early exclusion"}},
+                                   "decisions": [decision]}
+                        response = self.invoke("render-cf", payload, 0 if ingestion == "stored" else 2)
+                        if ingestion == "stored":
+                            self.assertEqual(response["result"]["counts"][excluded], {"scored": 0, "excluded": 1, "not_scored": 0})
+                            self.assertEqual(response["result"]["counts"][scored], {"scored": 1, "excluded": 0, "not_scored": 0})
+                        else:
+                            self.assertEqual(response["error"]["kind"], "invalid_input")
+                            self.assertEqual(response["error"]["message"], "Scored tracks need stored research")
+
+    def test_country_nonstored_exclusions_remain_valid(self):
+        for ingestion in ("stored", "not_supplied", "rejected", "unknown"):
+            for excluded in ("remote", "sponsorship", "both"):
+                with self.subTest(ingestion=ingestion, excluded=excluded):
+                    decision = {"country": "Germany 🇩🇪", "priority": "Pending evidence", "limitation": "DUMMY research gap",
+                                "ingestion": ingestion, "remote": "not scored (no data)", "sponsorship": "not scored (no data)",
+                                "remote_reason": "DUMMY missing research", "sponsorship_reason": "DUMMY missing research"}
+                    early = {}
+                    for track in ("remote", "sponsorship"):
+                        if excluded in (track, "both"):
+                            decision[track] = "Excluded"
+                            decision[track + "_reason"] = "DUMMY early " + track + " exclusion"
+                            early[track] = decision[track + "_reason"]
+                    if excluded == "both":
+                        decision["priority"] = "🎗️ Deprioritize"
+                    result = self.invoke("render-cf", {"expected": ["Germany"], "early_exclusions": {"Germany": early},
+                                                       "decisions": [decision]})["result"]
+                    for track in ("remote", "sponsorship"):
+                        self.assertEqual(result["counts"][track], {"scored": 0, "excluded": int(track in early),
+                                                                  "not_scored": int(track not in early)})
+                        self.assertIn("🇩🇪 Germany " + track + ": " + decision[track + "_reason"], result["audit_notes"])
+                    expected = "| 🇩🇪 Germany | " + decision["remote"] + " | " + decision["sponsorship"] + " |"
+                    self.assertIn(expected, result["summary_markdown"])
+
     def test_saved_content_mismatch(self):
         for kind, request, filename in (("salary", self.salary_request(), "sc-step4-salary-table.md"), ("country", self.country_request(), "cf-step6-final-ranking.md")):
             with tempfile.TemporaryDirectory() as directory:

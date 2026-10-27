@@ -30,6 +30,8 @@ flowchart TD
 
 An early timezone or suitability rejection stays Excluded with its reason. Missing research, rejected data and unusable evidence stay distinct from a supported Weak fit.
 
+An exclusion on one track does not supply research for the other. Without ingested research, that other track remains unscored and appears as Unknown.
+
 If an audit invalidates a track's only usable evidence, that track becomes `not scored (no data)`. The table displays it as Unknown. The audit does not silently undo an early exclusion or reinterpret research for a changed profile; those issues require a repair choice.
 
 ## Priority Table
