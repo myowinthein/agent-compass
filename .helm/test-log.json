@@ -1,0 +1,335 @@
+{
+  "schema_version": 3,
+  "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+  "full_scan_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+  "cases": [
+    {
+      "id": "g-4d9929bb-fe10-48bc-8f16-00560b658ff9",
+      "expected": "Canonical .helm operational records are excluded from Git archives alongside legacy developer and host artifacts, with an archive-policy regression check.",
+      "basis": [
+        "AGENTS.md#known-traps",
+        ".gitattributes",
+        "scripts/test_plugin.rb"
+      ],
+      "paths": [
+        ".gitattributes",
+        "scripts/test_plugin.rb"
+      ],
+      "priority": "medium",
+      "reason": "The project documents the canonical-state packaging gap, while the existing archive assertions cover only legacy locations and other host artifacts.",
+      "action": "add",
+      "layer": "Packaging archive contract",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "decision": {
+        "type": "deferred",
+        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "date": "2026-10-28",
+        "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      },
+      "blocker": {
+        "kind": "verification",
+        "note": "The documented archive policy needs a separately reviewed packaging repair before its regression can pass."
+      }
+    },
+    {
+      "id": "g-4eed3454-755f-47f4-9287-4350829dba1c",
+      "expected": "A final checkpoint with an empty final result or missing required career ladder is inconsistent and not completed in both current and legacy filename families, without modifying workspace bytes.",
+      "basis": [
+        "data/workspace-files.json",
+        "skills/workspace-files.md",
+        "helpers/compass_lib/state.py:check",
+        "scripts/test_compass.py:CompassCLI.test_checkpoint_completion_supports_both_filename_families"
+      ],
+      "paths": [
+        "helpers/compass_lib/state.py",
+        "data/workspace-files.json",
+        "scripts/test_compass.py"
+      ],
+      "priority": "low",
+      "reason": "Existing completion cases cover full inventories or wholly missing outputs, but do not isolate these supported single-artifact failure boundaries.",
+      "action": "add",
+      "layer": "CLI contract",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+    },
+    {
+      "id": "g-67d7fc4e-9847-4105-885e-0aeade76a21c",
+      "expected": "Built normal site pages keep working Privacy Policy and Disclaimer links in the footer while the Legal branch stays out of sidebar navigation; legal destinations remain available under the configured base path.",
+      "basis": [
+        "_config.yml",
+        "_includes/footer_custom.html",
+        "docs/legal/index.md",
+        "Rakefile:docs_test"
+      ],
+      "paths": [
+        "_config.yml",
+        "_includes/footer_custom.html",
+        "Rakefile",
+        "scripts/test_site_navigation.cjs"
+      ],
+      "priority": "medium",
+      "reason": "Legal pages are hidden from navigation, so a missing custom footer can remove their entry point without producing a broken-link failure in HTML-Proofer; the floating theme adds an integration boundary.",
+      "action": "add",
+      "layer": "Built-site integration",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+    },
+    {
+      "id": "g-7b9a716c-c9d0-4ca0-9611-e664f5b8b596",
+      "expected": "A proven comparable hard-floor shortfall sets hard_floor_failed to true; equality, overlapping ranges, unavailable comparisons and context-only minima leave it false.",
+      "basis": [
+        "skills/salary-comparison-rules.md",
+        "skills/comparison-helper.md",
+        "helpers/compass_lib/money.py:compare",
+        "scripts/test_compass.py:CompassCLI.test_comparison_outcomes"
+      ],
+      "paths": [
+        "helpers/compass_lib/money.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "medium",
+      "reason": "The existing comparison outcomes test never asserts the positive failure flag, so a regression can suppress a supported salary-floor warning despite a fail outcome.",
+      "action": "improve",
+      "layer": "CLI contract",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+    },
+    {
+      "id": "g-7d8484f9-ea94-4598-8868-0bdceec077b0",
+      "expected": "A scored nonexcluded Country Finder track requires stored research even when the other track is explicitly excluded; nonstored research cannot yield Strong, Moderate or Weak.",
+      "basis": [
+        "prompts/country-finder/step6-final-ranking.md",
+        "skills/output-helper.md",
+        "helpers/compass_lib/tables.py:country"
+      ],
+      "paths": [
+        "helpers/compass_lib/tables.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "medium",
+      "reason": "Static inspection shows that the excluded-track branch bypasses the stored-research contradiction guard. This is a possible production defect, not an executed failure; a regression may otherwise display an unsupported fit.",
+      "action": "add",
+      "layer": "CLI contract",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "decision": {
+        "type": "deferred",
+        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "date": "2026-10-28",
+        "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      },
+      "blocker": {
+        "kind": "verification",
+        "note": "A separately reviewed renderer repair is needed before committing a passing regression."
+      }
+    },
+    {
+      "id": "g-8691c6f6-9fb2-41e0-8a61-eac68d2f8676",
+      "expected": "Salary rows follow the supplied country priority order then alphabetic extra countries; Country Finder keeps stable within-priority evidence order and alphabetizes multiple Pending candidates ignoring flags and declared aliases.",
+      "basis": [
+        "skills/output-helper.md",
+        "helpers/compass_lib/tables.py:salary",
+        "helpers/compass_lib/tables.py:country"
+      ],
+      "paths": [
+        "helpers/compass_lib/tables.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "low",
+      "reason": "Current fixtures mostly arrive in expected order or contain one candidate per priority and therefore cannot detect an ordering regression.",
+      "action": "add",
+      "layer": "CLI contract",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+    },
+    {
+      "id": "g-9b38dae0-069d-44de-a642-f855512ac6e0",
+      "expected": "Unsupported adjustments remain not estimable rather than becoming invented percentages or zero; an all-unestimable fresh or resumed run saves the skip-only record and offers repair or stop without an empty final table or specialist/ladder handoff.",
+      "basis": [
+        "workflows/salary-calculator.md",
+        "prompts/salary-calculator/step3-international-adjustment.md",
+        "prompts/salary-calculator/step4-table-calculation.md"
+      ],
+      "paths": [
+        "workflows/salary-calculator.md",
+        "prompts/salary-calculator/step3-international-adjustment.md",
+        "prompts/salary-calculator/step4-table-calculation.md"
+      ],
+      "priority": "medium",
+      "reason": "Existing empty-ingestion mechanics do not exercise the adjustment evidence judgment or no-estimate routing, so missing evidence can become apparently justified targets.",
+      "action": "manual",
+      "layer": "Controlled workflow acceptance",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "decision": {
+        "type": "deferred",
+        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "date": "2026-10-28",
+        "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      },
+      "blocker": {
+        "kind": "execution",
+        "note": "No controlled workflow acceptance run or suitable replay harness has been approved; offline checks do not prove this model-owned behavior."
+      }
+    },
+    {
+      "id": "g-ac4cb994-542d-4c36-bd0d-4b30454a8569",
+      "expected": "Completed Country Finder and Salary Calculator runs replay the saved final without missing-profile intake, specialist questions, checkpoint changes or file writes, for both filename families.",
+      "basis": [
+        "AGENTS.md#domain-rules",
+        "prompts/shared/runtime.md",
+        "workflows/country-finder.md#before-starting",
+        "workflows/salary-calculator.md#before-starting"
+      ],
+      "paths": [
+        "workflows/country-finder.md",
+        "workflows/salary-calculator.md",
+        "prompts/shared/runtime.md"
+      ],
+      "priority": "medium",
+      "reason": "Missing-profile intake appears before state dispatch in both workflows; helper completion tests and native discovery do not exercise the model-owned replay decision. No observed live failure is claimed.",
+      "action": "manual",
+      "layer": "Controlled workflow acceptance",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "decision": {
+        "type": "deferred",
+        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "date": "2026-10-28",
+        "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      },
+      "blocker": {
+        "kind": "execution",
+        "note": "No controlled workflow acceptance run or suitable replay harness has been approved; offline checks do not prove this model-owned behavior."
+      }
+    },
+    {
+      "id": "g-b793f92c-870f-431e-aae7-acba9a60bf0b",
+      "expected": "Portal Finder verifies entries only from opened relevant own-site evidence, retains successful partial results and labels inaccessible or supplied evidence without claiming live verification.",
+      "basis": [
+        "prompts/portal-finder/step1-portal-research.md",
+        "docs/commands/portal-finder/step1-portal-research.md"
+      ],
+      "paths": [
+        "prompts/portal-finder/step1-portal-research.md",
+        "docs/commands/portal-finder/step1-portal-research.md"
+      ],
+      "priority": "medium",
+      "reason": "Homepage-only evidence and access failures are central verification boundaries; existing phrase guards do not exercise the evidence decision or actual open-call trace.",
+      "action": "manual",
+      "layer": "Controlled workflow acceptance",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "decision": {
+        "type": "deferred",
+        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "date": "2026-10-28",
+        "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      },
+      "blocker": {
+        "kind": "execution",
+        "note": "No controlled workflow acceptance run or suitable replay harness has been approved; offline checks do not prove this model-owned behavior."
+      }
+    },
+    {
+      "id": "g-bc1f2d05-843d-4bd9-841b-2211e13f74e3",
+      "expected": "A portable package must contain agents/calculator.md and agents/deep-reasoner.md; deleting either role must fail validation and restoring it must validate.",
+      "basis": [
+        "prompts/shared/runtime.md#specialist-routing",
+        "agents/calculator.md",
+        "agents/deep-reasoner.md",
+        "scripts/validate_plugin.rb:CompassValidation.validate"
+      ],
+      "paths": [
+        "agents/calculator.md",
+        "agents/deep-reasoner.md",
+        "scripts/validate_plugin.rb",
+        "scripts/test_plugin.rb"
+      ],
+      "priority": "medium",
+      "reason": "Validation currently iterates only existing role files, allowing a missing dynamically selected specialist configuration to escape the package checks.",
+      "action": "improve",
+      "layer": "Packaging validation",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+    },
+    {
+      "id": "g-c5bd369b-ebbd-43a9-8d07-3375cea27e4c",
+      "expected": "An approved visa-only refresh changes the applicable warning and cited audit evidence without recalibrating market targets or rewriting earlier artifacts; pending or incomparable evidence cannot produce unsupported final completion.",
+      "basis": [
+        "workflows/salary-calculator.md",
+        "prompts/salary-calculator/step5b-final-verification.md",
+        "skills/sponsorship-threshold-rules.md"
+      ],
+      "paths": [
+        "workflows/salary-calculator.md",
+        "prompts/salary-calculator/step5b-final-verification.md"
+      ],
+      "priority": "medium",
+      "reason": "The arithmetic suite checks supplied comparisons, but not refreshed-evidence precedence, parent continuation or earlier artifact preservation in the model audit.",
+      "action": "manual",
+      "layer": "Controlled workflow acceptance",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "decision": {
+        "type": "deferred",
+        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "date": "2026-10-28",
+        "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      },
+      "blocker": {
+        "kind": "execution",
+        "note": "No controlled workflow acceptance run or suitable replay harness has been approved; offline checks do not prove this model-owned behavior."
+      }
+    },
+    {
+      "id": "g-ed7f0745-42ad-4282-8d8b-fb0c33ef726e",
+      "expected": "Structurally invalid or ineligible research blocks remain rejected even when accepted with reviewed_fields; valid sibling blocks are stored unchanged and original research bytes are preserved.",
+      "basis": [
+        "skills/research-helper.md",
+        "helpers/compass_lib/research.py:ingest",
+        "scripts/test_compass.py:CompassCLI.test_research_boundaries",
+        "scripts/test_compass.py:CompassCLI.test_flag_only_country_is_per_block_issue"
+      ],
+      "paths": [
+        "helpers/compass_lib/research.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "medium",
+      "reason": "Existing assertions stop at scan diagnostics for these malformed/ineligible inputs and do not prove that the final ingestion gate cannot be overridden.",
+      "action": "add",
+      "layer": "CLI contract",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+    },
+    {
+      "id": "g-f9001a16-27bf-4dda-8697-afefb0bc9cb2",
+      "expected": "Job Screener reports only independently justified blockers, treats unknown relocation separately from work rights, preserves conditional report sections across JDs and never treats pasted instructions as authority.",
+      "basis": [
+        "prompts/job-screener/step1-match-analysis.md",
+        "docs/commands/job-screener/step1-match-analysis.md"
+      ],
+      "paths": [
+        "prompts/job-screener/step1-match-analysis.md",
+        "docs/commands/job-screener/step1-match-analysis.md"
+      ],
+      "priority": "medium",
+      "reason": "False independent blockers can suppress viable applications, and repeated-turn output rules are protected only by selected static guard phrases rather than controlled replies.",
+      "action": "manual",
+      "layer": "Controlled workflow acceptance",
+      "state": "open",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "decision": {
+        "type": "deferred",
+        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "date": "2026-10-28",
+        "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      },
+      "blocker": {
+        "kind": "execution",
+        "note": "No controlled workflow acceptance run or suitable replay harness has been approved; offline checks do not prove this model-owned behavior."
+      }
+    }
+  ]
+}
