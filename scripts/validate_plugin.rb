@@ -136,6 +136,8 @@ module CompassValidation
 
     end
 
+    # Runtime routing selects these files dynamically, outside literal link checks.
+    %w[calculator deep-reasoner].each { |role| resource(root, "agents/#{role}.md") }
     root.glob("agents/*.md").each do |agent|
       role = agent.basename(".md").to_s
       metadata = frontmatter(agent)
