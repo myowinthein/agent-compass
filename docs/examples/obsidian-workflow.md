@@ -58,7 +58,7 @@ I save the final [table]({{ '/docs/commands/salary-calculator/step4-table-calcul
 | Country | Visa salary rule | Mainstream Annual | Premium Annual | Mainstream Monthly | Premium Monthly |
 |---|---|---:|---:|---:|---:|
 | 🇩🇪 Germany (EUR) | 50,700/yr | 60,000 | 78,000 | 5,000 | 6,500 |
-| 🇳🇱 Netherlands (EUR) | 71,304/yr | 65,000 | 84,000 | 5,400 | 7,000 |
+| 🇳🇱 Netherlands (EUR) | 71,304/yr ⚠️ | 65,000 | 84,000 | 5,400 | 7,000 |
 ```
 
 ### Saved portal searches

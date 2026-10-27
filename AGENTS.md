@@ -73,7 +73,7 @@ When consulting Claude for a project review/discussion or running Claude workflo
 - `.claude-plugin/plugin.json` is the shared Claude manifest and supported Codex compatibility layout. A separate root identity manifest creates competing ownership. Cross-platform symlink installation needs actual native discovery testing.
 - `assets/icon.svg` is the single static vector icon, shared by Claude `icon` and Codex `interface.logo`/`composerIcon`. Claude's ignored `interface` field can produce an expected validation warning; its directory icon support does not guarantee custom GitHub-install display.
 - Native discovery tests inspect Codex's actual `skills/list` catalog, not merely `plugin/read`. They check discovery, not model behavior.
-- Archive exclusions in `.gitattributes` and their regression checks currently cover legacy `.claude/helm/`, but not tracked canonical `.helm/` records. This is a known packaging gap requiring separate maintenance.
+- `.gitattributes` excludes canonical `.helm/` and legacy `.claude/helm/` records from Git archives. Preserve both exclusions; `scripts/test_plugin.rb` checks nested canonical paths in an isolated synthetic archive.
 
 ## Rules
 

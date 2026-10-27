@@ -6,4 +6,4 @@ Show it to me, and wait for my confirmation or edits.
 
 Once confirmed, save it to salary-calculator-05a-career-ladder.md in the workspace.
 
-Step complete. Follow the step-completion rule in prompts/shared/runtime.md.
+Career-ladder substep complete. Keep `last_completed_step` at 4: the ladder and final verification together form workflow checkpoint 5. Continue to Step 5b under workflows/salary-calculator.md. The parent records checkpoint 5 only after the final audit is saved and its required checks succeed, under prompts/shared/runtime.md.
