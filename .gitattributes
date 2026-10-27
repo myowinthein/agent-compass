@@ -1,3 +1,5 @@
+/.helm/ export-ignore
+/.helm/** export-ignore
 /.claude/helm/ export-ignore
 /.claude/helm/** export-ignore
 /.claude/settings.local.json export-ignore
