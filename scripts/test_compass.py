@@ -277,6 +277,32 @@ class CompassCLI(unittest.TestCase):
                         self.assertEqual(result["status"], "complete" if step == max(a["step"] for a in definition["artifacts"].values()) else "in_progress")
                         self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
 
+    def test_final_checkpoints_reject_empty_or_missing_required_artifacts(self):
+        registry = json.loads((ROOT / "data" / "workspace-files.json").read_text(encoding="utf-8"))
+        for workflow, definition in registry["workflows"].items():
+            artifacts = definition["artifacts"]
+            defects = ["empty final"] + (["missing career ladder"] if workflow == "salary-calculator" else [])
+            for spelling in ("current", "legacy"):
+                for defect in defects:
+                    with self.subTest(workflow=workflow, spelling=spelling, defect=defect), tempfile.TemporaryDirectory() as directory:
+                        root = Path(directory)
+                        for artifact in artifacts.values():
+                            root.joinpath(artifact[spelling]).write_bytes(b"DUMMY saved result\r\n")
+                        root.joinpath(definition["state"]).write_text(json.dumps({
+                            "last_completed_step": max(a["step"] for a in artifacts.values()),
+                            "updated_at": "2026-10-28T00:00:00Z"}), encoding="utf-8")
+                        missing = artifacts["final-results" if defect == "empty final" else "career-ladder"][spelling]
+                        if defect == "empty final":
+                            root.joinpath(missing).write_bytes(b" \r\n\t")
+                        else:
+                            root.joinpath(missing).unlink()
+                        before = {p.name: p.read_bytes() for p in root.iterdir()}
+                        result = self.invoke("state-check", {"workspace": directory, "workflow": workflow})["result"]
+                        self.assertEqual(result["status"], "inconsistent")
+                        self.assertIs(result["completed"], False)
+                        self.assertEqual(result["missing"], [missing])
+                        self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+
     def test_current_research_ingestion_preserves_bytes_and_uses_no_legacy_copies(self):
         for workflow, source_name, stored_name, raw, tracks in (
                 ("salary-calculator", "salary-calculator-01-research.md", "salary-calculator-02-validated-data.md", self.salary_block(), {}),
