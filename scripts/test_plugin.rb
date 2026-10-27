@@ -2,6 +2,8 @@ require "open3"
 require "json"
 require "pathname"
 require "rbconfig"
+require "rubygems/package"
+require "stringio"
 require "yaml"
 require_relative "validate_plugin"
 
@@ -386,12 +388,52 @@ assert.call(examples.any? { |c| c[2..3] == %w[Unknown Weak] }, "Missing unknown/
 assert.call(examples.any? { |c| c[2..3] == %w[Excluded Unknown] }, "Missing excluded/unknown example")
 assert.call(examples.any? { |c| c[2..3] == %w[Unknown Unknown] }, "Missing wholly unresearched example")
 
-paths = %w[.claude/helm/example-log.json .in_use/example .claude/settings.local.json]
+paths = %w[.helm/example-log.json .helm/archive/nested/example.json .claude/helm/example-log.json .in_use/example .claude/settings.local.json]
 attributes, error, status = Open3.capture3("git", "-C", root.to_s, "check-attr", "export-ignore", "--", *paths)
 assert.call(status.success?, "Could not check archive exclusions: #{error}")
 paths.each do |path|
   assert.call(attributes.lines.any? { |line| line.strip == "#{path}: export-ignore: set" },
               "Local developer/host artifact is not excluded from Git archives: #{path}")
+end
+
+Dir.mktmpdir("compass-archive-check-") do |temp|
+  repository = Pathname(temp).join("archive fixture.git")
+  repository.mkpath
+  env = ENV.keys.grep(/\AGIT_/).to_h { |key| [key, nil] }.merge(
+    "GIT_CONFIG_NOSYSTEM" => "1", "GIT_CONFIG_GLOBAL" => File::NULL
+  )
+  git = lambda do |*args, input: ""|
+    output, error, status = Open3.capture3(env, "git", "-C", repository.to_s,
+      "-c", "core.fsmonitor=false", "-c", "gc.auto=0", "-c", "maintenance.auto=false", *args, stdin_data: input)
+    CompassValidation.check(status.success?, "Archive fixture Git #{args.first} failed: #{error}")
+    output
+  end
+  git.call("init", "--bare", "--template=", ".")
+  # Build a synthetic tree so archive checks never read real Helm records.
+  files = {
+    ".gitattributes" => root.join(".gitattributes").read,
+    "README.md" => "Fictional public documentation\n",
+    ".claude-plugin/plugin.json" => "{\"name\":\"fictional-plugin\"}\n",
+    ".helm-notes.txt" => "Fictional public file with a similar prefix\n",
+    ".helm/example-log.json" => "Fictional canonical maintenance record\n",
+    ".helm/archive/nested/example.json" => "Fictional nested maintenance record\n",
+    ".claude/helm/example-log.json" => "Fictional legacy maintenance record\n",
+    ".claude/settings.local.json" => "Fictional local settings\n",
+    ".in_use/example" => "Fictional local artifact\n"
+  }
+  files.each do |path, bytes|
+    object = git.call("hash-object", "-w", "--stdin", input: bytes).strip
+    git.call("update-index", "--add", "--cacheinfo", "100644", object, path)
+  end
+  tree = git.call("write-tree").strip
+  archive = git.call("archive", "--format=tar", tree)
+  archived = {}
+  Gem::Package::TarReader.new(StringIO.new(archive)) do |tar|
+    tar.each { |entry| archived[entry.full_name] = entry.read if entry.file? }
+  end
+  public_paths = %w[.gitattributes README.md .claude-plugin/plugin.json .helm-notes.txt]
+  assert.call(archived == files.select { |path, _| public_paths.include?(path) },
+              "Git archives must omit maintenance records while preserving public files and their bytes")
 end
 
 deployment = YAML.safe_load_file(root.join(".github/workflows/docs.yml"))
