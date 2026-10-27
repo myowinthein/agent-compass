@@ -411,6 +411,18 @@ class CompassCLI(unittest.TestCase):
         self.assertIn("| 🇩🇪 Germany (EUR) | 58,275/yr ⚠️ | 58,500 | 74,500 | 4,850 | 6,200 |\n", result["markdown"])
         self.assertEqual(result["calculations"][0]["segments"]["mainstream"]["raw_annual"], "58250")
 
+    def test_salary_rows_follow_priority_aliases_then_alphabetic_extras(self):
+        payload = {"rows": [], "priority_order": ["NL", "DE"], "aliases": {"NL": "Netherlands", "DE": "Germany"}}
+        for country, display in (("Germany", "Germany 🇩🇪"), ("France", "France 🇫🇷"),
+                                 ("Netherlands", "🇳🇱 Netherlands"), ("Austria", "🇦🇹 Austria")):
+            row = self.salary_request()["rows"][0]
+            row["country"] = display
+            row["calculation"]["country"] = country
+            payload["rows"].append(row)
+        result = self.invoke("render-salary", payload)["result"]
+        self.assertEqual([line.split("|")[1].strip() for line in result["table_markdown"].splitlines()[2:]],
+                         ["🇳🇱 Netherlands (EUR)", "🇩🇪 Germany (EUR)", "🇦🇹 Austria (EUR)", "🇫🇷 France (EUR)"])
+
     def test_visa_states(self):
         for state, label in (("Unknown", "Unknown"), ("Blocked", "Blocked"), ("No fixed threshold", "No fixed minimum"), ("Not applicable", "Not applicable")):
             payload = self.salary_request()
@@ -444,6 +456,28 @@ class CompassCLI(unittest.TestCase):
         self.assertNotIn("| 🇳🇱 Netherlands |", result["summary_markdown"])
         self.assertEqual(result["counts"]["remote"], {"scored": 1, "excluded": 1, "not_scored": 1})
         self.assertIn("outside timezone limit", " ".join(result["audit_notes"]))
+
+    def test_country_priority_order_is_stable_with_alphabetic_pending_rows(self):
+        payload = {"expected": ["ZA", "Netherlands", "Canada", "DE", "Austria", "France", "Japan"],
+                   "aliases": {"ZA": "South Africa", "DE": "Germany"}, "early_exclusions": {}, "decisions": []}
+        for country, priority, remote, sponsorship in (
+            ("🇿🇦 South Africa", "Pending evidence", "not scored (no data)", "not scored (no data)"),
+            ("🇳🇱 Netherlands", "🥇 Focus", "Strong", "Moderate"),
+            ("🇨🇦 Canada", "Pending evidence", "not scored (no data)", "not scored (no data)"),
+            ("Germany 🇩🇪", "🥉 Monitor", "Moderate", "Weak"),
+            ("Austria 🇦🇹", "🥇 Focus", "Strong", "Strong"),
+            ("🇫🇷 France", "🎗️ Deprioritize", "Weak", "Weak"),
+            ("🇯🇵 Japan", "🥈 Selective", "Moderate", "Weak"),
+        ):
+            decision = {"country": country, "priority": priority, "remote": remote, "sponsorship": sponsorship,
+                        "ingestion": "stored", "limitation": "DUMMY evidence-based order"}
+            if priority == "Pending evidence":
+                decision.update(ingestion="not_supplied", remote_reason="DUMMY missing research",
+                                sponsorship_reason="DUMMY missing research", ingestion_reason="DUMMY missing research")
+            payload["decisions"].append(decision)
+        result = self.invoke("render-cf", payload)["result"]
+        self.assertEqual([line.split("|")[1].strip() for line in result["table_markdown"].splitlines()[2:]],
+                         ["🇳🇱 Netherlands", "🇦🇹 Austria", "🇯🇵 Japan", "🇩🇪 Germany", "🇫🇷 France", "🇨🇦 Canada", "🇿🇦 South Africa"])
 
     def test_country_contradictions(self):
         for action in (lambda p: p["decisions"][0].update(remote="Weak"),
