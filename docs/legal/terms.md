@@ -32,11 +32,11 @@ You may not: misrepresent the Service's AI-generated output as verified fact whe
 
 ## Intellectual Property
 
-The agent-compass source code and prompts are licensed under the MIT License (see the [`LICENSE`](https://github.com/myowinthein/agent-compass/blob/main/LICENSE) file in the repository) and may be used, modified, and redistributed under its terms. Any output generated for you by the plugin during your own session (profile summaries, country scores, salary tables, job-screening reports) belongs to you.
+The agent-compass source code and prompts are licensed under the MIT License (see the [`LICENSE`](https://github.com/myowinthein/agent-compass/blob/main/LICENSE) file in the repository) and may be used, modified, and redistributed under its terms. Any output generated for you by the plugin during your own session (profile summaries, country assessments, salary tables, job-screening reports) belongs to you.
 
 ## Disclaimer of Warranties
 
-The Service is provided "as is" and "as available," without warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that the Service's output, including salary estimates, country scores, or job-screening verdicts, is accurate, complete, or current. See the [Disclaimer document](disclaimer.html) for more detail on AI-generated content.
+The Service is provided "as is" and "as available," without warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that the Service's output, including salary estimates, country assessments, or job-screening verdicts, is accurate, complete, or current. See the [Disclaimer document](disclaimer.html) for more detail on AI-generated content.
 
 ## Limitation of Liability
 
@@ -60,4 +60,4 @@ We may update these Terms from time to time. Material changes will be reflected 
 
 ## Contact
 
-For questions about this Terms of Service, open an issue at <https://github.com/myowinthein/agent-compass/issues>.
+For questions about these Terms of Service, open an issue at <https://github.com/myowinthein/agent-compass/issues>.

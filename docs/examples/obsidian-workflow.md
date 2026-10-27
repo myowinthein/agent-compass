@@ -94,6 +94,6 @@ For example, `1. 🇩🇪 Germany.md` might contain:
 - [ ] Lantern Studio
 ```
 
-An unchecked company means I have applied but have not received a rejection email. When one arrives, I tick the checkbox to close the application.
+An unchecked company means I have applied and the application is still open. I tick the checkbox when I receive a rejection email or decide not to continue.
 
 See [My job search routine]({{ '/docs/examples/job-search-routine.html' | relative_url }}) for how I use these notes during my daily job search.

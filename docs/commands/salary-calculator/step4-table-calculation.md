@@ -7,7 +7,7 @@ nav_order: 4
 
 # Step 4: Table calculation
 
-Applies the supported adjustment to each employer tier and saves a salary table with exact shown work. The final audit presents the table in chat.
+Applies the supported adjustment to each employer tier and saves a salary table with its inputs and exact calculations. The final audit presents the table in chat.
 
 ## Flow
 
