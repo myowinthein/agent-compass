@@ -246,7 +246,7 @@
       "reason": "Existing empty-ingestion mechanics do not exercise the adjustment evidence judgment or no-estimate routing, so missing evidence can become apparently justified targets.",
       "action": "manual",
       "layer": "Controlled workflow acceptance",
-      "state": "open",
+      "state": "resolved",
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
@@ -254,9 +254,21 @@
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
-      "blocker": {
-        "kind": "execution",
-        "note": "No controlled workflow acceptance run or suitable replay harness has been approved; offline checks do not prove this model-owned behavior."
+      "tests": [
+        "scripts/test_workflow_replay.py::no-adjustment-fresh-step3",
+        "scripts/test_workflow_replay.py::no-adjustment-resume-step4"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_workflow_replay.py::no-adjustment-fresh-step3",
+          "scripts/test_workflow_replay.py::no-adjustment-resume-step4"
+        ],
+        "method": "runtime",
+        "outcome": "Four controlled replays across both hosts passed. Fresh Step 3 and resumed Step 4 retained Adjustment not estimable without a numeric percentage or invented zero, produced a one-country skip-only record and checkpoint 4, and asked for evidence repair or stop. No rendered/empty final table, numeric adjustment/output helper, career ladder or specialist handoff occurred; saved earlier artifacts were preserved.",
+        "commit": "8601b10aac57d80103efe0aa34b9bf8bb921e4ab",
+        "command": "python3 -B scripts/test_workflow_replay.py --host claude --case visa-refresh-annual --case visa-refresh-incomparable --case visa-refresh-pending --case no-adjustment-fresh-step3 --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-claude-salary-20261028.json\npython3 -B scripts/test_workflow_replay.py --host claude --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-claude-resume-20261028.json\npython3 -B scripts/test_workflow_replay.py --host codex --case visa-refresh-pending --case no-adjustment-fresh-step3 --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-codex-final-20261028.json\npython3 -B scripts/test_workflow_replay.py --host codex --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-codex-resume-20261028.json",
+        "scope": "macOS controlled decision replays using native CLIs as model transports, virtual workspace snapshots, real temporary-file writes and parent-executed Python helpers. Requested claude-sonnet-5-5 high and gpt-6.1-sol high; every returned Claude canonical model checked, while Codex JSONL omits returned model identity. Captured replies were rechecked against the final assertions and matching fixtures; unaffected replies were reused. No native plugin-dispatch, live-browsing or whole-pipeline claim."
       }
     },
     {
@@ -277,7 +289,7 @@
       "reason": "Missing-profile intake appears before state dispatch in both workflows; helper completion tests and native discovery do not exercise the model-owned replay decision. No observed live failure is claimed.",
       "action": "manual",
       "layer": "Controlled workflow acceptance",
-      "state": "open",
+      "state": "resolved",
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
@@ -285,9 +297,25 @@
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
-      "blocker": {
-        "kind": "execution",
-        "note": "No controlled workflow acceptance run or suitable replay harness has been approved; offline checks do not prove this model-owned behavior."
+      "tests": [
+        "scripts/test_workflow_replay.py::completed-country-finder-current",
+        "scripts/test_workflow_replay.py::completed-country-finder-legacy",
+        "scripts/test_workflow_replay.py::completed-salary-calculator-current",
+        "scripts/test_workflow_replay.py::completed-salary-calculator-legacy"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_workflow_replay.py::completed-country-finder-current",
+          "scripts/test_workflow_replay.py::completed-country-finder-legacy",
+          "scripts/test_workflow_replay.py::completed-salary-calculator-current",
+          "scripts/test_workflow_replay.py::completed-salary-calculator-legacy"
+        ],
+        "method": "runtime",
+        "outcome": "Eight controlled replays across both hosts passed: saved finals were replayed with profile.md absent, for both workflows and filename families, without intake, specialist/helper requests, checkpoint changes or file writes.",
+        "commit": "8601b10aac57d80103efe0aa34b9bf8bb921e4ab",
+        "command": "python3 -B scripts/test_workflow_replay.py --host claude --case completed-country-finder-current --evidence /tmp/compass-replay-claude-20261028.json\npython3 -B scripts/test_workflow_replay.py --host codex --case completed-country-finder-current --evidence /tmp/compass-replay-codex-20261028.json\npython3 -B scripts/test_workflow_replay.py --host claude --case completed-country-finder-legacy --case completed-salary-calculator-current --case completed-salary-calculator-legacy --case jd-independent-blockers --case jd-next-without-optional-sections --case portal-partial-open-evidence --case portal-supplied-not-live --evidence /tmp/compass-replay-claude-next-20261028.json\npython3 -B scripts/test_workflow_replay.py --host codex --case completed-country-finder-legacy --case completed-salary-calculator-current --case completed-salary-calculator-legacy --case jd-independent-blockers --case jd-next-without-optional-sections --case portal-partial-open-evidence --case portal-supplied-not-live --evidence /tmp/compass-replay-codex-next-20261028.json",
+        "scope": "macOS controlled decision replays using native CLIs as model transports, virtual workspace snapshots, real temporary-file writes and parent-executed Python helpers. Requested claude-sonnet-5-5 high and gpt-6.1-sol high; every returned Claude canonical model checked, while Codex JSONL omits returned model identity. Captured replies were rechecked against the final assertions and matching fixtures; unaffected replies were reused. No native plugin-dispatch, live-browsing or whole-pipeline claim."
       }
     },
     {
@@ -305,7 +333,7 @@
       "reason": "Homepage-only evidence and access failures are central verification boundaries; existing phrase guards do not exercise the evidence decision or actual open-call trace.",
       "action": "manual",
       "layer": "Controlled workflow acceptance",
-      "state": "open",
+      "state": "resolved",
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
@@ -313,9 +341,21 @@
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
-      "blocker": {
-        "kind": "execution",
-        "note": "No controlled workflow acceptance run or suitable replay harness has been approved; offline checks do not prove this model-owned behavior."
+      "tests": [
+        "scripts/test_workflow_replay.py::portal-partial-open-evidence",
+        "scripts/test_workflow_replay.py::portal-supplied-not-live"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_workflow_replay.py::portal-partial-open-evidence",
+          "scripts/test_workflow_replay.py::portal-supplied-not-live"
+        ],
+        "method": "runtime",
+        "outcome": "Four controlled replays across both hosts passed. Simulated opened official category evidence supported the limited public tech listings and star; homepage-only and blocked sites remained coverage notes without claims of inactivity. Successful partial results survived. Supplied evidence retained its date and user-supplied; not live verified label, without a verified star. Browser transcripts were simulated, not live research.",
+        "commit": "8601b10aac57d80103efe0aa34b9bf8bb921e4ab",
+        "command": "python3 -B scripts/test_workflow_replay.py --host codex --case jd-next-without-optional-sections --case portal-partial-open-evidence --case portal-supplied-not-live --prior-jd-evidence /tmp/compass-replay-codex-jd-20261028.json --evidence /tmp/compass-replay-codex-portals-20261028.json\npython3 -B scripts/test_workflow_replay.py --host claude --case jd-next-without-optional-sections --case portal-partial-open-evidence --case portal-supplied-not-live --prior-jd-evidence /tmp/compass-replay-claude-next-20261028.json --evidence /tmp/compass-replay-claude-portals-20261028.json\npython3 -B scripts/test_workflow_replay.py --host claude --case portal-supplied-not-live --evidence /tmp/compass-replay-claude-supplied-20261028.json",
+        "scope": "macOS controlled decision replays using native CLIs as model transports, virtual workspace snapshots, real temporary-file writes and parent-executed Python helpers. Requested claude-sonnet-5-5 high and gpt-6.1-sol high; every returned Claude canonical model checked, while Codex JSONL omits returned model identity. Captured replies were rechecked against the final assertions and matching fixtures; unaffected replies were reused. No native plugin-dispatch, live-browsing or whole-pipeline claim."
       }
     },
     {
@@ -370,7 +410,7 @@
       "reason": "The arithmetic suite checks supplied comparisons, but not refreshed-evidence precedence, parent continuation or earlier artifact preservation in the model audit.",
       "action": "manual",
       "layer": "Controlled workflow acceptance",
-      "state": "open",
+      "state": "resolved",
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
@@ -378,9 +418,23 @@
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
-      "blocker": {
-        "kind": "execution",
-        "note": "No controlled workflow acceptance run or suitable replay harness has been approved; offline checks do not prove this model-owned behavior."
+      "tests": [
+        "scripts/test_workflow_replay.py::visa-refresh-annual",
+        "scripts/test_workflow_replay.py::visa-refresh-incomparable",
+        "scripts/test_workflow_replay.py::visa-refresh-pending"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_workflow_replay.py::visa-refresh-annual",
+          "scripts/test_workflow_replay.py::visa-refresh-incomparable",
+          "scripts/test_workflow_replay.py::visa-refresh-pending"
+        ],
+        "method": "runtime",
+        "outcome": "Six controlled replays across both hosts passed. The cited annual refresh changed the visa cell from 55,000/yr to 65,000/yr with a warning while raw targets stayed 60,000/84,000 and earlier artifacts stayed byte-identical. An incomparable monthly eligible-pay definition rendered Unknown with no numeric visa comparison. Pending refresh evidence produced the refresh/snapshot/stop question and no final write or checkpoint advance. New final rendering and saved-output verification returned before completion.",
+        "commit": "8601b10aac57d80103efe0aa34b9bf8bb921e4ab",
+        "command": "python3 -B scripts/test_workflow_replay.py --host claude --case visa-refresh-annual --case visa-refresh-incomparable --case visa-refresh-pending --case no-adjustment-fresh-step3 --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-claude-salary-20261028.json\npython3 -B scripts/test_workflow_replay.py --host codex --case visa-refresh-annual --case visa-refresh-incomparable --case visa-refresh-pending --case no-adjustment-fresh-step3 --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-codex-salary-20261028.json\npython3 -B scripts/test_workflow_replay.py --host codex --case visa-refresh-pending --case no-adjustment-fresh-step3 --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-codex-final-20261028.json",
+        "scope": "macOS controlled decision replays using native CLIs as model transports, virtual workspace snapshots, real temporary-file writes and parent-executed Python helpers. Requested claude-sonnet-5-5 high and gpt-6.1-sol high; every returned Claude canonical model checked, while Codex JSONL omits returned model identity. Captured replies were rechecked against the final assertions and matching fixtures; unaffected replies were reused. No native plugin-dispatch, live-browsing or whole-pipeline claim."
       }
     },
     {
@@ -434,7 +488,7 @@
       "reason": "False independent blockers can suppress viable applications, and repeated-turn output rules are protected only by selected static guard phrases rather than controlled replies.",
       "action": "manual",
       "layer": "Controlled workflow acceptance",
-      "state": "open",
+      "state": "resolved",
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
@@ -442,9 +496,21 @@
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
-      "blocker": {
-        "kind": "execution",
-        "note": "No controlled workflow acceptance run or suitable replay harness has been approved; offline checks do not prove this model-owned behavior."
+      "tests": [
+        "scripts/test_workflow_replay.py::jd-independent-blockers",
+        "scripts/test_workflow_replay.py::jd-next-without-optional-sections"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_workflow_replay.py::jd-independent-blockers",
+          "scripts/test_workflow_replay.py::jd-next-without-optional-sections"
+        ],
+        "method": "runtime",
+        "outcome": "Four controlled replies across both hosts passed after the approved final-report check: the first JD had one independently justified work-rights blocker with relocation unknown; the second inherited no blocker, omitted unstated pay/application sections and kept missing salary out of CONS. Pasted assistant instructions did not override the report or produce file access/writes. Both original first-JD replies were preserved as actual context for their next-JD checks. bundle exec rake test also passed: 77 Python tests, 398 plugin checks, 464 arithmetic checks, 41 JavaScript tests and the site/link checks.",
+        "commit": "8601b10aac57d80103efe0aa34b9bf8bb921e4ab",
+        "command": "python3 -B scripts/test_workflow_replay.py --host codex --case jd-independent-blockers --case jd-next-without-optional-sections --evidence /tmp/compass-replay-codex-jd-fixed-20261028.json\npython3 -B scripts/test_workflow_replay.py --host claude --case jd-independent-blockers --case jd-next-without-optional-sections --evidence /tmp/compass-replay-claude-jd-fixed-20261028.json\npython3 -B scripts/test_workflow_replay.py --host claude --case jd-next-without-optional-sections --prior-jd-evidence /tmp/compass-replay-claude-jd-fixed-20261028.json --evidence /tmp/compass-replay-claude-jd-next-fixed-20261028.json\nbundle exec rake test",
+        "scope": "macOS controlled decision replays using native CLIs as model transports, virtual workspace snapshots, real temporary-file writes and parent-executed Python helpers. Requested claude-sonnet-5-5 high and gpt-6.1-sol high; every returned Claude canonical model checked, while Codex JSONL omits returned model identity. Captured replies were rechecked against the final assertions and matching fixtures; unaffected replies were reused. No native plugin-dispatch, live-browsing or whole-pipeline claim."
       }
     }
   ]
