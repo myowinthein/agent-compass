@@ -23,7 +23,7 @@
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
-        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "note": "User requested hard-floor flags, ingestion rejection, specialist packaging, legal-footer navigation, table ordering and incomplete-checkpoint coverage first, with this case to be handled afterward.",
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
@@ -50,8 +50,22 @@
       "reason": "Existing completion cases cover full inventories or wholly missing outputs, but do not isolate these supported single-artifact failure boundaries.",
       "action": "add",
       "layer": "CLI contract",
-      "state": "open",
-      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      "state": "resolved",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "tests": [
+        "scripts/test_compass.py::CompassCLI.test_final_checkpoints_reject_empty_or_missing_required_artifacts"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_compass.py::CompassCLI.test_final_checkpoints_reject_empty_or_missing_required_artifacts"
+        ],
+        "method": "runtime",
+        "outcome": "Four focused CLI tests passed. Whitespace-only final results and missing career ladders return inconsistent, completed=false and the exact missing artifact in both filename families, with all workspace bytes unchanged.",
+        "commit": "b3b0dbd55d6b514acbd2e58c89436e5932d5ed03",
+        "command": "python3 -B scripts/test_compass.py CompassCLI.test_final_checkpoints_reject_empty_or_missing_required_artifacts CompassCLI.test_checkpoint_completion_supports_both_filename_families CompassCLI.test_corrupt_and_missing_output_state CompassCLI.test_empty_ingestion_is_a_record_not_a_completed_salary_run",
+        "scope": "Local macOS read-only state-check CLI on synthetic complete inventories with one defective required artifact, covering current and legacy names."
+      }
     },
     {
       "id": "g-67d7fc4e-9847-4105-885e-0aeade76a21c",
@@ -72,8 +86,22 @@
       "reason": "Legal pages are hidden from navigation, so a missing custom footer can remove their entry point without producing a broken-link failure in HTML-Proofer; the floating theme adds an integration boundary.",
       "action": "add",
       "layer": "Built-site integration",
-      "state": "open",
-      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      "state": "resolved",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "tests": [
+        "scripts/test_site_navigation.cjs"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_site_navigation.cjs"
+        ],
+        "method": "runtime",
+        "outcome": "The Jekyll build and all 41 Node tests passed, including six new footer/sidebar cases. HTML-Proofer passed on 33 HTML files and 194 internal links.",
+        "commit": "9f2af8e074f5e1deadf9efc7d27a6a65c7d5782f",
+        "command": "bundle exec rake docs_test",
+        "scope": "Locally built site: home, both setup guides, Country Finder and both legal pages; Node/static HTML integration and internal link checking, without real-browser acceptance."
+      }
     },
     {
       "id": "g-7b9a716c-c9d0-4ca0-9611-e664f5b8b596",
@@ -92,8 +120,24 @@
       "reason": "The existing comparison outcomes test never asserts the positive failure flag, so a regression can suppress a supported salary-floor warning despite a fail outcome.",
       "action": "improve",
       "layer": "CLI contract",
-      "state": "open",
-      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      "state": "resolved",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "tests": [
+        "scripts/test_compass.py::CompassCLI.test_comparison_outcomes",
+        "scripts/test_compass.py::CompassCLI.test_unverified_comparison_does_not_fail"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_compass.py::CompassCLI.test_comparison_outcomes",
+          "scripts/test_compass.py::CompassCLI.test_unverified_comparison_does_not_fail"
+        ],
+        "method": "runtime",
+        "outcome": "Two focused CLI tests passed, proving the positive hard-floor failure flag and false flags for equality, overlap, missing facts, unlike bases, absent FX and context-only minima.",
+        "commit": "8cb7ce8788024046249e7c0f420e4e8de8e8bceb",
+        "command": "python3 -B scripts/test_compass.py CompassCLI.test_comparison_outcomes CompassCLI.test_unverified_comparison_does_not_fail",
+        "scope": "Local macOS compare CLI with fictional annual/monthly gross-base ranges, hard and context-only floors, and unverified comparisons."
+      }
     },
     {
       "id": "g-7d8484f9-ea94-4598-8868-0bdceec077b0",
@@ -115,7 +159,7 @@
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
-        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "note": "User requested hard-floor flags, ingestion rejection, specialist packaging, legal-footer navigation, table ordering and incomplete-checkpoint coverage first, with this case to be handled afterward.",
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
@@ -140,8 +184,24 @@
       "reason": "Current fixtures mostly arrive in expected order or contain one candidate per priority and therefore cannot detect an ordering regression.",
       "action": "add",
       "layer": "CLI contract",
-      "state": "open",
-      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      "state": "resolved",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "tests": [
+        "scripts/test_compass.py::CompassCLI.test_salary_rows_follow_priority_aliases_then_alphabetic_extras",
+        "scripts/test_compass.py::CompassCLI.test_country_priority_order_is_stable_with_alphabetic_pending_rows"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_compass.py::CompassCLI.test_salary_rows_follow_priority_aliases_then_alphabetic_extras",
+          "scripts/test_compass.py::CompassCLI.test_country_priority_order_is_stable_with_alphabetic_pending_rows"
+        ],
+        "method": "runtime",
+        "outcome": "Five focused CLI tests passed, including explicit multirow salary priority/alias ordering and stable Country Finder buckets with alphabetic Pending rows, alongside existing golden and alias checks.",
+        "commit": "94c1fbcd4204f255b5485a59fe6a46617dd0d17a",
+        "command": "python3 -B scripts/test_compass.py CompassCLI.test_salary_rows_follow_priority_aliases_then_alphabetic_extras CompassCLI.test_country_priority_order_is_stable_with_alphabetic_pending_rows CompassCLI.test_salary_golden_raw_warning CompassCLI.test_country_golden_and_coverage CompassCLI.test_explicit_render_alias",
+        "scope": "Local macOS rendering CLI with fictional multi-country rows, explicit aliases and intentionally unordered input."
+      }
     },
     {
       "id": "g-9b38dae0-069d-44de-a642-f855512ac6e0",
@@ -164,7 +224,7 @@
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
-        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "note": "User requested hard-floor flags, ingestion rejection, specialist packaging, legal-footer navigation, table ordering and incomplete-checkpoint coverage first, with this case to be handled afterward.",
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
@@ -195,7 +255,7 @@
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
-        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "note": "User requested hard-floor flags, ingestion rejection, specialist packaging, legal-footer navigation, table ordering and incomplete-checkpoint coverage first, with this case to be handled afterward.",
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
@@ -223,7 +283,7 @@
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
-        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "note": "User requested hard-floor flags, ingestion rejection, specialist packaging, legal-footer navigation, table ordering and incomplete-checkpoint coverage first, with this case to be handled afterward.",
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
@@ -251,8 +311,22 @@
       "reason": "Validation currently iterates only existing role files, allowing a missing dynamically selected specialist configuration to escape the package checks.",
       "action": "improve",
       "layer": "Packaging validation",
-      "state": "open",
-      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      "state": "resolved",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "tests": [
+        "scripts/test_plugin.rb: temporary-package calculator/deep-reasoner deletion and restoration fixtures"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_plugin.rb: temporary-package calculator/deep-reasoner deletion and restoration fixtures"
+        ],
+        "method": "runtime",
+        "outcome": "All 395 plugin checks passed, including independent removal/rejection and restoration/success for both required specialist files in temporary installations.",
+        "commit": "339e043c2c43d2ac5ac0288d4756421a7945e266",
+        "command": "ruby scripts/test_plugin.rb",
+        "scope": "Local macOS Ruby contributor validation and relocated temporary packages, including the existing non-UTF-8 validator check; no model calls."
+      }
     },
     {
       "id": "g-c5bd369b-ebbd-43a9-8d07-3375cea27e4c",
@@ -274,7 +348,7 @@
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
-        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "note": "User requested hard-floor flags, ingestion rejection, specialist packaging, legal-footer navigation, table ordering and incomplete-checkpoint coverage first, with this case to be handled afterward.",
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
@@ -300,8 +374,24 @@
       "reason": "Existing assertions stop at scan diagnostics for these malformed/ineligible inputs and do not prove that the final ingestion gate cannot be overridden.",
       "action": "add",
       "layer": "CLI contract",
-      "state": "open",
-      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
+      "state": "resolved",
+      "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+      "tests": [
+        "scripts/test_compass.py::CompassCLI.test_ingest_rejects_structural_issues_despite_acceptance",
+        "scripts/test_compass.py::CompassCLI.test_ingest_rejects_ineligible_country_despite_acceptance"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_compass.py::CompassCLI.test_ingest_rejects_structural_issues_despite_acceptance",
+          "scripts/test_compass.py::CompassCLI.test_ingest_rejects_ineligible_country_despite_acceptance"
+        ],
+        "method": "runtime",
+        "outcome": "Five focused CLI tests passed. Multiple-country datasets, flag-only identities and ineligible Country Finder countries remain rejected despite explicit acceptance/review; valid siblings are stored exactly and original research prefixes are preserved.",
+        "commit": "08247cb4240f15c0756e6b70d731054638dfc186",
+        "command": "python3 -B scripts/test_compass.py CompassCLI.test_ingest_rejects_structural_issues_despite_acceptance CompassCLI.test_ingest_rejects_ineligible_country_despite_acceptance CompassCLI.test_research_boundaries CompassCLI.test_flag_only_country_is_per_block_issue CompassCLI.test_ingest_byte_preservation_idempotency_and_duplicate",
+        "scope": "Local macOS Salary Calculator and Country Finder consumer CLI with fictional temporary workspaces; structural/eligibility rejection and byte preservation."
+      }
     },
     {
       "id": "g-f9001a16-27bf-4dda-8697-afefb0bc9cb2",
@@ -322,7 +412,7 @@
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
-        "note": "User requested P1–P6 first and stated that the remaining cases would be handled afterward.",
+        "note": "User requested hard-floor flags, ingestion rejection, specialist packaging, legal-footer navigation, table ordering and incomplete-checkpoint coverage first, with this case to be handled afterward.",
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
