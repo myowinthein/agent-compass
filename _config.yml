@@ -10,6 +10,11 @@ defaults:
       type: pages
     values:
       layout: default
+  - scope:
+      path: "docs/legal"
+      type: pages
+    values:
+      nav_exclude: true
 
 # Navigation
 nav_sort: order
@@ -17,9 +22,6 @@ nav_external_links:
   - title: GitHub
     url: https://github.com/myowinthein/agent-compass
     hide_icon: false
-
-# Footer
-footer_content: "Agent Compass &mdash; MIT License"
 
 # Plugins
 plugins:
