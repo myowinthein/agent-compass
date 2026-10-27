@@ -258,6 +258,26 @@ assert.call(status.success?, "Documented salary rendering failed: #{error}")
 end
 assert.call(salary_examples[0] == salary_examples[1], "Salary renderer and documentation examples differ")
 
+# The dashboard example is a second published salary table with its own inputs.
+dashboard_input = { "schema_version" => 1, "rows" => [
+  ["🇩🇪 Germany", "60000", "78000", "50700"],
+  ["🇳🇱 Netherlands", "65000", "84000", "71304"]
+].map do |country, mainstream, premium, threshold|
+  { "country" => country,
+    "visa" => { "state" => contract.fetch("salary").fetch("numeric_state"),
+                "amount" => threshold, "period" => "annual", "currency" => "EUR", "pay_basis" => "gross_base" },
+    "calculation" => { "schema_version" => 1, "country" => country, "currency" => "EUR", "pay_basis" => "gross_base",
+                       "segments" => { "mainstream" => { "raw_annual_target" => mainstream },
+                                       "premium" => { "raw_annual_target" => premium } } } }
+end }
+dashboard_output, error, status = Open3.capture3(
+  "python3", "-I", "-B", root.join("helpers/compass.py").to_s, "render-salary", stdin_data: JSON.generate(dashboard_input)
+)
+assert.call(status.success?, "Dashboard salary rendering failed: #{error}")
+dashboard = root.join("docs/examples/obsidian-workflow.md").read(encoding: "UTF-8:UTF-8")
+assert.call(dashboard.include?(JSON.parse(dashboard_output).dig("result", "table_markdown")),
+            "Obsidian salary example must match canonical salaries, monthly references and visa warnings")
+
 # Independent raw/display reference: a rounded annual target must not feed
 # monthly conversion or turn a real threshold shortfall into a false pass.
 raw = Rational(58_250)

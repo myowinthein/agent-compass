@@ -36,6 +36,8 @@ The assistant drafts a progression suited to your actual IT/tech role, shows it 
 
 An existing ladder is reused only when its confirmation, role and target level match this run. The specialist does not ask you to confirm it again.
 
+Saving the confirmed ladder completes substep 5a. The checkpoint remains at Step 4 until the final audit is saved and its required checks pass.
+
 ## The four checks
 
 1. Candidate positioning: assess your current and target levels using the confirmed ladder. Price the target role, not your highest historical responsibility.
@@ -58,6 +60,8 @@ Arithmetic corrections, older-table formatting changes and approved visa-evidenc
 This is an audit of saved evidence, not a fresh legal or market check. If essential current route status is missing, you choose a targeted refresh, the dated snapshot with its limitation, or stop.
 
 Approved refreshed evidence is cited in the final audit. Any changed visa state or threshold is reflected in the final table, without overwriting earlier files or implying that other routes were assessed.
+
+The approved refresh takes precedence over older visa evidence even when market targets are recalibrated in the same audit.
 
 ## Your result
 
