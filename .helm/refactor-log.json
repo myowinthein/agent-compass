@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "assessed_commit": "ad5222fa11caa5b2bc8f853e2679e6075a691e00",
+  "full_scan_commit": "ad5222fa11caa5b2bc8f853e2679e6075a691e00",
+  "findings": [
+    {
+      "id": "r-1fa7231b-20d9-4a7e-8515-978c2a01d7b4",
+      "category": "Architecture",
+      "summary": "Salary calculation imports an unnamed subset of the interactive salary-research prompt instead of a bounded reusable benchmark contract.",
+      "paths": [
+        "prompts/salary-calculator/step4-table-calculation.md",
+        "prompts/salary-calculator/step1-research-prompt-generator.md",
+        "prompts/salary-calculator/step5b-final-verification.md"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "ad5222fa11caa5b2bc8f853e2679e6075a691e00",
+        "date": "2026-10-28"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "ad5222fa11caa5b2bc8f853e2679e6075a691e00",
+        "date": "2026-10-28",
+        "priority": "low",
+        "risk": "needs-review",
+        "reason": "The current read-only warning already prevents intentionally restarting research, and no incorrect result was established. A named reusable boundary would modestly reduce the burden of locating scattered requirements and maintaining their Step 4 restatement; the extra resource/read edge must justify its cost.",
+        "evidence": [
+          "Project guidance in AGENTS.md keeps orchestration in workflows, step behavior in prompts and reusable rules in explicitly loaded flat skills references; this is a project convention, not a framework requirement.",
+          "prompts/salary-calculator/step1-research-prompt-generator.md:18 mixes local-employee benchmark scope with employment-path questions; lines 36–49 and 71–90 spread tier, pay-basis, geography/hours and source/method requirements through research instructions and the answer format.",
+          "prompts/salary-calculator/step4-table-calculation.md:26 selectively imports only benchmark-scope and benchmark-metadata requirements from Step 1 without named section boundaries, then repeats its comparability checklist. Maintainers must preserve that selective edge whenever these shared requirements change.",
+          "prompts/salary-calculator/step5b-final-verification.md:5–9 consumes saved benchmark context and loads Step 4 as the canonical calculation procedure. Existing arithmetic, field formats, question ownership and validation contracts remain intentional."
+        ],
+        "invariant": "Preserve both independently researched local-employee employer tiers, original research field names and answer format, literal self-contained researcher briefs, role/level/geography/hours/pay/source-method comparability, recoverable legacy metadata without invention or stricter ingestion, qualification and skip rules, question order and choices, checkpoints, profile/state schemas and generated outputs. Keep country selection/research orchestration in Step 1 and calculation eligibility in Step 4."
+      },
+      "state": "open",
+      "depends_on": []
+    }
+  ]
+}
