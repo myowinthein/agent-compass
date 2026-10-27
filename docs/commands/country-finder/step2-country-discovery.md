@@ -25,7 +25,7 @@ flowchart TD
   Scope --> Empty{"Any countries left?"}
   Empty -->|No| Revise(["Ask for a revised list or stop"])
   Empty -->|Yes| Batch["Save the country scope<br/>Split into batches of at most 15"]
-  Batch --> Cap{"Fresh-context browsing available?"}
+  Batch --> Cap{"Separate research context<br/>with web access available?"}
   Cap -->|Yes| Research["Research both tracks for every country<br/>Use self-contained candidate briefs"]
   Cap -->|No| Manual["Show batch prompts<br/>Wait for manual results"]
   Research --> Coverage["Collect results and check every country<br/>Resolve missing results"]

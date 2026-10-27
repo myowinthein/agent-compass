@@ -20,7 +20,7 @@ flowchart TD
   ManualList --> Confirm
   Confirm --> Scope["Confirm local-employee benchmark scope<br/>Clarify the intended employment path"]
   Scope --> Brief["One self-contained brief per country<br/>Two employer tiers, sources and visa salary rules"]
-  Brief --> Cap{"Fresh-context browsing available?"}
+  Brief --> Cap{"Separate research context<br/>with web access available?"}
   Cap -->|Yes| Tasks["Research each country separately"]
   Cap -->|No| Manual["Show prompts<br/>Wait for manual results"]
   Tasks --> Collect["Save scope and country findings<br/>Resolve missing results"]
@@ -32,7 +32,7 @@ flowchart TD
 
 A completed, compatible Country Finder result can supply countries with at least one Strong or Moderate fit. Selection uses its [post-audit Summary](../country-finder/step6-final-ranking.html#using-the-result), not medals or older ratings.
 
-You can keep that list, add or remove countries, or start fresh. Only when the final is absent can a ready Step 5 result supply an explicitly pre-audit starting point. Draft, unclear or mismatched results require a disclosed choice rather than silently transferring their fit claims.
+You can keep that list, add or remove countries, or start fresh. If no final result exists, a completed Country Finder Step 5 assessment can provide a starting list labelled as not yet audited. If results are drafts, unclear or do not match this run, the assistant explains the issue and asks how you want to proceed before reusing them.
 
 Without a usable list, the assistant asks for your countries. An empty list needs new targets or a decision to stop.
 
@@ -45,7 +45,9 @@ Both tiers describe comparable local employee gross annual base pay for work in 
 
 Each tier includes single Low, Realistic and Strong amounts, geography, hours, pay basis, dated sources and the method behind each estimate. Published statistics and analyst-selected estimates are identified separately.
 
-Research excludes contractor rates, equity-heavy packages, expat premiums and inflated global or FAANG-only compensation. Relevant local-versus-overseas offer evidence is collected for the adjustment step, or its absence is recorded.
+Research excludes contractor rates, equity-heavy packages, expat premiums and inflated global or FAANG-only compensation (Facebook, Amazon, Apple, Netflix and Google). Relevant local-versus-overseas offer evidence is collected for the adjustment step, or its absence is recorded.
+
+Research runs in separate task contexts with web access, without the main chat's history. If this is unavailable, you receive research prompts and the assistant waits for results.
 
 ## Visa salary research
 

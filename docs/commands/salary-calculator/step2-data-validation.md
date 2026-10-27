@@ -31,7 +31,7 @@ flowchart TD
 
 Each country needs both the Mainstream and Premium tiers, with salary figures and sources for each. A source in another tier or a quoted example cannot fill a missing field.
 
-A missing sponsorship threshold does not reject a country. Neither does a missing evidence grade; it is recorded as "not provided".
+A missing visa salary rule does not reject a country. Neither does a missing evidence grade; it is recorded as "not provided".
 
 Malformed or incomplete blocks are skipped with exact reasons. Duplicates keep the first stored original. Clear older field wording can be accepted after review without rewriting the research.
 

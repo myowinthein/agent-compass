@@ -41,7 +41,7 @@ The numbered path shows a new run. An interrupted run continues from its next un
 
 [Step 2: Country discovery](country-finder/step2-country-discovery.html) uses your include list first. Otherwise, it can offer countries saved by Salary Calculator for you to keep or edit, or you can choose the default list. Both paths are assessed independently of any salary results.
 
-[Step 3: Research prompt generator](country-finder/step3-research-prompt-generator.html) then covers only the tracks found suitable. If fresh-context browsing is unavailable, you receive research prompts and the assistant waits for results.
+[Step 3: Research prompt generator](country-finder/step3-research-prompt-generator.html) then covers only the tracks found suitable. Research runs in separate task contexts with web access, without the main chat's history. If this is unavailable, you receive research prompts and the assistant waits for results.
 
 [Step 4: Data validation](country-finder/step4-data-validation.html) preserves accepted research and reports skipped data. [Step 5: Scoring](country-finder/step5-scoring.html) assesses each track independently. [Step 6: Final ranking](country-finder/step6-final-ranking.html) checks the evidence and produces your Priority Table.
 

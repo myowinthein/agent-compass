@@ -42,8 +42,8 @@ Preferred qualifications do not count as required gaps. There is no numerical ma
 | Section | Contents |
 |---|---|
 | `[VERDICT]` | One-line Apply, Maybe or Skip decision |
-| `[APPLICATION METHOD]` | Only the application route explicitly stated in the job |
-| `[SALARY]` | Only stated pay, retaining currency, period and compensation components |
+| `[APPLICATION METHOD]` | Application route explicitly stated in the job; omitted if none is stated |
+| `[SALARY]` | Stated pay, retaining currency, period and compensation components; omitted if pay is unstated |
 | `[PROS]` | Matching evidence in bullets |
 | `[CONS]` | Gaps in bullets, with 🚫 reserved for hard blockers |
 | `[MISSING INFORMATION]` | Unstated items from the fixed checklist |
@@ -58,7 +58,7 @@ A 🚫 needs an explicit non-negotiable requirement and confirmed inability to m
 
 Missing resume evidence does not prove inability. Sponsorship, relocation and permitted obtain-by-start paths must be considered before declaring a blocker.
 
-Salary can block only when the whole comparable pay range is below your confirmed hard floor. Currency, period and pay basis must align; missing FX, unknown hours, context-only minima and straddling ranges do not prove failure.
+Salary can block only when the whole comparable pay range is below your confirmed hard floor. Currency, period and pay basis must align; missing exchange-rate information, unknown hours, context-only minima and straddling ranges do not prove failure.
 
 Years-of-experience shortfalls are normal cons, never hard blockers. Unmet preferred qualifications are labelled "preferred, not required". A different current city does not prove you cannot relocate or work the required hours. No relocation support does not prove inability to move, and a work-rights or language blocker does not create a separate location blocker.
 

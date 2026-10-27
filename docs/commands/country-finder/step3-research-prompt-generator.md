@@ -16,7 +16,7 @@ flowchart TD
   Start(["Read Step 2 suitability findings"]) --> Eligible{"Any tracks marked yes?"}
   Eligible -->|No| Empty["Save an empty research scope<br/>Keep early exclusions and evidence gaps for the audit"]
   Eligible -->|Yes| Brief["One brief per country<br/>Include only tracks marked yes<br/>Embed relevant profile and criteria facts"]
-  Brief --> Cap{"Fresh-context browsing available?"}
+  Brief --> Cap{"Separate research context<br/>with web access available?"}
   Cap -->|Yes| Tasks["Run a separate research task per country"]
   Cap -->|No| Manual["Show ready-to-copy prompts<br/>Wait for manual results"]
   Tasks --> Collect["Collect findings<br/>Check country and track coverage"]
@@ -31,7 +31,7 @@ flowchart TD
 
 ## What each brief covers
 
-Remote research asks for realistic pay, hiring activity and payment arrangements that apply to your working location. It retains currency, pay period, gross/net basis and employee, EOR or contractor status.
+Remote research asks for realistic pay, hiring activity and payment arrangements that apply to your working location. It retains currency, pay period, gross/net basis and employee, employer of record (EOR) or contractor status.
 
 Sponsorship research asks for the employer-sponsored route, applicable salary rule, employer willingness, processing time, quotas, dependent provisions and citizenship-specific considerations.
 
