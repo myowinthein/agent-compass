@@ -342,12 +342,14 @@ class CompassCLI(unittest.TestCase):
                 "minimum": {"amount": "1000", "currency": "EUR", "period": "monthly", "basis": "gross_base", "hard_floor": True}}
 
     def test_comparison_outcomes(self):
-        for amount, expected in (("1000", "pass"), ("1500", "uncertain"), ("2000", "uncertain"), ("2000.00001", "fail")):
+        for amount, expected, failed in (("1000", "pass", False), ("1500", "uncertain", False),
+                                         ("2000", "uncertain", False), ("2000.00001", "fail", True)):
             with self.subTest(amount=amount):
                 payload = self.comparison()
                 payload["minimum"]["amount"] = amount
                 result = self.invoke("compare", payload)["result"]
                 self.assertEqual(result["outcome"], expected)
+                self.assertIs(result["hard_floor_failed"], failed)
                 payload["minimum"]["hard_floor"] = False
                 self.assertFalse(self.invoke("compare", payload)["result"]["hard_floor_failed"])
 
@@ -369,12 +371,19 @@ class CompassCLI(unittest.TestCase):
         for field in ("basis", "period", "currency"):
             payload = self.comparison()
             payload["minimum"][field] = None
-            self.assertEqual(self.invoke("compare", payload)["result"]["outcome"], "unverified")
+            result = self.invoke("compare", payload)["result"]
+            self.assertEqual(result["outcome"], "unverified")
+            self.assertIs(result["hard_floor_failed"], False)
         payload = self.comparison()
         payload["minimum"]["basis"] = "net"
-        self.assertEqual(self.invoke("compare", payload)["result"]["outcome"], "unverified")
+        result = self.invoke("compare", payload)["result"]
+        self.assertEqual(result["outcome"], "unverified")
+        self.assertIs(result["hard_floor_failed"], False)
+        payload = self.comparison()
         payload["minimum"]["currency"] = "USD"
-        self.assertFalse(self.invoke("compare", payload)["result"]["hard_floor_failed"])
+        result = self.invoke("compare", payload)["result"]
+        self.assertEqual(result["outcome"], "unverified")
+        self.assertIs(result["hard_floor_failed"], False)
 
     def test_invalid_comparisons(self):
         for value in ("NaN", "Infinity", "1e9", "1/0", -1, 1.5, True, " 100", "-1"):
