@@ -19,7 +19,7 @@
       "reason": "The project documents the canonical-state packaging gap, while the existing archive assertions cover only legacy locations and other host artifacts.",
       "action": "add",
       "layer": "Packaging archive contract",
-      "state": "open",
+      "state": "resolved",
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
@@ -27,9 +27,22 @@
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
-      "blocker": {
-        "kind": "verification",
-        "note": "The documented archive policy needs a separately reviewed packaging repair before its regression can pass."
+      "tests": [
+        "scripts/test_plugin.rb: canonical/legacy export-ignore attribute checks",
+        "scripts/test_plugin.rb: synthetic Git archive public-file and maintenance-record fixture"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          ".gitattributes",
+          "scripts/test_plugin.rb: canonical/legacy export-ignore attribute checks",
+          "scripts/test_plugin.rb: synthetic Git archive public-file and maintenance-record fixture"
+        ],
+        "method": "runtime",
+        "outcome": "All 398 plugin checks passed. Root and nested canonical records have export-ignore attributes. A real tar archive of a synthetic Git tree omits canonical/legacy maintenance records and local settings while preserving public file names and bytes, including .helm-notes.txt. No real maintenance record bodies are read.",
+        "commit": "71a44555e41f2a432c0e836986e3ce9a05989c7a",
+        "command": "ruby scripts/test_plugin.rb",
+        "scope": "Local macOS Ruby/Git contributor checks; isolated temporary bare repository with fictional blobs, no commits or network calls; actual Git archive contents parsed with the bundled RubyGems tar reader."
       }
     },
     {
@@ -155,7 +168,7 @@
       "reason": "Static inspection shows that the excluded-track branch bypasses the stored-research contradiction guard. This is a possible production defect, not an executed failure; a regression may otherwise display an unsupported fit.",
       "action": "add",
       "layer": "CLI contract",
-      "state": "open",
+      "state": "resolved",
       "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
       "decision": {
         "type": "deferred",
@@ -163,9 +176,22 @@
         "date": "2026-10-28",
         "commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180"
       },
-      "blocker": {
-        "kind": "verification",
-        "note": "A separately reviewed renderer repair is needed before committing a passing regression."
+      "tests": [
+        "scripts/test_compass.py::CompassCLI.test_country_scored_track_requires_stored_research_with_an_exclusion",
+        "scripts/test_compass.py::CompassCLI.test_country_nonstored_exclusions_remain_valid"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_compass.py::CompassCLI.test_country_scored_track_requires_stored_research_with_an_exclusion",
+          "scripts/test_compass.py::CompassCLI.test_country_nonstored_exclusions_remain_valid",
+          "helpers/compass_lib/tables.py:country"
+        ],
+        "method": "runtime",
+        "outcome": "The regression reproduced 18 invalid combinations before the fix. After the fix, the full project suite passed: 77 Python tests, 395 plugin checks, 464 salary checks, 41 Node tests and HTML-Proofer on 33 files/194 links. Nonstored scored tracks reject on either side; stored scored tracks, excluded/missing rows and both-excluded rows retain their counts and reasons.",
+        "commit": "1085ad9fcdf81b69011352492a5b74b2d1be6b4f",
+        "command": "bundle exec rake test",
+        "scope": "Local macOS consumer CLI using fictional typed decisions; all three scored fits, all four ingestion dispositions, either excluded track and both-excluded controls; local docs build and internal links, without live research/model evaluation."
       }
     },
     {
