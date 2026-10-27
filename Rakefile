@@ -19,6 +19,7 @@ task :docs_test do
   require "yaml"
   sh "bundle exec jekyll build"
   sh "node --test scripts/test_setup_redirects.cjs"
+  sh "node --test scripts/test_site_navigation.cjs"
 
   baseurl = YAML.safe_load_file("_config.yml").fetch("baseurl", "").to_s
   url_swaps = baseurl.empty? ? {} : { /\A#{Regexp.escape(baseurl)}\// => "/" }
