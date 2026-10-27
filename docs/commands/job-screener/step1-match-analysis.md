@@ -48,6 +48,8 @@ Preferred qualifications do not count as required gaps. There is no numerical ma
 | `[CONS]` | Gaps in bullets, with 🚫 reserved for hard blockers |
 | `[MISSING INFORMATION]` | Unstated items from the fixed checklist |
 
+Unstated checklist items belong only in `[MISSING INFORMATION]`. Their absence alone, including an unknown salary, is never a con.
+
 The bracketed headers appear exactly as shown, without an introduction or closing commentary. The same format applies to each new job in the chat.
 
 The checklist covers salary, visa sponsorship, relocation support, remote policy, work authorization, timezone or working-hours overlap, and employment type. If all are stated, the response says so. An unstated item is not a con on its own.
