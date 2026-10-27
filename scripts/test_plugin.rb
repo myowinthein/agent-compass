@@ -57,6 +57,21 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
   %w[.claude-plugin workflows prompts skills agents helpers data assets].each do |component|
     FileUtils.cp_r(root.join(component), installation)
   end
+  %w[calculator deep-reasoner].each do |role|
+    agent = installation.join("agents/#{role}.md")
+    original_agent = agent.binread
+    agent.delete
+    rejected = begin
+      CompassValidation.validate(installation)
+      false
+    rescue RuntimeError => error
+      error.message.start_with?("Missing packaged resource:") && error.message.end_with?("agents/#{role}.md")
+    ensure
+      agent.binwrite(original_agent)
+    end
+    assert.call(rejected, "Validator accepted a package without the #{role} specialist")
+    assert.call(CompassValidation.validate(installation), "Restored #{role} package must validate")
+  end
   # Broken/relocated installations must not silently drop QM or regain
   # host-specific question instructions. These checks exercise packaging,
   # not native rendering or model compliance with the Markdown contract.
