@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "documents": [
-    { "file": "docs/legal/privacy-policy.md", "generated_at": "2026-08-01", "generated_at_commit": "bd0fca5" },
+    { "file": "docs/legal/privacy-policy.md", "generated_at": "2026-10-27", "generated_at_commit": "8cf1480ab7a305bd2ee57990139694551e8f2ae3" },
     { "file": "docs/legal/terms.md", "generated_at": "2026-08-01", "generated_at_commit": "bd0fca5" },
     { "file": "docs/legal/disclaimer.md", "generated_at": "2026-08-01", "generated_at_commit": "bd0fca5" }
   ]
