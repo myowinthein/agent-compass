@@ -81,6 +81,7 @@ For repository contributor work, read and follow these shared local rules on bot
 
 - .claude/rules/git.md
 - .claude/rules/safety.md
+- .claude/rules/writing.md
 
 These contributor copies are not dependencies of the Compass workflows.
 
