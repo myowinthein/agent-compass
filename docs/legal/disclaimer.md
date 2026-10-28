@@ -34,10 +34,10 @@ An Apply, Maybe or Skip recommendation reflects the job description and candidat
 
 Review your profile facts, the assumptions, evidence dates and linked sources. Confirm important details before relocating, negotiating pay, accepting an offer or applying for a visa. Obtain qualified advice where your circumstances require it.
 
-External websites and AI services have their own terms, availability and data practices. See the [Privacy Policy](privacy-policy.html) for how the plugin, documentation site and external services handle information.
+External websites and AI services have their own terms, availability and data practices.
 
 ## License and contact
 
 The source code and prompts are distributed under the [MIT License](https://github.com/myowinthein/agent-compass/blob/main/LICENSE), which contains the software's license and warranty provisions. This notice does not replace that license or exclude rights that cannot lawfully be excluded.
 
-For general questions or to report an error, open an issue at <https://github.com/myowinthein/agent-compass/issues>. For privacy questions involving personal information, use the private contact in the [Privacy Policy](privacy-policy.html#contact).
+For general questions or to report an error, open an issue at <https://github.com/myowinthein/agent-compass/issues>. For privacy questions involving personal information, email [mwt.creative@gmail.com](mailto:mwt.creative@gmail.com).
