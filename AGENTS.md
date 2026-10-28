@@ -31,8 +31,8 @@ When the Claude CLI is available, native validation uses `claude plugin validate
 
 ## Architecture Pointers
 
-- `.claude-plugin/plugin.json` is the sole identity/version source. Keep `agent-compass` and all four workflow names stable. The marketplace references this package without duplicating its version or description.
-- `skills/<command>/SKILL.md` are the four portable entry points. Each only loads the shared runtime and its workflow. Keep `commands: []`; legacy command adapters and generated `source-command-*` entries create duplicate discovery.
+- `.claude-plugin/plugin.json` owns shared identity/version metadata; `.codex-plugin/plugin.json` mirrors it and adds Codex presentation. Packaging checks require exact shared-field parity. Keep `agent-compass` and all four workflow names stable. The marketplace references this package without duplicating its version or description.
+- `skills/<command>/SKILL.md` are the four portable entry points. Each only loads the shared runtime and its workflow. Omit `commands` from both manifests and keep `commands/` absent; legacy adapters and generated `source-command-*` entries create duplicate discovery.
 - `workflows/<command>.md` owns orchestration; `prompts/<command>/` owns step behavior, judgment and output instructions. Flat `skills/*.md` files are explicitly loaded rule/interface references, not discoverable skills.
 - `prompts/shared/runtime.md` owns installed-resource resolution, parent/checkpoint responsibilities, research isolation/fallback and host-specific specialist routing. `prompts/shared/question-mechanism.md` adapts existing questions to actual host capabilities without adding approval gates.
 - `prompts/shared/deep-reasoner.md` and `calculator.md` are the specialist procedures. `agents/*.md` selects Claude models and declares each role's effort for both hosts; Codex model selection belongs in the shared runtime.
@@ -70,9 +70,9 @@ When consulting Claude for a project review/discussion or running Claude workflo
 
 ## Known Traps
 
-- `.claude-plugin/plugin.json` is the shared Claude manifest and supported Codex compatibility layout. A separate root identity manifest creates competing ownership. Cross-platform symlink installation needs actual native discovery testing.
-- `assets/icon.svg` is the single static vector icon, shared by Claude `icon` and Codex `interface.logo`/`composerIcon`. Claude's ignored `interface` field can produce an expected validation warning; its directory icon support does not guarantee custom GitHub-install display.
-- Native discovery tests inspect Codex's actual `skills/list` catalog, not merely `plugin/read`. They check discovery, not model behavior.
+- Keep the two client manifests in the same package, sharing all skills and resources. Do not add a root manifest or another marketplace. Cross-platform symlink installation needs actual native discovery testing.
+- `assets/icon.svg` supplies Codex `interface.logo`/`composerIcon`. Omit `icon` and `interface` from the Claude manifest for Desktop importer compatibility; this forgoes Anthropic directory icon metadata. Keep Codex branding in its own manifest.
+- Native discovery tests inspect Codex's actual `skills/list` catalog for duplicate-free discovery and `plugin/read` for display metadata. They also check Claude's four skills and two agents; they do not establish model behavior.
 - `.gitattributes` excludes canonical `.helm/` and legacy `.claude/helm/` records from Git archives. Preserve both exclusions; `scripts/test_plugin.rb` checks nested canonical paths in an isolated synthetic archive.
 
 ## Rules

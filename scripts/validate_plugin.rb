@@ -32,25 +32,33 @@ module CompassValidation
 
   def validate(root)
     root = Pathname(root).realpath
-    %w[plugin.json .codex-plugin/plugin.json .agents/plugins/marketplace.json].each do |path|
+    %w[plugin.json .agents/plugins/marketplace.json].each do |path|
       check(!root.join(path).exist? && !root.join(path).symlink?,
-            "Keep one shared Claude/Codex manifest and marketplace; alternate metadata can shadow them")
+            "Keep the two client manifests and one marketplace; root metadata can shadow them")
     end
     manifest = JSON.parse(read(resource(root, ".claude-plugin/plugin.json")))
+    codex = JSON.parse(read(resource(root, ".codex-plugin/plugin.json")))
     marketplace = JSON.parse(read(resource(root, ".claude-plugin/marketplace.json")))
     check(manifest.fetch("skills") == "./skills/", "Manifest must expose shared skill entry points")
-    check(manifest["commands"] == [], "Disable legacy command discovery so each shared skill appears only once")
-    check(root.glob("commands/**/*.md").empty?, "Legacy command adapters must not be packaged")
+    [manifest, codex].each do |client|
+      check(!client.key?("commands"), "Omit commands declarations; shared skills are the only entry points")
+    end
+    check(!root.join("commands").exist? && !root.join("commands").symlink?, "Legacy command directories must not be packaged")
+    check((manifest.keys & %w[icon interface]).empty?, "Keep Codex presentation fields out of the Claude manifest")
+    check(codex.reject { |key, _| key == "interface" } == manifest,
+          "Client manifests must have identical shared metadata and skill paths")
+    check(codex.dig("interface", "displayName") == manifest.fetch("displayName"),
+          "Codex and Claude must use the same display name")
     check(manifest.fetch("version").match?(/\A\d+\.\d+\.\d+\z/), "Invalid plugin version")
     entry = marketplace.fetch("plugins").find { |plugin| plugin["name"] == manifest["name"] }
     check(entry, "Marketplace does not expose the plugin")
     check(entry.fetch("source") == "./", "Marketplace must point to this package, not a second copy")
     check(entry.dig("policy", "installation") == "AVAILABLE", "Plugin is not installable in Codex")
     check(!entry.key?("version") && !entry.key?("description"), "Maintain metadata only in plugin.json")
-    icon = resource(root, manifest.fetch("icon"))
+    icon = resource(root, "assets/icon.svg")
     %w[logo composerIcon].each do |field|
-      check(manifest.fetch("interface").fetch(field) == manifest.fetch("icon"),
-            "Claude and Codex must reference the same icon file")
+      check(codex.fetch("interface").fetch(field) == "./assets/icon.svg",
+            "Codex presentation must reference the shared SVG icon")
     end
     check(icon.extname == ".svg" && icon.size <= 5 * 1024 * 1024, "Plugin icon must be an SVG no larger than 5 MiB")
     begin
@@ -177,7 +185,7 @@ module CompassValidation
       workspace = Pathname(temp).join("candidate workspace")
       installation.mkpath
       workspace.mkpath
-      %w[.claude-plugin workflows prompts skills agents helpers data assets].each do |component|
+      %w[.claude-plugin .codex-plugin workflows prompts skills agents helpers data assets].each do |component|
         FileUtils.cp_r(Pathname(root).join(component), installation)
       end
       Dir.chdir(workspace) { validate(installation) }
