@@ -25,7 +25,7 @@ flowchart TD
   Status -->|Completed| Replay(["Show the saved final result"])
   Status -->|Needs recovery or repair| Recover(["Explain the issue<br/>Wait for your choice"])
   Status -->|New or valid unfinished run| Resume["Start or resume the next unfinished step"]
-  Resume --> S1["1. Confirm countries and employment path<br/>Research local salaries and visa salary rules"]
+  Resume --> S1["1. Confirm countries<br/>Research local salaries and reference visa salary rules"]
   S1 --> S2["2. Validate and store research"]
   S2 --> Stored{"Any country stored?"}
   Stored -->|No| Repair(["Save the report and checkpoint<br/>Offer evidence repair or stop"])
@@ -42,7 +42,7 @@ Unfinished runs resume; completed runs replay saved results.
 
 ## What to expect
 
-1. [Research](salary-calculator/step1-research-prompt-generator.html): confirm countries and employment path, then collect two-tier local salary evidence and visa salary rules. Country Finder is optional.
+1. [Research](salary-calculator/step1-research-prompt-generator.html): confirm countries, then collect two-tier local salary evidence and reference visa salary rules. There is no remote, relocation or sponsorship scope question. Country Finder is optional.
 2. [Validation](salary-calculator/step2-data-validation.html): store accepted research unchanged.
 3. [Adjustment](salary-calculator/step3-international-adjustment.html): estimate a supported reduction from local benchmarks. Missing evidence is not 0%.
 4. [Calculation](salary-calculator/step4-table-calculation.html): prepare annual targets and monthly references.

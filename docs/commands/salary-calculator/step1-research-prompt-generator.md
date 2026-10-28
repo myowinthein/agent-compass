@@ -18,7 +18,7 @@ flowchart TD
   CF -->|No| ManualList["Ask for your target countries<br/>Explain any draft or incompatible source"]
   Offer --> Confirm["Wait for your country choice<br/>Use, add, remove or start fresh"]
   ManualList --> Confirm
-  Confirm --> Scope["Confirm local-employee benchmark scope<br/>Clarify the intended employment path"]
+  Confirm --> Scope["Use local-employee salary benchmarks<br/>Research visa salary rules as a separate reference"]
   Scope --> Brief["One self-contained brief per country<br/>Two employer tiers, sources and visa salary rules"]
   Brief --> Cap{"Separate research context<br/>with web access available?"}
   Cap -->|Yes| Tasks["Research each country separately"]
@@ -38,13 +38,15 @@ Only when no final exists can a ready Step 5 result supply a labelled pre-audit 
 
 Both Mainstream and Premium tiers describe local employee gross annual base pay for work in the target country. Premium uses its own employer evidence, not a generic uplift.
 
+This scope is fixed. You do not need to choose between remote work, relocation or sponsorship checks, or confirm a relocation plan. Visa salary rules are researched separately as reference information. Actual cross-border pay while you stay in your current country is outside this calculation's scope.
+
 Each has Low, Realistic and Strong amounts with role/level, geography, hours, pay basis, dated sources and estimation method. Published figures stay distinct from analyst selections. Contractor rates, equity-heavy packages, expat premiums and inflated global/FAANG-only data are excluded.
 
 Separate web-research tasks collect the findings. Without suitable access, you receive prompts and wait for results. Missing quantitative local-versus-overseas evidence is recorded for the adjustment step.
 
 ## Visa salary research
 
-The brief includes relevant confirmed age, status, residence, citizenship and employment path. Unknown facts do not select a favorable category.
+The brief includes relevant confirmed age, status, residence and citizenship for the reference sponsored route. Unknown facts do not select a favorable category, and an undecided relocation plan does not make the rule Not applicable.
 
 Rules retain their original amount/period or explicit nonnumeric state. Monthly comparisons need official eligible-pay support; annual base / 12 alone is insufficient. See [Visa salary rule comparison](step4-table-calculation.html#visa-salary-rule-comparison).
 

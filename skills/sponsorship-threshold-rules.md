@@ -9,6 +9,8 @@ description: Shared candidate-specific employer-sponsored visa salary states, re
 
 A threshold is the legal minimum salary an employer must pay to sponsor this candidate's work-visa relocation. Keep it separate from market benchmarks and negotiation adjustments. Cross-border remote or independent-contractor work outside that route does not qualify; an international/remote-first employer alone establishes neither employment path nor work location. Unknown intent is not Not applicable.
 
+Salary Calculator always researches an employer-sponsored route as reference information alongside local employee salary benchmarks. This reference assessment does not require or establish a personal relocation plan. Do not ask the user to select an employment path or omit the reference research because they currently work remotely or have not decided to relocate. Apply known candidate facts to the relevant category and disclose material unknowns; lack of a relocation choice alone is not Not applicable. Country Finder still assesses its actual Remote and Sponsorship tracks separately.
+
 A usable number must be a confirmed fixed local-currency amount or a computable national-average multiple resolved to an actual amount. Classify each assessed country/path into exactly one state:
 
 - **Verified numeric:** a specific amount is confirmed, including a resolved multiple.

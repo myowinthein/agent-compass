@@ -6,7 +6,7 @@ Read situational-profile.md from the workspace as the saved source for location,
 
 Read profile.md from the workspace and treat it as the single source of truth for the candidate's actual education and experience.
 
-Read the confirmed benchmark scope and employment path in each country's stored Notes. Apply relocation/sponsorship factors only when relevant to that path and the candidate's actual status, not because an employer is international or remote-first. Missing material context goes to the parent for clarification; do not invent a relocation scenario.
+Read the local employee benchmark and reference visa scope in each country's stored Notes. A reference sponsorship assessment does not establish an actual relocation plan. Apply relocation/sponsorship factors only when supported by the candidate's recorded circumstances, not because an employer is international or remote-first. Do not reopen Step 1's fixed scope as an employment-path question or invent a relocation scenario; disclose unsupported circumstances instead. Other material missing candidate facts may go to the parent for clarification.
 
 Goal
 
