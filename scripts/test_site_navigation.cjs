@@ -10,6 +10,7 @@ assert.ok(canonical, 'The built home page must expose its canonical site URL');
 const siteUrl = new URL(canonical[1]);
 const basePath = siteUrl.pathname.replace(/\/$/, '');
 const policies = [
+  ['Privacy Policy', 'docs/legal/privacy-policy.html'],
   ['Disclaimer', 'docs/legal/disclaimer.html']
 ];
 
