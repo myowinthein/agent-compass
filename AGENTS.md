@@ -54,6 +54,17 @@ Before changing intake, evidence handling, scoring, sponsorship, arithmetic or o
 - `skills/timezone-rules.md` owns hub and seasonal/DST coverage; helper offsets only describe supplied dates. Portal Finder needs opened relevant sources. Job Screener needs an explicit mandatory condition plus confirmed inability for each blocker, and retains its exact conditional report format.
 - Portal Finder and Job Screener intentionally have no automatic exports or checkpoints.
 
+## Instruction authoring
+
+This covers Compass's agent-facing instructions. General prose follows `.claude/rules/writing.md`.
+
+- Keep non-obvious guidance that changes decisions. Rewrite affected passages instead of accumulating exceptions, tutorials or repeated explanations.
+- Define shared rules once per loaded context; brief reminders at consequential actions may repeat. Preserve required literal context in isolated research briefs and dependencies needed by standalone references.
+- Keep routine paths concise and load required specialized detail at its owning step. Moving text into another file alone is not trimming.
+- Preserve research coverage, source quality, independent tracks/tiers, uncertainty distinctions, QM capabilities, approvals, checkpoints and final audits. Brevity never justifies premature research stops or unsupported conclusions; word quotas do not establish quality.
+- Reuse unchanged instructions and matching verified evidence only under the runtime and owning step's rules. Keep required fresh checks and readback; a prior success does not verify changed inputs.
+- Verify proportionately with existing checks. Measure source size, loaded context and runtime separately; speed or token-saving claims need comparable measurements, and structural checks do not establish research accuracy.
+
 ## Documentation and Distribution
 
 `docs/` contains concise guides for people deciding whether and how to use Compass. Explain purpose, choices, outcomes and constraints that affect use. Keep complete behavior in workflows, prompts and rules. Update what readers need at the guide's intended depth; source consistency does not require matching source detail. Follow links and includes to affected content outside the menu, and link authoritative references instead of reproducing them. New prose avoids em dashes.
