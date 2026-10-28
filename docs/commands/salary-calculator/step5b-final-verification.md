@@ -7,7 +7,7 @@ nav_order: 5
 
 # Step 5: Final verification
 
-Checks whether the salary framework fits your target role and the saved evidence. It runs whenever at least one country has been calculated.
+Audit the framework against your target role and saved evidence whenever at least one country was calculated.
 
 ## Flow
 
@@ -32,43 +32,33 @@ flowchart TD
 
 ## Confirming your career ladder
 
-The assistant drafts a progression suited to your actual IT/tech role, shows it and waits for confirmation or edits. The confirmed ladder is saved to `salary-calculator-05a-career-ladder.md`.
+Confirm or edit a ladder suited to your role before it is saved to `salary-calculator-05a-career-ladder.md`. A matching confirmed ladder is reused without another question.
 
-An existing ladder is reused only when its confirmation, role and target level match this run. The specialist does not ask you to confirm it again.
-
-Saving the confirmed ladder completes substep 5a. The checkpoint remains at Step 4 until the final audit is saved and its required checks pass.
+This completes substep 5a; checkpoint 5 waits for the saved, checked final audit.
 
 ## The four checks
 
-1. Candidate positioning: assess your current and target levels using the confirmed ladder. Price the target role, not your highest historical responsibility.
-2. Framework calibration: separate genuine compensation drivers from inflated assumptions about titles, specialist premiums or employer types.
-3. Country-by-country verification: review Mainstream and Premium positioning, recruiter comfort, sponsorship realism, overseas hiring and evidence quality.
-4. Framework recommendation: assess whether the employer segments and underlying assumptions remain appropriate.
+1. **Candidate positioning:** price the target role using the confirmed ladder.
+2. **Framework calibration:** separate real compensation drivers from inflated assumptions.
+3. **Country verification:** assess both segments, recruiter comfort, sponsorship and evidence.
+4. **Framework recommendation:** review segmentation and underlying assumptions.
 
-Percentile bands need a comparable published distribution. Salary ranges or isolated postings alone do not establish one; without it, the audit says the percentile is not estimable and continues qualitatively.
+Percentiles need a comparable published distribution. Without one, the audit remains qualitative rather than inventing a band.
 
 ## Recalibration
 
-Targets change upward or downward only when evidence supports a revision. Otherwise, the verdict distinguishes supported unchanged estimates from **unchanged, market verification inconclusive**.
+Evidence can support upward or downward revisions. Otherwise distinguish supported unchanged estimates from **unchanged, market verification inconclusive**.
 
-Revised targets use the same [calculation rules](step4-table-calculation.html#calculation-rules). Visa warnings and your hard-floor flags are rechecked using raw values. Market targets are never changed just to clear a minimum.
-
-Arithmetic corrections, older-table formatting changes and approved visa-evidence updates are recorded separately from market recalibration.
+Revised targets follow the same [calculation rules](step4-table-calculation.html#calculation-rules), rechecking visa warnings and hard floors from raw values. Minima never determine market targets. Arithmetic corrections, formatting and visa-only updates are recorded separately from market recalibration.
 
 ## Dated evidence
 
-This is an audit of saved evidence, not a fresh legal or market check. If essential current route status is missing, you choose a targeted refresh, the dated snapshot with its limitation, or stop.
+Saved evidence is not a fresh legal or market check. Essential missing current status prompts a choice: refresh specific evidence, retain a disclosed dated snapshot, or stop.
 
-Approved refreshed evidence is cited in the final audit. Any changed visa state or threshold is reflected in the final table, without overwriting earlier files or implying that other routes were assessed.
-
-The approved refresh takes precedence over older visa evidence even when market targets are recalibrated in the same audit.
+Approved refreshes take precedence for the same assessed route, including during recalibration, and are cited in the final audit. Earlier files remain intact.
 
 ## Your result
 
-`salary-calculator-05b-final-results.md` saves the four checks, recalibration verdict, standard caption, final table and Summary. It preserves calculated/skipped counts and reasons; no row is invented for an uncalculated country.
+`salary-calculator-05b-final-results.md` saves checks, verdict, caption, table and Summary, retaining skipped countries and reasons. Chat shows the caption/table and audited outcome, including inconclusive findings.
 
-Chat shows the saved caption and final table, followed by the audited count and outcome. Inconclusive market findings are disclosed rather than described as verified.
-
-The pre-audit `salary-calculator-04-salary-table.md` stays unchanged. Completed runs replay their saved final result without migration.
-
-For model choices and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).
+Step 4 remains the pre-audit record. Completed runs replay saved results. See [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}) for optional model choices.

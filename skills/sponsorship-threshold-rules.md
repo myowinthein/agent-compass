@@ -7,56 +7,52 @@ description: Shared candidate-specific employer-sponsored visa salary states, re
 
 ## What counts as a threshold
 
-A sponsorship salary threshold is a legally mandated minimum salary a country requires an employer to pay in order to sponsor this candidate's work visa. It is a hard eligibility rule, not a market benchmark and not the same thing as an international-candidate negotiation adjustment.
+A threshold is the legal minimum salary an employer must pay to sponsor this candidate's work-visa relocation. Keep it separate from market benchmarks and negotiation adjustments. Cross-border remote or independent-contractor work outside that route does not qualify; an international/remote-first employer alone establishes neither employment path nor work location. Unknown intent is not Not applicable.
 
-It is scoped to employer-sponsored work-visa relocation only, not a confirmed cross-border remote or independent-contractor arrangement outside that route. An employer being international or remote-first does not establish the candidate's employment path or where they work. Use the confirmed path and status; an unknown path is not evidence for Not applicable.
+A usable number must be a confirmed fixed local-currency amount or a computable national-average multiple resolved to an actual amount. Classify each assessed country/path into exactly one state:
 
-Only report a threshold as a usable number if it is:
-- A specific fixed figure in local currency, or
-- A clearly computable multiple of a stated national average that you can resolve into an actual number
+- **Verified numeric:** a specific amount is confirmed, including a resolved multiple.
+- **No fixed threshold:** a route exists without a fixed numeric minimum, such as an unstated prevailing-wage test.
+- **Not applicable:** the confirmed path does not use employer-sponsored relocation.
+- **Unknown:** a plausible route exists, but its current number or whether it has one cannot be confirmed.
+- **Blocked:** official rules make a real route unavailable to this candidate now, such as a closed quota, pause or unmet age/occupation/status cutoff. State the concrete reason. The route may have a known or unknown threshold; this is neither missing evidence nor an inapplicable path.
 
-Classify each assessed country/path into exactly one of five states, never collapsing them into each other:
-- **Verified numeric**: a specific fixed figure (or a computable multiple you resolved into one) is confirmed.
-- **No fixed threshold**: an employer-sponsored route exists but has no fixed numeric minimum, e.g. it relies on an unstated "prevailing wage" test instead.
-- **Not applicable**: the confirmed employment path doesn't use employer-sponsored relocation (most remote and contractor arrangements).
-- **Unknown**: a plausible employer-sponsored route exists but its current figure, or whether it has one at all, couldn't be confirmed.
-- **Blocked**: a real employer-sponsored route exists (possibly with its own confirmed or unconfirmed threshold), but current official rules make it unavailable to this specific candidate right now, e.g. an exhausted quota, a paused category, or an eligibility cutoff (age, occupation category, prior status) this candidate doesn't meet. This is different from Unknown (we can't confirm a figure) and from Not applicable (the candidate isn't pursuing sponsorship at all) — a Blocked route is real but currently closed to this candidate specifically. State the concrete reason it's blocked.
-
-Never report a guessed figure to fill the gap, and never report "not applicable" when the real situation is "couldn't confirm" or "blocked" — these are different states with different implications for the candidate and must stay distinguishable in what gets stored.
-
-If the threshold would structurally require including compensation components not reflected in a base-salary figure (e.g. mandatory housing allowance, guaranteed bonus counted toward the legal minimum), and you cannot isolate the base-salary-equivalent portion, report it as Unknown rather than an apples-to-oranges number.
+Never guess an amount or collapse Unknown/Blocked into Not applicable. If the legal amount includes compensation absent from the researched base pay, such as allowances or guaranteed bonuses, and no comparable base portion can be isolated, use Unknown.
 
 ## What to collect
 
-Read the candidate's situational profile before generating threshold research. Embed the relevant facts as literal text in the research brief: citizenship, current residence, target-country work rights/status, and supplied age/date of birth with its reference date. Use the supplied date of birth to establish age at the official rule's relevant date; an age without a reliable as-of date does not establish age at a future filing date. Do not infer immigration status from citizenship or residence alone.
+Read the situational profile before research. Embed relevant citizenship, residence, target-country rights/status and supplied age/date of birth with reference date literally in each brief. Infer neither rights from citizenship/residence nor future filing age from an undated age. Use a supplied birth date at the official rule's relevant date.
 
-Research which official pathway and age/status category actually applies, including whether the rule is based on application date or another event. Record the applicable category, eligibility assumptions, source, and effective date in the existing threshold field or Notes. Do not automatically choose the cheapest age-based threshold. If the candidate declined age disclosure or a material status/date is unknown, report the applicable figure as Unknown when a candidate-specific category cannot be confirmed; explain the conditional categories without inventing the missing fact. Do not classify the route as Blocked merely because eligibility is unknown.
+Establish the actual pathway/category, age/status conditions and applicable event date. Record category, assumptions, official source and effective date in the existing threshold field or Notes. Never choose the cheapest age category automatically. Respect declined age disclosure; missing material facts leave candidate-specific amounts Unknown, with conditional categories explained. Unknown eligibility is not Blocked.
 
-For each country, report:
-- The threshold figure (local currency), or which of the four non-numeric states applies (No fixed threshold / Not applicable / Unknown / Blocked)
-- Whether that figure is annual or monthly
-- The official government source and how recent it is
-- For a monthly rule, what pay components and payment schedule the official monthly amount counts, and whether raw annual base / 12 is an eligible comparable amount for the researched salary basis; otherwise preserve the missing or incompatible basis
-- If Blocked, the concrete reason (e.g. quota exhausted, category paused, an eligibility cutoff this candidate doesn't meet)
+Record each country's:
+
+- Figure or explicit nonnumeric state.
+- Original annual/monthly period.
+- Official government source and recency.
+- Monthly eligible-pay components/schedule and whether researched annual base / 12 is legally comparable; retain missing/incompatible basis.
+- Concrete Blocked reason when applicable.
 
 ## How to compare
 
-Compare both Mainstream and Premium Annual Targets with the applicable threshold using unrounded computed values. The displayed salary rounding from data/output-contracts.json must never decide a borderline result. Equality clears this salary-minimum comparison.
+Compare Mainstream and Premium Annual Targets using unrounded computed values, never display-rounded salaries. Equality clears this salary-minimum comparison.
 
-Use the threshold's verified original period. For an annual threshold, compare the raw Annual Target directly after confirming comparable eligible components. For a monthly threshold X, compare raw Annual Target / 12 with X only when the official monthly definition and the researched pay schedule support that annualization. Extra guaranteed payments or a different legal definition of ordinary monthly base can make that reference incomparable. A monthly display reference is not proof of eligible monthly pay.
+Use the original verified period and comparable eligible components. Compare annual rules directly. For a monthly rule X, compare raw Annual Target / 12 with X only when the official definition and researched pay schedule support it. Extra guaranteed payments or a different monthly-base definition may prevent comparison; a display reference proves no legal comparability.
 
-Record the official pay/annualization basis and any conversion in shown work, not a second number in the compact table cell. If the basis is unknown or cannot be represented by the helper's annual/12 comparison, use Unknown for the compact visa result and omit the numeric visa request to the helper/renderer. Retain any known original figure, period, source and reason in shown work. Do not change the threshold's original period or pretend the helper checked a different legal-pay formula. The salary targets and their annual/12 display references remain unchanged. Completed legacy outputs replay as saved; an unfinished legacy monthly check needs this comparability established before claiming a verified numeric result.
+Keep the official basis/conversion in shown work, not a second compact-cell number. If unknown or incompatible with the helper's annual/12 method, render Unknown and omit numeric visa requests to the helper/renderer. Retain any known figure, period, source and reason in shown work. Do not change the original period or imply a different legal formula was checked. Salary targets and monthly display references remain unchanged.
+
+Completed legacy outputs replay unchanged. Establish this comparability before claiming a verified numeric result in an unfinished legacy monthly check.
 
 ## Result states
 
-Read data/output-contracts.json as data for the exact `salary.visa_labels`, numeric state, period suffixes and warning token. Use skills/output-helper.md to render them; the same contract is readable without Python. Stored research keeps the original five state names, not new dataset fields.
+Read `data/output-contracts.json` for exact `salary.visa_labels`, numeric state, period suffixes and warning token; render through `skills/output-helper.md`. The same contract supports approved manual processing. Keep the original five research-state names without new dataset fields.
 
-For a route with no fixed threshold, preserve any prevailing-wage or other compensation conditions in shown work: absence of a fixed number is not absence of all pay rules. Not applicable requires a confirmed path outside employer-sponsored relocation. Unknown must not become a dash, a guess or a claimed block. A Blocked route retains its concrete reason and reference-only note even if a number is known; never generalize to unassessed routes.
+For No fixed threshold, preserve prevailing-wage and other pay conditions in shown work: no fixed number does not mean no pay rules. Not applicable needs a confirmed path outside sponsored relocation. Unknown is neither a dash, guess nor claimed block. Blocked retains its concrete reason and reference-only note even when a number is known; do not extend it to unassessed routes.
 
-For a verified number, display the exact figure in its original period using the contract suffix, without display-rounding or showing both period equivalents. Keep category, source, effective date and additional conditions in shown work. The renderer appends one warning only when either raw target misses the salary minimum; identify the affected segments and exact shortfall in Summary. A passed comparison is not overall visa eligibility.
+Display a verified figure exactly in its original period with the contract suffix, without rounding or both period equivalents. Category, source, effective date and additional conditions stay in shown work. Append one warning when either raw target misses the minimum; identify affected segments and exact shortfalls in Summary. A pass is not overall visa eligibility.
 
-Never adjust Mainstream or Premium targets to meet a visa minimum. Market estimates and the visa rule remain separate facts. A threshold shortfall is not a blocked route: a higher actual offer may satisfy the salary requirement. A Blocked route does not zero or change salary estimates; they remain reference-only for sponsorship through that route.
+Never change targets to meet a visa minimum. A shortfall is not Blocked: a higher offer may qualify. A Blocked route leaves estimates unchanged as reference-only salaries for sponsorship through that route.
 
 ## Legacy display compatibility
 
-When an unfinished audit reads a legacy table, Safe maps to Mainstream and Stretch maps to Premium; Legal Requirement is the old column label. Recover threshold meaning from the underlying stored research, not display shorthand alone. A legacy dash cannot distinguish No fixed threshold from Not applicable by itself. If the source cannot establish a state, category, or period, render Unknown and explain the limitation rather than guessing. Preserve original research and pre-audit tables; completed final results are replayed as saved, never silently migrated.
+For unfinished audits, Safe means Mainstream, Stretch means Premium and Legal Requirement is the old column label. Recover meaning from stored research, not shorthand: a dash cannot distinguish No fixed threshold from Not applicable. Unestablished state/category/period renders Unknown with its limitation. Preserve research and pre-audit tables; completed finals replay without migration.

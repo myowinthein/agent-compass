@@ -7,7 +7,7 @@ nav_order: 2
 
 # Step 2: Data validation
 
-Checks the research structure and stores accepted salary data unchanged. It does not verify market claims or calculate targets.
+Store accepted salary research unchanged, without verifying market claims or calculating targets.
 
 ## Flow
 
@@ -29,23 +29,19 @@ flowchart TD
 
 ## Required data
 
-Each country needs both the Mainstream and Premium tiers, with salary figures and sources for each. A source in another tier or a quoted example cannot fill a missing field.
+Each country needs both employer tiers and their sources. Other sections or quoted examples cannot supply missing tier fields.
 
-A missing visa salary rule does not reject a country. Neither does a missing evidence grade; it is recorded as "not provided".
-
-Malformed or incomplete blocks are skipped with exact reasons. Duplicates keep the first stored original. Clear older field wording can be accepted after review without rewriting the research.
+Missing visa rules or evidence grades do not reject a country; an absent grade stays "not provided". Malformed/incomplete blocks are reported and skipped. Duplicates preserve stored originals; clear legacy labels receive semantic review.
 
 ## Country boundaries
 
-Generated blocks start at a top-level `Country:` field. Blank lines alone do not separate datasets. Genuinely ambiguous boundaries require clarification, not guessed parsing.
-
-The shared helper copies accepted blocks byte-for-byte and checks coverage. If saving fails, the checkpoint does not advance; any partial write is inspected before retrying.
+Generated blocks use top-level `Country:` fields. Ambiguity needs clarification. Helpers preserve accepted bytes and check coverage; failed or partial saves leave the checkpoint pending until reconciled.
 
 ## What happens next
 
-- `salary-calculator-02-validated-data.md` contains accepted data.
-- `salary-calculator-01-research.md` retains the original research and a separate Validation report.
+- `salary-calculator-02-validated-data.md`: accepted data.
+- `salary-calculator-01-research.md`: raw findings and separate Validation report.
 
-The report carries missing-country and rejection reasons into later summaries. A duplicate whose original was kept is not a failed country.
+The report retains rejection and missing-country reasons. A duplicate with a retained original is not a failed country.
 
-If at least one country was stored, continue to [Step 3: International adjustment](step3-international-adjustment.html). Otherwise, the assistant offers evidence repair or stop before another specialist or career-ladder question.
+With stored countries, continue to [International adjustment](step3-international-adjustment.html). Otherwise, offer evidence repair or stop before specialists or career-ladder intake.

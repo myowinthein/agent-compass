@@ -5,29 +5,33 @@ description: Governs data validation behavior across Country Finder and Salary C
 
 # Data Validation Rules
 
-Use `skills/research-helper.md` for the parent's `research-scan` and `ingest` operations. The existing policies below still govern semantic review; Python checks boundaries/coverage and copies approved raw slices, not the truth of findings. Under an explicitly approved manual run, apply these same policies without claiming automated ingestion ran.
+Use `skills/research-helper.md` for parent-run `research-scan` and `ingest`. Python checks boundaries/coverage and copies approved raw slices; it does not verify findings. Approved manual processing follows the same rules without claiming automation ran.
 
 ## Country-block boundaries
 
-Generated research keeps the existing `Country: [name]` field as its delimiter: put it at the start of a line, outside quotes or code fences. A block ends immediately before the next such `Country:` line, before a top-level `## Validation report` section, or at end of file. Blank lines and horizontal rules alone are not country boundaries. Ignore an optional `## Research scope` preface before the first country; it is metadata, not a dataset.
+Generated blocks start with `Country: [name]` at the beginning of a line outside quotes or code fences. They end before the next such field, a top-level `## Validation report`, or end of file. Blank lines and horizontal rules do not define boundaries. A leading `## Research scope` is metadata, not a dataset.
 
-Two successive top-level Country fields mean two blocks, not a malformed multi-country block. If the user explicitly supplies individually fenced or otherwise clearly delimited datasets, honor those boundaries instead; an explicitly bounded block containing multiple country datasets is malformed. Accept unambiguous legacy boundaries without rewriting the supplied content. If boundaries are genuinely ambiguous, the parent asks for clarification rather than inventing separators or guessing. Country mentions in evidence, quotations, and source titles do not create new datasets.
+Successive top-level Country fields define separate blocks. Honor explicitly supplied fences or other clear dataset delimiters; a single explicitly bounded block containing multiple datasets is malformed. Accept unambiguous legacy boundaries without rewriting content. The parent clarifies ambiguity rather than guessing. Country mentions in evidence, quotations or source titles do not start blocks.
 
-The parent uses these same boundaries when collecting research. Append new country results before any existing Validation report, never after it. Preserve original country content verbatim; framing and generated audit metadata are not research findings.
+During collection, append findings before any existing Validation report. Preserve original country content verbatim; framing and generated audit metadata are not research.
 
 ## Validation report
 
-After ingestion, save the consolidated validation report under `## Validation report` at the end of the original aggregate research file, separate from the country blocks. Preserve the raw research text and stored datasets unchanged; update only a previously generated report when rerunning validation. Record stored countries, every rejected block's country (or block index if unrecognizable), the exact reason, duplicates whose original was retained, and expected countries not supplied. Do not treat a rejected duplicate as a country with no valid data when its original was stored.
+Save one consolidated `## Validation report` at the end of the original aggregate file. Preserve research and stored datasets; reruns update only the existing generated report. Record:
 
-The calling step identifies the existing research/output files; no new profile, state, or dataset fields are required. Readers ignore the report as country data, but downstream audits use its skip reasons. On legacy runs without a report, distinguish an unknown ingestion outcome from "never researched"; use the available research blocks and saved outputs to establish what happened rather than inventing a reason.
+- Stored countries.
+- Every rejected block's country, or index if unrecognizable, and exact reason.
+- Duplicates whose original was retained.
+- Expected countries not supplied.
+
+A rejected duplicate is not missing data when its original survives. Use the calling step's existing files without new profile, state or dataset fields. Readers exclude the report from country data; downstream audits use its skip reasons.
+
+For legacy files without a report, inspect available blocks and saved outputs. Distinguish an unknown ingestion outcome from never-researched data; do not invent a reason.
 
 ## Validation behavior
 
-Whenever ingesting or storing data provided by the user, apply these rules:
-
-- Each block is expected to contain data for exactly one item (one country, one dataset). If an identifiable block contains multiple datasets or nothing recognizable, reject it with the reason rather than guessing which part to use. Follow the calling step's skip-and-report policy for batch ingestion; genuinely ambiguous boundaries require parent-side clarification.
-- If required fields or sections are missing from what was provided, state exactly what is missing. Do not store incomplete data as if it were complete.
-- Canonical fields belong to their own track/tier, outside quoted or fenced examples. Other sections and trailing Notes cannot supply a missing Sources field. Newly flagged legacy wording requires the existing semantic review, not automatic rejection or rewritten research.
-- If an item was already stored earlier, keep the original, skip the duplicate, and note it in a warning at the end of processing. Never silently overwrite the original. (A calling step may instead require stopping to ask before overwriting — follow the calling step's rule when it specifies one.)
-- Preserve values and formatting exactly as provided. Do not correct, improve, or reinterpret the data.
-- Do not analyze, summarize, or score data during ingestion — that happens in a later, separate step.
+- Require one recognizable item per block. Reject explicitly bounded multi-dataset or unrecognizable blocks with reasons, following the calling step's batch skip/report policy. Ambiguous boundaries need clarification.
+- Identify exact missing required fields or sections; never store incomplete data as complete.
+- Check canonical fields within their own track/tier, outside quoted or fenced examples. Other sections and trailing Notes cannot supply missing Sources. Legacy wording needs semantic review, not automatic rejection or rewritten research.
+- Retain stored originals, skip duplicates and report them at the end. Follow any stronger calling-step requirement to ask before overwrite; never silently replace an original.
+- Preserve values and formatting exactly. Do not correct, improve, reinterpret, analyze, summarize or score during ingestion; analysis belongs to a later step.

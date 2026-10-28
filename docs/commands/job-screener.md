@@ -7,7 +7,7 @@ has_children: true
 
 # job-screener
 
-Compares job descriptions with your profile and returns a compact Apply, Maybe or Skip report. It can also help draft application answers and messages.
+Compare job descriptions with your profile and receive an Apply, Maybe or Skip report. You can also request application drafts.
 
 ## Start the command
 
@@ -15,9 +15,7 @@ Compares job descriptions with your profile and returns a compact Apply, Maybe o
 job-screener
 ```
 
-Use the prefix shown in [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command).
-
-A dedicated chat is useful. Run the command once, then paste one job description at a time. You do not need to repeat it for every job in that chat.
+Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). Run once in a dedicated chat, then paste one job at a time.
 
 ## Flow
 
@@ -37,14 +35,12 @@ flowchart TD
 
 ## Your result
 
-Each job gets a verdict, pros, cons and missing-information checklist. Salary and application method appear only when the job states them. 🚫 identifies a confirmed hard blocker, not every gap in your profile.
+Each report gives a verdict, pros, cons and missing information. Salary and application method appear only when stated. 🚫 marks confirmed hard blockers, not every profile gap.
 
-An existing situational profile supplies known work rights, location, languages and salary preferences. You do not need to complete a separate intake just to screen a job.
+Saved situational facts are reused without requiring new intake. Drafts use confirmed facts and compact English; nothing is submitted automatically.
 
-Application drafts use your confirmed facts and simple, compact English. The command does not submit applications automatically.
-
-See [Step 1: Match analysis](job-screener/step1-match-analysis.html) for verdict rules and the report format.
+See [Match analysis](job-screener/step1-match-analysis.html) for verdict rules and the exact report format.
 
 ## Continuing the chat
 
-There is no checkpoint file; each job is assessed independently. Keep pasting jobs or application questions in the same chat. If the format drifts, run the command again to reload its instructions and profile.
+Keep pasting jobs or application questions. Each job is assessed independently without a checkpoint. If a long chat drifts, rerun the command to reload its instructions and profile.

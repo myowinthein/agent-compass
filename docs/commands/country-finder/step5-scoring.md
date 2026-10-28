@@ -7,7 +7,7 @@ nav_order: 5
 
 # Step 5: Scoring
 
-Assesses Remote and Sponsorship fit separately using the stored research. Despite the step's name, fits are categories, not numerical scores.
+Assess Remote and Sponsorship separately using categorical fits and confidence, without numerical scores.
 
 ## Flow
 
@@ -27,22 +27,16 @@ flowchart TD
 
 ## Fit and confidence
 
-Each supported assessment has a Strong, Moderate or Weak fit, a High, Medium or Low confidence level and brief evidence-based reasoning.
+Supported tracks receive Strong, Moderate or Weak fit and High, Medium or Low confidence. Vague, old or unsourced evidence lowers confidence. No usable evidence means `not scored (no data)`, not an invented Weak fit.
 
-Vague, old or unsourced claims reduce confidence. If no applicable evidence remains usable, the track is recorded as `not scored (no data)`, not assigned an invented Weak fit.
-
-An explicit Step 2 rejection remains Excluded with its original reason. A rejection on one track never removes the other.
+Earlier exclusions retain their reasons and affect only their own track.
 
 ## Salary checks
 
-For Remote, only a comparable pay range entirely below your hard floor can trigger exclusion. A context-only minimum, missing exchange rate or range crossing the floor cannot establish failure.
+Remote exclusion needs a comparable pay range entirely below your hard floor. Context-only minima, missing conversion or a straddling range do not prove failure.
 
-For Sponsorship, a compatible Salary Calculator result can provide an informational [visa-pay comparison](../salary-calculator/step4-table-calculation.html#visa-salary-rule-comparison). It is optional and does not independently exclude a country or prove visa eligibility. A completed final result takes precedence over its pre-audit figures; missing or incompatible data stays unverified.
-
-Salary Calculator's local-employee benchmarks are not evidence of cross-border remote offers.
+Sponsorship can use an optional compatible Salary Calculator [visa-pay comparison](../salary-calculator/step4-table-calculation.html#visa-salary-rule-comparison). Completed final figures take precedence over pre-audit values. This does not independently exclude a country or establish visa eligibility; local-employee targets do not prove cross-border Remote pay.
 
 ## What happens next
 
-Full assessments are saved to `country-finder-05-assessment.md`. Chat shows only brief counts.
-
-You may choose a [specialist agent]({{ '/docs/specialist-agents.html' | relative_url }}) or keep your current model. Either way, [Step 6: Final ranking](step6-final-ranking.html) runs next.
+The assistant saves `country-finder-05-assessment.md` and shows brief counts. An optional [specialist]({{ '/docs/specialist-agents.html' | relative_url }}) can run the step; [Final ranking](step6-final-ranking.html) always follows.

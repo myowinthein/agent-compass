@@ -7,7 +7,7 @@ nav_order: 1
 
 # Step 1: Portal research
 
-Checks portals directly on their own sites and returns useful links for the country you chose.
+Verify portals on their own sites for the chosen country's IT/tech roles.
 
 ## Flow
 
@@ -31,28 +31,22 @@ flowchart TD
 
 ## Groups
 
-Each portal appears once, under its type:
+Each portal appears once by type:
 
-1. General job boards: broad job sites with tech listings.
-2. Tech-specific boards: sites focused on IT, software, data or related roles.
-3. Professional & community networks: professional networks and community-run boards.
+1. General job boards.
+2. Tech-specific boards.
+3. Professional & community networks.
 
-Country-dedicated or global scope is noted per entry, not used as a separate group. Remote-first boards are grouped by their focus. A genuine exception can have an extra group; empty groups are not padded with invented entries.
-
-Government and official employment-service portals are excluded by this workflow.
+Geographic scope is noted per entry; remote-first boards follow their subject focus. Genuine exceptions can have another group. Empty groups need no filler. Government employment-service portals are excluded.
 
 ## What you receive
 
-Each entry has the portal name, an official URL, its geographic scope and one line about its practical strength. Useful country or category links are preferred over generic homepages.
+Each entry gives an official link, country/global scope and one-line strength. Country/category/search links support verification beyond a homepage.
 
-⭐ marks the 2–3 verified starting picks within each group, or fewer when fewer qualify. A verification date accompanies live results.
-
-⚠️ covers relevant restrictions, deprecated sites, shared ownership or verification limits. Login access and eligibility for a particular job are separate questions.
+⭐ marks 2–3 verified starting picks per group, or fewer when fewer qualify. Live results carry a verification date. ⚠️ flags restrictions, deprecated sites, shared ownership or access limits; account access and job eligibility are separate.
 
 ## Partial or unavailable access
 
-An inaccessible portal is named in a coverage note, not presented as verified or declared inactive. A homepage with IT marketing text or category links is not enough when the relevant search or job pages cannot be checked. Adding a caveat does not qualify it for a verified group or ⭐. Other verified results remain usable.
+Failed access becomes a coverage note, not a dead-site claim or verified recommendation. Homepage marketing alone cannot qualify an entry when deeper pages cannot be checked. Other verified results remain usable.
 
-Without browsing, supplied sources are labelled **user-supplied; not live verified**, with their evidence date, separately from live-verified recommendations. Unverified entries do not receive verified starting-pick stars.
-
-If nothing can be verified, the response says so and explains the limits rather than claiming a successful search.
+Without browsing, wait for access or supplied evidence. Supplied results are dated and labelled **user-supplied; not live verified**, separate from verified picks. No verified portals means an explicit limitation, not an empty success.
