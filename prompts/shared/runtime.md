@@ -20,9 +20,17 @@ Before the first actual user question, read [Question mechanism (QM)](question-m
 
 ## Checkpoints
 
-The parent orchestrator runs each workflow's numbered steps in order; do not skip, combine, or summarize their instructions to save time. The parent stops and waits whenever a step asks the user a question. Never supply placeholder answers or assume candidate data. Apply the step-completion rule below after each step. If a specialist encounters missing or ambiguous input, it reports the issue to the parent, which asks the user rather than guessing.
+The parent orchestrator runs every numbered step in order under its complete instructions. Concise progress messages and reuse of unchanged instructions never mean omitting or merging steps, required outputs or checks. The parent stops and waits whenever a step asks the user a question. Never supply placeholder answers or assume candidate data. Apply the step-completion rule below after each step. If a specialist encounters missing or ambiguous input, it reports the issue to the parent, which asks the user rather than guessing.
 
 Profile confirmation, criteria intake, country-list confirmation, manual research collection, career-ladder confirmation, and specialist-routing choices stay in the parent conversation. Stop when the selected workflow is complete.
+
+## Parent execution and evidence reuse
+
+Prioritize timely completion of the selected pipeline without changing research depth. Load required instructions/interfaces when their step begins, then reuse complete unchanged reads within the same invocation. Reuse actual saved-input content only while its resolved path/content identity and relevant candidate clarifications, role, country scope, employment path and evidence dates still match; a remembered summary is not saved evidence. Fresh specialists still read their assigned inputs independently. Do not add caches, sidecars or new records.
+
+Retain supported parent-side decisions until relevant inputs change; do not repeatedly debate settled intake, routing or preparation. Missing material facts and unfinished research still use the existing clarification/repair paths. Reuse verified optional read-only lookups or calculations only where the owning step permits and their complete inputs, helper/contract, configuration and execution context match. Run every required stage check, including post-save `state-check` and final `check-saved`; recheck expected hashes before ingestion and never replay writes or treat old success as current readback.
+
+Keep parent narration and tool output focused on the next decision, preserving required source identities, dates, limitations and exact calculation results. Retrieve required unread/truncated content; a compact summary cannot replace it. Do not reprint whole research files merely to confirm collection. Raw research, required deliverables and final audits retain their full existing content and formats. This policy adds no researcher stopping rule, cross-task/country evidence reuse or exception to live-source verification, independent tiers/tracks, research isolation, approvals or checkpoints. Model/effort choices remain unchanged.
 
 ## Candidate clarifications
 
