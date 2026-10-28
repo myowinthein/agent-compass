@@ -8,6 +8,7 @@ Before the first user question, read [Question mechanism (QM)](question-mechanis
 
 | Shared trigger and owner | Preferred form and answer needed |
 |---|---|
+| CF/SC run selection; skills/run-workspaces.md | Identify the person before profile/state reuse. For a matching completed run ask View previous results / Start fresh; for an unfinished run ask Resume / Start fresh. A new chat/person/command without a matching run starts fresh. |
 | Missing resume; prompts/shared/resume-extraction-prompt.md | Input for a resume via normal chat, paste or supplied readable local path; Review of the full extracted profile before saving, with Input for corrections and a new shown revision. |
 | Material missing/conflicting candidate facts; Candidate clarifications below | Input for only the unresolved facts, with units/reference date where needed. If saving a clarification is proposed, Review of the exact dated profile note; a run-only answer alone never approves persistence. |
 | Duplicate artifact aliases or changed resolved paths; skills/workspace-files.md | Input clarifying the intended artifact and user-managed resolution. Wait until a single spelling remains and paths are reconciled; a picker answer does not authorize merging, deleting or migrating files. |
@@ -24,11 +25,15 @@ Run every numbered step in order under its complete instructions. Do not omit or
 
 ## Parent execution and evidence reuse
 
-Prioritize timely completion of the selected pipeline without changing research depth. Load required instructions/interfaces when their step begins, then reuse complete unchanged reads within the same invocation. Reuse actual saved-input content only while its resolved path/content identity and relevant candidate clarifications, role, country scope, employment path and evidence dates still match; a remembered summary is not saved evidence. Fresh specialists still read their assigned inputs independently. Do not add caches, sidecars or new records.
+Prioritize timely completion of the selected pipeline without changing research depth. Load required instructions/interfaces when their step begins, then reuse complete unchanged reads within the same invocation. Reuse actual saved-input content only while its resolved path/content identity and relevant candidate clarifications, role, country scope, employment path and evidence dates still match; a remembered summary is not saved evidence. Fresh specialists still read their assigned inputs independently. Only the run metadata specified in skills/run-workspaces.md is added; do not add other caches, sidecars or records.
 
 Retain supported parent-side decisions until relevant inputs change; do not repeatedly debate settled intake, routing or preparation. Missing material facts and unfinished research still use the existing clarification/repair paths. Reuse verified optional read-only lookups or calculations only where the owning step permits and their complete inputs, helper/contract, configuration and execution context match. Run every required stage check, including post-save `state-check` and final `check-saved`; recheck expected hashes before ingestion and never replay writes or treat old success as current readback.
 
 Keep parent narration and tool output focused on the next decision, preserving required source identities, dates, limitations and exact calculation results. Retrieve required unread/truncated content; a compact summary cannot replace it. Do not reprint whole research files merely to confirm collection. Raw research, required deliverables and final audits retain their full existing content and formats. This policy adds no researcher stopping rule, cross-task/country evidence reuse or exception to live-source verification, independent tiers/tracks, research isolation, approvals or checkpoints. Model/effort choices remain unchanged.
+
+## Run selection
+
+Before CF/SC reads profiles or artifacts, read skills/run-workspaces.md and select the run for this chat, person and command. A new chat starts fresh. Existing work in the same chat requires the completed/unfinished run choice before replay or resume. Keep the base workspace distinct from the selected run workspace throughout all steps.
 
 ## Candidate clarifications
 
@@ -40,7 +45,7 @@ Persist a clarification in profile.md or situational-profile.md only with approv
 
 ## Reusing another workflow's output
 
-Resolve producer artifacts through skills/workspace-files.md before checking or reading them. Preserve the producer's naming independently of the consumer. A duplicate-alias conflict needs user resolution, not fallback to an older or provisional result.
+For CF/SC, first select the same chat/person's producer run under skills/run-workspaces.md. Resolve producer artifacts in that producer workspace through skills/workspace-files.md before checking or reading them. Preserve the producer's naming independently of the consumer. A duplicate-alias conflict needs user resolution, not fallback to an older or provisional result.
 
 Establish an optional upstream final's readiness through `state-check` under skills/helper-runtime.md, or explicit user confirmation of a legacy/imported final. Record confirmation and source context in the consumer's existing Notes or shown work. A filename, table or self-declared completion is insufficient; imports do not create producer checkpoints.
 
@@ -68,7 +73,7 @@ Before the first supported mechanical operation, read skills/helper-runtime.md. 
 Resolve the loaded `<plugin-root>/skills/<command>/SKILL.md` through symlinks, then ascend three directories from the file to find the plugin root. A Claude plugin-root substitution uses that same installed root. Keep the selected workspace as the working directory.
 
 - Read bundled `workflows/`, `prompts/`, `skills/`, `agents/`, `helpers/` and `data/` from the plugin root, even where a step says "from the workspace."
-- Read and write `profile.md`, `situational-profile.md`, resolved workflow artifacts and pipeline state JSON files in the user's workspace. Never put candidate data or results in the plugin installation.
+- Read and write `profile.md`, `situational-profile.md`, resolved workflow artifacts and pipeline state JSON files in the selected run workspace for CF/SC, or the explicitly selected profile workspace for Job Screener. Never put candidate data or results in the plugin installation.
 - Give subagents absolute package/workspace paths, the exact step prompt and needed inputs rather than relying on inherited context or working directories.
 - If a required file is missing, report its actual path and stop that step. Do not substitute a similarly named file from another installation or workspace.
 
@@ -89,7 +94,7 @@ Use the existing state format:
 
 With no state file, check both registered filename families for owned outputs, including Salary Calculator's career ladder. Profiles and other workflows' outputs do not count. If owned outputs exist, report them and ask for verified user-approved recovery, a fresh workspace, labelled imported-result use or stop before creating state or rewriting anything. Never infer completed steps. Imported finals use the readiness rule without reconstructing state; only a clean run creates step 0 automatically.
 
-Existing state must be valid JSON with integer `last_completed_step` from 0 through the final step. Report invalid state without overwriting it. Announce and resume the next step. Completed runs replay the saved final without restart or overwrite; a missing final is an inconsistency that stops the run.
+Existing state must be valid JSON with integer `last_completed_step` from 0 through the final step. Report invalid state without overwriting it. Announce and resume the next step. After the run-selection choice, View previous results replays the selected completed final without restart or overwrite; Start fresh allocates another run instead. A missing final is an inconsistency, not completion.
 
 Only the parent updates state, after every required output is saved and any required confirmation received. Pending questions, manual collection, failed researchers and partial batches are incomplete. Record the completed step number and ISO 8601 `updated_at` before proceeding; leave state unchanged on failure. At research resumes, retain collected blocks and research only missing countries under the step's duplicate rules.
 

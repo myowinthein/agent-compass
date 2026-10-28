@@ -1,5 +1,6 @@
 {
   "schema_version": 1,
+  "runs": {"directory": "runs", "metadata": ".compass-run.json"},
   "workflows": {
     "country-finder": {
       "state": ".country-finder-state.json",

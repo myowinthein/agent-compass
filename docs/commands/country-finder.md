@@ -21,17 +21,18 @@ Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). 
 
 ```mermaid
 flowchart TD
-  Start(["Run country-finder"]) --> Profile["Load your saved profile<br/>Or extract your resume and wait for confirmation"]
-  Profile --> Status{"Saved run?"}
-  Status -->|Completed| Replay(["Show the saved final result<br/>Do not restart"])
-  Status -->|Needs recovery or repair| Recover["Explain the issue<br/>Wait for your choice"]
-  Status -->|New or valid unfinished run| Run["Start at Step 1<br/>Or resume the next unfinished step"]
+  Start(["Run country-finder"]) --> Status{"Matching chat/person search?"}
+  Status -->|Completed and View chosen| Replay(["Show the saved final result"])
+  Status -->|Unfinished and Resume chosen| Run["Resume the next unfinished step"]
+  Status -->|No match or Start fresh chosen| Profile["Create a separate run<br/>Reuse or confirm this person's profile"]
+  Profile --> Run
+  Status -->|Needs repair| Recover["Explain the issue<br/>Offer repair or a fresh run"]
   Run --> Steps["1. Collect your criteria<br/>2. Discover suitable countries<br/>3. Research eligible tracks<br/>4. Validate and store research<br/>5. Assess each track<br/>6. Audit and rank"]
   Steps --> Questions["Pause for questions or required choices<br/>Otherwise continue automatically"]
   Questions --> Final(["Show the Priority Table<br/>Save the full audit"])
 ```
 
-Unfinished runs resume; completed runs replay their saved result.
+New chats start fresh. In the same chat, a matching completed search offers View previous results / Start fresh; an unfinished search offers Resume / Start fresh. Earlier searches are preserved. See [Searches and saved files](../setup/saved-searches.html).
 
 ## What to expect
 

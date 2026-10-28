@@ -1,6 +1,6 @@
 # salary-calculator
 
-Run the full Salary Calculator pipeline, resuming from where it left off if a state file exists.
+Run the full Salary Calculator pipeline in a search isolated by chat, person and command.
 
 ## Question points
 
@@ -18,6 +18,8 @@ Use [QM](../prompts/shared/question-mechanism.md) and the shared runtime's commo
 | Specialist handoffs and new numeric requests; Sequence below | Use the common routing/helper map. Selecting a specialist never confirms the ladder or missing evidence; an approved continuation adds no duplicate routing question. |
 
 ## Before starting
+
+First read skills/run-workspaces.md. Select or create the run before any profile, artifact or checkpoint access; keep its returned workspace for this whole pipeline. New chats start fresh. In this chat, a matching completed run offers View previous results / Start fresh; an unfinished run offers Resume / Start fresh. Preserve earlier runs when starting fresh.
 
 Resolve this workflow's artifact paths using skills/workspace-files.md before accessing saved outputs. Resolve Country Finder separately when its optional results are used. Canonical names below use those resolved paths on legacy runs.
 
