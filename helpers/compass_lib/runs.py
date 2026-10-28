@@ -33,6 +33,13 @@ def location(payload):
     chat = text(payload["chat_id"])
     require(chat == chat.strip() and len(chat) <= 512 and all(ord(c) >= 32 for c in chat)
             and not any(c in chat for c in "${}<>"), "Supply an actual chat ID or chat-local random token")
+    host, separator, identifier = chat.partition(":")
+    require(separator and host in ("claude", "codex", "local") and identifier
+            and not any(c.isspace() for c in identifier), "Expected a host-prefixed chat ID")
+    if host == "local":
+        value = uuid.UUID(identifier)
+        require(value.version == 4 and str(value) == identifier,
+                "Generate a canonical random UUID4 with a tool for the local chat token")
     spec = loads(read(ROOT / "data" / "workspace-files.json"))["runs"]
     key = hashlib.sha256(chat.encode("utf-8")).hexdigest()
     return directory(directory(root, spec["directory"]), "chat-" + key), key, spec["metadata"]
@@ -44,6 +51,9 @@ def catalog(folder, key, metadata):
     if not folder.exists():
         return records
     for path in sorted(folder.iterdir()):
+        if path.name == ".DS_Store":
+            require(not path.is_symlink() and path.is_file(), "Unsafe Finder metadata entry")
+            continue
         if path.name.startswith(".creating-"):
             continue
         require(path.name.startswith("run-"), "Unexpected occupant in the selected chat's run directory")

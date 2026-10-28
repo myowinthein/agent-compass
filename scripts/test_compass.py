@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import uuid
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "helpers"))
@@ -1112,16 +1113,42 @@ class RunWorkspaces(unittest.TestCase):
 
     def test_missing_final_and_same_name_people_are_not_reused(self):
         with tempfile.TemporaryDirectory() as root:
-            first = self.start(root, chat='local:fictional-token')
+            first = self.start(root, chat='local:19a1df27-8a5d-4ad8-97cc-504094005c61')
             self.finish(first)
             (Path(first['workspace'])/'country-finder-06-final-results.md').unlink()
-            second = self.start(root, chat='local:fictional-token')
+            second = self.start(root, chat='local:19a1df27-8a5d-4ad8-97cc-504094005c61')
             self.assertNotEqual(first['person_id'], second['person_id'])
-            current = runs.list_runs(self.request(root, 'local:fictional-token'))['active_runs']
+            current = runs.list_runs(self.request(root, 'local:19a1df27-8a5d-4ad8-97cc-504094005c61'))['active_runs']
             statuses = {r['run_id']: r for r in current}
             self.assertEqual(statuses[first['run_id']]['status'], 'inconsistent')
             self.assertFalse(statuses[first['run_id']]['completed'])
-            self.assertEqual(runs.list_runs(self.request(root, 'local:different-token'))['active_runs'], [])
+            self.assertEqual(runs.list_runs(self.request(root, 'local:efcfaf7e-3dca-4166-85a7-a118c965596a'))['active_runs'], [])
+
+    def test_chat_tokens_reject_placeholders_and_malformed_local_ids(self):
+        with tempfile.TemporaryDirectory() as root:
+            for chat in ('chat-a', 'local:example', 'local:00000000-0000-0000-0000-000000000000',
+                         'claude:${CLAUDE_SESSION_ID}', 'codex:two words', 'unknown:session', 'claude:'):
+                with self.subTest(chat=chat), self.assertRaises(ValueError):
+                    self.start(root, chat=chat)
+                self.assertEqual(list(Path(root).iterdir()), [])
+            chat = 'local:' + str(uuid.uuid4())
+            run = self.start(root, chat=chat)
+            self.assertEqual(runs.list_runs(self.request(root, chat))['active_runs'][0]['run_id'], run['run_id'])
+
+    def test_finder_metadata_does_not_block_or_modify_saved_runs(self):
+        with tempfile.TemporaryDirectory() as root:
+            first = self.start(root)
+            self.finish(first)
+            finder = Path(first['workspace']).parent/'.DS_Store'
+            finder.write_bytes(b'Fictional Finder metadata')
+            before = self.snapshot(root)
+            self.assertTrue(runs.list_runs(self.request(root))['active_runs'][0]['completed'])
+            self.assertEqual(self.snapshot(root), before)
+            self.start(root, person_id=first['person_id'], previous_run_id=first['run_id'])
+            for name, raw in before.items():self.assertEqual((Path(root)/name).read_bytes(), raw)
+            finder.unlink()
+            finder.mkdir()
+            with self.assertRaisesRegex(ValueError, 'Finder metadata'):runs.list_runs(self.request(root))
 
     def test_forked_baselines_and_cycles_require_reconciliation(self):
         with tempfile.TemporaryDirectory() as root:
