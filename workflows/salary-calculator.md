@@ -33,11 +33,11 @@ Apply the state tracking instructions in prompts/shared/runtime.md with:
 
 ## Presentation compatibility
 
-The literal table contract lives in data/output-contracts.json; prompts/salary-calculator/step4-table-calculation.md owns its semantic procedure, and Step 5b audits and presents it. Read the contract as data even during approved manual fallback. Do not duplicate its columns or formulas in host adapters. Keep research field names and pipeline state unchanged; use the shared filename resolution rather than renaming existing outputs. Unfinished legacy runs are interpreted by Step 5b's compatibility rule; completed runs replay the saved final result without migration or new research.
+data/output-contracts.json owns the literal table contract, Step 4 its semantic procedure, and Step 5b its audit, presentation and unfinished-legacy compatibility. Read the contract even during approved manual fallback; do not duplicate columns/formulas in host adapters or change research field names. Shared runtime rules govern filename resolution, checkpoints and completed replay.
 
 ## Sequence
 
-After validation or calculation, if no country has usable estimates, save the required report/output and its completed checkpoint, explain why nothing is calculable, and offer missing-evidence repair or stop. Do not continue to a specialist, career-ladder question or empty final table. Apply this guard on unfinished resumes too. If all adjustments are unestimable, the parent writes Step 4's skip-only record without a calculator handoff. For repairs and materially changed inputs, apply the shared runtime's repair/rewind rule and scope-safe original preservation; a changed-role rerun cannot replace stored originals through ordinary ingestion. Never reset a completed run automatically.
+After validation or calculation, including resumed runs, if no country has usable estimates, save the required report/output and completed checkpoint, explain why, and offer missing-evidence repair or stop. Do not continue to a specialist, career ladder or empty final table. If all adjustments are unestimable, the parent writes Step 4's skip-only record without a calculator handoff. Repairs and changed inputs follow the shared runtime's preservation/rewind rule.
 
 1. First read and apply skills/situational-profile-questions.md on the calling model, so situational-profile.md exists before threshold research. Read prompts/salary-calculator/step1-research-prompt-generator.md and follow it exactly.
 2. Read prompts/salary-calculator/step2-data-validation.md and follow it exactly.
