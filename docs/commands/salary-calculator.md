@@ -21,10 +21,12 @@ Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). 
 
 ```mermaid
 flowchart TD
-  Start(["Load or confirm your profile"]) --> Status{"Saved run?"}
-  Status -->|Completed| Replay(["Show the saved final result"])
-  Status -->|Needs recovery or repair| Recover(["Explain the issue<br/>Wait for your choice"])
-  Status -->|New or valid unfinished run| Resume["Start or resume the next unfinished step"]
+  Start(["Select this chat and person"]) --> Status{"Matching salary search?"}
+  Status -->|Completed and View chosen| Replay(["Show the saved final result"])
+  Status -->|Unfinished and Resume chosen| Resume["Resume the next unfinished step"]
+  Status -->|No match or Start fresh chosen| Profile["Create a separate run<br/>Reuse or confirm this person's profile"]
+  Profile --> Resume
+  Status -->|Needs repair| Recover(["Explain the issue<br/>Offer repair or a fresh run"])
   Resume --> S1["1. Confirm countries<br/>Research local salaries and reference visa salary rules"]
   S1 --> S2["2. Validate and store research"]
   S2 --> Stored{"Any country stored?"}
@@ -38,7 +40,7 @@ flowchart TD
   Audit --> End(["Show the final salary table<br/>Save the full audit"])
 ```
 
-Unfinished runs resume; completed runs replay saved results.
+New chats start fresh. In the same chat, a matching completed search offers View previous results / Start fresh; an unfinished search offers Resume / Start fresh. Earlier searches are preserved. See [Searches and saved files](../setup/saved-searches.html).
 
 ## What to expect
 

@@ -27,7 +27,7 @@ Before preparing helper inputs, read only the benchmark-scope and benchmark-meta
 
 Also read the Research scope and Validation report in salary-calculator-01-research.md if available. Reconcile the confirmed scope, research/ingestion rejections, salary datasets, and adjustment datasets: every expected country must be calculated or listed as skipped with its actual reason. Do not fabricate table rows for rejected data or count a rejected duplicate whose original survived as a skipped country. If legacy scope/report information is missing, say which coverage or ingestion outcome cannot be established instead of silently claiming complete coverage.
 
-Ordering: check whether country-finder-06-final-results.md exists in the workspace.
+Ordering: select the matching person's Country Finder producer run under the shared runtime, then check whether country-finder-06-final-results.md exists in that producer workspace. Do not look in the consumer run or base folder for an automatic substitute.
 - If it is a compatible source under the shared runtime's producer-readiness rule and recorded country-list provenance, use its readable Priority Table order, top to bottom. Do not silently switch to a newly appeared draft or unrelated role's ranking.
 - Append calculated countries not present in that Priority Table afterward, alphabetically by country name. Do not omit user-added countries.
 - If it does not exist, has unreadable ordering or is not a compatible established source, order countries alphabetically by country name (A→Z). Ordering is cosmetic and never blocks calculation or omits a user-added country.

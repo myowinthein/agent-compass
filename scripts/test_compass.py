@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "helpers"))
-from compass_lib import research, timezones
+from compass_lib import research, runs, timezones
 from compass_lib.common import Problem
 
 
@@ -965,6 +965,197 @@ class CompassCLI(unittest.TestCase):
             self.assertEqual(offered["countries"], ["🇩🇪 Germany", "🇫🇷 France"])
             self.assertEqual(sorted(p.name for p in consumer.iterdir()), ["cf-step6-final-ranking.md", "sc-step1-salary-research.md"])
             self.assertFalse(list(install.rglob("__pycache__")))
+
+
+class RunWorkspaces(unittest.TestCase):
+    def request(self, root, chat="codex:chat-a", **extra):
+        return {"workspace": str(root), "chat_id": chat, **extra}
+
+    def start(self, root, chat="codex:chat-a", command="country-finder", name="Fictional Person A", **extra):
+        return runs.start(self.request(root, chat, workflow=command, person_label=name, **extra))
+
+    def snapshot(self, root):
+        return {str(p.relative_to(root)): p.read_bytes() for p in Path(root).rglob('*') if p.is_file()}
+
+    def finish(self, run):
+        root = Path(run["workspace"])
+        spec = json.loads((ROOT / 'data/workspace-files.json').read_text())["workflows"][run["workflow"]]
+        for artifact in spec["artifacts"].values():
+            (root / artifact['current']).write_text('Fictional saved result.\n')
+        step = max(a['step'] for a in spec['artifacts'].values())
+        (root / spec['state']).write_text(json.dumps({'last_completed_step': step, 'updated_at': '2026-10-29T12:00:00Z'}))
+
+    def test_new_chat_does_not_replay_completed_run_or_root_files(self):
+        with tempfile.TemporaryDirectory() as root:
+            root = Path(root)
+            (root / 'profile.md').write_text('Fictional old root candidate')
+            (root / '.country-finder-state.json').write_text('{"last_completed_step":6}')
+            first = self.start(root)
+            self.finish(first)
+            before = self.snapshot(root)
+            self.assertTrue(runs.list_runs(self.request(root))['active_runs'][0]['completed'])
+            self.assertEqual(runs.list_runs(self.request(root, 'codex:chat-b'))['active_runs'], [])
+            self.assertEqual(self.snapshot(root), before)
+            second = self.start(root, 'codex:chat-b')
+            self.assertNotEqual(first['person_id'], second['person_id'])
+            self.assertNotEqual(first['workspace'], second['workspace'])
+            self.assertFalse((Path(second['workspace'])/'profile.md').exists())
+            for name, raw in before.items():
+                self.assertEqual((root/name).read_bytes(), raw)
+
+    def test_new_person_same_chat_does_not_inherit_profile_or_checkpoint(self):
+        with tempfile.TemporaryDirectory() as root:
+            first = self.start(root)
+            (Path(first['workspace'])/'profile.md').write_text('Fictional person A')
+            self.finish(first)
+            second = self.start(root, name='Fictional Person B')
+            self.assertNotEqual(first['person_id'], second['person_id'])
+            self.assertFalse((Path(second['workspace'])/'profile.md').exists())
+            statuses = runs.list_runs(self.request(root))['active_runs']
+            self.assertEqual(len(statuses), 2)
+            self.assertEqual({r['person_id']:r['status'] for r in statuses}[second['person_id']], 'missing')
+
+    def test_start_fresh_requires_selected_baseline_and_preserves_old_results(self):
+        for command in ('country-finder','salary-calculator'):
+            with self.subTest(command=command), tempfile.TemporaryDirectory() as root:
+                old = self.start(root, command=command)
+                self.finish(old)
+                before = self.snapshot(root)
+                with self.assertRaises(Problem):
+                    self.start(root, command=command, person_id=old['person_id'])
+                new = self.start(root, command=command, person_id=old['person_id'], previous_run_id=old['run_id'])
+                latest = runs.list_runs(self.request(root, person_id=old['person_id'], workflow=command))['active_runs']
+                self.assertEqual([r['run_id'] for r in latest], [new['run_id']])
+                self.assertEqual(latest[0]['status'], 'missing')
+                self.assertFalse(latest[0]['completed'])
+                for name, raw in before.items():self.assertEqual((Path(root)/name).read_bytes(), raw)
+                with self.assertRaises(Problem):
+                    self.start(root, command=command, person_id=old['person_id'], previous_run_id=old['run_id'])
+
+    def test_cross_command_reuses_only_same_person_confirmed_profiles(self):
+        with tempfile.TemporaryDirectory() as root:
+            cf = self.start(root)
+            profile = b'Fictional Person A\r\n'
+            situation = b'Fictional confirmed circumstances\r\n'
+            (Path(cf['workspace'])/'profile.md').write_bytes(profile)
+            (Path(cf['workspace'])/'situational-profile.md').write_bytes(situation)
+            self.finish(cf)
+            sc = self.start(root, command='salary-calculator', person_id=cf['person_id'], profile_source_run=cf['run_id'])
+            self.assertEqual((Path(sc['workspace'])/'profile.md').read_bytes(), profile)
+            self.assertEqual((Path(sc['workspace'])/'situational-profile.md').read_bytes(), situation)
+            self.assertEqual(set(p.name for p in Path(sc['workspace']).iterdir()),
+                             {'.compass-run.json','profile.md','situational-profile.md'})
+            self.assertIsNone(sc['previous_run_id'])
+            other = self.start(root, name='Fictional Person B')
+            with self.assertRaises(ValueError):
+                self.start(root, command='salary-calculator', name='Fictional Person B',
+                           person_id=other['person_id'], profile_source_run=cf['run_id'])
+            self.assertEqual(len(runs.list_runs(self.request(root, person_id=cf['person_id']))['active_runs']), 2)
+
+    def test_unfinished_resume_and_completed_view_are_read_only(self):
+        with tempfile.TemporaryDirectory() as root:
+            run = self.start(root)
+            path = Path(run['workspace'])
+            (path/'country-finder-01-criteria.md').write_text('Fictional criteria')
+            (path/'.country-finder-state.json').write_text(json.dumps({'last_completed_step':1,'updated_at':'2026-10-29T12:00:00Z'}))
+            before = self.snapshot(root)
+            current = runs.list_runs(self.request(root))['active_runs'][0]
+            self.assertEqual((current['status'],current['state']['last_completed_step']), ('in_progress',1))
+            self.assertEqual(self.snapshot(root), before)
+            self.finish(run)
+            before = self.snapshot(root)
+            self.assertTrue(runs.list_runs(self.request(root))['active_runs'][0]['completed'])
+            self.assertEqual(self.snapshot(root), before)
+
+    def test_corrupt_checkpoint_is_not_reported_complete_and_can_start_fresh(self):
+        with tempfile.TemporaryDirectory() as root:
+            old = self.start(root)
+            (Path(old['workspace'])/'.country-finder-state.json').write_text('broken')
+            record = runs.list_runs(self.request(root))['active_runs'][0]
+            self.assertEqual(record['status'],'inconsistent')
+            self.assertFalse(record['completed'])
+            new = self.start(root, person_id=old['person_id'], previous_run_id=old['run_id'])
+            self.assertNotEqual(old['workspace'], new['workspace'])
+            self.assertEqual((Path(old['workspace'])/'.country-finder-state.json').read_text(),'broken')
+
+    def test_rejects_foreign_person_ids_missing_metadata_and_symlink_roots(self):
+        with tempfile.TemporaryDirectory() as root, tempfile.TemporaryDirectory() as outside:
+            run = self.start(root)
+            with self.assertRaises(ValueError):self.start(root,'codex:another-chat',person_id=run['person_id'])
+            metadata = Path(run['workspace'])/'.compass-run.json'
+            original = metadata.read_bytes()
+            metadata.write_bytes(original.replace(b'"schema_version": 1',b'"schema_version": 99'))
+            with self.assertRaises(ValueError):runs.list_runs(self.request(root))
+            metadata.write_bytes(original)
+            if hasattr(os,'symlink'):
+                with tempfile.TemporaryDirectory() as malicious:
+                    try:(Path(malicious)/'runs').symlink_to(outside,target_is_directory=True)
+                    except OSError:pass
+                    else:
+                        with self.assertRaises(ValueError):self.start(malicious)
+                        self.assertEqual(list(Path(outside).iterdir()),[])
+
+    def test_cli_and_relocated_package(self):
+        with tempfile.TemporaryDirectory() as root, tempfile.TemporaryDirectory() as install:
+            install = Path(install)
+            for component in ('helpers','data'):
+                shutil.copytree(ROOT/component,install/component)
+            def invoke(command, payload):
+                result = subprocess.run([sys.executable,'-I','-B',str(install/'helpers/compass.py'),command],
+                                        input=json.dumps({'schema_version':1,**payload}),text=True,capture_output=True)
+                self.assertEqual(result.returncode,0,result.stderr)
+                return json.loads(result.stdout)['result']
+            run = invoke('run-start',self.request(root,'claude:fictional-session',workflow='salary-calculator',person_label='Fictional Person A'))
+            self.assertEqual(invoke('run-list',self.request(root,'claude:fictional-session'))['active_runs'][0]['run_id'],run['run_id'])
+            self.assertEqual(invoke('run-list',self.request(root,'claude:other-session'))['active_runs'],[])
+            self.assertFalse(list(install.rglob('__pycache__')))
+
+    def test_missing_final_and_same_name_people_are_not_reused(self):
+        with tempfile.TemporaryDirectory() as root:
+            first = self.start(root, chat='local:fictional-token')
+            self.finish(first)
+            (Path(first['workspace'])/'country-finder-06-final-results.md').unlink()
+            second = self.start(root, chat='local:fictional-token')
+            self.assertNotEqual(first['person_id'], second['person_id'])
+            current = runs.list_runs(self.request(root, 'local:fictional-token'))['active_runs']
+            statuses = {r['run_id']: r for r in current}
+            self.assertEqual(statuses[first['run_id']]['status'], 'inconsistent')
+            self.assertFalse(statuses[first['run_id']]['completed'])
+            self.assertEqual(runs.list_runs(self.request(root, 'local:different-token'))['active_runs'], [])
+
+    def test_forked_baselines_and_cycles_require_reconciliation(self):
+        with tempfile.TemporaryDirectory() as root:
+            old = self.start(root)
+            new = self.start(root, person_id=old['person_id'], previous_run_id=old['run_id'])
+            source = Path(new['workspace'])
+            fork_id = 'f' * 32
+            fork = source.parent / ('run-' + fork_id)
+            fork.mkdir()
+            record = json.loads((source/'.compass-run.json').read_text())
+            record['run_id'] = fork_id
+            (fork/'.compass-run.json').write_text(json.dumps(record))
+            before = self.snapshot(root)
+            with self.assertRaises(Problem):runs.list_runs(self.request(root))
+            with self.assertRaises(Problem):
+                self.start(root, person_id=old['person_id'], previous_run_id=new['run_id'])
+            self.assertEqual(self.snapshot(root), before)
+            record['previous_run_id'] = fork_id
+            (fork/'.compass-run.json').write_text(json.dumps(record))
+            with self.assertRaisesRegex(ValueError, 'cycle'):runs.list_runs(self.request(root))
+
+    def test_profile_symlink_is_not_copied(self):
+        with tempfile.TemporaryDirectory() as root, tempfile.TemporaryDirectory() as outside:
+            first = self.start(root)
+            target = Path(outside)/'profile.md'
+            target.write_text('Fictional unrelated private profile')
+            try:(Path(first['workspace'])/'profile.md').symlink_to(target)
+            except OSError:self.skipTest('Symlinks unavailable')
+            before = self.snapshot(root)
+            with self.assertRaises(ValueError):
+                self.start(root, command='salary-calculator', person_id=first['person_id'],
+                           profile_source_run=first['run_id'])
+            self.assertEqual(self.snapshot(root), before)
+            self.assertEqual(target.read_text(), 'Fictional unrelated private profile')
 
 
 if __name__ == "__main__":

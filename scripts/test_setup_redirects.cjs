@@ -38,13 +38,14 @@ for (const platform of ['claude', 'codex']) {
   }
 }
 
-test('Setup contents list only the two current platform guides', () => {
+test('Setup contents list current platform guides and saved-search guidance', () => {
   const html = readFileSync(path.join(__dirname, '../_site/docs/setup/index.html'), 'utf8');
   const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/);
   assert.ok(main);
   assert.deepEqual(
     Array.from(main[1].matchAll(/href="(\/agent-compass\/docs\/setup\/[^"#]+)"/g), match => match[1]),
-    ['/agent-compass/docs/setup/claude.html', '/agent-compass/docs/setup/codex.html']
+    ['/agent-compass/docs/setup/claude.html', '/agent-compass/docs/setup/codex.html',
+      '/agent-compass/docs/setup/saved-searches.html']
   );
 });
 

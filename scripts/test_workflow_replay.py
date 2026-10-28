@@ -355,6 +355,13 @@ def run_case(host, case, timeout, previous=None):
             (workspace / n["salary-table"]).write_text("Show Your Work\nCalculation method: shared Python helper\nMainstream 62500 × (1 − 4%) = 60000 raw annual, 5000 monthly. Premium 87500 × (1 − 4%) = 84000 raw annual, 7000 monthly. Both 12 equal gross-base payments; old threshold 55000/yr. Sources and scope match Step 2/3.\n\n" + rendered["output"]["result"]["markdown"] + "\nSummary\nCountries calculated: 1\nCountries skipped: 0\n", encoding="utf-8")
         initial = snapshot(workspace)
         context = {"bundled_resources": sources(case["workflow"]), "workspace": initial, "user": case["user"]}
+        if case["workflow"] in ("country-finder", "salary-calculator"):
+            context["run_selection"] = (
+                "The user explicitly selected this virtual saved workspace for the confirmed fictional person "
+                "and command. Run selection is complete; use these existing filenames without creating a new run. "
+                + ("The user chose View previous results." if case["group"] == "replay"
+                   else "The user chose to resume the selected unfinished run.")
+            )
         if previous:
             context["previous_jd_exchange"] = previous
         if case["group"] == "replay":

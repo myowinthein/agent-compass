@@ -1,6 +1,6 @@
 # country-finder
 
-Run the full Country Finder pipeline, resuming from where it left off if a state file exists.
+Run the full Country Finder pipeline in a search isolated by chat, person and command.
 
 ## Question points
 
@@ -17,6 +17,8 @@ Use [QM](../prompts/shared/question-mechanism.md) and the shared runtime's commo
 | Scoring/final-audit missing facts, optional salary provenance or contradicted exclusions; prompts/country-finder/step5-scoring.md and prompts/country-finder/step6-final-ranking.md | Use the common clarification, upstream and repair forms. Parent resolves questions before specialist continuation; no extra approval of ordinary scores, ranking or final output. |
 
 ## Before starting
+
+First read skills/run-workspaces.md. Select or create the run before any profile, artifact or checkpoint access; keep its returned workspace for this whole pipeline. New chats start fresh. In this chat, a matching completed run offers View previous results / Start fresh; an unfinished run offers Resume / Start fresh. Preserve earlier runs when starting fresh.
 
 Resolve this workflow's artifact paths using skills/workspace-files.md before accessing saved outputs. Canonical names below use those resolved paths on legacy runs.
 
