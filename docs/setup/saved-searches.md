@@ -41,7 +41,9 @@ Country Finder can offer Salary Calculator's country names, and Salary Calculato
 
 ## Returning later
 
-When the client exposes a stable conversation ID, the helper can find matching runs in that chat. Otherwise the assistant keeps a generated association in the conversation. If that association is unavailable after an interruption, provide the saved run folder or begin fresh; it should never guess from another person's files.
+Claude Code's entry skills pass its session ID when substitution is available; Codex can use its exposed thread ID. Otherwise the assistant generates a random chat key with a tool and shows it alongside the saved run folder. It retains the selected key throughout the chat.
+
+If earlier search activity is visible but its association is unavailable after an interruption, the assistant asks for the saved run folder or your choice to start fresh. It should never silently restart or guess from another person's files. Keep the displayed chat key and run path if you want to return later.
 
 You can explicitly provide a saved run path to resume after changing chats or hosts. Confirm whose run it is. Older results stored directly in a workspace keep their filenames and are never moved or automatically reused by a new chat.
 
