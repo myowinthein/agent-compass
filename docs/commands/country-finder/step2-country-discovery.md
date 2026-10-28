@@ -40,6 +40,8 @@ Your include list comes first. Otherwise, [Salary Calculator](../salary-calculat
 
 Salary research need not be complete: only country names are reused, including targets whose salary data was skipped. No salary or visa conclusions transfer. Missing scope leaves your own list or the default available.
 
+When offering the default, the assistant first prints every country grouped by continent in chat, then asks whether to use that list or provide your own. You can read the list before answering; it is not shown only inside the question control or after your answer.
+
 Regions expand into countries before exclusions apply. Clear supplied lists need no second confirmation; ambiguous boundaries do. Accepted choices are saved in criteria and retained on resume.
 
 ## What gets checked
