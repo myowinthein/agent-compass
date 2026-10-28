@@ -56,7 +56,7 @@ Before changing intake, evidence handling, scoring, sponsorship, arithmetic or o
 
 ## Documentation and Distribution
 
-`docs/` is both user documentation and the GitHub Pages site. Update affected pages when behavior changes and search references across `docs/`, `workflows/`, `prompts/` and `skills/`. Documentation summaries explain behavior; runtime rules stay in prompts. New documentation prose avoids em dashes.
+`docs/` contains concise guides for people deciding whether and how to use Compass. Explain purpose, choices, outcomes and constraints that affect use. Keep complete behavior in workflows, prompts and rules. Update what readers need at the guide's intended depth; source consistency does not require matching source detail. Follow links and includes to affected content outside the menu, and link authoritative references instead of reproducing them. New prose avoids em dashes.
 
 Setup content lives in `_includes/setup/`, composed by `_includes/setup-tabs.html`; the JavaScript and legacy redirects preserve desktop/terminal deep links. Check their tests when changing setup navigation.
 

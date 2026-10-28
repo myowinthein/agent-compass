@@ -7,7 +7,7 @@ nav_order: 3
 
 # Step 3: International adjustment
 
-Estimates a supported reduction from local salary benchmarks for your circumstances as an international candidate. It is a negotiation estimate, not a legal salary rule or guaranteed outcome.
+Estimate a supported reduction from local benchmarks for your circumstances. This models negotiation, not legal pay rules or guaranteed offers.
 
 ## Flow
 
@@ -26,17 +26,13 @@ flowchart TD
 
 ## What supports an estimate
 
-The assistant uses observed local-versus-overseas offers, or a clearly labelled inference supported by candidate-applicable evidence. Generic market difficulty or sponsorship cost alone does not quantify a pay reduction.
+Use observed local-versus-overseas offers or a labelled inference supported by relevant evidence. General market difficulty or sponsorship costs alone do not quantify a reduction.
 
-Relevant factors include employer hiring practices, sponsorship friction, language, relocation and local-market familiarity. They apply only where relevant to your actual location, work rights and intended path. The same issue is not counted twice.
-
-Race, ethnicity, passport prestige and generic nationality rankings are never adjustment factors. Formal degree recognition is a process caveat, not a priced penalty.
+Factors follow actual location, work rights and intended employment path without double-counting. Race, ethnicity and passport prestige never price adjustments. Formal degree recognition remains a process caveat, not a penalty.
 
 ## Numeric limits
 
-Reductions stay within 0–15%. A supported 0% is allowed. One common percentage applies independently to both employer tiers; evidence for only one tier cannot automatically justify both.
-
-The typical midpoint determines the display label:
+One supported reduction applies independently to both tiers, within 0–15%. Its typical midpoint sets the label:
 
 | Typical reduction | Label |
 |---|---|
@@ -44,12 +40,10 @@ The typical midpoint determines the display label:
 | Above 5% through 10% | Moderate |
 | Above 10% through 15% | Significant |
 
-A midpoint above 10% needs specific concrete evidence. A Low salary evidence grade caps adjustment confidence at Medium. Missing grades stay disclosed rather than becoming an invented grade.
+Above 10% needs concrete evidence. Low salary evidence caps confidence at Medium; missing grades stay disclosed.
 
-If no defensible common percentage exists, the result is **Adjustment not estimable**, with the missing evidence. Step 4 skips that country rather than assuming no reduction.
+Supported zero is valid. Unsupported percentages become **Adjustment not estimable**, with reasons, and Step 4 skips them rather than substituting 0%.
 
 ## What happens next
 
-`salary-calculator-03-adjustments.md` saves each country's estimate, confidence and reasoning, or its unestimable reason. Chat shows brief counts.
-
-You can choose a [specialist agent]({{ '/docs/specialist-agents.html' | relative_url }}) or keep your current model. The workflow then continues to [Step 4: Table calculation](step4-table-calculation.html).
+The assistant saves estimates, confidence and gaps to `salary-calculator-03-adjustments.md`; chat shows counts. An optional [specialist]({{ '/docs/specialist-agents.html' | relative_url }}) can run the step before [Table calculation](step4-table-calculation.html).

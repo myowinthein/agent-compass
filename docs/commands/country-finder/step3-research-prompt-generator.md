@@ -7,7 +7,7 @@ nav_order: 3
 
 # Step 3: Research prompt generator
 
-Builds a research brief for each eligible country and collects detailed findings for its suitable tracks.
+Collect detailed research for each country's eligible tracks.
 
 ## Flow
 
@@ -31,20 +31,14 @@ flowchart TD
 
 ## What each brief covers
 
-Remote research asks for realistic pay, hiring activity and payment arrangements that apply to your working location. It retains currency, pay period, gross/net basis and employee, employer of record (EOR) or contractor status.
+Remote briefs cover pay, hiring and payment arrangements for your working location. Sponsorship briefs cover the employer-sponsored route, salary rules, employer willingness, processing, quotas and relevant candidate restrictions.
 
-Sponsorship research asks for the employer-sponsored route, applicable salary rule, employer willingness, processing time, quotas, dependent provisions and citizenship-specific considerations.
-
-Every brief includes the relevant role, level, experience, skills and background directly. Researchers use current web sources and return dated findings. Unknown age or work status stays unknown rather than becoming an assumed visa category.
+Each brief contains the confirmed role and relevant background directly. Researchers use current dated sources; unknown facts do not become assumed eligibility.
 
 ## Countries without an eligible track
 
-Only a Step 2 "yes" receives detailed research. An explicit rejection and "no evidence found" are kept distinct for the final audit.
-
-If no tracks qualify, this step saves a scope-only record instead of inventing research. The remaining steps still account for the countries and their exclusions or evidence gaps.
+Only Step 2 "yes" tracks receive detailed research. Explicit rejections and missing evidence remain distinct. With none eligible, a scope-only record lets later steps account for exclusions and gaps without inventing research.
 
 ## What happens next
 
-The assistant saves findings to `country-finder-03-research.md` and shows a brief researched-country count. It checks that expected countries and tracks are covered before continuing.
-
-[Step 4: Data validation](step4-data-validation.html) checks and stores the results.
+The assistant saves `country-finder-03-research.md`, checks expected countries and tracks, and shows a brief count before [Data validation](step4-data-validation.html).

@@ -7,7 +7,7 @@ has_children: true
 
 # country-finder
 
-Finds countries worth targeting for remote work or employer-sponsored relocation, based on your profile and current evidence. The two paths are assessed separately.
+Find countries worth targeting for remote work or employer-sponsored relocation. Each path is assessed separately against your profile and current evidence.
 
 ## Start the command
 
@@ -15,9 +15,7 @@ Finds countries worth targeting for remote work or employer-sponsored relocation
 country-finder
 ```
 
-Use the prefix for your app or terminal shown in [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). No country argument is needed.
-
-Have your resume ready if you have not saved a profile yet. The assistant extracts it, waits for your confirmation and saves `profile.md` in your workspace.
+Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). No country argument is needed. If you have no saved profile, provide your resume and confirm the extraction before it is saved.
 
 ## Flow
 
@@ -33,24 +31,21 @@ flowchart TD
   Questions --> Final(["Show the Priority Table<br/>Save the full audit"])
 ```
 
-The numbered path shows a new run. An interrupted run continues from its next unfinished step.
+Unfinished runs resume; completed runs replay their saved result.
 
 ## What to expect
 
-[Step 1: Criteria intake](country-finder/step1-criteria-intake.html) asks about your background, timezone preference, relocation timeline and countries to include or exclude.
+1. [Criteria intake](country-finder/step1-criteria-intake.html): confirm your background, timezone preference, relocation timeline and country preferences.
+2. [Country discovery](country-finder/step2-country-discovery.html): use your include list, confirm Salary Calculator's saved country names, or choose the default list.
+3. [Research](country-finder/step3-research-prompt-generator.html): investigate eligible tracks with self-contained, separate research tasks. Without suitable research access, you receive prompts and wait for manual results.
+4. [Validation](country-finder/step4-data-validation.html): preserve accepted research and report skips.
+5. [Scoring](country-finder/step5-scoring.html): assess each track's fit and confidence.
+6. [Final ranking](country-finder/step6-final-ranking.html): audit the evidence and assign application priorities.
 
-[Step 2: Country discovery](country-finder/step2-country-discovery.html) uses your include list first. Otherwise, it can offer countries saved by Salary Calculator for you to keep or edit, or you can choose the default list. Both paths are assessed independently of any salary results.
-
-[Step 3: Research prompt generator](country-finder/step3-research-prompt-generator.html) then covers only the tracks found suitable. Research runs in separate task contexts with web access, without the main chat's history. If this is unavailable, you receive research prompts and the assistant waits for results.
-
-[Step 4: Data validation](country-finder/step4-data-validation.html) preserves accepted research and reports skipped data. [Step 5: Scoring](country-finder/step5-scoring.html) assesses each track independently. [Step 6: Final ranking](country-finder/step6-final-ranking.html) checks the evidence and produces your Priority Table.
-
-Scoring and the final audit may offer a [specialist agent]({{ '/docs/specialist-agents.html' | relative_url }}). Declining keeps the step on your current model.
+Scoring and ranking can use an optional [specialist]({{ '/docs/specialist-agents.html' | relative_url }}). Declining keeps the required step on your current model.
 
 ## Your result
 
-The table shows each country's application priority, Remote Fit, Sponsorship Fit and main limitation. Missing evidence stays distinct from a weak fit or an exclusion.
+Chat shows the Priority Table: country, application priority, both fits and main limitation. Missing evidence stays distinct from weak fit or exclusion.
 
-The full audit is saved to `country-finder-06-final-results.md`. You can use its results as an optional starting point for [salary-calculator](salary-calculator.html), or choose a country for [portal-finder](portal-finder.html).
-
-Interrupted runs use `.country-finder-state.json` to resume.
+`country-finder-06-final-results.md` holds the full audit; `.country-finder-state.json` tracks progress. Results can inform [salary-calculator](salary-calculator.html), or you can choose a country for [portal-finder](portal-finder.html).

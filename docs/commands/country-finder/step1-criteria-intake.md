@@ -7,7 +7,7 @@ nav_order: 1
 
 # Step 1: Criteria intake
 
-Collects your preferences before researching countries for remote work or visa sponsorship.
+Collect your background and preferences before researching either track.
 
 ## Flow
 
@@ -32,29 +32,18 @@ flowchart TD
 
 ## Your background
 
-If you already have a saved situational profile, it is reused. Otherwise, the assistant asks about:
+Saved situational facts are reused. Otherwise, provide location, citizenship, known visa issues, languages and work rights/status. An optional salary minimum needs currency, gross/net basis and a hard-floor or context-only choice. Age or birth date supports age-dependent visa rules; you may decline disclosure.
 
-- Your current location, citizenship and any known visa complications.
-- Languages you speak and want to use at work.
-- Existing work rights or immigration status.
-- Minimum monthly salary and currency, whether it is before or after tax and whether it is a strict minimum or just context.
-- Age or date of birth for age-dependent visa salary rules.
-
-You can skip the salary minimum or choose not to share your age. If your target role or seniority is unclear, it asks you to clarify.
+Only unclear target roles, seniority or material facts need clarification.
 
 ## Your preferences
 
-- Remote work: the maximum time difference you accept from your current location, or "no limit".
-- Visa sponsorship: your relocation timeline, such as "within 12 months" or "no rush".
-- Countries or regions you want included, or "none".
-- Countries or regions you want excluded, or "none".
+- Remote: maximum time difference, or "no limit".
+- Sponsorship: relocation timeline, including "no rush".
+- Countries/regions to include and exclude, or "none".
 
-If an answer is unclear, the assistant asks for clarification before continuing.
-
-If you leave the include list as "none", Step 2 can offer Salary Calculator's saved countries for you to confirm or edit before showing the default list.
+Unclear answers need clarification. Without an include list, Step 2 can offer saved Salary Calculator countries for confirmation before the default list.
 
 ## What happens next
 
-Your preferences are saved to `country-finder-01-criteria.md`. A new situational profile is saved to `situational-profile.md` for reuse.
-
-The workflow then continues to [Step 2: Country discovery](step2-country-discovery.html).
+The assistant saves criteria to `country-finder-01-criteria.md` and any new situational profile to `situational-profile.md`, then continues to [Country discovery](step2-country-discovery.html).

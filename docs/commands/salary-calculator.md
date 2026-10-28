@@ -7,9 +7,7 @@ has_children: true
 
 # salary-calculator
 
-Estimates salary targets for your role in selected countries, then audits how realistic they are for your profile.
-
-Mainstream and Premium are two local-employee employer segments. Both describe pay for work in the target country, not a cross-border remote offer from your home country.
+Estimate salary targets for your role in selected countries, then audit their realism. Mainstream and Premium describe two employer segments paying local employees in the target country, not remote offers from your home country.
 
 ## Start the command
 
@@ -17,9 +15,7 @@ Mainstream and Premium are two local-employee employer segments. Both describe p
 salary-calculator
 ```
 
-Use the prefix shown in [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). There is no country argument; the workflow asks you to choose countries.
-
-It loads your saved resume profile, or extracts your resume and waits for confirmation. Your situational profile is collected or reused before research.
+Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). The workflow asks for countries, loads or confirms your resume profile, and collects or reuses situational facts before research.
 
 ## Flow
 
@@ -42,24 +38,22 @@ flowchart TD
   Audit --> End(["Show the final salary table<br/>Save the full audit"])
 ```
 
-The numbered path shows a new run. An interrupted run continues from its next unfinished step.
+Unfinished runs resume; completed runs replay saved results.
 
 ## What to expect
 
-[Step 1: Research prompt generator](salary-calculator/step1-research-prompt-generator.html) starts with countries you confirm. Country Finder can suggest a list, but is not required. Research covers two employer tiers, your role and level, dated sources and applicable visa salary rules.
+1. [Research](salary-calculator/step1-research-prompt-generator.html): confirm countries and employment path, then collect two-tier local salary evidence and visa salary rules. Country Finder is optional.
+2. [Validation](salary-calculator/step2-data-validation.html): store accepted research unchanged.
+3. [Adjustment](salary-calculator/step3-international-adjustment.html): estimate a supported reduction from local benchmarks. Missing evidence is not 0%.
+4. [Calculation](salary-calculator/step4-table-calculation.html): prepare annual targets and monthly references.
+5. [Final verification](salary-calculator/step5b-final-verification.html): confirm the career ladder, then audit positioning and calibration.
 
-[Step 2: Data validation](salary-calculator/step2-data-validation.html) preserves accepted research. [Step 3: International adjustment](salary-calculator/step3-international-adjustment.html) estimates a supported reduction from local benchmarks; missing evidence is not treated as 0%.
-
-[Step 4: Table calculation](salary-calculator/step4-table-calculation.html) produces annual targets and monthly references. [Step 5: Final verification](salary-calculator/step5b-final-verification.html) checks positioning and calibration after you confirm the career ladder.
-
-Some steps offer a [specialist agent]({{ '/docs/specialist-agents.html' | relative_url }}). Declining does not skip the step or change the shared arithmetic.
+Optional [specialists]({{ '/docs/specialist-agents.html' | relative_url }}) do not change the required steps or shared arithmetic.
 
 ## Your result
 
-Chat shows Country, Visa salary rule, Mainstream Annual, Premium Annual, Mainstream Monthly and Premium Monthly. Targets stay in local currency and are not raised to satisfy a visa rule or your salary minimum.
+Chat shows local-currency annual and monthly targets for both segments, alongside the Visa salary rule. Targets are never raised to clear a visa rule or personal minimum. Inconclusive findings remain explicit.
 
-The full audit is saved to `salary-calculator-05b-final-results.md`. An inconclusive audit is stated plainly rather than presented as verified market advice.
+The audit is saved to `salary-calculator-05b-final-results.md`; `.salary-calculator-state.json` tracks progress. Later, [country-finder](country-finder.html) can offer the saved country names without inheriting salary conclusions.
 
-If you run Salary Calculator first, [country-finder](country-finder.html) can offer your saved target countries for confirmation. It reuses the names only and assesses remote work and sponsorship separately.
-
-Interrupted runs use `.salary-calculator-state.json`. See [Calculation runtime](salary-calculator/step4-table-calculation.html#calculation-runtime) for Python requirements.
+See [Calculation runtime](salary-calculator/step4-table-calculation.html#calculation-runtime) for Python requirements.

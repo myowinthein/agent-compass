@@ -7,7 +7,7 @@ nav_order: 6
 
 # Step 6: Final ranking
 
-Audits the assessments and turns them into a practical application priority for each country. This step always runs, even if you decline a specialist.
+Audit the assessments and assign practical application priorities. This step runs even without a specialist.
 
 ## Flow
 
@@ -28,25 +28,21 @@ flowchart TD
 
 ## What the audit protects
 
-An early timezone or suitability rejection stays Excluded with its reason. Missing research, rejected data and unusable evidence stay distinct from a supported Weak fit.
+Confidence, missing candidates and evidence use receive separate checks. Early exclusions keep their reasons; missing, rejected or invalidated research does not become Weak fit. Each track stands independently.
 
-An exclusion on one track does not supply research for the other. Without ingested research, that other track remains unscored and appears as Unknown.
-
-If an audit invalidates a track's only usable evidence, that track becomes `not scored (no data)`. The table displays it as Unknown. The audit does not silently undo an early exclusion or reinterpret research for a changed profile; those issues require a repair choice.
+Revisions need evidence. Material profile changes or contradicted exclusions return for a repair choice rather than silently changing earlier work.
 
 ## Priority Table
 
-Priority describes where to spend application effort:
-
-- 🥇 Focus: concentrate effort on the best supported opportunities.
-- 🥈 Selective: apply to well-matched openings despite a narrower market or limitation.
-- 🥉 Monitor: watch for occasional strong matches.
+- 🥇 Focus: concentrate effort on the strongest supported opportunities.
+- 🥈 Selective: target well-matched openings in a narrower market.
+- 🥉 Monitor: watch for occasional opportunities despite substantial limitations.
 - 🎗️ Deprioritize: both tracks are known Weak or Excluded.
-- Pending evidence: neither track is Strong or Moderate and at least one is Unknown.
+- Pending evidence: neither track is Strong/Moderate and at least one is Unknown.
 
-Focus, Selective and Monitor each need at least one Strong or Moderate track. Assignment considers your role match, opportunities, accessibility, pay, visa practicality and evidence quality. It is not a formula, probability or reward for having two usable tracks.
+The first three need a Strong or Moderate track. Priorities consider your fit, opportunities, accessibility, pay and evidence; they are not probabilities or a formula.
 
-These fictional examples show the table's possible outcomes:
+Fictional examples:
 
 | Country | Priority | Remote Fit | Sponsorship Fit | Main limitation |
 |---|---|---|---|---|
@@ -60,22 +56,16 @@ These fictional examples show the table's possible outcomes:
 | 🏳️ Example H | Pending evidence | Excluded | Unknown | Sponsorship: research rejected at validation |
 | 🏳️ Example I | Pending evidence | Unknown | Unknown | Research not supplied for either track |
 
-Assessed priorities are grouped in the order above, then ordered by supported opportunity for your profile. Alphabetical order is the final tie-breaker. Pending evidence rows are alphabetical, not ranked as recommendations.
-
-Main limitation is a short, supported constraint or gap. Detailed reasons and sources stay in the audit.
+Within each assessed priority, supported opportunity determines order, with alphabetical order the last tie-breaker. Pending evidence is alphabetical. Main limitation gives a short reason or evidence gap; full details stay in the audit.
 
 ## What is saved
 
-`country-finder-06-final-results.md` contains the three audit checks, Recalibration verdict, post-audit Summary, Priority Table and Effort Allocation.
+`country-finder-06-final-results.md` holds the audit, recalibration verdict, Summary, Priority Table and Effort Allocation. Every candidate is accounted for once per track, including exclusions and research gaps. A duplicate with a retained original is not missing.
 
-Every candidate is accounted for once per track, including early exclusions and missing or rejected research. A duplicate with a retained original is not missing. Extra countries mentioned only as audit observations do not become table rows.
-
-Only the Priority Table and completion message appear in chat. The message does not assume an actionable country exists when everything is Deprioritize or Pending evidence.
+Chat shows only the Priority Table and completion message. Unknown represents missing/unusable evidence; it does not imply a weak fit or recommended target.
 
 ## Using the result
 
-The post-audit Summary is authoritative. [Salary Calculator](../salary-calculator.html) selects eligible countries from it and uses the Priority Table only for row order.
+The post-audit Summary records final fits. [Salary Calculator](../salary-calculator.html) selects eligible countries from it and uses the Priority Table for ordering.
 
-Original research and Step 5 remain unchanged. Completed runs replay their saved results, including older table formats, without migration.
-
-For model choices and approval, see [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}).
+Research and Step 5 stay unchanged. Completed runs replay saved results. See [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}) for model choices.
