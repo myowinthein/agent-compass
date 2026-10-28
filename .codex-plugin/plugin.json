@@ -1,0 +1,20 @@
+{
+  "name": "agent-compass",
+  "displayName": "Agent Compass",
+  "version": "3.0.0",
+  "description": "A career research plugin for Claude and Codex. Find countries for remote work or visa sponsorship, explore market salaries, discover verified job portals and screen job descriptions against your profile.",
+  "author": {
+    "name": "Myo Win Thein",
+    "email": "mwt.creative@gmail.com",
+    "url": "https://github.com/myowinthein"
+  },
+  "homepage": "https://github.com/myowinthein/agent-compass",
+  "repository": "https://github.com/myowinthein/agent-compass",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Agent Compass",
+    "logo": "./assets/icon.svg",
+    "composerIcon": "./assets/icon.svg"
+  }
+}

@@ -23,11 +23,14 @@ output, error, status = Open3.capture3(
 assert.call(status.success?, "Validator failed under US-ASCII defaults: #{output}#{error}")
 
 manifest = JSON.parse(root.join(".claude-plugin/plugin.json").read(encoding: "UTF-8"))
-assert.call(root.glob("commands/**/*.md").empty?, "Remove unused legacy command adapters; shared skills are the only entry points")
-assert.call(manifest["commands"] == [], "Disable legacy command discovery so each shared skill appears only once")
+codex_manifest = JSON.parse(root.join(".codex-plugin/plugin.json").read(encoding: "UTF-8"))
+assert.call(!root.join("commands").exist?, "Shared skills are the only entry points; omit the legacy commands directory")
+assert.call([manifest, codex_manifest].none? { |client| client.key?("commands") }, "Omit commands declarations from both manifests")
+assert.call((manifest.keys & %w[icon interface]).empty?, "Claude manifest must avoid Desktop-unsupported presentation fields")
+assert.call(codex_manifest.reject { |key, _| key == "interface" } == manifest, "Keep all shared manifest fields aligned")
 assert.call(manifest.fetch("name") == "agent-compass", "Keep the technical plugin name unchanged")
 assert.call(manifest.fetch("displayName") == "Agent Compass", "Claude must display Agent Compass")
-assert.call(manifest.fetch("interface").fetch("displayName") == manifest.fetch("displayName"),
+assert.call(codex_manifest.fetch("interface").fetch("displayName") == manifest.fetch("displayName"),
             "Codex and Claude must use the same display name")
 assert.call(root.join("README.md").read(encoding: "UTF-8").match?(/^# Agent Compass$/),
             "README heading must use the product display name")
@@ -48,15 +51,14 @@ registry.fetch("workflows").each do |workflow, spec|
               "Workflow must resolve legacy filenames before accessing saved outputs")
 end
 
-assert.call(manifest.fetch("icon") == "./assets/icon.svg", "Claude must reference the shared SVG icon")
 %w[logo composerIcon].each do |field|
-  assert.call(manifest.fetch("interface").fetch(field) == manifest.fetch("icon"),
-              "Codex #{field} must reference the same image as Claude")
+  assert.call(codex_manifest.fetch("interface").fetch(field) == "./assets/icon.svg",
+              "Codex #{field} must reference the shared SVG icon")
 end
 
 Dir.mktmpdir("compass-icon-check-") do |temp|
   installation = Pathname(temp)
-  %w[.claude-plugin workflows prompts skills agents helpers data assets].each do |component|
+  %w[.claude-plugin .codex-plugin workflows prompts skills agents helpers data assets].each do |component|
     FileUtils.cp_r(root.join(component), installation)
   end
   %w[calculator deep-reasoner].each do |role|
@@ -131,7 +133,7 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
   end
   assert.call(CompassValidation.validate(installation), "Restored QM package must validate")
 
-  %w[plugin.json .codex-plugin/plugin.json .agents/plugins/marketplace.json].each do |path|
+  %w[plugin.json .agents/plugins/marketplace.json].each do |path|
     alternate = installation.join(path)
     alternate.parent.mkpath
     alternate.write(JSON.generate(manifest))
@@ -139,25 +141,82 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
       CompassValidation.validate(installation)
       false
     rescue RuntimeError => error
-      error.message == "Keep one shared Claude/Codex manifest and marketplace; alternate metadata can shadow them"
+      error.message == "Keep the two client manifests and one marketplace; root metadata can shadow them"
     ensure
       alternate.delete
     end
     assert.call(rejected, "Validator accepted shadowing metadata: #{path}")
   end
-  [nil, ["./commands/"]].each do |commands|
-    changed_manifest = manifest.dup
-    commands.nil? ? changed_manifest.delete("commands") : changed_manifest["commands"] = commands
-    installation.join(".claude-plugin/plugin.json").write(JSON.pretty_generate(changed_manifest))
+  # Exercise each client independently so parity checks cannot mask the
+  # Desktop compatibility and duplicate-entry protections.
+  { ".claude-plugin/plugin.json" => manifest, ".codex-plugin/plugin.json" => codex_manifest }.each do |path, baseline|
+    file = installation.join(path)
+    original = file.binread
+    file.delete
     rejected = begin
       CompassValidation.validate(installation)
       false
     rescue RuntimeError => error
-      error.message == "Disable legacy command discovery so each shared skill appears only once"
+      error.message.start_with?("Missing packaged resource:") && error.message.end_with?(path)
+    ensure
+      file.binwrite(original)
     end
-    assert.call(rejected, "Validator accepted duplicate legacy command discovery: #{commands.inspect}")
+    assert.call(rejected, "Validator accepted a missing client manifest: #{path}")
+    [[], {}, ["./commands/"]].each do |commands|
+      file.write(JSON.pretty_generate(baseline.merge("commands" => commands)))
+      rejected = begin
+        CompassValidation.validate(installation)
+        false
+      rescue RuntimeError => error
+        error.message == "Omit commands declarations; shared skills are the only entry points"
+      ensure
+        file.binwrite(original)
+      end
+      assert.call(rejected, "Validator accepted commands #{commands.inspect} in #{path}")
+    end
   end
-  installation.join(".claude-plugin/plugin.json").write(JSON.pretty_generate(manifest))
+  { "icon" => "./assets/icon.svg", "interface" => codex_manifest.fetch("interface") }.each do |field, value|
+    file = installation.join(".claude-plugin/plugin.json")
+    file.write(JSON.pretty_generate(manifest.merge(field => value)))
+    rejected = begin
+      CompassValidation.validate(installation)
+      false
+    rescue RuntimeError => error
+      error.message == "Keep Codex presentation fields out of the Claude manifest"
+    ensure
+      file.write(JSON.pretty_generate(manifest))
+    end
+    assert.call(rejected, "Validator accepted Desktop-unsupported #{field}")
+  end
+  # Cover every shared field, including later additions, rather than only version.
+  manifest.each_key do |field|
+    file = installation.join(".codex-plugin/plugin.json")
+    file.write(JSON.pretty_generate(codex_manifest.reject { |key, _| key == field }))
+    rejected = begin
+      CompassValidation.validate(installation)
+      false
+    rescue RuntimeError => error
+      error.message == "Client manifests must have identical shared metadata and skill paths"
+    ensure
+      file.write(JSON.pretty_generate(codex_manifest))
+    end
+    assert.call(rejected, "Validator accepted manifest drift in #{field}")
+  end
+  { "displayName" => "Different name", "logo" => "./assets/missing.svg", "composerIcon" => "./assets/missing.svg" }.each do |field, value|
+    file = installation.join(".codex-plugin/plugin.json")
+    changed = codex_manifest.merge("interface" => codex_manifest.fetch("interface").merge(field => value))
+    file.write(JSON.pretty_generate(changed))
+    rejected = begin
+      CompassValidation.validate(installation)
+      false
+    rescue RuntimeError => error
+      error.message == (field == "displayName" ? "Codex and Claude must use the same display name" : "Codex presentation must reference the shared SVG icon")
+    ensure
+      file.write(JSON.pretty_generate(codex_manifest))
+    end
+    assert.call(rejected, "Validator accepted invalid Codex #{field}")
+  end
+  assert.call(CompassValidation.validate(installation), "Restored client manifests must validate")
   installation.join("commands/nested").mkpath
   legacy = installation.join("commands/nested/unused.md")
   legacy.write("Unused adapter")
@@ -165,11 +224,22 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
     CompassValidation.validate(installation)
     false
   rescue RuntimeError => error
-    error.message == "Legacy command adapters must not be packaged"
+    error.message == "Legacy command directories must not be packaged"
   ensure
     legacy.delete
   end
   assert.call(rejected, "Validator accepted a reintroduced legacy adapter")
+  Dir.rmdir(installation.join("commands/nested"))
+  rejected = begin
+    CompassValidation.validate(installation)
+    false
+  rescue RuntimeError => error
+    error.message == "Legacy command directories must not be packaged"
+  ensure
+    Dir.rmdir(installation.join("commands"))
+  end
+  assert.call(rejected, "Validator accepted an empty legacy commands directory")
+  assert.call(CompassValidation.validate(installation), "Restored package must validate before icon checks")
   icon = installation.join("assets/icon.svg")
   original = icon.read(encoding: "UTF-8")
   {
@@ -434,6 +504,7 @@ Dir.mktmpdir("compass-archive-check-") do |temp|
     ".gitattributes" => root.join(".gitattributes").read,
     "README.md" => "Fictional public documentation\n",
     ".claude-plugin/plugin.json" => "{\"name\":\"fictional-plugin\"}\n",
+    ".codex-plugin/plugin.json" => "{\"name\":\"fictional-plugin\"}\n",
     ".helm-notes.txt" => "Fictional public file with a similar prefix\n",
     ".helm/example-log.json" => "Fictional canonical maintenance record\n",
     ".helm/archive/nested/example.json" => "Fictional nested maintenance record\n",
@@ -451,7 +522,7 @@ Dir.mktmpdir("compass-archive-check-") do |temp|
   Gem::Package::TarReader.new(StringIO.new(archive)) do |tar|
     tar.each { |entry| archived[entry.full_name] = entry.read if entry.file? }
   end
-  public_paths = %w[.gitattributes README.md .claude-plugin/plugin.json .helm-notes.txt]
+  public_paths = %w[.gitattributes README.md .claude-plugin/plugin.json .codex-plugin/plugin.json .helm-notes.txt]
   assert.call(archived == files.select { |path, _| public_paths.include?(path) },
               "Git archives must omit maintenance records while preserving public files and their bytes")
 end

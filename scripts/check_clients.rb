@@ -9,6 +9,7 @@ root = Pathname(__dir__).parent.realpath
 installed = ARGV == ["--installed"]
 raise "Usage: ruby scripts/check_clients.rb [--installed]" unless ARGV.empty? || installed
 manifest = JSON.parse(CompassValidation.read(root.join(".claude-plugin/plugin.json")))
+codex_manifest = JSON.parse(CompassValidation.read(root.join(".codex-plugin/plugin.json")))
 name = manifest.fetch("name")
 plugin_id = "#{name}@#{JSON.parse(CompassValidation.read(root.join('.claude-plugin/marketplace.json'))).fetch('name')}"
 expected = root.glob("workflows/*.md").map { |file| file.basename(".md").to_s }.sort
@@ -25,7 +26,16 @@ Dir.mktmpdir("compass-client-check-") do |temp|
   names = inventories.flat_map { |_, count, entries| count.to_i.zero? ? [] : entries.split(", ") }
   CompassValidation.check(!inventories.empty? && inventories.sum { |_, count, _| count.to_i } == expected.length && names.sort == expected,
                           "Claude exposes missing or duplicate workflows: #{output}")
-  puts "Claude: exactly four shared workflow commands."
+  roles = output.scan(/^\s+Agents \((\d+)\)\s*([^\n]*)/)
+  expected_roles = root.glob("agents/*.md").map { |file| file.basename(".md").to_s }.sort
+  CompassValidation.check(roles.length == 1 && roles[0][0].to_i == expected_roles.length && roles[0][1].split(", ").sort == expected_roles,
+                          "Claude exposes missing or duplicate specialists: #{output}")
+  unless installed
+    validation = run.call({}, "claude", "plugin", "validate", root.join(".claude-plugin/plugin.json").to_s)
+    CompassValidation.check(!validation.match?(/Unknown field|unrecognized keys|No command files/i),
+                            "Claude reports manifest compatibility warnings: #{validation}")
+  end
+  puts "Claude: exactly four shared skills and two specialists.#{installed ? '' : ' No manifest compatibility warnings.'}"
 
   env = installed ? {} : { "CODEX_HOME" => File.join(temp, "codex") }
   unless installed
@@ -68,7 +78,29 @@ Dir.mktmpdir("compass-client-check-") do |temp|
           CompassValidation.check(entry.binread == root.join("skills", entry.parent.basename, "SKILL.md").binread,
                                   "Codex loaded a different skill source: #{entry}")
         end
-        puts "Codex: exactly four enabled shared workflow commands, no migrated duplicates."
+        params = { pluginName: name }
+        if installed
+          inventory = JSON.parse(run.call(env, "codex", "plugin", "list", "--json"))
+          source = inventory.fetch("installed").find { |plugin| plugin["pluginId"] == plugin_id }&.fetch("marketplaceSource")
+          CompassValidation.check(source, "Installed Codex marketplace source is unavailable")
+          if source["sourceType"] == "local"
+            params[:marketplacePath] = Pathname(source.fetch("source")).join(".claude-plugin/marketplace.json").to_s
+          else
+            params[:remoteMarketplaceName] = plugin_id.split("@", 2).last
+          end
+        else
+          params[:marketplacePath] = root.join(".claude-plugin/marketplace.json").to_s
+        end
+        detail = request.call(3, "plugin/read", params).fetch("plugin")
+        presentation = detail.fetch("summary").fetch("interface")
+        CompassValidation.check(presentation.fetch("displayName") == codex_manifest.fetch("interface").fetch("displayName"),
+                                "Codex did not load the expected display name: #{presentation}")
+        %w[logo composerIcon].each do |field|
+          path = Pathname(presentation.fetch(field))
+          CompassValidation.check(path.file? && path.binread == root.join(codex_manifest.fetch("interface").fetch(field)).binread,
+                                  "Codex did not resolve its #{field} to the packaged icon: #{path}")
+        end
+        puts "Codex: exactly four enabled shared skills, no migrated duplicates; display name and icons verified."
       ensure
         input.close
         Process.kill("TERM", waiter.pid) if waiter.alive?

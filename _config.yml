@@ -39,6 +39,7 @@ exclude:
   - .gitignore
   - .DS_Store
   - .claude/
+  - .codex-plugin/
   - agents/
   - data/
   - helpers/

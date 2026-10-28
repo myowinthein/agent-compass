@@ -11,12 +11,5 @@
   "homepage": "https://github.com/myowinthein/agent-compass",
   "repository": "https://github.com/myowinthein/agent-compass",
   "license": "MIT",
-  "skills": "./skills/",
-  "commands": [],
-  "icon": "./assets/icon.svg",
-  "interface": {
-    "displayName": "Agent Compass",
-    "logo": "./assets/icon.svg",
-    "composerIcon": "./assets/icon.svg"
-  }
+  "skills": "./skills/"
 }
