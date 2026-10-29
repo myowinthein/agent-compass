@@ -15,13 +15,18 @@ from .state import check
 from .workspaces import base
 
 
-def checkpointed(workflow):
-    registry = loads(read(ROOT / "data" / "workspace-files.json"))
+def registry():
+    return loads(read(ROOT / "data" / "workspace-files.json"))
+
+
+def require_workflow(workflow):
     require(isinstance(workflow, str), "Expected a run workflow")
-    if workflow in registry["runs"]["profile_workflows"]:
-        return False
-    definition(workflow)
-    return True
+    if workflow not in registry()["runs"]["profile_workflows"]:
+        definition(workflow)
+
+
+def checkpointed(workflow):
+    return workflow not in registry()["runs"]["profile_workflows"]
 
 
 def token(value):
@@ -53,7 +58,7 @@ def location(payload):
         value = uuid.UUID(identifier)
         require(value.version == 4 and str(value) == identifier,
                 "Generate a canonical random UUID4 with a tool for the local chat token")
-    spec = loads(read(ROOT / "data" / "workspace-files.json"))["runs"]
+    spec = registry()["runs"]
     key = hashlib.sha256(chat.encode("utf-8")).hexdigest()
     return directory(directory(root, spec["directory"]), "chat-" + key), key, spec["metadata"]
 
@@ -79,7 +84,7 @@ def catalog(folder, key, metadata):
         require(record["run_id"] == identifier and record["chat_key"] == key, "Run identity mismatch")
         token(record["person_id"])
         label(record["person_label"])
-        checkpointed(record["workflow"])
+        require_workflow(record["workflow"])
         require(isinstance(record["created_at"], str) and
                 datetime.fromisoformat(record["created_at"]).tzinfo is not None, "Run time needs a timezone")
         for field in ("previous_run_id", "profile_source_run"):
@@ -126,7 +131,7 @@ def list_runs(payload):
     person = token(payload["person_id"]) if "person_id" in payload else None
     workflow = payload.get("workflow")
     if workflow is not None:
-        checkpointed(workflow)
+        require_workflow(workflow)
     groups = sorted({(r["person_id"], r["workflow"]) for r in records.values()
                      if (person is None or r["person_id"] == person) and
                      (workflow is None or r["workflow"] == workflow)})
@@ -152,7 +157,7 @@ def list_runs(payload):
 def start(payload):
     fields(payload, ("workspace", "chat_id", "workflow", "person_label"),
            ("person_id", "previous_run_id", "profile_source_run"))
-    checkpointed(payload["workflow"])
+    require_workflow(payload["workflow"])
     person_label = label(payload["person_label"])
     require(Path(text(payload["workspace"])).is_absolute()
             and Path(payload["workspace"]).resolve() == base(),
