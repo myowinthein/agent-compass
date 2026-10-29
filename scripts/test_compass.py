@@ -1059,6 +1059,24 @@ class RunWorkspaces(unittest.TestCase):
                            person_id=other['person_id'], profile_source_run=cf['run_id'])
             self.assertEqual(len(runs.list_runs(self.request(root, person_id=cf['person_id']))['active_runs']), 2)
 
+    def test_missing_or_empty_profile_copy_preserves_source_and_creates_no_run(self):
+        cases = ((None, None), (b'', None), (b' \t\r\n', None), (b'Fictional confirmed profile', b' \n'))
+        for command in ('country-finder', 'salary-calculator', 'job-screener'):
+            for profile, situation in cases:
+                with self.subTest(command=command, profile=profile, situation=situation), tempfile.TemporaryDirectory() as root:
+                    source = self.start(root)
+                    path = Path(source['workspace'])
+                    if profile is not None:(path/'profile.md').write_bytes(profile)
+                    if situation is not None:(path/'situational-profile.md').write_bytes(situation)
+                    before = self.snapshot(root)
+                    folders = set(path.parent.iterdir())
+                    baseline = {'previous_run_id': source['run_id']} if command == 'country-finder' else {}
+                    with self.assertRaisesRegex(ValueError, 'Profile source'):
+                        self.start(root, command=command, person_id=source['person_id'],
+                                   profile_source_run=source['run_id'], **baseline)
+                    self.assertEqual(self.snapshot(root), before)
+                    self.assertEqual(set(path.parent.iterdir()), folders)
+
     def test_unfinished_resume_and_completed_view_are_read_only(self):
         with tempfile.TemporaryDirectory() as root:
             run = self.start(root)
@@ -1231,20 +1249,40 @@ class RunWorkspaces(unittest.TestCase):
             run = self.start(root, chat=chat)
             self.assertEqual(runs.list_runs(self.request(root, chat))['active_runs'][0]['run_id'], run['run_id'])
 
-    def test_finder_metadata_does_not_block_or_modify_saved_runs(self):
-        with tempfile.TemporaryDirectory() as root:
-            first = self.start(root)
-            self.finish(first)
-            finder = Path(first['workspace']).parent/'.DS_Store'
-            finder.write_bytes(b'Fictional Finder metadata')
-            before = self.snapshot(root)
-            self.assertTrue(runs.list_runs(self.request(root))['active_runs'][0]['completed'])
-            self.assertEqual(self.snapshot(root), before)
-            self.start(root, person_id=first['person_id'], previous_run_id=first['run_id'])
-            for name, raw in before.items():self.assertEqual((Path(root)/name).read_bytes(), raw)
-            finder.unlink()
-            finder.mkdir()
-            with self.assertRaisesRegex(ValueError, 'Finder metadata'):runs.list_runs(self.request(root))
+    def test_os_metadata_does_not_block_or_modify_saved_runs(self):
+        for name in ('.DS_Store', 'desktop.ini', 'Thumbs.db', 'DESKTOP.INI'):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as root:
+                first = self.start(root)
+                self.finish(first)
+                metadata = Path(first['workspace']).parent/name
+                metadata.write_bytes(b'Fictional OS metadata')
+                before = self.snapshot(root)
+                self.assertTrue(runs.list_runs(self.request(root))['active_runs'][0]['completed'])
+                self.assertEqual(self.snapshot(root), before)
+                self.start(root, person_id=first['person_id'], previous_run_id=first['run_id'])
+                for old, raw in before.items():self.assertEqual((Path(root)/old).read_bytes(), raw)
+                metadata.unlink()
+                metadata.mkdir()
+                with self.assertRaisesRegex(ValueError, 'Unsafe OS metadata'):runs.list_runs(self.request(root))
+
+    def test_os_metadata_exception_does_not_allow_symlinks_or_unknown_files(self):
+        with tempfile.TemporaryDirectory() as root, tempfile.TemporaryDirectory() as outside:
+            run = self.start(root)
+            folder = Path(run['workspace']).parent
+            unexpected = folder/'notes.txt'
+            unexpected.write_text('Fictional user file')
+            with self.assertRaisesRegex(ValueError, 'Unexpected occupant'):runs.list_runs(self.request(root))
+            self.assertEqual(unexpected.read_text(), 'Fictional user file')
+            unexpected.unlink()
+            target = Path(outside)/'private.txt'
+            target.write_text('Fictional unrelated private content')
+            for name in ('.DS_Store', 'desktop.ini', 'Thumbs.db'):
+                link = folder/name
+                try:link.symlink_to(target)
+                except OSError:self.skipTest('Symlinks unavailable')
+                with self.assertRaisesRegex(ValueError, 'Unsafe OS metadata'):runs.list_runs(self.request(root))
+                self.assertEqual(target.read_text(), 'Fictional unrelated private content')
+                link.unlink()
 
     def test_forked_baselines_and_cycles_require_reconciliation(self):
         with tempfile.TemporaryDirectory() as root:

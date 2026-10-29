@@ -17,6 +17,8 @@ When you invoke Country Finder or Salary Calculator again for the same person in
 
 Viewing shows the saved result in chat. Starting fresh preserves the previous search and makes the new one active. Country Finder and Salary Calculator keep separate progress. A fresh search can reuse that person's unchanged, confirmed profile within the chat, but starts research again.
 
+An applicable profile already confirmed for the selected person in this chat can be copied into another run without another resume upload or confirmation. A new-resume request takes precedence. Changed facts, conflicting sources or unclear confirmation need a targeted clarification; missing or empty source profiles cannot be copied. Every run keeps its own profile copy, with no shared resume cache.
+
 Job Screener offers **Continue screening / Start fresh**, or **Resume setup / Start fresh** if profile intake is unfinished. Continuing uses the same run; ordinary job-description pastes do not ask again. It has no completed-search state, saved screening report or checkpoint. Each command keeps its own active run, and confirmed profile reuse stays within the same chat and person.
 
 ## Where files go
@@ -53,6 +55,8 @@ Agent Compass/
 ```
 
 The assistant reports the actual run folder. Identifiers in folder names distinguish chats and runs; person names are recorded in that run's metadata. Keep those files private along with your profiles and research.
+
+File operations use absolute paths and do not depend on the terminal's current directory. Ordinary `.DS_Store`, `desktop.ini` and `Thumbs.db` files in a chat folder are left untouched and do not block run discovery.
 
 Country Finder can offer Salary Calculator's country names, and Salary Calculator can use Country Finder results, from the selected matching person's run in the same chat. Existing confirmation and compatibility checks still apply.
 
