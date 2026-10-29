@@ -132,8 +132,23 @@
       "reason": "Person labels bind saved profiles to people in a chat, but no existing run test exercises label validation or the label-mismatch rejection, so a regression could silently reassign saved work.",
       "action": "add",
       "layer": "unit",
-      "state": "open",
-      "assessed_commit": "fe3dab04ab41aa427e43d4a11f2851d3072000be"
+      "state": "resolved",
+      "assessed_commit": "fe3dab04ab41aa427e43d4a11f2851d3072000be",
+      "tests": [
+        "scripts/test_compass.py: RunWorkspaces.test_person_labels_are_validated_and_not_reassigned"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "helpers/compass_lib/runs.py",
+          "scripts/test_compass.py: RunWorkspaces.test_person_labels_are_validated_and_not_reassigned"
+        ],
+        "method": "runtime",
+        "outcome": "Seven invalid person labels were rejected without creating a run, and a different label for an existing person was rejected with the saved files unchanged. Mutating the label validation or the mismatch check in a throwaway copy made these assertions fail.",
+        "command": "python3 -B scripts/test_compass.py",
+        "scope": "Offline helper suite, 99 tests passed (96 baseline plus 3 new), Python 3.14.7 on macOS; Linux/Windows and Python 3.11/3.14 matrix not run locally.",
+        "commit": "5c8dbe5cfe5ce6eb6c58122491e119c213cbac61"
+      }
     },
     {
       "id": "g-7b5622cd-bd86-4aa4-b784-b6113c833545",
@@ -149,8 +164,23 @@
       "reason": "Atomic run creation relies on skipping staging folders, but no test covers an interrupted creation leftover.",
       "action": "add",
       "layer": "unit",
-      "state": "open",
-      "assessed_commit": "fe3dab04ab41aa427e43d4a11f2851d3072000be"
+      "state": "resolved",
+      "assessed_commit": "fe3dab04ab41aa427e43d4a11f2851d3072000be",
+      "tests": [
+        "scripts/test_compass.py: RunWorkspaces.test_interrupted_run_staging_folder_is_ignored"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "helpers/compass_lib/runs.py",
+          "scripts/test_compass.py: RunWorkspaces.test_interrupted_run_staging_folder_is_ignored"
+        ],
+        "method": "runtime",
+        "outcome": "An abandoned .creating- staging folder was ignored by listing, did not block a fresh run and was left untouched. Removing the skip in a throwaway copy made the test fail.",
+        "command": "python3 -B scripts/test_compass.py",
+        "scope": "Offline helper suite, 99 tests passed (96 baseline plus 3 new), Python 3.14.7 on macOS; Linux/Windows and Python 3.11/3.14 matrix not run locally.",
+        "commit": "5c8dbe5cfe5ce6eb6c58122491e119c213cbac61"
+      }
     },
     {
       "id": "g-7b9a716c-c9d0-4ca0-9611-e664f5b8b596",
@@ -322,8 +352,23 @@
       "reason": "Moved or copied run metadata could leak a profile or baseline across people or chats; existing tests cover only unsupported schema, foreign person IDs, forks and cycles.",
       "action": "add",
       "layer": "unit",
-      "state": "open",
-      "assessed_commit": "fe3dab04ab41aa427e43d4a11f2851d3072000be"
+      "state": "resolved",
+      "assessed_commit": "fe3dab04ab41aa427e43d4a11f2851d3072000be",
+      "tests": [
+        "scripts/test_compass.py: RunWorkspaces.test_tampered_run_metadata_is_rejected_without_writes"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "helpers/compass_lib/runs.py",
+          "scripts/test_compass.py: RunWorkspaces.test_tampered_run_metadata_is_rejected_without_writes"
+        ],
+        "method": "runtime",
+        "outcome": "Six tampered-metadata cases (chat-key mismatch, run-ID mismatch, naive timestamp, missing referenced run, cross-person profile source, cross-command baseline) were rejected by both listing and starting a run, with the saved files unchanged. Removing each check in a throwaway copy made its case fail.",
+        "command": "python3 -B scripts/test_compass.py",
+        "scope": "Offline helper suite, 99 tests passed (96 baseline plus 3 new), Python 3.14.7 on macOS; Linux/Windows and Python 3.11/3.14 matrix not run locally.",
+        "commit": "5c8dbe5cfe5ce6eb6c58122491e119c213cbac61"
+      }
     },
     {
       "id": "g-ac4cb994-542d-4c36-bd0d-4b30454a8569",
