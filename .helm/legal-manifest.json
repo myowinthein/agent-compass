@@ -1,7 +1,15 @@
 {
   "schema_version": 1,
   "documents": [
-    { "file": "docs/legal/privacy-policy.md", "generated_at": "2026-10-28", "generated_at_commit": "5d5c5893086b98c6167281efeac96b5c1a66f2d1" },
-    { "file": "docs/legal/disclaimer.md", "generated_at": "2026-10-27", "generated_at_commit": "95e002933930e40107f27fa5ed90351c6421aa01" }
+    {
+      "file": "docs/legal/privacy-policy.md",
+      "generated_at": "2026-10-29",
+      "generated_at_commit": "7ae4b0c4d943093a1c02aa9fc9cc2958da0ff93a"
+    },
+    {
+      "file": "docs/legal/disclaimer.md",
+      "generated_at": "2026-10-27",
+      "generated_at_commit": "95e002933930e40107f27fa5ed90351c6421aa01"
+    }
   ]
 }

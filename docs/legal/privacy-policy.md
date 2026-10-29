@@ -8,7 +8,7 @@ permalink: /docs/legal/privacy-policy.html
 
 # Privacy Policy
 
-**Last updated:** 2026-10-28
+**Last updated:** 2026-10-29
 
 Agent Compass is an open source career research plugin for Claude and Codex, maintained by Myo Win Thein. This notice explains information used by the plugin, its documentation site and the maintainer's contact channels.
 
@@ -16,9 +16,11 @@ Agent Compass is an open source career research plugin for Claude and Codex, mai
 
 The workflows use the information you provide to research countries, compare salaries, find job portals and screen job descriptions. This can include your resume, work history, skills, location, citizenship, work rights, languages, salary preferences and an optional age or date of birth for visa checks.
 
-The assistant can save profiles, research, results and progress files in your selected workspace. The Python helpers perform local calculations and file operations; they do not include a maintainer-operated telemetry or candidate-data upload endpoint.
+The assistant can save profiles, research, results and progress files in an `Agent Compass` folder in your home directory on the computer running its file tools. Each search or screening session has its own run folder, grouped by chat and person. A run's metadata records the person label you confirm, a run identifier, a hashed chat identifier, the creation time and any run it replaced. A confirmed profile can be copied into a new run for the same person in the same chat. Only provide another person's information if you are entitled to share it.
 
-Your information is also processed through the AI service and tools you use. Research can pass relevant candidate facts to AI research tasks, and enabled search or browsing tools can send queries and make external website requests. A file being saved in your workspace does not mean all processing stays on your device.
+The Python helpers perform local calculations and file operations; they do not include a maintainer-operated telemetry or candidate-data upload endpoint.
+
+Your information is also processed through the AI service and tools you use. Research can pass relevant candidate facts to AI research tasks, and enabled search or browsing tools can send queries and make external website requests. A file saved on your device does not mean all processing stays on your device.
 
 Your provider, account, permissions and enabled tools determine that external processing. Consult the applicable [Anthropic privacy notice](https://www.anthropic.com/legal/privacy), [OpenAI privacy notice](https://openai.com/policies/privacy-policy/) and tool-provider information. This plugin does not set those services' retention or training policies.
 
@@ -43,15 +45,15 @@ GitHub issues are public. Do not post resumes, identity documents or other priva
 
 ## Storage, retention and location
 
-The plugin's saved workspace files remain until you manage or remove them. Your workspace environment, backups and synchronization services can hold additional copies. Chat history, uploaded resumes and tool records are separate from the files produced by the plugin.
+The plugin's saved files remain until you manage or remove them. Your device, backups and synchronization services can hold additional copies. Chat history, uploaded resumes and tool records are separate from the files produced by the plugin.
 
-AI, hosting, CDN and communication providers control retention within their services. They can process information in countries other than yours; consult their notices and account controls for locations and transfer arrangements. Deleting a workspace file does not itself delete copies held in those services.
+AI, hosting, CDN and communication providers control retention within their services. They can process information in countries other than yours; consult their notices and account controls for locations and transfer arrangements. Deleting a saved file does not itself delete copies held in those services.
 
 For information you sent directly to the maintainer, use the contact below to ask about retention or request access, correction or deletion. This notice does not promise a provider-wide deletion mechanism.
 
 ## Your choices and requests
 
-Manage workspace files through your workspace's tools, browser preferences through browser settings, and AI-service records through the applicable account controls. Depending on the law and circumstances, you may have privacy rights, including the right to raise a concern with a relevant data-protection authority.
+Manage the saved files in the `Agent Compass` folder through your file manager or other tools, browser preferences through browser settings, and AI-service records through the applicable account controls. Depending on the law and circumstances, you may have privacy rights, including the right to raise a concern with a relevant data-protection authority.
 
 For questions or requests concerning information sent to the maintainer, email [mwt.creative@gmail.com](mailto:mwt.creative@gmail.com). For information held by an AI service or another provider, use that provider's request channel. The plugin is intended for career research by job seekers; use of the AI service remains subject to that service's eligibility rules.
 
