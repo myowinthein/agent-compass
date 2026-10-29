@@ -1,4 +1,4 @@
-<!-- helm-rule: agent-helm@v3.1.0 -->
+<!-- helm-rule: agent-helm@v3.2.2 -->
 # Operational Safety Rules
 
 Applies on Claude, Codex and other hosts, including copied-only sessions. Loading rules executes no checklist, scan, tool or write. Resolve `{memory_file}` through sibling git.md's **Project memory and configuration** before dependent actions; labelled independent inspection may report unresolved ownership.
@@ -22,7 +22,7 @@ Configuration/knowledge belong in `{memory_file}`. Current records use only `.he
 | normalize | `normalize-log.json` |
 | legal | `legal-manifest.json` |
 
-Exclude records from ordinary source/safety scans, feature edits and unrelated staging. Rule loading/agent switching never authorizes reading, rewriting, resetting, deleting, merging or migrating them. Only the explicitly invoked owner accesses its live ledger filename. Under the loaded local-handoff protocol, normalize alone registers immutable private recovery locators in the actual Git common directory before an approved rewrite; ship may read that exact bounded directory and identified private proof, never discover/load/migrate the live ledger. Locators are hints, not authorization or verified history. Feature work leaves real locators and recovery evidence untouched. Archive may preserve records as opaque authorized files, without interpretation/migration. `.claude/rules/` remains rule storage.
+Exclude records from ordinary source/safety scans, feature edits and unrelated staging. Rule loading/agent switching never authorizes reading, rewriting, resetting, deleting, merging or migrating them. Only the explicitly invoked owner accesses its live ledger filename. Under the loaded local-handoff protocol, normalize alone registers immutable private recovery locators in the actual Git common directory before an approved rewrite; ship may read that exact bounded directory and identified private proof, never the live ledger. Loaded log/manifest may read only relevant locator/map/object evidence under the packaged review-anchor procedure to recover their own marker; copied rules alone grant no such access. Locators are hints, not authorization or verified history. Feature work leaves real locators and recovery evidence untouched. Archive may preserve records as opaque authorized files, without interpretation/migration. `.claude/rules/` remains rule storage.
 
 Before accessing one of these four ledgers, load its owning packaged project-state procedure. Validate only its canonical current-schema input, apply the exists-only unsupported-path stop guard, preserve unknown data and verify authorized writes/commits. No old-schema reader, migration, reconciliation or automatic reset is supported. Without the owner/procedure, leave records untouched. Resume sequentially across hosts, never with concurrent writers. Known old state paths remain excluded/protected; an upgrade note never grants automatic cleanup authority.
 
