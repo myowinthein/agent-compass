@@ -37,7 +37,7 @@ I start here to [find countries that match my profile](https://myowinthein.githu
 country-finder
 ```
 
-It asks a few questions about your profile and preferences, then researches the countries and returns a priority table. If you’ve already run `salary-calculator`, it can suggest a country list for you to confirm. You can keep the list, add or remove countries or start fresh.
+It asks a few questions about your profile and preferences, then researches the countries and returns a priority table. If you’ve already run `salary-calculator` for the same person in this chat, it can suggest a country list for you to confirm. You can keep the list, add or remove countries or start fresh.
 
 ### Portal Finder
 
@@ -58,7 +58,7 @@ I use this command to [explore realistic local-market salaries](https://myowinth
 salary-calculator
 ```
 
-If you’ve already run `country-finder`, it can suggest a country list for you to confirm. You can keep the list, add or remove countries or start fresh. Otherwise, it asks which countries you want to research.
+If you’ve already run `country-finder` for the same person in this chat, it can suggest a country list for you to confirm. You can keep the list, add or remove countries or start fresh. Otherwise, it asks which countries you want to research.
 
 ### Job Screener
 
@@ -68,7 +68,7 @@ When I find an interesting job, I use this command to [compare its requirements 
 job-screener
 ```
 
-Start a dedicated chat and run this command once. Then paste job descriptions one at a time. If the responses stop following the screening format, run the command again.
+Start a dedicated chat and run this command once. Then paste job descriptions one at a time. If the responses stop following the screening format, run the command again and choose **Continue screening**.
 
 See [Examples](https://myowinthein.github.io/agent-compass/docs/examples/) for optional guides to my Obsidian setup and daily job search routine.
 
@@ -78,4 +78,4 @@ If something does not work or you have an idea that would make your job search e
 
 Agent Compass is open source under the [MIT license](https://github.com/myowinthein/agent-compass/blob/main/LICENSE).
 
-<!-- last-reviewed: 55a69f1619dd9b3aec320d72906e6447327a9a10 -->
+<!-- last-reviewed: 468e2a099c2e28bfbadf07b9ec8db731beba624c -->
