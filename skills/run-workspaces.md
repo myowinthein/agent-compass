@@ -5,7 +5,7 @@ description: Select isolated Country Finder and Salary Calculator searches by ch
 
 # Run workspaces
 
-Apply this before CF/SC profile intake, artifact resolution or completed replay. The user's selected folder is the **base workspace**. Every new search gets its own **run workspace** beneath it; all existing artifact/profile names and checkpoint schemas stay unchanged inside that directory. Never interpret a new chat as a request to resume whatever is in the base folder.
+Apply this before CF/SC profile intake, artifact resolution or completed replay. Resolve the fixed **base workspace** under the shared runtime's File locations rule: `Path.home() / "Agent Compass"`. There is no custom base-folder option or folder question. Every new search gets its own **run workspace** beneath it; all existing artifact/profile names and checkpoint schemas stay unchanged inside that directory. Never interpret a new chat as a request to resume whatever is in the base folder.
 
 ## Bind the chat and person
 
@@ -34,12 +34,12 @@ Starting fresh creates a new run and makes it the active baseline for this perso
 The parent calls `run-start` with:
 
 ```json
-{"schema_version":1,"workspace":"<absolute base workspace>","chat_id":"<host:actual-chat-id or local:UUID>","workflow":"country-finder","person_label":"<confirmed person>"}
+{"schema_version":1,"workspace":"<workspace-base result>","chat_id":"<host:actual-chat-id or local:UUID>","workflow":"country-finder","person_label":"<confirmed person>"}
 ```
 
 For an existing person, include their exact returned `person_id`. After a Start fresh choice, also include the exact active `previous_run_id`; missing/stale baselines fail instead of silently replacing a search. Optionally provide `profile_source_run` from the same chat/person to copy their confirmed `profile.md` and `situational-profile.md` byte-for-byte. Reuse profiles only when still applicable and confirmed; never copy research, outputs or checkpoints into a fresh search. For a new person, collect and confirm their own resume/profile in the new workspace. A fresh search restarts research, not necessarily unchanged profile intake.
 
-The result supplies the new run ID, person ID and absolute `workspace`. Retain them in chat context and show the chat key and actual saved directory after every start. Use that run workspace for every subsequent helper, specialist, profile and checkpoint operation. The metadata filename and root directory come from `data/workspace-files.json`; `run-start` alone writes the new run metadata and optional profile copies. It does not establish human approval or advance a workflow checkpoint.
+The result supplies the new run ID, person ID and absolute `workspace`. Retain them in chat context and show the chat key and actual saved directory after every start. Use that run workspace for every subsequent helper, specialist, profile and checkpoint operation. The metadata filename and root directory come from `data/workspace-files.json`; `run-start` creates the fixed base if absent and alone writes the new run metadata and optional profile copies. It rejects other bases. It does not establish human approval or advance a workflow checkpoint.
 
 The helper uses `runs/chat-<chat-key>/run-<run-id>/` with private directory/file permissions where supported. Names contain no candidate names or raw chat IDs. Immutable metadata links prior runs; conflicting active runs stop automatic selection for reconciliation. Do not edit metadata, delete prior runs or switch workspaces to bypass a conflict.
 

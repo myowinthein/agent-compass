@@ -15,6 +15,8 @@ Use [QM](../prompts/shared/question-mechanism.md) and the shared runtime's commo
 
 ## Before starting
 
+Apply the shared runtime's File locations rule first. Resolve and create the fixed home/Agent Compass base with `workspace-base` using `{create: true}`; use that returned directory as this command's profile workspace. Do not ask for a storage folder or substitute the current directory.
+
 Check if profile.md exists in the workspace. If it does not, read prompts/shared/resume-extraction-prompt.md and follow it. Wait for the resume and confirmation of the extracted profile, and for profile.md to be saved, before continuing.
 
 ## Sequence

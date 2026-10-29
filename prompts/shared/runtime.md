@@ -71,10 +71,14 @@ Before the first supported mechanical operation, read skills/helper-runtime.md. 
 
 ## File locations
 
+For CF/SC and Job Screener, the only base storage folder is `Path.home() / "Agent Compass"`, resolved on the machine where file tools execute. Apply skills/helper-runtime.md and call `workspace-base` with `{}` to obtain its absolute `workspace` without writes. Do not use the current directory, Documents, a plugin/client directory, a remembered custom base or an agent-chosen alternative. Show the resolved location without asking the user to choose it. Both hosts under the same OS account and filesystem use this same base; remote/container/WSL homes may differ. Do not hardcode a username or `/Users`, `/home` or `C:\Users` prefix.
+
+`run-start` creates the base for new CF/SC searches. For Job Screener, call `workspace-base` with `{create: true}` before profile intake; its profile workspace is the returned base. Creation uses private permissions where supported. If home resolution, access or creation fails, report the actual path/error and stop persistence; do not choose another folder, change permissions or client settings. An approved manual run uses the same OS-resolved home location and rule. Explicit saved-run paths remain available for existing-run handoff and legacy handling; they never override the fixed base for a new search or trigger migration.
+
 Resolve the loaded `<plugin-root>/skills/<command>/SKILL.md` through symlinks, then ascend three directories from the file to find the plugin root. A Claude plugin-root substitution uses that same installed root. Keep the selected workspace as the working directory.
 
 - Read bundled `workflows/`, `prompts/`, `skills/`, `agents/`, `helpers/` and `data/` from the plugin root, even where a step says "from the workspace."
-- Read and write `profile.md`, `situational-profile.md`, resolved workflow artifacts and pipeline state JSON files in the selected run workspace for CF/SC, or the explicitly selected profile workspace for Job Screener. Never put candidate data or results in the plugin installation.
+- Read and write `profile.md`, `situational-profile.md`, resolved workflow artifacts and pipeline state JSON files in the selected run workspace for CF/SC, or the fixed base workspace for Job Screener. Never put candidate data or results in the plugin installation.
 - Give subagents absolute package/workspace paths, the exact step prompt and needed inputs rather than relying on inherited context or working directories.
 - If a required file is missing, report its actual path and stop that step. Do not substitute a similarly named file from another installation or workspace.
 

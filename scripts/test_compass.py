@@ -12,7 +12,7 @@ import uuid
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "helpers"))
-from compass_lib import research, runs, timezones
+from compass_lib import research, runs, timezones, workspaces
 from compass_lib.common import Problem
 
 
@@ -969,8 +969,14 @@ class CompassCLI(unittest.TestCase):
 
 
 class RunWorkspaces(unittest.TestCase):
+    def setUp(self):
+        home_patch = patch.object(workspaces.Path, 'home')
+        self.home = home_patch.start()
+        self.addCleanup(home_patch.stop)
+
     def request(self, root, chat="codex:chat-a", **extra):
-        return {"workspace": str(root), "chat_id": chat, **extra}
+        self.home.return_value = Path(root)
+        return {"workspace": str(Path(root)/'Agent Compass'), "chat_id": chat, **extra}
 
     def start(self, root, chat="codex:chat-a", command="country-finder", name="Fictional Person A", **extra):
         return runs.start(self.request(root, chat, workflow=command, person_label=name, **extra))
@@ -1090,7 +1096,8 @@ class RunWorkspaces(unittest.TestCase):
             metadata.write_bytes(original)
             if hasattr(os,'symlink'):
                 with tempfile.TemporaryDirectory() as malicious:
-                    try:(Path(malicious)/'runs').symlink_to(outside,target_is_directory=True)
+                    (Path(malicious)/'Agent Compass').mkdir()
+                    try:(Path(malicious)/'Agent Compass'/'runs').symlink_to(outside,target_is_directory=True)
                     except OSError:pass
                     else:
                         with self.assertRaises(ValueError):self.start(malicious)
@@ -1103,13 +1110,39 @@ class RunWorkspaces(unittest.TestCase):
                 shutil.copytree(ROOT/component,install/component)
             def invoke(command, payload):
                 result = subprocess.run([sys.executable,'-I','-B',str(install/'helpers/compass.py'),command],
-                                        input=json.dumps({'schema_version':1,**payload}),text=True,capture_output=True)
+                                        input=json.dumps({'schema_version':1,**payload}),text=True,capture_output=True,
+                                        env={**os.environ, 'HOME': root, 'USERPROFILE': root})
                 self.assertEqual(result.returncode,0,result.stderr)
                 return json.loads(result.stdout)['result']
+            expected = str(Path(root).resolve()/'Agent Compass')
+            self.assertEqual(invoke('workspace-base',{}), {'workspace': expected, 'exists': False})
+            self.assertEqual(invoke('workspace-base',{'create': True}), {'workspace': expected, 'exists': True})
+            self.assertEqual(list(Path(expected).iterdir()), [])
             run = invoke('run-start',self.request(root,'claude:fictional-session',workflow='salary-calculator',person_label='Fictional Person A'))
             self.assertEqual(invoke('run-list',self.request(root,'claude:fictional-session'))['active_runs'][0]['run_id'],run['run_id'])
             self.assertEqual(invoke('run-list',self.request(root,'claude:other-session'))['active_runs'],[])
             self.assertFalse(list(install.rglob('__pycache__')))
+
+    def test_fixed_base_resolution_creation_and_override_rejection(self):
+        with tempfile.TemporaryDirectory() as home, tempfile.TemporaryDirectory() as other:
+            self.home.return_value = Path(home)
+            expected = Path(home).resolve()/'Agent Compass'
+            self.assertEqual(workspaces.resolve({}), {'workspace': str(expected), 'exists': False})
+            self.assertEqual(runs.list_runs(self.request(home))['active_runs'], [])
+            self.assertFalse(expected.exists())
+            for payload in ({'workspace': other}, {'create': 'true'}):
+                with self.assertRaises(ValueError):workspaces.resolve(payload)
+            payload = self.request(home, workflow='country-finder', person_label='Fictional Person')
+            with self.assertRaisesRegex(ValueError, 'fixed'):
+                runs.start({**payload, 'workspace': other})
+            self.assertFalse(expected.exists())
+            self.assertEqual(list(Path(other).iterdir()), [])
+            self.assertEqual(workspaces.resolve({'create': True}), {'workspace': str(expected), 'exists': True})
+            self.assertEqual(list(expected.iterdir()), [])
+            expected.rmdir()
+            expected.write_text('Fictional existing user file')
+            with self.assertRaisesRegex(ValueError, 'occupied'):workspaces.resolve({'create': True})
+            self.assertEqual(expected.read_text(), 'Fictional existing user file')
 
     def test_missing_final_and_same_name_people_are_not_reused(self):
         with tempfile.TemporaryDirectory() as root:
