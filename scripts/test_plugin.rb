@@ -15,6 +15,20 @@ assert = lambda do |condition, message|
   checks += 1
 end
 round_to = ->(value, step) { (Rational(value) / step).round * step }
+# True when validation rejects the installation. A String matcher must equal the error message, a lambda
+# receives it and no matcher accepts any rejection. The block restores the fixture even if validation passes.
+rejected_with = lambda do |installation, matcher = nil, &restore|
+  CompassValidation.validate(installation)
+  false
+rescue RuntimeError => error
+  case matcher
+  when nil then true
+  when String then error.message == matcher
+  else matcher.call(error.message)
+  end
+ensure
+  restore&.call
+end
 
 output, error, status = Open3.capture3(
   { "LC_ALL" => "C", "LANG" => "C" },
@@ -65,14 +79,7 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
     agent = installation.join("agents/#{role}.md")
     original_agent = agent.binread
     agent.delete
-    rejected = begin
-      CompassValidation.validate(installation)
-      false
-    rescue RuntimeError => error
-      error.message.start_with?("Missing packaged resource:") && error.message.end_with?("agents/#{role}.md")
-    ensure
-      agent.binwrite(original_agent)
-    end
+    rejected = rejected_with.call(installation, ->(message) { message.start_with?("Missing packaged resource:") && message.end_with?("agents/#{role}.md") }) { agent.binwrite(original_agent) }
     assert.call(rejected, "Validator accepted a package without the #{role} specialist")
     assert.call(CompassValidation.validate(installation), "Restored #{role} package must validate")
   end
@@ -82,14 +89,7 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
   qm = installation.join("prompts/shared/question-mechanism.md")
   original_qm = qm.read(encoding: "UTF-8")
   qm.delete
-  rejected = begin
-    CompassValidation.validate(installation)
-    false
-  rescue RuntimeError => error
-    error.message.start_with?("Missing packaged resource:") && error.message.include?("question-mechanism.md")
-  ensure
-    qm.write(original_qm)
-  end
+  rejected = rejected_with.call(installation, ->(message) { message.start_with?("Missing packaged resource:") && message.include?("question-mechanism.md") }) { qm.write(original_qm) }
   assert.call(rejected, "Validator accepted a package without QM")
 
   question_mutations = {
@@ -120,14 +120,7 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
       changed = mutate.call(original_body)
       assert.call(changed != original_body, "QM fixture made no change: #{label}")
       file.write(changed)
-      rejected = begin
-        CompassValidation.validate(installation)
-        false
-      rescue RuntimeError => error
-        error.message.start_with?(expected)
-      ensure
-        file.write(original_body)
-      end
+      rejected = rejected_with.call(installation, ->(message) { message.start_with?(expected) }) { file.write(original_body) }
       assert.call(rejected, "Validator accepted #{label} in #{path}")
     end
   end
@@ -137,14 +130,7 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
     alternate = installation.join(path)
     alternate.parent.mkpath
     alternate.write(JSON.generate(manifest))
-    rejected = begin
-      CompassValidation.validate(installation)
-      false
-    rescue RuntimeError => error
-      error.message == "Keep the two client manifests and one marketplace; root metadata can shadow them"
-    ensure
-      alternate.delete
-    end
+    rejected = rejected_with.call(installation, "Keep the two client manifests and one marketplace; root metadata can shadow them") { alternate.delete }
     assert.call(rejected, "Validator accepted shadowing metadata: #{path}")
   end
   # Exercise each client independently so parity checks cannot mask the
@@ -153,91 +139,42 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
     file = installation.join(path)
     original = file.binread
     file.delete
-    rejected = begin
-      CompassValidation.validate(installation)
-      false
-    rescue RuntimeError => error
-      error.message.start_with?("Missing packaged resource:") && error.message.end_with?(path)
-    ensure
-      file.binwrite(original)
-    end
+    rejected = rejected_with.call(installation, ->(message) { message.start_with?("Missing packaged resource:") && message.end_with?(path) }) { file.binwrite(original) }
     assert.call(rejected, "Validator accepted a missing client manifest: #{path}")
     [[], {}, ["./commands/"]].each do |commands|
       file.write(JSON.pretty_generate(baseline.merge("commands" => commands)))
-      rejected = begin
-        CompassValidation.validate(installation)
-        false
-      rescue RuntimeError => error
-        error.message == "Omit commands declarations; shared skills are the only entry points"
-      ensure
-        file.binwrite(original)
-      end
+      rejected = rejected_with.call(installation, "Omit commands declarations; shared skills are the only entry points") { file.binwrite(original) }
       assert.call(rejected, "Validator accepted commands #{commands.inspect} in #{path}")
     end
   end
   { "icon" => "./assets/icon.svg", "interface" => codex_manifest.fetch("interface") }.each do |field, value|
     file = installation.join(".claude-plugin/plugin.json")
     file.write(JSON.pretty_generate(manifest.merge(field => value)))
-    rejected = begin
-      CompassValidation.validate(installation)
-      false
-    rescue RuntimeError => error
-      error.message == "Keep Codex presentation fields out of the Claude manifest"
-    ensure
-      file.write(JSON.pretty_generate(manifest))
-    end
+    rejected = rejected_with.call(installation, "Keep Codex presentation fields out of the Claude manifest") { file.write(JSON.pretty_generate(manifest)) }
     assert.call(rejected, "Validator accepted Desktop-unsupported #{field}")
   end
   # Cover every shared field, including later additions, rather than only version.
   manifest.each_key do |field|
     file = installation.join(".codex-plugin/plugin.json")
     file.write(JSON.pretty_generate(codex_manifest.reject { |key, _| key == field }))
-    rejected = begin
-      CompassValidation.validate(installation)
-      false
-    rescue RuntimeError => error
-      error.message == "Client manifests must have identical shared metadata and skill paths"
-    ensure
-      file.write(JSON.pretty_generate(codex_manifest))
-    end
+    rejected = rejected_with.call(installation, "Client manifests must have identical shared metadata and skill paths") { file.write(JSON.pretty_generate(codex_manifest)) }
     assert.call(rejected, "Validator accepted manifest drift in #{field}")
   end
   { "displayName" => "Different name", "logo" => "./assets/missing.svg", "composerIcon" => "./assets/missing.svg" }.each do |field, value|
     file = installation.join(".codex-plugin/plugin.json")
     changed = codex_manifest.merge("interface" => codex_manifest.fetch("interface").merge(field => value))
     file.write(JSON.pretty_generate(changed))
-    rejected = begin
-      CompassValidation.validate(installation)
-      false
-    rescue RuntimeError => error
-      error.message == (field == "displayName" ? "Codex and Claude must use the same display name" : "Codex presentation must reference the shared SVG icon")
-    ensure
-      file.write(JSON.pretty_generate(codex_manifest))
-    end
+    rejected = rejected_with.call(installation, (field == "displayName" ? "Codex and Claude must use the same display name" : "Codex presentation must reference the shared SVG icon")) { file.write(JSON.pretty_generate(codex_manifest)) }
     assert.call(rejected, "Validator accepted invalid Codex #{field}")
   end
   assert.call(CompassValidation.validate(installation), "Restored client manifests must validate")
   installation.join("commands/nested").mkpath
   legacy = installation.join("commands/nested/unused.md")
   legacy.write("Unused adapter")
-  rejected = begin
-    CompassValidation.validate(installation)
-    false
-  rescue RuntimeError => error
-    error.message == "Legacy command directories must not be packaged"
-  ensure
-    legacy.delete
-  end
+  rejected = rejected_with.call(installation, "Legacy command directories must not be packaged") { legacy.delete }
   assert.call(rejected, "Validator accepted a reintroduced legacy adapter")
   Dir.rmdir(installation.join("commands/nested"))
-  rejected = begin
-    CompassValidation.validate(installation)
-    false
-  rescue RuntimeError => error
-    error.message == "Legacy command directories must not be packaged"
-  ensure
-    Dir.rmdir(installation.join("commands"))
-  end
+  rejected = rejected_with.call(installation, "Legacy command directories must not be packaged") { Dir.rmdir(installation.join("commands")) }
   assert.call(rejected, "Validator accepted an empty legacy commands directory")
   assert.call(CompassValidation.validate(installation), "Restored package must validate before icon checks")
   icon = installation.join("assets/icon.svg")
@@ -260,12 +197,7 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
     "oversized file" => original.ljust(5 * 1024 * 1024 + 1, " ")
   }.each do |label, bytes|
     bytes ? icon.binwrite(bytes) : icon.delete
-    rejected = begin
-      CompassValidation.validate(installation)
-      false
-    rescue RuntimeError
-      true
-    end
+    rejected = rejected_with.call(installation)
     assert.call(rejected, "Validator accepted a #{label} plugin icon")
     icon.binwrite(original)
   end
