@@ -110,8 +110,26 @@
         ],
         "invariant": "Preserve every existing rejection scenario, its exact expected message or matcher, the restore step that returns the installation to a valid state, the following 'must validate' assertions and the order of mutations; a mutation of each guarded validator check must still fail the corresponding assertion."
       },
-      "state": "open",
-      "depends_on": []
+      "state": "resolved",
+      "depends_on": [],
+      "closure": {
+        "origin": "native",
+        "kind": "fixed",
+        "commit": "8bd025d3b8010563ebcf98adca3babfeed240c85",
+        "date": "2026-10-29",
+        "method": "runtime",
+        "evidence": [
+          "scripts/test_plugin.rb defines one rejected_with helper (exact-message String, lambda or no matcher, plus a restore block that runs even if validation passes) and all twelve rejection checks use it; the file shrank by 68 lines with the same 447 checks.",
+          "Every scenario, matcher and restore step was kept. In throwaway fixture repositories, disabling each of the seven exact-message validator guards, and the lazy-QM guard, made the old and refactored tests fail identically; the prefix-matched QM guard ran identically in both."
+        ],
+        "checks": [
+          {
+            "command": "ruby scripts/test_plugin.rb",
+            "scope": "Validator, salary-example, country-table, archive-policy and deployment checks on Ruby 4.0.6, macOS; not live workflow tests",
+            "outcome": "447 checks passed before and after the change"
+          }
+        ]
+      }
     }
   ]
 }
