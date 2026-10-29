@@ -1039,6 +1039,51 @@ class RunWorkspaces(unittest.TestCase):
                 with self.assertRaises(Problem):
                     self.start(root, command=command, person_id=old['person_id'], previous_run_id=old['run_id'])
 
+    def test_history_is_read_only_and_does_not_promote_old_completed_runs(self):
+        with tempfile.TemporaryDirectory() as root:
+            old = self.start(root)
+            raw = b'Fictional confirmed profile\r\n'
+            (Path(old['workspace'])/'profile.md').write_bytes(raw)
+            self.finish(old)
+            middle = self.start(root, person_id=old['person_id'], previous_run_id=old['run_id'])
+            current = self.start(root, person_id=old['person_id'], previous_run_id=middle['run_id'])
+            before = self.snapshot(root)
+            normal = runs.list_runs(self.request(root))
+            self.assertNotIn('history_runs', normal)
+            self.assertEqual([(r['run_id'], r['completed']) for r in normal['active_runs']], [(current['run_id'], False)])
+            history = runs.list_runs(self.request(root, include_history=True))
+            self.assertEqual(history['active_runs'], normal['active_runs'])
+            self.assertEqual([(r['run_id'], r['is_active'], r['superseded_by']) for r in history['history_runs']],
+                             [(current['run_id'], True, None), (middle['run_id'], False, current['run_id']),
+                              (old['run_id'], False, middle['run_id'])])
+            self.assertEqual(self.snapshot(root), before)
+            self.assertTrue(runs.check({'workspace': old['workspace'], 'workflow': 'country-finder'})['completed'])
+            self.assertEqual(runs.list_runs(self.request(root))['active_runs'], normal['active_runs'])
+            with self.assertRaises(Problem):
+                self.start(root, person_id=old['person_id'], previous_run_id=old['run_id'])
+            selected = self.start(root, command='salary-calculator', person_id=old['person_id'], profile_source_run=old['run_id'])
+            self.assertEqual((Path(selected['workspace'])/'profile.md').read_bytes(), raw)
+
+    def test_history_filters_and_missing_chat_preserve_files(self):
+        with tempfile.TemporaryDirectory() as root:
+            first = self.start(root)
+            latest = self.start(root, person_id=first['person_id'], previous_run_id=first['run_id'])
+            self.start(root, command='salary-calculator', person_id=first['person_id'])
+            self.start(root, name='Fictional Person B', command='job-screener')
+            self.start(root, chat='claude:another-chat')
+            before = self.snapshot(root)
+            history = runs.list_runs(self.request(root, person_id=first['person_id'], workflow='country-finder', include_history=True))
+            self.assertEqual([r['run_id'] for r in history['history_runs']], [latest['run_id'], first['run_id']])
+            self.assertEqual([r['run_id'] for r in history['active_runs']], [latest['run_id']])
+            self.assertEqual(runs.list_runs(self.request(root, chat='codex:missing-chat', include_history=True))['history_runs'], [])
+            for invalid in (None, 1, 'true'):
+                with self.assertRaisesRegex(ValueError, 'include_history'):
+                    runs.list_runs(self.request(root, include_history=invalid))
+            self.assertEqual(self.snapshot(root), before)
+        with tempfile.TemporaryDirectory() as root:
+            self.assertEqual(runs.list_runs(self.request(root, include_history=True))['history_runs'], [])
+            self.assertEqual(list(Path(root).iterdir()), [])
+
     def test_cross_command_reuses_only_same_person_confirmed_profiles(self):
         with tempfile.TemporaryDirectory() as root:
             cf = self.start(root)
@@ -1143,6 +1188,8 @@ class RunWorkspaces(unittest.TestCase):
                                                person_label='Fictional Person A', person_id=run['person_id']))
             active = invoke('run-list', self.request(root, 'claude:fictional-session', workflow='job-screener'))['active_runs']
             self.assertEqual((active[0]['run_id'], active[0]['status']), (js['run_id'], 'profile_missing'))
+            historical = invoke('run-list', self.request(root, 'claude:fictional-session', workflow='job-screener', include_history=True))
+            self.assertEqual([(r['run_id'], r['is_active']) for r in historical['history_runs']], [(js['run_id'], True)])
             self.assertFalse(list(install.rglob('__pycache__')))
 
     def test_fixed_base_resolution_creation_and_override_rejection(self):
@@ -1297,6 +1344,7 @@ class RunWorkspaces(unittest.TestCase):
             (fork/'.compass-run.json').write_text(json.dumps(record))
             before = self.snapshot(root)
             with self.assertRaises(Problem):runs.list_runs(self.request(root))
+            with self.assertRaises(Problem):runs.list_runs(self.request(root, include_history=True))
             with self.assertRaises(Problem):
                 self.start(root, person_id=old['person_id'], previous_run_id=new['run_id'])
             self.assertEqual(self.snapshot(root), before)
