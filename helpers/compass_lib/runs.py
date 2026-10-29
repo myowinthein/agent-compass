@@ -64,8 +64,8 @@ def catalog(folder, key, metadata):
     if not folder.exists():
         return records
     for path in sorted(folder.iterdir()):
-        if path.name == ".DS_Store":
-            require(not path.is_symlink() and path.is_file(), "Unsafe Finder metadata entry")
+        if path.name.casefold() in (".ds_store", "desktop.ini", "thumbs.db"):
+            require(not path.is_symlink() and path.is_file(), "Unsafe OS metadata entry")
             continue
         if path.name.startswith(".creating-"):
             continue
@@ -176,10 +176,13 @@ def start(payload):
         token(source_id)
         require(source_id in records and records[source_id]["person_id"] == person, "Profile source is not this person in this chat")
         source = folder / ("run-" + source_id)
+        require(named(source, "profile.md").is_file(), "Profile source has no profile.md; select a valid source or collect a new resume")
         for name in ("profile.md", "situational-profile.md"):
             path = named(source, name)
             if path.exists():
-                copies[name] = read(path)
+                raw = read(path)
+                require(raw.strip(), "Profile source contains an empty " + name + "; repair the source or collect new intake")
+                copies[name] = raw
     run_id = uuid.uuid4().hex
     record = {"schema_version": 1, "run_id": run_id, "chat_key": key, "person_id": person,
               "person_label": person_label, "workflow": payload["workflow"],
