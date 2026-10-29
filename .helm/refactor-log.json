@@ -62,8 +62,27 @@
         ],
         "invariant": "Preserve run-list, run-start and workspace-base request and response shapes, the exact ValueError messages for unknown, non-string and uncheckpointed workflows, Job Screener as the only profile-only workflow, immutable run metadata validation, and the absence of any new files or dependencies."
       },
-      "state": "open",
-      "depends_on": []
+      "state": "resolved",
+      "depends_on": [],
+      "closure": {
+        "origin": "native",
+        "kind": "fixed",
+        "commit": "1ad469a103c5f43bee069c7f7bef18bba704770f",
+        "date": "2026-10-29",
+        "method": "runtime",
+        "evidence": [
+          "helpers/compass_lib/runs.py now has registry(), require_workflow() and a pure checkpointed() predicate; the three validate-and-discard call sites and the catalog loop call require_workflow(), and location() shares registry(). The duplicated registry path expression is gone.",
+          "Registry parsing per call was left unchanged and was not measured; the improvement is naming and removing the hidden side effect, not fewer reads.",
+          "In a throwaway copy, making require_workflow() a no-op made test_job_screener_same_person_profile_transfer_keeps_command_baselines_separate fail, so the unknown-workflow rejection is protected."
+        ],
+        "checks": [
+          {
+            "command": "python3 -B scripts/test_compass.py",
+            "scope": "Offline helper suite on Python 3.14.7, macOS; Linux/Windows and Python 3.11 matrix not run locally",
+            "outcome": "99 tests passed before and after the change"
+          }
+        ]
+      }
     },
     {
       "id": "r-cb5222f1-58b8-4af3-a280-768f2782ce4b",
