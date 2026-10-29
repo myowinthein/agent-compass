@@ -1304,6 +1304,57 @@ class RunWorkspaces(unittest.TestCase):
             (fork/'.compass-run.json').write_text(json.dumps(record))
             with self.assertRaisesRegex(ValueError, 'cycle'):runs.list_runs(self.request(root))
 
+    def test_person_labels_are_validated_and_not_reassigned(self):
+        for name in ('', ' Fictional Person', 'Fictional Person ', 'A'*201, 'Fictional\nPerson', 5, None):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as root:
+                with self.assertRaisesRegex(ValueError, 'person label'):
+                    self.start(root, name=name)
+                self.assertEqual(list(Path(root).iterdir()), [])
+        with tempfile.TemporaryDirectory() as root:
+            run = self.start(root)
+            before = self.snapshot(root)
+            with self.assertRaisesRegex(ValueError, 'Person label differs'):
+                self.start(root, name='Fictional Person B', person_id=run['person_id'], previous_run_id=run['run_id'])
+            self.assertEqual(self.snapshot(root), before)
+
+    def test_tampered_run_metadata_is_rejected_without_writes(self):
+        def tamper(run, **changes):
+            path = Path(run['workspace'])/'.compass-run.json'
+            path.write_text(json.dumps({**json.loads(path.read_text()), **changes}))
+        # Each case receives a country-finder run for person A and returns the changes for another saved run.
+        cases = (
+            ('Run identity mismatch', lambda run: ('salary-calculator', {}, dict(chat_key='0'*64))),
+            ('Run identity mismatch', lambda run: ('salary-calculator', {}, dict(run_id='e'*32))),
+            ('Run time needs a timezone', lambda run: ('salary-calculator', {}, dict(created_at='2026-10-29T12:00:00'))),
+            ('Referenced run is missing', lambda run: ('salary-calculator', {}, dict(previous_run_id='a'*32))),
+            ('Cross-person run reference', lambda run: ('country-finder', dict(name='Fictional Person B'), dict(profile_source_run=run['run_id']))),
+            ('Cross-command baseline reference', lambda run: ('salary-calculator', {}, dict(previous_run_id=run['run_id']))))
+        for index, (message, build) in enumerate(cases):
+            with self.subTest(index=index, message=message), tempfile.TemporaryDirectory() as root:
+                run = self.start(root)
+                command, extra, changes = build(run)
+                other = self.start(root, command=command, **({'person_id': run['person_id']} if not extra else extra))
+                tamper(other, **changes)
+                before = self.snapshot(root)
+                with self.assertRaisesRegex(ValueError, message):
+                    runs.list_runs(self.request(root))
+                with self.assertRaisesRegex(ValueError, message):
+                    self.start(root, person_id=run['person_id'], previous_run_id=run['run_id'])
+                self.assertEqual(self.snapshot(root), before)
+
+    def test_interrupted_run_staging_folder_is_ignored(self):
+        with tempfile.TemporaryDirectory() as root:
+            run = self.start(root)
+            leftover = Path(run['workspace']).parent/'.creating-abandoned'/'run'
+            leftover.mkdir(parents=True)
+            (leftover/'profile.md').write_text('Fictional partial profile')
+            before = self.snapshot(root)
+            self.assertEqual([r['run_id'] for r in runs.list_runs(self.request(root))['active_runs']], [run['run_id']])
+            self.assertEqual(self.snapshot(root), before)
+            fresh = self.start(root, person_id=run['person_id'], previous_run_id=run['run_id'])
+            self.assertNotEqual(fresh['workspace'], run['workspace'])
+            self.assertEqual((leftover/'profile.md').read_text(), 'Fictional partial profile')
+
     def test_profile_symlink_is_not_copied(self):
         with tempfile.TemporaryDirectory() as root, tempfile.TemporaryDirectory() as outside:
             first = self.start(root)
