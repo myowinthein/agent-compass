@@ -8,6 +8,8 @@ nav_order: 3
 
 Country Finder, Salary Calculator and Job Screener start a fresh run in a new chat. Searches and screening sessions for yourself, family or friends share one fixed parent folder, with separate run folders for each person and command.
 
+If the chat contains multiple people and you invoke CF, SC or JS without identifying who it is for, the assistant asks you to choose a person before proceeding. It does not assume the most recently used person. Naming or unambiguously identifying the person skips that extra question. Ordinary JS job-description follow-ups keep using the selected person. Portal Finder needs no profile or person choice.
+
 When you invoke Country Finder or Salary Calculator again for the same person in that chat:
 
 - A completed search offers **View previous results** or **Start fresh**.
