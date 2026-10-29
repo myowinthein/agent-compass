@@ -19,6 +19,8 @@ Read skills/run-workspaces.md and select this chat/person's Job Screener run bef
 
 A request to screen for a different person must select that person's run before screening, even without command re-invocation. Do not carry another person's candidate facts or application drafts into the selected run.
 
+A replacement resume or different profile version for this person starts a fresh JS run under skills/run-workspaces.md, preserving the current profile; ordinary JD/application follow-ups and approved dated clarifications stay in the selected run.
+
 Check if profile.md exists in the workspace. If it does not, read prompts/shared/resume-extraction-prompt.md and follow it. Wait for the resume and confirmation of the extracted profile, and for profile.md to be saved, before continuing.
 
 ## Sequence

@@ -31,6 +31,8 @@ Read only the applicable interface:
 
 `run-list` also supports Job Screener under the registry's profile-only workflows. Its `ready`/`profile_missing` status checks only nonempty profile presence; it never establishes human confirmation or completion and never reads/writes a JS checkpoint. Do not pass JS to `state-check` or `resolve-files`; its profile names stay unchanged.
 
+`run-list` accepts optional boolean `include_history` (default false). On explicit history requests, true adds `history_runs` with metadata, absolute workspace, `is_active` and `superseded_by`, newest first within each person/command lineage; existing person/workflow filters apply. Historical artifact status and human confirmations are not checked. The active-run result and all files remain unchanged. Conflicting lineages still stop for reconciliation, not automatic history selection.
+
 Failure handling:
 
 - Exit 2 `invalid_input`: correct the malformed/contradictory input from its source or ask for missing facts. Never bypass it with manual arithmetic.

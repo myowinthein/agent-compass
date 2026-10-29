@@ -125,7 +125,9 @@ def active(records, person, workflow):
 
 
 def list_runs(payload):
-    fields(payload, ("workspace", "chat_id"), ("person_id", "workflow"))
+    fields(payload, ("workspace", "chat_id"), ("person_id", "workflow", "include_history"))
+    include_history = payload.get("include_history", False)
+    require(type(include_history) is bool, "include_history must be a boolean")
     folder, key, metadata = location(payload)
     records = catalog(folder, key, metadata)
     person = token(payload["person_id"]) if "person_id" in payload else None
@@ -136,8 +138,17 @@ def list_runs(payload):
                      if (person is None or r["person_id"] == person) and
                      (workflow is None or r["workflow"] == workflow)})
     result = []
+    history = []
+    successors = {r["previous_run_id"]: r["run_id"] for r in records.values() if r["previous_run_id"]}
     for person_id, command in groups:
         record = active(records, person_id, command)
+        if include_history:
+            earlier = record
+            while earlier is not None:
+                history.append({**earlier, "workspace": str(folder / ("run-" + earlier["run_id"])),
+                                "is_active": earlier["run_id"] == record["run_id"],
+                                "superseded_by": successors.get(earlier["run_id"])})
+                earlier = records.get(earlier["previous_run_id"])
         path = folder / ("run-" + record["run_id"])
         try:
             if checkpointed(command):
@@ -151,7 +162,10 @@ def list_runs(payload):
         result.append({**record, "workspace": str(path), "status": status["status"],
                        "completed": status["completed"], "state": status.get("state"),
                        "missing": status.get("missing", []), "error": status.get("error")})
-    return {"chat_key": key, "active_runs": result}
+    output = {"chat_key": key, "active_runs": result}
+    if include_history:
+        output["history_runs"] = history
+    return output
 
 
 def start(payload):
