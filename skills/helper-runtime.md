@@ -19,6 +19,7 @@ python3 -I -B "<plugin-root>/helpers/compass.py" <subcommand>
 
 Read only the applicable interface:
 
+- Fixed base storage: `workspace-base` takes `{}` (read-only) or parent-only `{create: true}` (creates the home/Agent Compass directory only). It returns `{workspace, exists}`. There is no path override; a missing base is normal before the first run. See shared runtime File locations.
 - Chat/person run selection: `skills/run-workspaces.md`; `run-list` is read-only, while parent-only `run-start` creates an isolated run and optional confirmed profile copies.
 - Current/legacy artifact paths: `skills/workspace-files.md`; `resolve-files` takes `{workspace, workflow}` and writes nothing.
 - Research scope, blocks and storage: `skills/research-helper.md`; read-only `research-scope` can extract a saved country list without requiring completed research.
@@ -26,7 +27,7 @@ Read only the applicable interface:
 - Country Finder/Salaries rendering and saved-output checks: `skills/output-helper.md`.
 - Existing per-country salary arithmetic: `skills/salary-calculation-helper.md`.
 
-`ingest` writes only existing research/report and stored-data files; `run-start` creates only new run metadata and optional profile copies. The parent invokes both. Other operations are read-only; the parent normally runs them too. A specialist with execution may use a read-only operation, except Salary Calculator's numeric preparation still belongs to the parent. A specialist without execution returns the exact pending helper request to the parent, never guesses, asks the user or saves a partial final deliverable. Continue the approved assignment under the shared runtime's pending-request rule.
+`ingest` writes only existing research/report and stored-data files; `run-start` creates the fixed base when absent, new run metadata and optional profile copies. `workspace-base` writes only with `create: true`, creating that base directory. The parent invokes these writes. Other operations are read-only; the parent normally runs them too. A specialist with execution may use a read-only operation, except Salary Calculator's numeric preparation still belongs to the parent. A specialist without execution returns the exact pending helper request to the parent, never guesses, asks the user or saves a partial final deliverable. Continue the approved assignment under the shared runtime's pending-request rule.
 
 Failure handling:
 

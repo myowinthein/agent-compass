@@ -12,6 +12,7 @@ import uuid
 from .common import ROOT, Problem, fields, loads, named, read, require, text, workspace
 from .files import definition
 from .state import check
+from .workspaces import base
 
 
 def token(value):
@@ -29,7 +30,10 @@ def directory(parent, name):
 
 
 def location(payload):
-    root = workspace(payload["workspace"])
+    supplied = Path(text(payload["workspace"]))
+    require(supplied.is_absolute(), "workspace must be an absolute directory")
+    root = workspace(str(supplied)) if supplied.exists() else base()
+    require(supplied.resolve() == root, "Missing workspace is not the fixed storage base")
     chat = text(payload["chat_id"])
     require(chat == chat.strip() and len(chat) <= 512 and all(ord(c) >= 32 for c in chat)
             and not any(c in chat for c in "${}<>"), "Supply an actual chat ID or chat-local random token")
@@ -136,6 +140,9 @@ def start(payload):
            ("person_id", "previous_run_id", "profile_source_run"))
     definition(payload["workflow"])
     person_label = label(payload["person_label"])
+    require(Path(text(payload["workspace"])).is_absolute()
+            and Path(payload["workspace"]).resolve() == base(),
+            "New searches must use the fixed home/Agent Compass storage base")
     folder, key, metadata = location(payload)
     records = catalog(folder, key, metadata)
     person = token(payload["person_id"]) if "person_id" in payload else uuid.uuid4().hex
@@ -165,6 +172,7 @@ def start(payload):
               "created_at": datetime.now(timezone.utc).isoformat(), "previous_run_id": previous,
               "profile_source_run": source_id}
     # These directories contain private candidate files. No existing run is rewritten.
+    base(create=True)
     folder.parent.mkdir(mode=0o700, exist_ok=True)
     directory(folder.parent, folder.name)
     folder.mkdir(mode=0o700, exist_ok=True)

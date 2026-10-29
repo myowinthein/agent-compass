@@ -6,7 +6,7 @@ nav_order: 3
 
 # Searches and saved files
 
-Country Finder and Salary Calculator start a fresh search in a new chat. You can use the same output folder for yourself, family or friends: each person and search has a separate run folder.
+Country Finder and Salary Calculator start a fresh search in a new chat. Searches for yourself, family or friends share one fixed parent folder, with a separate run folder for each person and search.
 
 When you invoke the same command again for the same person in that chat:
 
@@ -17,10 +17,20 @@ Viewing shows the saved result in chat. Starting fresh preserves the previous se
 
 ## Where files go
 
-Choose a base workspace folder. Results are real files beneath it:
+The parent folder is always `Agent Compass` in the current OS user's home directory. You do not choose a storage folder, and there is no custom base-path setting. Typical paths are:
+
+| OS | Parent folder |
+|---|---|
+| macOS | `/Users/<username>/Agent Compass/` |
+| Windows | `C:\Users\<username>\Agent Compass\` |
+| Linux | `/home/<username>/Agent Compass/` |
+
+The home directory is resolved on the machine running the file tools, so redirected or differently located homes use their actual path. Codex and Claude share the parent when they use the same OS account and filesystem. Containers, WSL and remote machines may use a different home. If the folder cannot be accessed, saving stops with an explanation; no alternative is silently selected.
+
+Results are real files beneath that parent:
 
 ```text
-your-workspace/
+Agent Compass/
 └── runs/
     └── chat-…/
         ├── run-…/
@@ -47,4 +57,4 @@ If earlier search activity is visible but its association is unavailable after a
 
 You can explicitly provide a saved run path to resume after changing chats or hosts. Confirm whose run it is. Older results stored directly in a workspace keep their filenames and are never moved or automatically reused by a new chat.
 
-Portal Finder still returns results in chat. Job Screener still has no automatic screening-result export or checkpoint.
+Portal Finder still returns results in chat. Job Screener saves a confirmed profile, when needed, at `<home>/Agent Compass/profile.md`; it has no automatic screening-result export or checkpoint.

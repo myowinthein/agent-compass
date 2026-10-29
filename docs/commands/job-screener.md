@@ -39,6 +39,8 @@ Each report gives a verdict, pros, cons and missing information. Salary and appl
 
 Saved situational facts are reused without requiring new intake. Drafts use confirmed facts and compact English; nothing is submitted automatically.
 
+The profile is stored at `<home>/Agent Compass/profile.md`. Screening results stay in chat. See [Searches and saved files](../setup/saved-searches.html).
+
 See [Match analysis](job-screener/step1-match-analysis.html) for verdict rules and the exact report format.
 
 ## Continuing the chat
