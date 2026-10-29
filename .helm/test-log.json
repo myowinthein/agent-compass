@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "assessed_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+  "assessed_commit": "fe3dab04ab41aa427e43d4a11f2851d3072000be",
   "full_scan_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
   "cases": [
     {
@@ -115,6 +115,42 @@
         "command": "bundle exec rake docs_test",
         "scope": "Locally built site: home, both setup guides, Country Finder and both legal pages; Node/static HTML integration and internal link checking, without real-browser acceptance."
       }
+    },
+    {
+      "id": "g-6bcb6730-cb33-4621-9162-e1eb556c7821",
+      "expected": "Person labels must be trimmed, non-empty, control-free and at most 200 characters, and starting a run for an existing person with a different label is rejected without creating a run or reassigning saved work.",
+      "basis": [
+        "helpers/compass_lib/runs.py: label and start",
+        "skills/run-workspaces.md#bind-the-chat-and-person",
+        "AGENTS.md#domain-rules"
+      ],
+      "paths": [
+        "helpers/compass_lib/runs.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "medium",
+      "reason": "Person labels bind saved profiles to people in a chat, but no existing run test exercises label validation or the label-mismatch rejection, so a regression could silently reassign saved work.",
+      "action": "add",
+      "layer": "unit",
+      "state": "open",
+      "assessed_commit": "fe3dab04ab41aa427e43d4a11f2851d3072000be"
+    },
+    {
+      "id": "g-7b5622cd-bd86-4aa4-b784-b6113c833545",
+      "expected": "An interrupted .creating- staging folder is ignored by run listing, is never treated as a saved run and does not block starting a new run.",
+      "basis": [
+        "helpers/compass_lib/runs.py: catalog and start"
+      ],
+      "paths": [
+        "helpers/compass_lib/runs.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "low",
+      "reason": "Atomic run creation relies on skipping staging folders, but no test covers an interrupted creation leftover.",
+      "action": "add",
+      "layer": "unit",
+      "state": "open",
+      "assessed_commit": "fe3dab04ab41aa427e43d4a11f2851d3072000be"
     },
     {
       "id": "g-7b9a716c-c9d0-4ca0-9611-e664f5b8b596",
@@ -270,6 +306,24 @@
         "command": "python3 -B scripts/test_workflow_replay.py --host claude --case visa-refresh-annual --case visa-refresh-incomparable --case visa-refresh-pending --case no-adjustment-fresh-step3 --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-claude-salary-20261028.json\npython3 -B scripts/test_workflow_replay.py --host claude --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-claude-resume-20261028.json\npython3 -B scripts/test_workflow_replay.py --host codex --case visa-refresh-pending --case no-adjustment-fresh-step3 --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-codex-final-20261028.json\npython3 -B scripts/test_workflow_replay.py --host codex --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-codex-resume-20261028.json",
         "scope": "macOS controlled decision replays using native CLIs as model transports, virtual workspace snapshots, real temporary-file writes and parent-executed Python helpers. Requested claude-sonnet-5-5 high and gpt-6.1-sol high; every returned Claude canonical model checked, while Codex JSONL omits returned model identity. Captured replies were rechecked against the final assertions and matching fixtures; unaffected replies were reused. No native plugin-dispatch, live-browsing or whole-pipeline claim."
       }
+    },
+    {
+      "id": "g-a813fc09-e054-477c-94dd-07eb667fbee0",
+      "expected": "A run catalog rejects, without writing, metadata whose chat key or run ID does not match its location, a previous-run or profile-source reference to another person, a baseline from another command, a missing referenced run, or a timestamp without a timezone.",
+      "basis": [
+        "helpers/compass_lib/runs.py: catalog",
+        "skills/run-workspaces.md#select-the-search"
+      ],
+      "paths": [
+        "helpers/compass_lib/runs.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "medium",
+      "reason": "Moved or copied run metadata could leak a profile or baseline across people or chats; existing tests cover only unsupported schema, foreign person IDs, forks and cycles.",
+      "action": "add",
+      "layer": "unit",
+      "state": "open",
+      "assessed_commit": "fe3dab04ab41aa427e43d4a11f2851d3072000be"
     },
     {
       "id": "g-ac4cb994-542d-4c36-bd0d-4b30454a8569",
