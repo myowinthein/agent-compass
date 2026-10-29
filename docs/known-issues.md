@@ -6,7 +6,18 @@ permalink: /docs/known-issues.html
 
 # Known issues
 
-Observations from maintainer testing and use on macOS, alongside documented platform limitations. Platform documentation was checked on **28 October 2026**.
+Observations from maintainer testing and use on macOS, alongside documented platform limitations. Platform documentation was checked on **28–29 October 2026**.
+
+## Codex CLI
+
+<details id="questions-appear-as-plain-text-in-default-mode" markdown="block">
+<summary>Questions appear as plain text in Default mode</summary>
+
+**Observed:** Compass's questions appeared as plain text in Default mode, requiring a typed reply. Native single-choice selection and custom text replies worked in Plan mode and the desktop app.
+
+OpenAI describes [Plan mode](https://learn.chatgpt.com/docs/learn/best-practices#plan-first-for-difficult-tasks) as planning before implementation. In Default mode, type your choice or text to continue.
+
+</details>
 
 ## Claude Desktop
 
