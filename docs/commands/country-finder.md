@@ -32,7 +32,7 @@ flowchart TD
   Questions --> Final(["Show the Priority Table<br/>Save the full audit"])
 ```
 
-New chats start fresh. In the same chat, a matching completed search offers View previous results / Start fresh; an unfinished search offers Resume / Start fresh. Earlier searches are preserved. See [Searches and saved files](../setup/saved-searches.html).
+New chats start fresh. In the same chat, a matching completed search offers View previous results / Start fresh; an unfinished search offers Resume / Start fresh. Earlier searches are preserved.
 
 ## What to expect
 
