@@ -1,4 +1,4 @@
-<!-- helm-rule: agent-helm@v3.1.0 -->
+<!-- helm-rule: agent-helm@v3.2.2 -->
 # Git Rules
 
 ---
@@ -47,7 +47,7 @@ Only an explicitly approved settings edit changes publication preferences in the
 
 State the relevant invocation policy once and revalidate it before dependent actions. A base-dependent action resolves `{base_branch}` to the actual main/master from instructions, default branch and refs; ambiguity blocks that action, never guesses/creates/renames a base. Read-only work can report unresolved facts. Ordinary local tasks need not resolve a publication destination or contact a provider to finish.
 
-Rewritten-history publication and private archive backup publication are ship's separately approved specialist routes, not third `ship-method` values. A PR cannot replace published commit IDs. With the package loaded, normalize registers private per-run recovery locators in the actual Git common directory before an approved rewrite; ship discovers them across sessions under its bounded handoff procedure, retaining full proof, fixed leases and publication approval. Explicit paths remain the fallback for unavailable/ambiguous evidence or another clone. Copied rules alone grant no locator/state access or reconstruction of these protocols.
+Rewritten-history publication and private archive backup publication are ship's separately approved specialist routes, not third `ship-method` values. A PR cannot replace published commit IDs. With the package loaded, normalize registers private per-run recovery locators in the actual Git common directory before an approved rewrite; ship discovers them across sessions under its bounded handoff procedure, retaining full proof, fixed leases and publication approval. Explicit paths remain the fallback for unavailable/ambiguous evidence or another clone. Log/manifest have a separate packaged read-only review-anchor recovery procedure, not publication authority. Copied rules alone grant no locator/state access or reconstruction of these protocols.
 
 ---
 
