@@ -32,8 +32,27 @@
         ],
         "invariant": "Preserve both independently researched local-employee employer tiers, original research field names and answer format, literal self-contained researcher briefs, role/level/geography/hours/pay/source-method comparability, recoverable legacy metadata without invention or stricter ingestion, qualification and skip rules, question order and choices, checkpoints, profile/state schemas and generated outputs. Keep country selection/research orchestration in Step 1 and calculation eligibility in Step 4."
       },
-      "state": "open",
-      "depends_on": []
+      "state": "resolved",
+      "depends_on": [],
+      "closure": {
+        "origin": "native",
+        "kind": "fixed",
+        "commit": "4882df3d9f274ce7d63e722d4751813da1b49b8f",
+        "date": "2026-10-29",
+        "method": "static",
+        "evidence": [
+          "Revalidated at a47bda6: the original Step 1 employment-path mixing had already been removed by the fixed benchmark-scope paragraph, so the remaining issue was Step 4's unnamed import.",
+          "Step 1 now labels the scope paragraphs 'Benchmark scope:' and Step 4 line 26 enumerates the imported metadata requirements. A static check confirmed each named item exists in Step 1: the single Low/Realistic/Strong amounts bullet, the pay-basis/hours/geography bullet, settled role/level, the source-and-method bullet and the Benchmark basis and Estimate method fields.",
+          "This is a prompt-wording change with no model run. Researcher briefs, answer format, question order, calculation rules and Step 5b were not touched, but model behavior was not verified; the optional replay script was not run."
+        ],
+        "checks": [
+          {
+            "command": "ruby scripts/validate_plugin.rb; ruby scripts/test_plugin.rb; python3 -B scripts/test_compass.py",
+            "scope": "Packaging, published examples and offline helper suite on Ruby 4.0.6 and Python 3.14.7, macOS; not live workflow or model checks",
+            "outcome": "Package validated; 447 plugin checks and 99 helper tests passed"
+          }
+        ]
+      }
     },
     {
       "id": "r-29cf6f49-5379-4779-97e1-ce98c9aad85a",
