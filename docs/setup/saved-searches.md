@@ -6,14 +6,16 @@ nav_order: 3
 
 # Searches and saved files
 
-Country Finder and Salary Calculator start a fresh search in a new chat. Searches for yourself, family or friends share one fixed parent folder, with a separate run folder for each person and search.
+Country Finder, Salary Calculator and Job Screener start a fresh run in a new chat. Searches and screening sessions for yourself, family or friends share one fixed parent folder, with separate run folders for each person and command.
 
-When you invoke the same command again for the same person in that chat:
+When you invoke Country Finder or Salary Calculator again for the same person in that chat:
 
 - A completed search offers **View previous results** or **Start fresh**.
 - An unfinished search offers **Resume** or **Start fresh**.
 
 Viewing shows the saved result in chat. Starting fresh preserves the previous search and makes the new one active. Country Finder and Salary Calculator keep separate progress. A fresh search can reuse that person's unchanged, confirmed profile within the chat, but starts research again.
+
+Job Screener offers **Continue screening / Start fresh**, or **Resume setup / Start fresh** if profile intake is unfinished. Continuing uses the same run; ordinary job-description pastes do not ask again. It has no completed-search state, saved screening report or checkpoint. Each command keeps its own active run, and confirmed profile reuse stays within the same chat and person.
 
 ## Where files go
 
@@ -39,10 +41,13 @@ Agent Compass/
         │   ├── country-finder-01-criteria.md
         │   ├── country-finder-06-final-results.md
         │   └── .country-finder-state.json
-        └── run-…/
-            ├── profile.md
-            ├── salary-calculator-01-research.md
-            └── …
+        ├── run-…/
+        │   ├── profile.md
+        │   ├── salary-calculator-01-research.md
+        │   └── …
+        └── run-…/                     # Job Screener session
+            ├── .compass-run.json
+            └── profile.md
 ```
 
 The assistant reports the actual run folder. Identifiers in folder names distinguish chats and runs; person names are recorded in that run's metadata. Keep those files private along with your profiles and research.
@@ -57,4 +62,4 @@ If earlier search activity is visible but its association is unavailable after a
 
 You can explicitly provide a saved run path to resume after changing chats or hosts. Confirm whose run it is. Older results stored directly in a workspace keep their filenames and are never moved or automatically reused by a new chat.
 
-Portal Finder still returns results in chat. Job Screener saves a confirmed profile, when needed, at `<home>/Agent Compass/profile.md`; it has no automatic screening-result export or checkpoint.
+Portal Finder still returns results in chat. Job Screener saves a confirmed profile in its selected run, with optional situational data when supplied; it has no automatic screening-result export or checkpoint. Any old `<home>/Agent Compass/profile.md` remains untouched and is never used automatically by a new run.

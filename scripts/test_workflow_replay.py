@@ -362,6 +362,12 @@ def run_case(host, case, timeout, previous=None):
                 + ("The user chose View previous results." if case["group"] == "replay"
                    else "The user chose to resume the selected unfinished run.")
             )
+        elif case["workflow"] == "job-screener":
+            context["run_selection"] = (
+                "This virtual workspace is the already-selected Job Screener run for the confirmed fictional "
+                "person. Profile intake/confirmation and run selection are complete. Continue screening the "
+                "provided JD within this run; do not create another run or ask the run-selection question."
+            )
         if previous:
             context["previous_jd_exchange"] = previous
         if case["group"] == "replay":

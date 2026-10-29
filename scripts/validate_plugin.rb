@@ -82,10 +82,12 @@ module CompassValidation
     end
     resource(root, "helpers/salary_targets.py")
     resource(root, "helpers/compass.py")
-    %w[common files money research state tables timezones].each { |name| resource(root, "helpers/compass_lib/#{name}.py") }
+    %w[common files money research runs state tables timezones workspaces].each { |name| resource(root, "helpers/compass_lib/#{name}.py") }
     registry = JSON.parse(read(resource(root, "data/workspace-files.json")))
     check(registry.fetch("schema_version") == 1 && registry.fetch("workflows").keys.sort == %w[country-finder salary-calculator],
           "Unknown workspace filename registry")
+    check(registry.fetch("runs").fetch("profile_workflows") == %w[job-screener],
+          "Only Job Screener has profile-only runs; keep checkpoint membership separate")
     filenames = []
     registry.fetch("workflows").each do |workflow, spec|
       check(spec.fetch("state") == ".#{workflow}-state.json", "Keep checkpoint filenames unchanged")

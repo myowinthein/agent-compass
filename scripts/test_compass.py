@@ -1121,6 +1121,10 @@ class RunWorkspaces(unittest.TestCase):
             run = invoke('run-start',self.request(root,'claude:fictional-session',workflow='salary-calculator',person_label='Fictional Person A'))
             self.assertEqual(invoke('run-list',self.request(root,'claude:fictional-session'))['active_runs'][0]['run_id'],run['run_id'])
             self.assertEqual(invoke('run-list',self.request(root,'claude:other-session'))['active_runs'],[])
+            js = invoke('run-start', self.request(root, 'claude:fictional-session', workflow='job-screener',
+                                               person_label='Fictional Person A', person_id=run['person_id']))
+            active = invoke('run-list', self.request(root, 'claude:fictional-session', workflow='job-screener'))['active_runs']
+            self.assertEqual((active[0]['run_id'], active[0]['status']), (js['run_id'], 'profile_missing'))
             self.assertFalse(list(install.rglob('__pycache__')))
 
     def test_fixed_base_resolution_creation_and_override_rejection(self):
@@ -1143,6 +1147,65 @@ class RunWorkspaces(unittest.TestCase):
             expected.write_text('Fictional existing user file')
             with self.assertRaisesRegex(ValueError, 'occupied'):workspaces.resolve({'create': True})
             self.assertEqual(expected.read_text(), 'Fictional existing user file')
+
+    def test_job_screener_new_chat_and_person_do_not_reuse_profiles(self):
+        with tempfile.TemporaryDirectory() as home:
+            self.request(home)
+            base = Path(workspaces.resolve({'create': True})['workspace'])
+            (base/'profile.md').write_text('Fictional legacy root profile')
+            first = self.start(home, command='job-screener')
+            self.assertEqual(set(p.name for p in Path(first['workspace']).iterdir()), {'.compass-run.json'})
+            initial = runs.list_runs(self.request(home))['active_runs'][0]
+            self.assertEqual((initial['status'], initial['completed']), ('profile_missing', False))
+            (Path(first['workspace'])/'profile.md').write_text('Fictional confirmed Person A')
+            before = self.snapshot(home)
+            self.assertEqual(runs.list_runs(self.request(home, 'claude:different-chat'))['active_runs'], [])
+            self.assertEqual(self.snapshot(home), before)
+            other_chat = self.start(home, 'claude:different-chat', command='job-screener')
+            spouse = self.start(home, command='job-screener', name='Fictional Person B')
+            for run in (other_chat, spouse):
+                self.assertNotEqual(run['person_id'], first['person_id'])
+                self.assertFalse((Path(run['workspace'])/'profile.md').exists())
+            for name, raw in before.items():self.assertEqual((Path(home)/name).read_bytes(), raw)
+
+    def test_job_screener_continue_and_fresh_preserve_profiles_without_checkpoints(self):
+        with tempfile.TemporaryDirectory() as home:
+            old = self.start(home, command='job-screener')
+            path = Path(old['workspace'])
+            (path/'profile.md').write_text('Fictional confirmed profile')
+            before = self.snapshot(home)
+            current = runs.list_runs(self.request(home, workflow='job-screener'))['active_runs'][0]
+            self.assertEqual((current['run_id'], current['status'], current['completed']),
+                             (old['run_id'], 'ready', False))
+            self.assertIsNone(current['state'])
+            self.assertEqual(self.snapshot(home), before)
+            with self.assertRaises(Problem):
+                self.start(home, command='job-screener', person_id=old['person_id'])
+            new = self.start(home, command='job-screener', person_id=old['person_id'], previous_run_id=old['run_id'])
+            active = runs.list_runs(self.request(home, workflow='job-screener'))['active_runs'][0]
+            self.assertEqual((active['run_id'], active['status']), (new['run_id'], 'profile_missing'))
+            for name, raw in before.items():self.assertEqual((Path(home)/name).read_bytes(), raw)
+            self.assertEqual(set(p.name for p in path.iterdir()), {'.compass-run.json', 'profile.md'})
+            with self.assertRaises(ValueError):runs.check({'workspace': str(path), 'workflow': 'job-screener'})
+
+    def test_job_screener_same_person_profile_transfer_keeps_command_baselines_separate(self):
+        with tempfile.TemporaryDirectory() as home:
+            cf = self.start(home)
+            raw = b'Fictional confirmed same-person profile\r\n'
+            (Path(cf['workspace'])/'profile.md').write_bytes(raw)
+            self.finish(cf)
+            js = self.start(home, command='job-screener', person_id=cf['person_id'], profile_source_run=cf['run_id'])
+            self.assertEqual((Path(js['workspace'])/'profile.md').read_bytes(), raw)
+            self.assertEqual(set(p.name for p in Path(js['workspace']).iterdir()), {'.compass-run.json', 'profile.md'})
+            active = {r['workflow']: r for r in runs.list_runs(self.request(home, person_id=cf['person_id']))['active_runs']}
+            self.assertEqual(active['country-finder']['run_id'], cf['run_id'])
+            self.assertTrue(active['country-finder']['completed'])
+            self.assertEqual(active['job-screener']['status'], 'ready')
+            spouse = self.start(home, name='Fictional Person B')
+            with self.assertRaises(ValueError):
+                self.start(home, command='job-screener', name='Fictional Person B', person_id=spouse['person_id'],
+                           profile_source_run=cf['run_id'])
+            with self.assertRaises(ValueError):self.start(home, command='portal-finder')
 
     def test_missing_final_and_same_name_people_are_not_reused(self):
         with tempfile.TemporaryDirectory() as root:

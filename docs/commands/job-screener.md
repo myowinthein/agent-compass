@@ -21,7 +21,10 @@ Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). 
 
 ```mermaid
 flowchart TD
-  Start(["Run job-screener"]) --> Profile["Load profile.md<br/>Or extract your resume and wait for confirmation"]
+  Start(["Run job-screener"]) --> Run{"Matching chat/person JS session?"}
+  Run -->|Continue screening or Resume setup| Profile["Use the selected run's profile<br/>Or extract your resume and wait for confirmation"]
+  Run -->|No match or Start fresh| New["Create an isolated run"]
+  New --> Profile
   Profile --> Context["Reuse situational-profile.md if present<br/>Clarify only material missing or conflicting facts"]
   Context --> Wait(["Profile loaded<br/>Wait for your paste"])
   Wait --> Kind{"What did you send?"}
@@ -39,10 +42,10 @@ Each report gives a verdict, pros, cons and missing information. Salary and appl
 
 Saved situational facts are reused without requiring new intake. Drafts use confirmed facts and compact English; nothing is submitted automatically.
 
-The profile is stored at `<home>/Agent Compass/profile.md`. Screening results stay in chat. See [Searches and saved files](../setup/saved-searches.html).
+The profile is stored at `<home>/Agent Compass/runs/chat-…/run-…/profile.md`. New chats and different people start separate sessions. The old top-level profile is never reused automatically. Screening results stay in chat. See [Searches and saved files](../setup/saved-searches.html).
 
 See [Match analysis](job-screener/step1-match-analysis.html) for verdict rules and the exact report format.
 
 ## Continuing the chat
 
-Keep pasting jobs or application questions. Each job is assessed independently without a checkpoint. If a long chat drifts, rerun the command to reload its instructions and profile.
+Keep pasting jobs or application questions in the selected run. Each job is assessed independently without a checkpoint. Re-invoking the command for this person offers Continue screening / Start fresh, or Resume setup / Start fresh if intake is unfinished. Starting fresh preserves earlier profiles. There is no completed-search state or saved screening report to replay.
