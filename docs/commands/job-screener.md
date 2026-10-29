@@ -42,7 +42,7 @@ Each report gives a verdict, pros, cons and missing information. Salary and appl
 
 Saved situational facts are reused without requiring new intake. Drafts use confirmed facts and compact English; nothing is submitted automatically.
 
-The profile is stored at `<home>/Agent Compass/runs/chat-…/run-…/profile.md`. New chats and different people start separate sessions. The old top-level profile is never reused automatically. Screening results stay in chat. See [Searches and saved files](../setup/saved-searches.html).
+The profile is stored at `<home>/Agent Compass/runs/chat-…/run-…/profile.md`. New chats and different people start separate sessions. The old top-level profile is never reused automatically. Screening results stay in chat.
 
 See [Match analysis](job-screener/step1-match-analysis.html) for verdict rules and the exact report format.
 
