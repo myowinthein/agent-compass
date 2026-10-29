@@ -29,6 +29,8 @@ Read only the applicable interface:
 
 `ingest` writes only existing research/report and stored-data files; `run-start` creates the fixed base when absent, new run metadata and optional profile copies. `workspace-base` writes only with `create: true`, creating that base directory. The parent invokes these writes. Other operations are read-only; the parent normally runs them too. A specialist with execution may use a read-only operation, except Salary Calculator's numeric preparation still belongs to the parent. A specialist without execution returns the exact pending helper request to the parent, never guesses, asks the user or saves a partial final deliverable. Continue the approved assignment under the shared runtime's pending-request rule.
 
+`run-list` also supports Job Screener under the registry's profile-only workflows. Its `ready`/`profile_missing` status checks only nonempty profile presence; it never establishes human confirmation or completion and never reads/writes a JS checkpoint. Do not pass JS to `state-check` or `resolve-files`; its profile names stay unchanged.
+
 Failure handling:
 
 - Exit 2 `invalid_input`: correct the malformed/contradictory input from its source or ask for missing facts. Never bypass it with manual arithmetic.

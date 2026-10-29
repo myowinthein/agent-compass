@@ -1,11 +1,11 @@
 ---
 name: Run Workspaces
-description: Select isolated Country Finder and Salary Calculator searches by chat, person and command before reading profiles or checkpoints.
+description: Select isolated Country Finder, Salary Calculator and Job Screener runs by chat, person and command before reading profiles or checkpoints.
 ---
 
 # Run workspaces
 
-Apply this before CF/SC profile intake, artifact resolution or completed replay. Resolve the fixed **base workspace** under the shared runtime's File locations rule: `Path.home() / "Agent Compass"`. There is no custom base-folder option or folder question. Every new search gets its own **run workspace** beneath it; all existing artifact/profile names and checkpoint schemas stay unchanged inside that directory. Never interpret a new chat as a request to resume whatever is in the base folder.
+Apply this before CF/SC/JS profile intake, artifact resolution or completed replay. Resolve the fixed **base workspace** under the shared runtime's File locations rule: `Path.home() / "Agent Compass"`. There is no custom base-folder option or folder question. Every new search or screening session gets its own **run workspace** beneath it; all existing artifact/profile names and checkpoint schemas stay unchanged inside that directory. Never interpret a new chat as a request to resume whatever is in the base folder.
 
 ## Bind the chat and person
 
@@ -19,15 +19,17 @@ Before profile intake, identify the requested person from this chat's request or
 
 ## Select the search
 
-Apply `skills/helper-runtime.md`. Before any `run-start`, the parent calls `run-list` with the base `workspace` and `chat_id`, initially without person or workflow filters so existing identities and both commands are visible. Bind the requested person from that listing and retained context before narrowing by `person_id`/`workflow`. Do not omit a known person's ID to bypass an existing run choice. This reads only the selected chat's run metadata and checks matching active runs; it writes nothing. No matching person/command means a fresh search, without a resume question.
+Apply `skills/helper-runtime.md`. Before any `run-start`, the parent calls `run-list` with the base `workspace` and `chat_id`, initially without person or workflow filters so existing identities and all three commands are visible. Bind the requested person from that listing and retained context before narrowing by `person_id`/`workflow`. Do not omit a known person's ID to bypass an existing run choice. This reads only the selected chat's run metadata and checks matching active runs; it writes nothing. No matching person/command means a fresh run, without a resume question.
 
-For an existing active run belonging to this person and command, show its label, command and path, then ask:
+For an existing active CF/SC run belonging to this person and command, show its label, command and path, then ask:
 
 - **Completed:** report completion and offer **View previous results / Start fresh**. View displays that run's saved final in chat and ends without new research or writes.
 - **Unfinished:** report the saved step, or that no checkpoint exists yet, and offer **Resume / Start fresh**. Resume keeps that run workspace and continues the next unfinished step after the existing consistency and orphan-output checks.
 - **Inconsistent/corrupt:** explain the actual problem; preserve files and offer the existing repair route or Start fresh. Never claim completion or silently reset it.
 
-Starting fresh creates a new run and makes it the active baseline for this person and command. Keep all earlier runs unchanged. CF and SC maintain separate active baselines. Do not reopen old results as the default after a newer run has started, even if that newer run is incomplete.
+For an existing JS run, `ready` means a nonempty profile exists, not verified profile content or a completed search. After checking this person's retained intake/confirmation context, offer **Continue screening / Start fresh**. For `profile_missing`, offer **Resume setup / Start fresh**; an empty or partly written profile requires the normal intake/confirmation repair before screening, not automatic reuse. A saved file alone never proves intake was confirmed when that context is unavailable; clarify only the unresolved confirmation. Resume/Continue keeps the workspace and applies the existing profile and candidate checks. An `inconsistent` JS run uses the repair/Start fresh rule. Do not call `state-check`, write a JS checkpoint, label the run complete, or offer a saved final report. Repeated JD/application messages after run selection continue within that run without another picker.
+
+Starting fresh creates a new run and makes it the active baseline for this person and command. Keep all earlier runs unchanged. CF, SC and JS maintain separate active baselines. Do not reopen old results or profiles as the default after a newer run has started, even if that newer run is incomplete.
 
 ## Start and retain a run
 
@@ -38,6 +40,8 @@ The parent calls `run-start` with:
 ```
 
 For an existing person, include their exact returned `person_id`. After a Start fresh choice, also include the exact active `previous_run_id`; missing/stale baselines fail instead of silently replacing a search. Optionally provide `profile_source_run` from the same chat/person to copy their confirmed `profile.md` and `situational-profile.md` byte-for-byte. Reuse profiles only when still applicable and confirmed; never copy research, outputs or checkpoints into a fresh search. For a new person, collect and confirm their own resume/profile in the new workspace. A fresh search restarts research, not necessarily unchanged profile intake.
+
+For a new JS screening session, set `workflow` to `job-screener` and use the same identity/baseline/profile-copy rules. JS runs contain run metadata and the confirmed profile, plus optional confirmed situational data; they do not export screening reports. A new chat cannot automatically copy an earlier chat's profile or the top-level legacy `profile.md`.
 
 The result supplies the new run ID, person ID and absolute `workspace`. Retain them in chat context and show the chat key and actual saved directory after every start. Use that run workspace for every subsequent helper, specialist, profile and checkpoint operation. The metadata filename and root directory come from `data/workspace-files.json`; `run-start` creates the fixed base if absent and alone writes the new run metadata and optional profile copies. It rejects other bases. It does not establish human approval or advance a workflow checkpoint.
 

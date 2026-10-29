@@ -9,7 +9,8 @@ Before the first user question, read [Question mechanism (QM)](question-mechanis
 | Shared trigger and owner | Preferred form and answer needed |
 |---|---|
 | CF/SC run selection; skills/run-workspaces.md | Identify the person before profile/state reuse. For a matching completed run ask View previous results / Start fresh; for an unfinished run ask Resume / Start fresh. A new chat/person/command without a matching run starts fresh. |
-| CF/SC missing identity or lost chat association; skills/run-workspaces.md | Input for a short person label or clarification among existing identities. If earlier activity exists but its chat association is lost, Single for supplying the saved run path or Start fresh; Input for the path. Do not silently generate another identity or chat key. |
+| JS run selection; skills/run-workspaces.md | New chats/persons start fresh. On command re-invocation, Single for Continue screening / Start fresh when a profile is ready, or Resume setup / Start fresh when intake is unfinished. Ordinary JD/application follow-ups stay in the selected run. No saved-final or completion choice. |
+| CF/SC/JS missing identity or lost chat association; skills/run-workspaces.md | Input for a short person label or clarification among existing identities. If earlier activity exists but its chat association is lost, Single for supplying the saved run path or Start fresh; Input for the path. Do not silently generate another identity or chat key. |
 | Missing resume; prompts/shared/resume-extraction-prompt.md | Input for a resume via normal chat, paste or supplied readable local path; Review of the full extracted profile before saving, with Input for corrections and a new shown revision. |
 | Material missing/conflicting candidate facts; Candidate clarifications below | Input for only the unresolved facts, with units/reference date where needed. If saving a clarification is proposed, Review of the exact dated profile note; a run-only answer alone never approves persistence. |
 | Duplicate artifact aliases or changed resolved paths; skills/workspace-files.md | Input clarifying the intended artifact and user-managed resolution. Wait until a single spelling remains and paths are reconciled; a picker answer does not authorize merging, deleting or migrating files. |
@@ -34,7 +35,7 @@ Keep parent narration and tool output focused on the next decision, preserving r
 
 ## Run selection
 
-Before CF/SC reads profiles or artifacts, read skills/run-workspaces.md and select the run for this chat, person and command. A new chat starts fresh. Existing work in the same chat requires the completed/unfinished run choice before replay or resume. Keep the base workspace distinct from the selected run workspace throughout all steps.
+Before CF/SC/JS reads profiles or artifacts, read skills/run-workspaces.md and select the run for this chat, person and command. A new chat starts fresh. Existing work in the same chat requires the command's run choice before replay or resume; JS uses Continue screening or Resume setup because it has no completed-search state. Keep the base workspace distinct from the selected run workspace throughout all steps.
 
 ## Candidate clarifications
 
@@ -73,16 +74,18 @@ Before the first supported mechanical operation, read skills/helper-runtime.md. 
 
 For CF/SC and Job Screener, the only base storage folder is `Path.home() / "Agent Compass"`, resolved on the machine where file tools execute. Apply skills/helper-runtime.md and call `workspace-base` with `{}` to obtain its absolute `workspace` without writes. Do not use the current directory, Documents, a plugin/client directory, a remembered custom base or an agent-chosen alternative. Show the resolved location without asking the user to choose it. Both hosts under the same OS account and filesystem use this same base; remote/container/WSL homes may differ. Do not hardcode a username or `/Users`, `/home` or `C:\Users` prefix.
 
-`run-start` creates the base for new CF/SC searches. For Job Screener, call `workspace-base` with `{create: true}` before profile intake; its profile workspace is the returned base. Creation uses private permissions where supported. If home resolution, access or creation fails, report the actual path/error and stop persistence; do not choose another folder, change permissions or client settings. An approved manual run uses the same OS-resolved home location and rule. Explicit saved-run paths remain available for existing-run handoff and legacy handling; they never override the fixed base for a new search or trigger migration.
+`run-start` creates the base and an isolated run for new CF/SC searches and JS screening sessions. Profiles belong in that selected run, never at the base; an existing top-level legacy profile is preserved and is not automatic intake. Creation uses private permissions where supported. If home resolution, access or creation fails, report the actual path/error and stop persistence; do not choose another folder, change permissions or client settings. An approved manual run uses the same OS-resolved home location and rule. Explicit saved-run paths remain available for existing-run handoff and legacy handling; they never override the fixed base for a new search or trigger migration.
 
 Resolve the loaded `<plugin-root>/skills/<command>/SKILL.md` through symlinks, then ascend three directories from the file to find the plugin root. A Claude plugin-root substitution uses that same installed root. Keep the selected workspace as the working directory.
 
 - Read bundled `workflows/`, `prompts/`, `skills/`, `agents/`, `helpers/` and `data/` from the plugin root, even where a step says "from the workspace."
-- Read and write `profile.md`, `situational-profile.md`, resolved workflow artifacts and pipeline state JSON files in the selected run workspace for CF/SC, or the fixed base workspace for Job Screener. Never put candidate data or results in the plugin installation.
+- Read and write `profile.md`, optional `situational-profile.md`, and any workflow artifacts/checkpoints in the selected run workspace for CF/SC/JS. JS has no screening-report export or checkpoint. Never put candidate data or results in the plugin installation.
 - Give subagents absolute package/workspace paths, the exact step prompt and needed inputs rather than relying on inherited context or working directories.
 - If a required file is missing, report its actual path and stop that step. Do not substitute a similarly named file from another installation or workspace.
 
 ## State tracking
+
+This section applies only to the checkpointed CF/SC pipelines, not JS or Portal Finder. JS run metadata records identity and baseline only.
 
 Before checkpointed artifact access, apply skills/workspace-files.md and its sole registry, data/workspace-files.json. Resolved paths govern every canonical name, including existence checks, handoffs and completion messages on legacy runs. Apply the same read-only or approved manual resolution to optional upstream results without renamed copies. Profile names and the two-field checkpoint schema stay unchanged.
 

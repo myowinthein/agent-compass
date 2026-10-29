@@ -15,7 +15,9 @@ Use [QM](../prompts/shared/question-mechanism.md) and the shared runtime's commo
 
 ## Before starting
 
-Apply the shared runtime's File locations rule first. Resolve and create the fixed home/Agent Compass base with `workspace-base` using `{create: true}`; use that returned directory as this command's profile workspace. Do not ask for a storage folder or substitute the current directory.
+Read skills/run-workspaces.md and select this chat/person's Job Screener run before reading any profile. A new chat or person starts fresh. On re-invocation in this chat, offer Continue screening / Start fresh for a ready profile, or Resume setup / Start fresh when intake is unfinished. Use the returned run workspace for profiles; never reuse the base folder's profile automatically. Once selected, ordinary JD/application follow-ups stay in that run without repeating run selection. JS has no completed-search state, saved screening reports or checkpoint.
+
+A request to screen for a different person must select that person's run before screening, even without command re-invocation. Do not carry another person's candidate facts or application drafts into the selected run.
 
 Check if profile.md exists in the workspace. If it does not, read prompts/shared/resume-extraction-prompt.md and follow it. Wait for the resume and confirmation of the extracted profile, and for profile.md to be saved, before continuing.
 

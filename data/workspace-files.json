@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "runs": {"directory": "runs", "metadata": ".compass-run.json"},
+  "runs": {"directory": "runs", "metadata": ".compass-run.json", "profile_workflows": ["job-screener"]},
   "workflows": {
     "country-finder": {
       "state": ".country-finder-state.json",

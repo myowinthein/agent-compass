@@ -15,6 +15,15 @@ from .state import check
 from .workspaces import base
 
 
+def checkpointed(workflow):
+    registry = loads(read(ROOT / "data" / "workspace-files.json"))
+    require(isinstance(workflow, str), "Expected a run workflow")
+    if workflow in registry["runs"]["profile_workflows"]:
+        return False
+    definition(workflow)
+    return True
+
+
 def token(value):
     require(isinstance(value, str) and re.fullmatch(r"[0-9a-f]{32}", value), "Expected a returned run/person ID")
     return value
@@ -70,7 +79,7 @@ def catalog(folder, key, metadata):
         require(record["run_id"] == identifier and record["chat_key"] == key, "Run identity mismatch")
         token(record["person_id"])
         label(record["person_label"])
-        definition(record["workflow"])
+        checkpointed(record["workflow"])
         require(isinstance(record["created_at"], str) and
                 datetime.fromisoformat(record["created_at"]).tzinfo is not None, "Run time needs a timezone")
         for field in ("previous_run_id", "profile_source_run"):
@@ -117,7 +126,7 @@ def list_runs(payload):
     person = token(payload["person_id"]) if "person_id" in payload else None
     workflow = payload.get("workflow")
     if workflow is not None:
-        definition(workflow)
+        checkpointed(workflow)
     groups = sorted({(r["person_id"], r["workflow"]) for r in records.values()
                      if (person is None or r["person_id"] == person) and
                      (workflow is None or r["workflow"] == workflow)})
@@ -126,7 +135,12 @@ def list_runs(payload):
         record = active(records, person_id, command)
         path = folder / ("run-" + record["run_id"])
         try:
-            status = check({"workspace": str(path), "workflow": command})
+            if checkpointed(command):
+                status = check({"workspace": str(path), "workflow": command})
+            else:
+                profile = named(path, "profile.md")
+                ready = profile.is_file() and bool(read(profile).strip())
+                status = {"status": "ready" if ready else "profile_missing", "completed": False}
         except (ValueError, OSError) as error:
             status = {"status": "inconsistent", "completed": False, "error": str(error)}
         result.append({**record, "workspace": str(path), "status": status["status"],
@@ -138,7 +152,7 @@ def list_runs(payload):
 def start(payload):
     fields(payload, ("workspace", "chat_id", "workflow", "person_label"),
            ("person_id", "previous_run_id", "profile_source_run"))
-    definition(payload["workflow"])
+    checkpointed(payload["workflow"])
     person_label = label(payload["person_label"])
     require(Path(text(payload["workspace"])).is_absolute()
             and Path(payload["workspace"]).resolve() == base(),
