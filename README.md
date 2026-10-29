@@ -77,5 +77,3 @@ See [Examples](https://myowinthein.github.io/agent-compass/docs/examples/) for o
 If something does not work or you have an idea that would make your job search easier, [share it on GitHub](https://github.com/myowinthein/agent-compass/issues).
 
 Agent Compass is open source under the [MIT license](https://github.com/myowinthein/agent-compass/blob/main/LICENSE).
-
-<!-- last-reviewed: 468e2a099c2e28bfbadf07b9ec8db731beba624c -->
