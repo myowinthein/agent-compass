@@ -23,6 +23,7 @@ Run commands from the repository root. Helpers require Python 3.11+; Ruby checks
 | `ruby scripts/test_plugin.rb` | Validation edge cases, published arithmetic/table examples, archive attributes and deployment contracts. |
 | `ruby scripts/test_salary_targets.rb` | Salary CLI checks against an independent Ruby Rational oracle. |
 | `python3 -B scripts/test_compass.py` | Offline consumer checks, golden outputs, legacy names, ingestion/retry, state, encoding and relocation. |
+| `python3 -B scripts/test_workflow_replay.py --host claude` or `--host codex` | Optional acceptance replays through the host CLI with fictional data and simulated web evidence. It calls the model and is not part of `rake test`. |
 | `bundle exec jekyll serve` | Local documentation preview. |
 | `bundle exec rake client_test` | Optional native discovery regression; requires both Claude and Codex CLIs, uses temporary installations and makes no model calls. |
 | `ruby scripts/check_clients.rb --installed` | Inspect inventories after separately updating installed copies. |
@@ -47,11 +48,12 @@ Before changing intake, evidence handling, scoring, sponsorship, arithmetic or o
 
 - CF/SC/JS select their chat/person/command run through `skills/run-workspaces.md` before profile or checkpoint access. New chats start fresh; same-chat repeats offer the command's view/resume/continue choice versus a separate fresh run. JS remains profile-only, without screening exports or checkpoints. Keep existing flat runs untouched and accept them only through explicit selection.
 - In chats with multiple people, CF/SC/JS invocations without an unambiguous explicit person choice ask who the run is for; never default to recency. Ordinary JS follow-ups retain their selected person. PF stays profile-free.
+- New CF/SC/JS runs reuse a profile already confirmed for the selected person in the same chat, copied through `profile_source_run`, unless the user asks for a new resume. Never copy research, outputs or checkpoints. Chat keys are host-prefixed (`claude:`, `codex:` or a tool-generated `local:<UUID4>`) and are never invented.
 - Preserve `profile.md`, `situational-profile.md`, the existing two-field checkpoint schema and saved artifacts. Existing current/legacy runs keep their resolved filenames, including missing later artifacts; duplicate spellings for one artifact require clarification rather than migration, merging or copies. Completed runs replay saved finals.
 - The parent owns questions, confirmations, aggregate research and checkpoint advancement. Fresh research tasks receive literal candidate facts/rules; fresh context is not a filesystem sandbox.
 - For research collection/validation changes, read `skills/data-validation-rules.md` and `skills/research-helper.md`. Accepted bytes and original duplicates are preserved; validation metadata stays outside country blocks. Ingestion is atomic per file, not across both files, so partial failures require readback and fresh hashes before retry.
 - Country Finder prioritizes explicit Includes, then offers Salary Calculator's recorded research scope as names only with confirmation, otherwise its shipped default. This scope retains countries omitted from salary tables and requires neither salary completion nor substantive compatibility. Keep this separate from readiness/compatibility gates for substantive transfers; optional upstream data never blocks a standalone workflow or changes a resumed scope.
-- Country Finder assesses Remote and Sponsorship independently across all Step 2 countries. Missing evidence differs from weak fit and explicit exclusion. The post-audit Summary owns final fits; the Priority Table supplies presentation order.
+- Country Finder assesses Remote and Sponsorship independently across all Step 2 countries. Missing evidence differs from weak fit and explicit exclusion. Scoring either track requires stored research, even when the other track is excluded. The post-audit Summary owns final fits; the Priority Table supplies presentation order.
 - Salary Calculator researches two independent local-employee gross annual base-pay tiers, not cross-border remote offers. Unsupported adjustments are skipped rather than changed to zero. `skills/salary-comparison-rules.md` and `skills/sponsorship-threshold-rules.md` own comparable currency/pay basis/period, unrounded comparisons and official monthly legal-pay support; targets, hard floors and visa rules stay separate.
 - `skills/timezone-rules.md` owns hub and seasonal/DST coverage; helper offsets only describe supplied dates. Portal Finder needs opened relevant sources. Job Screener needs an explicit mandatory condition plus confirmed inability for each blocker, and retains its exact conditional report format.
 - Portal Finder and Job Screener intentionally have no automatic exports or checkpoints.
@@ -98,4 +100,4 @@ For repository contributor work, read and follow these shared local rules on bot
 
 These contributor copies are not dependencies of the Compass workflows.
 
-<!-- last-reviewed: 08aafa31bb383277b7f56d12252dbab535c47b07 -->
+<!-- last-reviewed: e6bb038615747cb01ba80674f2f997a493adad77 -->
