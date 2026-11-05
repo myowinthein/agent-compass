@@ -6,7 +6,7 @@ codex plugin add agent-compass@agent-compass-marketplace
 codex plugin list --marketplace agent-compass-marketplace
 ```
 
-Start a fresh Codex session in your job search folder. Type `$` and filter by `country`, `portal`, `salary`, or `job` to find the workflows.
+Start a fresh Codex session. Type `$` and filter by `country`, `portal`, `salary`, or `job` to find the workflows.
 
 ## Update
 

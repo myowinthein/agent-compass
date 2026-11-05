@@ -5,7 +5,7 @@
 3. Enter `myowinthein/agent-compass`, select the repository or **Use “myowinthein/agent-compass”**, then click **Sync**.
 4. Find **Agent Compass** in the marketplace and click **Add**.
 5. Open **Yours** and check that the plugin is enabled and lists all four skills.
-6. Start a fresh chat in your job search workspace. Type `/` and filter by `country`, `portal`, `salary`, or `job` to find the workflows.
+6. Start a fresh chat. Type `/` and filter by `country`, `portal`, `salary`, or `job` to find the workflows.
 
 ## Update
 

@@ -6,7 +6,7 @@ claude plugin install agent-compass@agent-compass-marketplace --scope user
 claude plugin list --json | grep -F -A3 '"id": "agent-compass@agent-compass-marketplace"'
 ```
 
-Start a fresh Claude session in your job search folder. Type `/` and filter by `country`, `portal`, `salary`, or `job` to find the workflows.
+Start a fresh Claude session. Type `/` and filter by `country`, `portal`, `salary`, or `job` to find the workflows.
 
 ## Update
 
