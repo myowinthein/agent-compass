@@ -42,6 +42,27 @@
   }
 }
 
+// The README uses absolute documentation URLs so it also works on GitHub.
+// Keep those internal, and let Just the Docs supply its existing sidebar icon.
+$compass-docs-url: "https://myowinthein.github.io/agent-compass";
+
+a:is([href^="https://"], [href^="http://"]):not(
+  .external,
+  [href="#{$compass-docs-url}"],
+  [href^="#{$compass-docs-url}/"],
+  [href^="#{$compass-docs-url}#"],
+  [href^="#{$compass-docs-url}?"]
+)::after {
+  content: "";
+  display: inline-block;
+  width: 0.875em;
+  height: 0.875em;
+  margin-inline-start: 0.25em;
+  vertical-align: -0.1em;
+  background-color: currentColor;
+  mask: url("../icons/external-link.svg") center / contain no-repeat;
+}
+
 .setup-tabs__list {
   display: flex;
   gap: $sp-4;
