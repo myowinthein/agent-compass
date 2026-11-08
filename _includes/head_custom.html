@@ -1,8 +1,8 @@
 <link rel="icon" type="image/svg+xml" href="https://myowin.dev/favicon.svg">
 <link rel="sitemap" type="application/xml" href="{{ '/sitemap.xml' | relative_url }}">
-<script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/theme-switcher.js' | relative_url }}?v={{ '/assets/js/theme-switcher.js' | asset_digest }}"></script>
 {% if page.setup_tabs %}
-<script src="{{ '/assets/js/setup-tabs.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/setup-tabs.js' | relative_url }}?v={{ '/assets/js/setup-tabs.js' | asset_digest }}" defer></script>
 {% endif %}
 
 <script type="module">
