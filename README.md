@@ -9,7 +9,7 @@ permalink: /
 
 Trust your compass.
 
-<img src="docs/images/banner.jpg" alt="agent-compass" width="600">
+<img src="docs/images/banner.jpg" alt="agent-compass" width="600" height="400">
 
 Agent Compass is a plugin for IT and tech job seekers who use Claude or Codex.
 

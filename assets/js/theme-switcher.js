@@ -2,6 +2,8 @@
   const storageKey = 'agent-compass-theme';
   const modes = ['system', 'light', 'dark'];
   const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+  let stylesheet = document.querySelector('link[rel="stylesheet"]');
+  let pendingStylesheet;
   let mode = 'system';
 
   try {
@@ -13,7 +15,29 @@
 
   const applyTheme = () => {
     const theme = mode === 'system' ? (systemTheme.matches ? 'dark' : 'light') : mode;
-    jtd.setTheme(theme);
+    const href = new URL(`just-the-docs-${theme}.css`, stylesheet.href).href;
+    pendingStylesheet?.remove();
+    pendingStylesheet = null;
+
+    if (stylesheet.href !== href) {
+      // Keep the current styles active while the selected theme loads.
+      const next = stylesheet.cloneNode();
+      next.href = href;
+      next.addEventListener('load', () => {
+        if (pendingStylesheet !== next) return;
+        stylesheet.remove();
+        stylesheet = next;
+        pendingStylesheet = null;
+      });
+      next.addEventListener('error', () => {
+        if (pendingStylesheet !== next) return;
+        next.remove();
+        pendingStylesheet = null;
+      });
+      pendingStylesheet = next;
+      stylesheet.after(next);
+    }
+
     document.documentElement.style.colorScheme = theme;
     const selector = document.getElementById('theme-mode');
     if (selector) selector.value = mode;

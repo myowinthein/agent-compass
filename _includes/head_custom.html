@@ -5,17 +5,20 @@
 {% endif %}
 
 <script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
+  const blocks = document.querySelectorAll('code.language-mermaid');
+  if (blocks.length) {
+    const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs');
+    mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
 
-  const nodes = [];
-  document.querySelectorAll('code.language-mermaid').forEach(block => {
-    const div = document.createElement('div');
-    div.className = 'mermaid';
-    div.textContent = block.textContent;
-    block.closest('pre').replaceWith(div);
-    nodes.push(div);
-  });
+    const nodes = [];
+    blocks.forEach(block => {
+      const div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = block.textContent;
+      block.closest('pre').replaceWith(div);
+      nodes.push(div);
+    });
 
-  if (nodes.length) await mermaid.run({ nodes });
+    await mermaid.run({ nodes });
+  }
 </script>
