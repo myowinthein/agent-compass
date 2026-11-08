@@ -20,6 +20,15 @@
     border: 1px solid $border-color;
     border-radius: 4px;
     font: inherit;
+
+    &:hover {
+      border-color: $link-color;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $link-color;
+      outline-offset: 2px;
+    }
   }
 }
 
@@ -78,6 +87,10 @@ a:is([href^="https://"], [href^="http://"]):not(
     font: inherit;
     cursor: pointer;
 
+    &:hover {
+      color: $link-color;
+    }
+
     &[aria-selected="true"] {
       color: $link-color;
       border-bottom-color: currentColor;
@@ -88,6 +101,28 @@ a:is([href^="https://"], [href^="http://"]):not(
       outline: 2px solid $link-color;
       outline-offset: 2px;
     }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .theme-switcher select,
+  .setup-tabs__list button {
+    transition: color 140ms ease-out, border-color 140ms ease-out;
+  }
+
+  .nav-list .nav-list-item .nav-list-expander svg {
+    transition: transform 140ms ease-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search,
+  .search-input-wrap,
+  .search-input,
+  .search-label,
+  .search-overlay,
+  .search-active .search-overlay {
+    transition: none;
   }
 }
 
