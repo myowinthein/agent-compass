@@ -3,6 +3,7 @@ title: salary-calculator
 parent: Commands
 nav_order: 3
 has_children: true
+description: Research local-employee salary benchmarks across two employer tiers, estimate targets for your role and audit the final salary framework.
 ---
 
 # salary-calculator

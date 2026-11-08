@@ -1,4 +1,5 @@
 title: Agent Compass
+tagline: Career research for Claude and Codex
 description: Career research workflows for Claude and Codex.
 url: "https://myowinthein.github.io"
 baseurl: "/agent-compass"
@@ -6,10 +7,54 @@ baseurl: "/agent-compass"
 remote_theme: just-the-docs/just-the-docs@latest
 defaults:
   - scope:
+      path: ""
+      type: pages
+    values:
+      image:
+        path: /docs/images/banner.jpg
+        width: 1200
+        height: 800
+        alt: A traveller holding a compass and lantern under a starry sky
+  - scope:
       path: "docs"
       type: pages
     values:
       layout: default
+  - scope:
+      path: "docs/commands"
+      type: pages
+    values:
+      title_category: Command guide
+  - scope:
+      path: "docs/commands/country-finder"
+      type: pages
+    values:
+      title_category: country-finder
+  - scope:
+      path: "docs/commands/salary-calculator"
+      type: pages
+    values:
+      title_category: salary-calculator
+  - scope:
+      path: "docs/commands/portal-finder"
+      type: pages
+    values:
+      title_category: portal-finder
+  - scope:
+      path: "docs/commands/job-screener"
+      type: pages
+    values:
+      title_category: job-screener
+  - scope:
+      path: "docs/setup"
+      type: pages
+    values:
+      title_category: Setup
+  - scope:
+      path: "docs/examples"
+      type: pages
+    values:
+      title_category: Examples
   - scope:
       path: "docs/legal"
       type: pages

@@ -4,6 +4,7 @@ title: My Obsidian setup
 parent: Examples
 nav_order: 1
 permalink: /docs/examples/obsidian-workflow.html
+description: Explore an optional Obsidian setup for job search profiles, saved portal searches and application history, illustrated with fictional data.
 ---
 
 # My Obsidian setup

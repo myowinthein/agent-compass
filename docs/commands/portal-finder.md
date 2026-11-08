@@ -3,6 +3,7 @@ title: portal-finder
 parent: Commands
 nav_order: 2
 has_children: true
+description: Find verified job portals for IT and tech roles in one country, with official links, grouped results and disclosed verification limits.
 ---
 
 # portal-finder

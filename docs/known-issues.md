@@ -2,6 +2,7 @@
 title: Known issues
 nav_exclude: true
 permalink: /docs/known-issues.html
+description: Review observed Agent Compass limitations in Claude and Codex, including question handling, plugin display and installation behavior.
 ---
 
 # Known issues

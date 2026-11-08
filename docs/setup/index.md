@@ -4,6 +4,7 @@ title: Setup
 nav_order: 2
 has_children: true
 permalink: /docs/setup/
+description: Install, update or uninstall Agent Compass in Claude or Codex through the desktop app or terminal, and learn each client's command prefixes.
 ---
 
 # Setup

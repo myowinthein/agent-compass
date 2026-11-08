@@ -6,6 +6,7 @@ nav_order: 2
 has_toc: false
 setup_tabs: true
 permalink: /docs/setup/codex.html
+description: Install, update or uninstall Agent Compass in Codex through the desktop app or terminal, with marketplace and plugin instructions.
 ---
 
 # Codex

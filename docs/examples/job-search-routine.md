@@ -4,6 +4,7 @@ title: My job search routine
 parent: Examples
 nav_order: 2
 permalink: /docs/examples/job-search-routine.html
+description: Follow an optional job search routine for reviewing saved portal searches, screening roles and tracking applications with Agent Compass.
 ---
 
 # My job search routine

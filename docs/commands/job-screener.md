@@ -3,6 +3,7 @@ title: job-screener
 parent: Commands
 nav_order: 4
 has_children: true
+description: Compare job descriptions with your confirmed profile, receive Apply, Maybe or Skip reports and request application drafts from known facts.
 ---
 
 # job-screener

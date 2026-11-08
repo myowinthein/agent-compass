@@ -1,6 +1,7 @@
 ---
 layout: home
-title: Home
+title: Agent Compass
+description: Find countries and job portals, estimate local salary targets and screen job descriptions with reusable career workflows for Claude and Codex.
 nav_order: 1
 permalink: /
 ---

@@ -3,6 +3,7 @@ layout: default
 title: Specialist agents
 nav_exclude: true
 permalink: /docs/specialist-agents.html
+description: Learn when Country Finder and Salary Calculator can offer optional specialists, how model and effort choices work and which steps they support.
 ---
 
 # Specialist agents

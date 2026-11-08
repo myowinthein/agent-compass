@@ -6,6 +6,7 @@ nav_order: 1
 has_toc: false
 setup_tabs: true
 permalink: /docs/setup/claude.html
+description: Install, update or uninstall Agent Compass in Claude through the desktop app or terminal, with marketplace and plugin instructions.
 ---
 
 # Claude

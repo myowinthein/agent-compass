@@ -3,6 +3,7 @@ title: "Step 4: Data validation"
 parent: country-finder
 grand_parent: Commands
 nav_order: 4
+description: Check country research for structural completeness and store accepted content unchanged, without treating those checks as verification of its claims.
 ---
 
 # Step 4: Data validation

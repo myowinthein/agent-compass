@@ -3,6 +3,7 @@ title: Commands
 nav_order: 3
 has_children: true
 permalink: /docs/commands
+description: Explore four Agent Compass workflows for finding countries and job portals, estimating local salary targets and screening jobs against your profile.
 ---
 
 # Commands

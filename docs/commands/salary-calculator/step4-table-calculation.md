@@ -3,6 +3,7 @@ title: "Step 4: Table calculation"
 parent: salary-calculator
 grand_parent: Commands
 nav_order: 4
+description: Calculate supported salary targets for each employer tier, keeping exact annual and monthly values separate from rounded table displays.
 ---
 
 # Step 4: Table calculation

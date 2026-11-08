@@ -3,6 +3,7 @@ title: "Step 3: International adjustment"
 parent: salary-calculator
 grand_parent: Commands
 nav_order: 3
+description: Review evidence for a negotiation adjustment to local salary benchmarks, retaining uncertainty when an adjustment cannot be estimated.
 ---
 
 # Step 3: International adjustment

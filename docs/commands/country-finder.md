@@ -3,6 +3,7 @@ title: country-finder
 parent: Commands
 nav_order: 1
 has_children: true
+description: Find countries worth targeting for remote work or employer-sponsored relocation, with independent assessments against your profile and current evidence.
 ---
 
 # country-finder
