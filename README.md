@@ -45,7 +45,7 @@ It asks about your profile and preferences, researches the countries and returns
 Once I know which countries to target, I use this command to [find verified job portals](https://myowinthein.github.io/agent-compass/docs/commands/portal-finder.html) for IT and tech roles. From there, I can create accounts and start looking for opportunities.
 
 ```text
-Codex → $portal-finder    Claude → /portal-finder
+Codex → $portal-finder              Claude → /portal-finder
 Codex → $portal-finder <country>    Claude → /portal-finder <country>
 ```
 
