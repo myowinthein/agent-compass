@@ -35,7 +35,7 @@ You can install Agent Compass in Claude or Codex by following the [setup guide](
 I start here to [find countries that match my profile](https://myowinthein.github.io/agent-compass/docs/commands/country-finder.html) for remote work or visa sponsorship. It ranks the countries in a priority table, so I know where to focus my search first.
 
 ```text
-country-finder
+Codex → $country-finder    Claude → /country-finder
 ```
 
 It asks about your profile and preferences, researches the countries and returns a priority table. If you’ve already run `salary-calculator` for the same person in this chat, it can suggest a country list for you to confirm. You can keep the list, add or remove countries, or start fresh.
@@ -45,8 +45,8 @@ It asks about your profile and preferences, researches the countries and returns
 Once I know which countries to target, I use this command to [find verified job portals](https://myowinthein.github.io/agent-compass/docs/commands/portal-finder.html) for IT and tech roles. From there, I can create accounts and start looking for opportunities.
 
 ```text
-portal-finder
-portal-finder <country>
+Codex → $portal-finder    Claude → /portal-finder
+Codex → $portal-finder <country>    Claude → /portal-finder <country>
 ```
 
 This command works with one country at a time. Add the country name, or leave it out and the command will ask for it.
@@ -56,7 +56,7 @@ This command works with one country at a time. Add the country name, or leave it
 I use this command to [explore realistic local-market salaries](https://myowinthein.github.io/agent-compass/docs/commands/salary-calculator.html) for my role and experience. This gives me a clearer idea of what to ask for when discussing salary expectations.
 
 ```text
-salary-calculator
+Codex → $salary-calculator    Claude → /salary-calculator
 ```
 
 If you’ve already run `country-finder` for the same person in this chat, it can suggest a country list for you to confirm. You can keep the list, add or remove countries, or start fresh. If not, it asks which countries you want to research.
@@ -66,7 +66,7 @@ If you’ve already run `country-finder` for the same person in this chat, it ca
 When I find an interesting job, I use this command to [compare its requirements with my profile](https://myowinthein.github.io/agent-compass/docs/commands/job-screener.html). It gives me an Apply, Maybe, or Skip recommendation with supporting details, so I can decide whether the job is worth applying for.
 
 ```text
-job-screener
+Codex → $job-screener    Claude → /job-screener
 ```
 
 Start a dedicated chat, run this command once, then paste job descriptions one at a time. If responses stop following the screening format, run the command again and choose **Continue screening**.
