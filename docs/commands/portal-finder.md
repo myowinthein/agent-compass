@@ -31,7 +31,7 @@ portal-finder Germany
 Or leave out the country and answer when asked:
 
 ```text
-portal-finder
+Codex → $portal-finder    Claude → /portal-finder
 ```
 
 Use the prefix shown in [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). If you name several countries, the assistant asks you to pick one.

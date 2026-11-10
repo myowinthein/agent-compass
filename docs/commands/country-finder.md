@@ -28,7 +28,7 @@ New chats start fresh. In the same chat, a matching completed search offers View
 ## Start the command
 
 ```text
-country-finder
+Codex → $country-finder    Claude → /country-finder
 ```
 
 Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). No country argument is needed. If you have no saved profile, provide your resume and confirm the extraction before it is saved.

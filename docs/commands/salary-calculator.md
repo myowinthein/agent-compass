@@ -28,7 +28,7 @@ New chats start fresh. In the same chat, a matching completed search offers View
 ## Start the command
 
 ```text
-salary-calculator
+Codex → $salary-calculator    Claude → /salary-calculator
 ```
 
 Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). The workflow asks for countries, loads or confirms your resume profile, and collects or reuses situational facts before research.

@@ -26,7 +26,7 @@ flowchart TD
 ## Start the command
 
 ```text
-job-screener
+Codex → $job-screener    Claude → /job-screener
 ```
 
 Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). Run once in a dedicated chat, then paste one job at a time.
