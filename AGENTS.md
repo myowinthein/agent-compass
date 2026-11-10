@@ -41,6 +41,9 @@ When the Claude CLI is available, native validation uses `claude plugin validate
 - `helpers/salary_targets.py` retains its v1 consumer interface and is reused by the shared renderer. `data/output-contracts.json` alone defines fixed display tokens, rounding/bounds and batching size for Python and approved manual runs.
 - `data/workspace-files.json` is the sole current/legacy artifact registry. `helpers/compass_lib/files.py` and `skills/workspace-files.md` implement the same read-only resolution policy.
 - Bundled resources come from the actual installed plugin root. New searches use the fixed `Path.home() / "Agent Compass"` base resolved by `workspace-base`; CF/SC/JS have isolated run folders, including profiles. Keep legacy files in place; explicit saved-run handoffs do not change the base for new searches.
+- Setup content lives in `_includes/setup/`, composed by `_includes/setup-tabs.html`; the JavaScript and legacy redirects preserve desktop/terminal deep links. Check their tests when changing setup navigation.
+- `.github/workflows/docs.yml` runs checks on main pushes, pull requests and manual runs, with no schedule. Its Python matrix spans Linux/macOS/Windows; the site build waits for it. Only successful main builds deploy. Hosted Pages must use GitHub Actions as its source.
+- `_config.yml` uses `just-the-docs@latest`. CI resolves the latest stable release and temporarily pins it for that build; failed lookup stops the build. Local builds resolve through the remote-theme plugin; restart the preview to fetch a newer release.
 
 ## Domain Rules
 
@@ -69,23 +72,22 @@ This covers Compass's agent-facing instructions. General prose follows `.claude/
 - Reuse unchanged instructions and matching verified evidence only under the runtime and owning step's rules. Keep required fresh checks and readback; a prior success does not verify changed inputs.
 - Verify proportionately with existing checks. Measure source size, loaded context and runtime separately; speed or token-saving claims need comparable measurements, and structural checks do not establish research accuracy.
 
-## Documentation and Distribution
+## Documentation
 
-Command and step guides, related pages outside navigation and included explanatory content should give people a comfortable understanding of Compass. Follow `.claude/rules/writing.md` for prose and its complete reference-link workflow. This section defines the documentation experience.
+Keep this section identical in Agent Helm and Agent Compass. When changing the frame, update and compare both copies; report any copy that cannot be synchronized. Each project's documentation and README keep their own voice, terminology, examples and workflow-specific detail.
 
-- Use **Overview / Detailed guide** for paired command, step and specialist topics. Overview is the default: explain purpose, main phases, meaningful choices, outcomes and constraints comfortably. Detailed expands the same journey with complete procedures, conditions, examples, exceptions and recovery. Headings may differ; keep the sequence of ideas aligned. Do not force a second depth onto indexes, short setup instructions, examples or unrelated policies.
-- Put `_includes/guide-depth.html` immediately below the title in both views. Keep the labels, placement and behavior consistent. These are ordinary current-tab navigation links with stable URLs, native browser history and an accessible current-page indication. Preserve existing overview URLs and section anchors, including links through setup tabs and redirects.
-- Give Overview a compact Mermaid summary. Detailed diagrams cover the full meaningful routes, questions, approvals, exits and recovery outcomes. Split complex phases into connected diagrams instead of one oversized canvas; do not draw every mechanical action. Use diagrams only when they clarify the subject, and keep essential meaning in text.
-- Let text explain more than the diagram. Use connected paragraphs, short lists, comparisons, tables and examples where useful. Detailed writing can be rich and precise without becoming an encyclopedia, diagram transcript or collection of overloaded paragraphs. Remove filler, hype and generic AI phrasing; brevity is not a word, line or node quota.
-- Preserve research coverage, evidence quality, independent tracks/tiers, uncertainty, candidate-data boundaries, approvals, checkpoints, arithmetic/output contracts and final audits. Overview can omit internal mechanics while keeping necessary warnings visible. Detailed retains complete behavior, including rare consequential cases. Readers needing implementation detail can follow source links or inspect the code.
-- Keep one authoritative plain Markdown instruction source for each workflow, prompt and shared rule. Detailed pages render these sources through `_plugins/guide_content.rb`; wrappers add reading context and diagrams without defining competing policy. Keep website controls and diagrams out of agent instructions. Supporting procedures retain their owners and load conditions. Follow links and includes to affected content outside the menu, and link authoritative references instead of reproducing them.
-- Apply the reference-link workflow during docs maintenance: choose useful phrases and relevant verified sections, preserve clear wording, avoid linking every mention, use current-tab defaults and distinguish external destinations with the established icon. Check resulting anchors and interaction with available tools; report gaps. Changes to excluded instruction sources need an explicit site rebuild; renderer/configuration changes need a preview restart.
+### Guide structure
 
-Setup content lives in `_includes/setup/`, composed by `_includes/setup-tabs.html`; the JavaScript and legacy redirects preserve desktop/terminal deep links. Check their tests when changing setup navigation.
+Write guides that people can read comfortably to understand how a command, rule or supporting workflow works. Follow the project's active Writing rule for prose and its complete reference-link workflow. Cover relevant guides, supporting pages outside navigation and included explanatory content.
 
-`.github/workflows/docs.yml` runs checks on main pushes, pull requests and manual runs, with no schedule. Its Python matrix spans Linux/macOS/Windows; the site build waits for it. Only successful main builds deploy. Hosted Pages must use GitHub Actions as its source.
-
-`_config.yml` uses `just-the-docs@latest`. CI resolves the latest stable release and temporarily pins it for that build; failed lookup stops the build. Local builds resolve through the remote-theme plugin; restart the preview to fetch a newer release.
+- Use **Overview / Detailed guide** for paired topics. Overview is the default: explain purpose, main phases, meaningful choices, outcomes and necessary constraints. Detailed expands the same journey with complete procedures, conditions, examples, exceptions and recovery. Headings may differ; keep the sequence of ideas aligned. Do not force a second depth onto indexes, short installation procedures, examples or unrelated policies.
+- Put `_includes/guide-depth.html` immediately below the title in both views. Keep labels, placement and behavior consistent. Use ordinary current-tab navigation with stable URLs, native browser history and an accessible current-page indication. Preserve existing overview URLs and section anchors, including targets reached through setup tabs, redirects or collapsed content.
+- Give Overview an early, compact Mermaid summary that establishes the main flow. Detailed diagrams cover all meaningful routes, questions, approvals, exits and recovery outcomes. Split complex phases into connected diagrams; do not draw every mechanical action or create one oversized canvas. Use diagrams only when they clarify the subject, without forcing a process onto conceptual material. Keep essential meaning in text.
+- Let text explain more than the diagram. Use connected paragraphs, short lists, comparisons, tables and examples where useful. Keep both views approachable; Detailed can be rich and precise without becoming an encyclopedia, diagram transcript or collection of overloaded paragraphs. Remove filler, hype and generic AI phrasing. Brevity is not a word, line or node quota. Readers needing implementation detail can follow source links or inspect the code.
+- Preserve decision-changing constraints, consequential effects, approvals, coverage semantics and state/recovery protections. Preserve research coverage and evidence quality, independent tracks/tiers, uncertainty, candidate-data boundaries, checkpoints, arithmetic/output contracts and final audits where applicable. Overview can omit internal mechanics while keeping necessary warnings visible. Detailed retains complete behavior, including rare consequential cases.
+- Keep one authoritative plain Markdown instruction source for each workflow, prompt and rule. Detailed pages render those sources through `_plugins/guide_content.rb`; introductions and diagrams add reading context without defining competing policy. Skills load canonical Markdown without website controls, diagrams or navigation. Supporting procedures retain their owners and load conditions.
+- Apply the Writing rule's complete reference-link workflow during documentation maintenance. Follow links and includes to affected content outside the menu, and link authoritative standards instead of reproducing them. Verify relevant destinations, anchors and interactions with available tools; report gaps.
+- Migrate a source with its skill links, shared references, package validation and relevant tests. Remove the old copy only after the replacement is verified. Preserve operational meaning during readability edits; relocation and a passing site build alone do not establish behavior equivalence. Rebuild after changing excluded instruction sources; restart the preview after renderer or configuration changes.
 
 ### README structure
 
@@ -116,8 +118,6 @@ Use two prose paragraphs per entry. These are expected limits, not reasons to re
 #### Closing sections
 
 End with two separate level-two sections: **Contributing**, then **License**. Contributing uses one short paragraph inviting bug reports, feedback on unclear guides and ideas through a meaningful issue-tracker link. Ask briefly for useful context and match the project's voice; do not invent a PR process or promise response times. License uses one sentence stating the actual project license with a link. Preserve existing license meaning and old section anchors.
-
-Keep this section identical in Agent Helm and Agent Compass. When changing the frame, update and compare both copies; report any copy that cannot be synchronized. Each README keeps its own voice and command-specific content.
 
 ## Contributor Review Preference
 
