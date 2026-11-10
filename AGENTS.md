@@ -89,6 +89,17 @@ Setup content lives in `_includes/setup/`, composed by `_includes/setup-tabs.htm
 
 ### README structure
 
+#### Introduction
+
+Use two introductory paragraphs between the banner and the documentation link, following the project's active Writing rule and checking claims against the actual workflows.
+
+| Element | Purpose | Expected maximum |
+|---|---|---|
+| First paragraph: identity | State what the project is, who it serves and which platforms it supports. Use one direct sentence. | 20 words. |
+| Second paragraph: value | Explain what users can accomplish and how the main capabilities work together. Lead with the benefit, then cover the broad scope in one or two sentences. | 50 words. |
+
+Keep the paragraphs' roles distinct and use wording suited to the project's audience. Group related capabilities and leave individual command details for **When I use it**. These are expected limits; preserve material meaning and necessary qualifications.
+
 #### Command entries
 
 Use this frame for every entry in the README's **When I use it** section. Follow the project's active Writing rule and check claims against the canonical workflow and relevant supporting instructions. Retain the project's personal voice and existing heading anchors.
