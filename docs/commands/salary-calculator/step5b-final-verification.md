@@ -54,4 +54,4 @@ Approved refreshes take precedence for the same assessed route, including during
 
 `salary-calculator-05b-final-results.md` saves checks, verdict, caption, table and Summary, retaining skipped countries and reasons. Chat shows the caption/table and audited outcome, including inconclusive findings.
 
-Step 4 remains the pre-audit record. Completed runs replay saved results. See [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}) for optional model choices.
+Step 4 remains the pre-audit record. Completed runs replay saved results. See [Specialist agents]({{ '/docs/specialist-agents.html#requested-models' | relative_url }}) for optional model choices.

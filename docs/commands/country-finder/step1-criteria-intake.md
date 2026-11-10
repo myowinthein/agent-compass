@@ -34,7 +34,7 @@ Only unclear target roles, seniority or material facts need clarification.
 - Sponsorship: relocation timeline, including "no rush".
 - Countries/regions to include and exclude, or "none".
 
-Unclear answers need clarification. Without an include list, Step 2 can offer saved Salary Calculator countries for confirmation before the default list.
+Unclear answers need clarification. Without an include list, [Step 2](step2-country-discovery.html#choosing-countries) can offer saved Salary Calculator countries for confirmation before the default list.
 
 ## What happens next
 

@@ -40,7 +40,7 @@ One supported reduction applies independently to both tiers, within 0–15%. Its
 
 Above 10% needs concrete evidence. Low salary evidence caps confidence at Medium; missing grades stay disclosed.
 
-Supported zero is valid. Unsupported percentages become **Adjustment not estimable**, with reasons, and Step 4 skips them rather than substituting 0%.
+Supported zero is valid. Unsupported percentages become **Adjustment not estimable**, with reasons, and [Step 4 skips them](step4-table-calculation.html#calculation-rules) rather than substituting 0%.
 
 ## What happens next
 

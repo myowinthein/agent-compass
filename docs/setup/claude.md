@@ -13,6 +13,6 @@ description: Install, update or uninstall Agent Compass in Claude through the de
 
 The desktop app has two modes: **Claude** (Chat + Cowork) and **Code**.
 
-Plugins installed in **Claude** are shared with **Code** and the terminal through account sync, but plugins installed through Code or the terminal aren't shared back to Claude.
+Plugins installed in **Claude** are shared with **Code** and the terminal through [account sync](https://support.claude.com/en/articles/13837440-use-plugins-in-claude), but plugins installed through Code or the terminal aren't shared back to Claude.
 
 {% include setup-tabs.html platform="claude" %}

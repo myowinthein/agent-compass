@@ -35,7 +35,7 @@ I tick the company's checkbox when I receive a rejection or decide not to contin
 
 I used to uncheck all the portal links by hand before starting each day's search. It was a small task, but repeating it every day became annoying.
 
-Obsidian supports [community plugins](https://obsidian.md/help/community-plugins) and lets you [build your own](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin), so I created a plugin called **Portal Daily Reset** to uncheck my portal checkboxes automatically each day.
+Obsidian supports [community plugins](https://obsidian.md/help/community-plugins) and lets you [build your own](https://docs.obsidian.md/Plugins/Getting%20started/Build%20a%20plugin), so I created a plugin called **Portal Daily Reset** to uncheck my portal checkboxes automatically each day.
 
 An agent with permission to edit the vault's plugin files can help build a plugin like this.
 

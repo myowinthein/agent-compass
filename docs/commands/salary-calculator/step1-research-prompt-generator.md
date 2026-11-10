@@ -26,7 +26,7 @@ flowchart TD
 
 A completed compatible Country Finder result can suggest countries with a Strong or Moderate track, using its [post-audit Summary](../country-finder/step6-final-ranking.html#using-the-result). Keep, edit or replace that list.
 
-Only when no final exists can a ready Step 5 result supply a labelled pre-audit list. Draft, unclear or mismatched results need an explicit reuse choice. You can always provide your own countries; an empty selection needs new targets or stop.
+Only when no final exists can a ready [Step 5 result](../country-finder/step5-scoring.html#fit-and-confidence) supply a labelled pre-audit list. Draft, unclear or mismatched results need an explicit reuse choice. You can always provide your own countries; an empty selection needs new targets or stop.
 
 ## What gets researched
 
@@ -46,6 +46,6 @@ Rules retain their original amount/period or explicit nonnumeric state. Monthly 
 
 ## What happens next
 
-`salary-calculator-01-research.md` saves the full confirmed scope, findings and evidence grades. Targets remain recorded even if their data is later skipped, allowing Country Finder's names-only offer.
+`salary-calculator-01-research.md` saves the full confirmed scope, findings and evidence grades. Targets remain recorded even if their data is later skipped, allowing [Country Finder's names-only offer](../country-finder/step2-country-discovery.html#choosing-countries).
 
 After coverage checks and a brief count, continue to [Data validation](step2-data-validation.html).

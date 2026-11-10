@@ -30,7 +30,7 @@ Each brief contains the confirmed role and relevant background directly. Researc
 
 ## Countries without an eligible track
 
-Only Step 2 "yes" tracks receive detailed research. Explicit rejections and missing evidence remain distinct. With none eligible, a scope-only record lets later steps account for exclusions and gaps without inventing research.
+Only [Step 2 "yes" tracks](step2-country-discovery.html#what-gets-checked) receive detailed research. Explicit rejections and missing evidence remain distinct. With none eligible, a scope-only record lets later steps account for exclusions and gaps without inventing research.
 
 ## What happens next
 

@@ -62,6 +62,6 @@ Chat shows only the Priority Table and completion message. Unknown represents mi
 
 ## Using the result
 
-The post-audit Summary records final fits. [Salary Calculator](../salary-calculator.html) selects eligible countries from it and uses the Priority Table for ordering.
+The post-audit Summary records final fits. [Salary Calculator](../salary-calculator/step1-research-prompt-generator.html#choosing-countries) selects eligible countries from it and uses the Priority Table for ordering.
 
-Research and Step 5 stay unchanged. Completed runs replay saved results. See [Specialist agents]({{ '/docs/specialist-agents.html' | relative_url }}) for model choices.
+Research and Step 5 stay unchanged. Completed runs replay saved results. See [Specialist agents]({{ '/docs/specialist-agents.html#requested-models' | relative_url }}) for model choices.

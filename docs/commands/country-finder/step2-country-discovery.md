@@ -29,7 +29,7 @@ flowchart TD
 
 ## Choosing countries
 
-Your include list comes first. Otherwise, [Salary Calculator](../salary-calculator/step1-research-prompt-generator.html#choosing-countries)'s saved research scope can supply a proposed list. You can keep, edit, replace it or choose the default. The assistant waits for your answer before researching.
+Your include list comes first. Otherwise, [Salary Calculator](../salary-calculator/step1-research-prompt-generator.html#what-happens-next)'s saved research scope can supply a proposed list. You can keep, edit, replace it or choose the default. The assistant waits for your answer before researching.
 
 Salary research need not be complete: only country names are reused, including targets whose salary data was skipped. No salary or visa conclusions transfer. Missing scope leaves your own list or the default available.
 

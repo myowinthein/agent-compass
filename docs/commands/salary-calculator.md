@@ -47,6 +47,6 @@ Optional [specialists]({{ '/docs/specialist-agents.html' | relative_url }}) do n
 
 Chat shows local-currency annual and monthly targets for both segments, alongside the Visa salary rule. Targets are never raised to clear a visa rule or personal minimum. Inconclusive findings remain explicit.
 
-The audit is saved to `salary-calculator-05b-final-results.md`; `.salary-calculator-state.json` tracks progress. Later, [country-finder](country-finder.html) can offer the saved country names without inheriting salary conclusions.
+The audit is saved to `salary-calculator-05b-final-results.md`; `.salary-calculator-state.json` tracks progress. Later, [country-finder](country-finder/step2-country-discovery.html#choosing-countries) can offer the saved country names without inheriting salary conclusions.
 
 See [Calculation runtime](salary-calculator/step4-table-calculation.html#calculation-runtime) for Python requirements.

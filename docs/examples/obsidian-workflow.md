@@ -9,7 +9,7 @@ description: Explore an optional Obsidian setup for job search profiles, saved p
 
 # My Obsidian setup
 
-This is how I organise my job search. Obsidian and this folder structure are optional, not requirements for Agent Compass. All examples below use fictional data.
+This is how I organise my job search. [Obsidian](https://obsidian.md/) and this folder structure are optional, not requirements for Agent Compass. All examples below use fictional data.
 
 ## Why I use Obsidian
 

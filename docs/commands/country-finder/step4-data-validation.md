@@ -24,7 +24,7 @@ flowchart TD
 
 ## What is accepted
 
-Each country needs the fields for its Step 2 eligible tracks. Malformed, incomplete, duplicate and unlisted data is skipped with reasons; duplicates preserve stored originals. Older labels are accepted after review when their meaning is clear.
+Each country needs the fields for its [Step 2 eligible tracks](step2-country-discovery.html#what-gets-checked). Malformed, incomplete, duplicate and unlisted data is skipped with reasons; duplicates preserve stored originals. Older labels are accepted after review when their meaning is clear.
 
 Generated blocks use top-level `Country:` delimiters. Ambiguous boundaries need clarification.
 
