@@ -47,7 +47,7 @@ It confirms my profile, preferences and countries, then researches remote work a
 Once I have a country in mind, I use Portal Finder to [find verified job portals](https://myowinthein.github.io/agent-compass/docs/commands/portal-finder.html) for IT and tech roles. I want useful places to start looking for openings.
 
 ```text
-Codex → $portal-finder    Claude → /portal-finder
+Codex → $portal-finder [country]    Claude → /portal-finder [country]
 ```
 
 It works with one country at a time. I can add its name to the command or answer when asked; no resume or earlier country search is needed. It checks current tech coverage on the portals’ own sites, groups the official links by type and marks starting picks. Access problems and unverified coverage are reported separately.
