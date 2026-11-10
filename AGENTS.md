@@ -87,6 +87,19 @@ Setup content lives in `_includes/setup/`, composed by `_includes/setup-tabs.htm
 
 `_config.yml` uses `just-the-docs@latest`. CI resolves the latest stable release and temporarily pins it for that build; failed lookup stops the build. Local builds resolve through the remote-theme plugin; restart the preview to fetch a newer release.
 
+### README command entries
+
+Use the same entry structure as Agent Helm while retaining Compass's personal job-search voice. Keep each entry in `README.md`'s **How I use it** section in this order, following `.claude/rules/writing.md` and checking claims against the canonical workflow and its relevant supporting prompts. Retain existing heading anchors.
+
+| Element | Purpose | Expected maximum |
+|---|---|---|
+| Heading | Identify the command by name alone. | Command name only. |
+| First paragraph | Explain when I use it and the benefit I want. Link a meaningful purpose phrase to the command's Overview guide. | 45 words. |
+| Invocation block | Show both client invocations in one `text` block, such as `Codex → $country-finder    Claude → /country-finder`. | One line. |
+| Closing paragraph | Explain the main actions, concrete result and important choices, approvals or limits without repeating the first paragraph. | 70 words. |
+
+Use two prose paragraphs per entry. These are expected limits, not reasons to remove essential warnings or approval boundaries. Keep deeper explanation and argument examples in the linked guides; add other contextual links only when they help readers take a distinct next step. Keep command names bare in general prose. Follow the reference-link workflow and use absolute `https://myowinthein.github.io/agent-compass/...` documentation URLs so links work on GitHub and the site. This structure is local project guidance, not a dependency on a sibling checkout.
+
 ## Contributor Review Preference
 
 When consulting Claude for a project review/discussion or running Claude workflow tests, request `claude --model claude-sonnet-5-5 --effort high`. Record the requested settings and check returned model metadata; ask before substituting an unavailable configuration. This preference does not change bundled specialist routing or global client settings.
