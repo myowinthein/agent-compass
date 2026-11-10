@@ -83,3 +83,5 @@ If a workflow gets in the way of your job search, a guide is unclear or you have
 ## License
 
 Agent Compass is open source under the [MIT license](https://github.com/myowinthein/agent-compass/blob/main/LICENSE).
+
+<!-- last-reviewed: 4703ae27a1cbe0cb5db874b4b4e54c59c7b27106 -->
