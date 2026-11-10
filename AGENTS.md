@@ -51,7 +51,8 @@ Before changing intake, evidence handling, scoring, sponsorship, arithmetic or o
 
 - CF/SC/JS select their chat/person/command run through `skills/run-workspaces.md` before profile or checkpoint access. New chats start fresh; same-chat repeats offer the command's view/resume/continue choice versus a separate fresh run. JS remains profile-only, without screening exports or checkpoints. Keep existing flat runs untouched and accept them only through explicit selection.
 - In chats with multiple people, CF/SC/JS invocations without an unambiguous explicit person choice ask who the run is for; never default to recency. Ordinary JS follow-ups retain their selected person. PF stays profile-free.
-- New CF/SC/JS runs reuse a profile already confirmed for the selected person in the same chat, copied through `profile_source_run`, unless the user asks for a new resume. Never copy research, outputs or checkpoints. Chat keys are host-prefixed (`claude:`, `codex:` or a tool-generated `local:<UUID4>`) and are never invented.
+- New CF/SC/JS runs reuse a profile already confirmed for the selected person in the same chat, copied through `profile_source_run`, unless the user asks for a new resume. Never copy research, outputs or checkpoints. Chat keys are host-prefixed (`claude:`, `codex:` or a tool-generated `local:<UUID4>`) and are never invented. Several distinct confirmed versions need a choice among them, never recency; a byte-identical `profile.md` plus optional `situational-profile.md` counts as one version.
+- Each person and command has one active run. Start fresh chains from its ID; superseded runs are read-only and are listed (`run-list` `include_history`) or used as sources only on explicit request. A consumer's View or Resume keeps its recorded producer and confirmed scope and never rebinds to a newer active producer. An unfinished active producer never silently falls back to an older completed run.
 - Preserve `profile.md`, `situational-profile.md`, the existing two-field checkpoint schema and saved artifacts. Existing current/legacy runs keep their resolved filenames, including missing later artifacts; duplicate spellings for one artifact require clarification rather than migration, merging or copies. Completed runs replay saved finals.
 - The parent owns questions, confirmations, aggregate research and checkpoint advancement. Fresh research tasks receive literal candidate facts/rules; fresh context is not a filesystem sandbox.
 - For research collection/validation changes, read `skills/data-validation-rules.md` and `skills/research-helper.md`. Accepted bytes and original duplicates are preserved; validation metadata stays outside country blocks. Ingestion is atomic per file, not across both files, so partial failures require readback and fresh hashes before retry.
@@ -88,6 +89,7 @@ When consulting Claude for a project review/discussion or running Claude workflo
 - `assets/icon.svg` supplies Codex `interface.logo`/`composerIcon`. Omit `icon` and `interface` from the Claude manifest for Desktop importer compatibility; this forgoes Anthropic directory icon metadata. Keep Codex branding in its own manifest.
 - Native discovery tests inspect Codex's actual `skills/list` catalog for duplicate-free discovery and `plugin/read` for display metadata. They also check Claude's four skills and two agents; they do not establish model behavior.
 - `.gitattributes` excludes canonical `.helm/` and legacy `.claude/helm/` records from Git archives. Preserve both exclusions; `scripts/test_plugin.rb` checks nested canonical paths in an isolated synthetic archive.
+- Detailed guide pages render the canonical `workflows/`, `prompts/<command>/` and `skills/` Markdown through `docs/_plugins/guide_content.rb`, mapping relative links to Detailed pages. `docs/specialist-agents/detailed.md` extracts `## Specialist routing` from `prompts/shared/runtime.md` by exact heading, so renaming it or removing a rendered source fails the site build.
 
 ## Rules
 
@@ -99,4 +101,4 @@ For repository contributor work, read and follow these shared local rules on bot
 
 These contributor copies are not dependencies of the Compass workflows.
 
-<!-- last-reviewed: e6bb038615747cb01ba80674f2f997a493adad77 -->
+<!-- last-reviewed: 2100ac476d98d9d63892d23b3d6d8d8265614cdf -->
