@@ -28,7 +28,9 @@ That’s why I built Agent Compass. I wanted to turn those prompts into workflow
 
 You can install Agent Compass in Claude or Codex by following the [setup guide](https://myowinthein.github.io/agent-compass/docs/setup/).
 
-## How I use it
+<span id="how-i-use-it"></span>
+
+## When I use it
 
 ### Country Finder
 

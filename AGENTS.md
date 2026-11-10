@@ -89,7 +89,7 @@ Setup content lives in `_includes/setup/`, composed by `_includes/setup-tabs.htm
 
 ### README command entries
 
-Use this frame for every entry in the README's command-use section. Follow the project's active Writing rule and check claims against the canonical workflow and relevant supporting instructions. Retain the project's personal voice and existing heading anchors.
+Use this frame for every entry in the README's **When I use it** section. Follow the project's active Writing rule and check claims against the canonical workflow and relevant supporting instructions. Retain the project's personal voice and existing heading anchors.
 
 | Element | Purpose | Expected maximum |
 |---|---|---|
