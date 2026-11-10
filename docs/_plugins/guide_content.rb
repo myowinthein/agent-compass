@@ -13,7 +13,7 @@ module CompassGuideContent
   def read_source(site, source)
     raise ArgumentError, "Unknown guide source: #{source}" unless source.is_a?(String) && SOURCE_PATH.match?(source)
 
-    root = Pathname(site.source).realpath
+    root = Pathname(site.source).parent.realpath
     file = root.join(source)
     unless file.file? && file.realpath.to_s.start_with?("#{root}/")
       raise ArgumentError, "Guide source is missing or outside the project: #{source}"

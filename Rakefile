@@ -1,3 +1,5 @@
+require_relative "docs/tasks"
+
 desc "Validate shared plugin entry points and packaged resources"
 task :plugin_test do
   ruby "scripts/validate_plugin.rb"
@@ -9,30 +11,6 @@ end
 desc "Check native Claude and Codex command discovery with temporary installs"
 task :client_test do
   ruby "scripts/check_clients.rb"
-end
-
-desc "Build the Jekyll site and validate it with HTML-Proofer"
-task :docs_test do
-  ruby "scripts/test_asset_digest.rb"
-  ruby "scripts/test_guide_content.rb"
-  sh "node --test scripts/test_theme_switcher.cjs"
-  sh "node --test scripts/test_setup_tabs.cjs"
-  require "html-proofer"
-  require "yaml"
-  sh "bundle exec jekyll build"
-  ruby "scripts/test_guide_views.rb"
-  sh "node --test scripts/test_setup_redirects.cjs"
-  sh "node --test scripts/test_site_navigation.cjs"
-
-  baseurl = YAML.safe_load_file("_config.yml").fetch("baseurl", "").to_s
-  url_swaps = baseurl.empty? ? {} : { /\A#{Regexp.escape(baseurl)}\// => "/" }
-
-  HTMLProofer.check_directory(
-    "./_site",
-    disable_external: true,
-    swap_urls: url_swaps,
-    checks: %w[Html Images Scripts Links]
-  ).run
 end
 
 desc "Validate the shared plugin and documentation site"

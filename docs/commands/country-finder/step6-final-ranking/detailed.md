@@ -7,7 +7,7 @@ has_toc: false
 overview: /docs/commands/country-finder/step6-final-ranking.html
 guide_source: prompts/country-finder/step6-final-ranking.md
 permalink: /docs/commands/country-finder/step6-final-ranking/detailed.html
-title_category: Detailed guide
+title_category: Details
 description: "Complete procedure, choices, constraints and outcomes for Step 6: Final ranking."
 ---
 

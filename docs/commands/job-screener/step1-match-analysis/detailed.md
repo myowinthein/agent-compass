@@ -7,7 +7,7 @@ has_toc: false
 overview: /docs/commands/job-screener/step1-match-analysis.html
 guide_source: prompts/job-screener/step1-match-analysis.md
 permalink: /docs/commands/job-screener/step1-match-analysis/detailed.html
-title_category: Detailed guide
+title_category: Details
 description: "Complete procedure, choices, constraints and outcomes for Step 1: Match analysis."
 ---
 

@@ -17,15 +17,15 @@ Run commands from the repository root. Helpers require Python 3.11+; Ruby checks
 
 | Command | Purpose |
 |---|---|
-| `bundle exec rake test` | Full plugin/helper checks, site JavaScript tests, Jekyll build and internal HTML/link/image/script checks; required after documentation or site configuration changes. |
-| `bundle exec rake plugin_test` | Plugin validation and offline Python/Ruby helper regressions. |
+| `BUNDLE_GEMFILE=docs/Gemfile bundle exec rake test` | Full plugin/helper checks, site JavaScript tests, Jekyll build and internal HTML/link/image/script checks; required after documentation or site configuration changes. |
+| `BUNDLE_GEMFILE=docs/Gemfile bundle exec rake plugin_test` | Plugin validation and offline Python/Ruby helper regressions. |
 | `ruby scripts/validate_plugin.rb` | Four skill entries, shared resources/icon and a relocated package with a separate consumer workspace. |
 | `ruby scripts/test_plugin.rb` | Validation edge cases, published arithmetic/table examples, archive attributes and deployment contracts. |
 | `ruby scripts/test_salary_targets.rb` | Salary CLI checks against an independent Ruby Rational oracle. |
 | `python3 -B scripts/test_compass.py` | Offline consumer checks, golden outputs, legacy names, ingestion/retry, state, encoding and relocation. |
 | `python3 -B scripts/test_workflow_replay.py --host claude` or `--host codex` | Optional acceptance replays through the host CLI with fictional data and simulated web evidence. It calls the model and is not part of `rake test`. |
-| `bundle exec jekyll serve` | Local documentation preview. |
-| `bundle exec rake client_test` | Optional native discovery regression; requires both Claude and Codex CLIs, uses temporary installations and makes no model calls. |
+| `cd docs && bundle exec jekyll serve` | Local documentation preview. |
+| `BUNDLE_GEMFILE=docs/Gemfile bundle exec rake client_test` | Optional native discovery regression; requires both Claude and Codex CLIs, uses temporary installations and makes no model calls. |
 | `ruby scripts/check_clients.rb --installed` | Inspect inventories after separately updating installed copies. |
 
 When the Claude CLI is available, native validation uses `claude plugin validate .claude-plugin/plugin.json` and `claude plugin validate skills`. Offline checks use fictional fixtures; passing them does not establish live research accuracy or model/workflow compliance.
@@ -41,9 +41,9 @@ When the Claude CLI is available, native validation uses `claude plugin validate
 - `helpers/salary_targets.py` retains its v1 consumer interface and is reused by the shared renderer. `data/output-contracts.json` alone defines fixed display tokens, rounding/bounds and batching size for Python and approved manual runs.
 - `data/workspace-files.json` is the sole current/legacy artifact registry. `helpers/compass_lib/files.py` and `skills/workspace-files.md` implement the same read-only resolution policy.
 - Bundled resources come from the actual installed plugin root. New searches use the fixed `Path.home() / "Agent Compass"` base resolved by `workspace-base`; CF/SC/JS have isolated run folders, including profiles. Keep legacy files in place; explicit saved-run handoffs do not change the base for new searches.
-- Setup content lives in `_includes/setup/`, composed by `_includes/setup-tabs.html`; the JavaScript and legacy redirects preserve desktop/terminal deep links. Check their tests when changing setup navigation.
+- Setup content lives in `docs/_includes/setup/`, composed by `docs/_includes/setup-tabs.html`; the JavaScript and legacy redirects preserve desktop/terminal deep links. Check their tests when changing setup navigation.
 - `.github/workflows/docs.yml` runs checks on main pushes, pull requests and manual runs, with no schedule. Its Python matrix spans Linux/macOS/Windows; the site build waits for it. Only successful main builds deploy. Hosted Pages must use GitHub Actions as its source.
-- `_config.yml` uses `just-the-docs@latest`. CI resolves the latest stable release and temporarily pins it for that build; failed lookup stops the build. Local builds resolve through the remote-theme plugin; restart the preview to fetch a newer release.
+- `docs/_config.yml` uses `just-the-docs@latest`. CI resolves the latest stable release and temporarily pins it for that build; failed lookup stops the build. Local builds resolve through the remote-theme plugin; restart the preview to fetch a newer release.
 
 ## Domain Rules
 
@@ -74,7 +74,9 @@ This covers Compass's agent-facing instructions. General prose follows `.claude/
 
 ## Documentation
 
-Before editing documentation, README content or instruction sources rendered into guides, read and follow [.github/documentation.md](.github/documentation.md) alongside the project's active Writing rule.
+Website files and documentation checks live under `docs/`; run Jekyll there. `docs/_plugins/repository_content.rb` renders the root README and shared plugin icon while retaining published URLs. Canonical agent instructions stay at their package paths.
+
+Before editing documentation, README content or instruction sources rendered into guides, read and follow [docs/documentation.md](docs/documentation.md) alongside the project's active Writing rule.
 
 ## Contributor Review Preference
 

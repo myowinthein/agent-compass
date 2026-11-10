@@ -7,7 +7,7 @@ has_toc: false
 overview: /docs/commands/country-finder/step3-research-prompt-generator.html
 guide_source: prompts/country-finder/step3-research-prompt-generator.md
 permalink: /docs/commands/country-finder/step3-research-prompt-generator/detailed.html
-title_category: Detailed guide
+title_category: Details
 description: "Complete procedure, choices, constraints and outcomes for Step 3: Research prompt generator."
 ---
 

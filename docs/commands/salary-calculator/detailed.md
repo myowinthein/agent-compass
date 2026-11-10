@@ -6,7 +6,7 @@ has_toc: false
 overview: /docs/commands/salary-calculator.html
 guide_source: workflows/salary-calculator.md
 permalink: /docs/commands/salary-calculator/detailed.html
-title_category: Detailed guide
+title_category: Details
 description: "Complete procedure, choices, constraints and outcomes for salary-calculator."
 ---
 

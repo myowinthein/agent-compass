@@ -10,6 +10,7 @@ end
 
 Dir.mktmpdir("compass-guide-content-") do |temporary|
   root = Pathname(temporary)
+  root.join("docs").mkpath()
   root.join("workflows").mkpath
   original = <<~MARKDOWN
     # example
@@ -31,7 +32,7 @@ Dir.mktmpdir("compass-guide-content-") do |temporary|
   MARKDOWN
   root.join("workflows/example.md").write(original)
   root.join("workflows/no-title.md").write("A prerequisite must not disappear.\n\n## Review\n\nKeep this body.\n")
-  site = Jekyll::Site.new(Jekyll.configuration("source" => temporary, "quiet" => true,
+  site = Jekyll::Site.new(Jekyll.configuration("source" => root.join("docs").to_s, "quiet" => true,
     "plugins_dir" => [], "baseurl" => "/compass"))
   page = Struct.new(:data, :url).new({ "guide_sources" => ["prompts/example/step1-review.md"],
     "overview" => "/overview.html" }, "/step/detailed.html")

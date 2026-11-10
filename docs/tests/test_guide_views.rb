@@ -4,8 +4,8 @@ require "pathname"
 require "yaml"
 require_relative "../_plugins/guide_content"
 
-root = Pathname(__dir__).parent
-base = YAML.safe_load_file(root.join("_config.yml")).fetch("baseurl")
+root = Pathname(__dir__).parent.parent
+base = YAML.safe_load_file(root.join("docs/_config.yml")).fetch("baseurl")
 normal = ->(text) { text.gsub(/\s+/, " ").strip }
 overviews = root.glob("docs/**/*.md").filter_map do |path|
   frontmatter = path.read.match(/\A---\n(.*?)\n---\n/m)
@@ -22,13 +22,13 @@ overviews.each do |source, data|
   raise "Detailed guide leaks into navigation: #{source}" unless detail_data["nav_exclude"]
   built_detail = nil
   [overview_url, data.fetch("detailed")].each do |url|
-    document = Nokogiri::HTML(root.join("_site", url.delete_prefix("/")).read)
+    document = Nokogiri::HTML(root.join("docs/_site", url.delete_prefix("/")).read)
     built_detail = document if url == data["detailed"]
     navigation = document.css("nav.guide-depth")
     raise "Missing or duplicate depth selector: #{url}" unless navigation.size == 1
     links = navigation.first.css("a")
     raise "Wrong view pair: #{url}" unless links.map { |a| a["href"] } == [base + overview_url, base + data["detailed"]]
-    raise "Inconsistent labels: #{url}" unless links.map(&:text) == ["Overview", "Detailed guide"]
+    raise "Inconsistent labels: #{url}" unless links.map(&:text) == ["Overview", "Details"]
     raise "Forced new tab: #{url}" if links.any? { |a| a["target"] }
     current = links.select { |a| a["aria-current"] == "page" }
     raise "Wrong current view: #{url}" unless current.size == 1 && current.first["href"] == base + url

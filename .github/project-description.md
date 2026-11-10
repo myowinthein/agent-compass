@@ -5,9 +5,9 @@ Use the same description frame in Agent Helm and Agent Compass, with facts and w
 | Form | What it expresses | Expected maximum | Owner |
 |---|---|---|---|
 | Main | Two sentences: product type, audience and supported clients, then the main outcomes. Group capabilities instead of listing every command. | 250 characters. | Plugin manifest `description`. |
-| Summary | One sentence covering the product's purpose, clients and broad outcomes. Preserve the main description's facts while selecting what fits this shorter form. | 160 characters. | [Site configuration](../_config.yml) `description`. |
+| Summary | One sentence covering the product's purpose, clients and broad outcomes. Preserve the main description's facts while selecting what fits this shorter form. | 160 characters. | [Site configuration](../docs/_config.yml) `description`. |
 | Marketplace | One installation-focused sentence naming the product, what users install and supported clients. | 160 characters. | Marketplace's top-level `description`. |
-| README introduction | Identity and audience, followed by benefits and broad capabilities in the project's voice. | 20 / 50 words. | [README structure](documentation.md#readme-structure). |
+| README introduction | Identity and audience, followed by benefits and broad capabilities in the project's voice. | 20 / 50 words. | [README structure](../docs/documentation.md#readme-structure). |
 
 Character counts include spaces and punctuation. These are project writing limits, not platform limits or promises about search-result display. Preserve material meaning and necessary qualifications. Taglines keep their separate role as short category labels or brand phrases.
 
@@ -19,7 +19,7 @@ Character counts include spaces and punctuation. These are project writing limit
 | `.claude-plugin/plugin.json` description | Owns Main. |
 | `.codex-plugin/plugin.json` description, when present | Exact copy of Main; preserve other client-specific fields. |
 | `.claude-plugin/marketplace.json` matching plugin entry's description, when already declared | Exact copy of Main. Preserve an intentionally absent field. |
-| `_config.yml` description | Owns Summary. |
+| `docs/_config.yml` description | Owns Summary. |
 | `README.md` front matter description | Exact copy of Summary. |
 | `.claude-plugin/marketplace.json` top-level description | Marketplace variant, describing installation rather than repeating the product introduction. |
 | README introduction | Written variant under its existing paragraph frame; retain the same product facts without requiring identical wording. |

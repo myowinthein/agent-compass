@@ -7,7 +7,7 @@ has_toc: false
 overview: /docs/commands/salary-calculator/step3-international-adjustment.html
 guide_source: prompts/salary-calculator/step3-international-adjustment.md
 permalink: /docs/commands/salary-calculator/step3-international-adjustment/detailed.html
-title_category: Detailed guide
+title_category: Details
 description: "Complete procedure, choices, constraints and outcomes for Step 3: International adjustment."
 ---
 

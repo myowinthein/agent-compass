@@ -7,7 +7,7 @@ has_toc: false
 overview: /docs/commands/country-finder/step1-criteria-intake.html
 guide_source: prompts/country-finder/step1-criteria-intake.md
 permalink: /docs/commands/country-finder/step1-criteria-intake/detailed.html
-title_category: Detailed guide
+title_category: Details
 description: "Complete procedure, choices, constraints and outcomes for Step 1: Criteria intake."
 ---
 

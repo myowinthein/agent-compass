@@ -7,7 +7,7 @@ has_toc: false
 overview: /docs/commands/portal-finder/step1-portal-research.html
 guide_source: prompts/portal-finder/step1-portal-research.md
 permalink: /docs/commands/portal-finder/step1-portal-research/detailed.html
-title_category: Detailed guide
+title_category: Details
 description: "Complete procedure, choices, constraints and outcomes for Step 1: Portal research."
 ---
 

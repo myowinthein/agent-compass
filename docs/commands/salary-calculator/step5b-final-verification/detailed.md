@@ -9,7 +9,7 @@ guide_sources:
   - prompts/salary-calculator/step5a-career-ladder.md
   - prompts/salary-calculator/step5b-final-verification.md
 permalink: /docs/commands/salary-calculator/step5b-final-verification/detailed.html
-title_category: Detailed guide
+title_category: Details
 description: "Complete procedure, choices, constraints and outcomes for Step 5: Final verification."
 ---
 

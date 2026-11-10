@@ -7,7 +7,7 @@ has_toc: false
 overview: /docs/commands/salary-calculator/step1-research-prompt-generator.html
 guide_source: prompts/salary-calculator/step1-research-prompt-generator.md
 permalink: /docs/commands/salary-calculator/step1-research-prompt-generator/detailed.html
-title_category: Detailed guide
+title_category: Details
 description: "Complete procedure, choices, constraints and outcomes for Step 1: Research prompt generator."
 ---
 

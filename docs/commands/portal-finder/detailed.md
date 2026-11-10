@@ -6,7 +6,7 @@ has_toc: false
 overview: /docs/commands/portal-finder.html
 guide_source: workflows/portal-finder.md
 permalink: /docs/commands/portal-finder/detailed.html
-title_category: Detailed guide
+title_category: Details
 description: "Complete procedure, choices, constraints and outcomes for portal-finder."
 ---
 
