@@ -74,8 +74,12 @@ I run it once in a dedicated chat, confirm my profile and paste jobs one at a ti
 
 See [Examples](https://myowinthein.github.io/agent-compass/docs/examples/) for optional guides to my Obsidian setup and daily job search routine.
 
-## Help me improve it
+<span id="help-me-improve-it"></span>
 
-If something does not work or you have an idea that would make your job search easier, [share it on GitHub](https://github.com/myowinthein/agent-compass/issues).
+## Contributing
+
+If a workflow gets in the way of your job search, a guide is unclear or you have an idea for Agent Compass, [open an issue on GitHub](https://github.com/myowinthein/agent-compass/issues). Tell me what you were looking for and what would have helped.
+
+## License
 
 Agent Compass is open source under the [MIT license](https://github.com/myowinthein/agent-compass/blob/main/LICENSE).
