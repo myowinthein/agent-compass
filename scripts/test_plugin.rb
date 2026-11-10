@@ -100,7 +100,7 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
     "workflows/country-finder.md" => [
       ["missing question map", ->(body) { body.sub("## Question points", "## Choices") },
        "Workflow must map question points through shared QM:"],
-      ["missing QM reference", ->(body) { body.sub("[QM](../prompts/shared/question-mechanism.md)", "question guidance") },
+      ["missing QM reference", ->(body) { body.sub("[question mechanism (QM)](../prompts/shared/question-mechanism.md)", "question guidance") },
        "Workflow must map question points through shared QM:"]
     ]
   }

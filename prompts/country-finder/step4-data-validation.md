@@ -4,7 +4,7 @@ If it does not exist, stop and tell me: "country-finder-03-research.md was not f
 
 If it exists, read it and process each country's data from that file sequentially — this runs fully automated, with no pause for input between countries. Apply all the behavior rules below to each country block in the file, in order.
 
-Behavior rules:
+## Behavior rules:
 
 Parent: use skills/research-helper.md to scan and review every block, then run `ingest` with the exact hashes, expected eligible countries, required tracks and block decisions. It copies accepted raw slices and updates only the existing generated report. Read back both files and present the consolidated inventory below. A legacy label variation needs genuine semantic review, not an automatic skip or acceptance. A partial failure leaves state unchanged; inspect and rescan before a safe retry. Under an approved manual run, follow all existing rules below without claiming Python ran.
 

@@ -1,11 +1,11 @@
-CANDIDATE PROFILE:
+## CANDIDATE PROFILE:
 Read profile.md from the workspace and use it as the candidate profile. [TARGET ROLE] below should be filled using the target or desired role from the candidate profile if one is stated; otherwise use the current or most recent title.
 
 Resolve a materially ambiguous target role or seniority with a targeted parent-side question before researching. Do not infer a level solely from years of experience, or repeat confirmation for a clear, already confirmed target. Carry the settled role/level into the briefs and saved research Notes so Step 5a can check the same scope.
 
-Read situational-profile.md before generating research. If absent, the parent applies skills/situational-profile-questions.md and waits for answers first. Every generated country brief must embed the target role, seniority, relevant years of experience (or explicitly unknown), skills, and relevant citizenship/residence/work-authorization and age facts as literal text, including their reference dates. Never rely on a job title to imply the profile or ask a fresh-context researcher to read workspace files. Include the candidate-specific threshold instructions from skills/sponsorship-threshold-rules.md directly in each brief, not merely a path reference.
+Read situational-profile.md before generating research. If absent, the parent applies [skills/situational-profile-questions.md](../../skills/situational-profile-questions.md) and waits for answers first. Every generated country brief must embed the target role, seniority, relevant years of experience (or explicitly unknown), skills, and relevant citizenship/residence/work-authorization and age facts as literal text, including their reference dates. Never rely on a job title to imply the profile or ask a fresh-context researcher to read workspace files. Include the candidate-specific threshold instructions from [skills/sponsorship-threshold-rules.md](../../skills/sponsorship-threshold-rules.md) directly in each brief, not merely a path reference.
 
-Countries:
+## Countries:
 For a same-scope continuation of this run's unfinished Step 1, retain its already confirmed target countries, collected research and recorded producer source; do not reopen the country-source choice or select a newer CF run. The choices below apply only to a new scope or explicitly approved input repair. Missing confirmation/provenance uses the shared targeted repair rule, not inferred completion.
 Use the matching person's selected Country Finder producer workspace under the shared runtime for the following checks, not Salary Calculator's own run folder or the base output folder. With no matching producer, ask for target countries; never substitute another chat/person's results.
 Check whether country-finder-06-final-results.md exists in the workspace; if not, check country-finder-05-assessment.md.
@@ -17,7 +17,7 @@ Check whether country-finder-06-final-results.md exists in the workspace; if not
 
 Generate individual research prompts to estimate realistic local-market annual base salary ranges for a [TARGET ROLE] in each country given above. Do not estimate salaries directly — only generate ready-to-copy research prompts. Estimate what a local candidate with a similar profile would realistically earn in that country — local-market salary only.
 
-Benchmark scope:
+## Benchmark scope:
 Use one fixed research scope: both employer tiers price comparable local employee gross annual base pay for work in the target country. Research the relevant employer-sponsored visa salary rule separately as reference information. This answers what comparable locals earn and whether a sponsored route has a salary requirement; it does not require the user to choose remote work, relocation or sponsorship assessment. State the scope briefly and continue after the country choice, without another scope confirmation or employment-path menu.
 
 An international or remote-first employer may pay on local payroll; its label alone does not establish cross-border work or global pay. These figures are not an offer estimate for working from the candidate's home country. A reference visa check does not confirm a relocation plan, and Country Finder's Remote eligibility does not change the salary benchmark. If the user explicitly requests actual cross-border pay, explain the limit rather than presenting it as a supported calculation mode. Embed the fixed benchmark and reference visa scope in every brief and preserve it in each country's Notes; no new profile or state fields are required.
@@ -27,7 +27,7 @@ Read and apply skills/sponsorship-threshold-rules.md — each generated prompt m
 Important:
 Each generated prompt must instruct the researcher to perform the analysis completely from scratch using current web research and real-world market conditions only, prioritizing sources from the last 12 months. Do not rely on previous conversations, memory, earlier country discussions, or assumed preferences.
 
-Exclude from research:
+## Exclude from research:
 - expat salary and relocation premium
 - FAANG-only data (including levels.fyi)
 - Glassdoor US
@@ -36,7 +36,7 @@ Exclude from research:
 - equity-heavy total compensation
 - US-skewed compensation data
 
-For each country, create one ready-to-copy research prompt asking for:
+## For each country, create one ready-to-copy research prompt asking for:
 
 - realistic gross annual base salary range in local currency, with any source's different or unknown pay basis stated explicitly
 - local-market salary only
@@ -64,7 +64,7 @@ Prioritize:
 
 Each prompt must also instruct the researcher to self-assess an evidence grade for the country: High if at least three independent, current, mutually consistent sources support the figures; Medium if the evidence is useful but has a material coverage or comparability limitation; Low if the evidence is sparse, old, indirect, or conflicting.
 
-Required answer format (instruct the researcher to use this exact structure):
+## Required answer format (instruct the researcher to use this exact structure):
 
 Country: [name]
 
@@ -94,7 +94,7 @@ Notes: [local employee benchmark scope and separate reference sponsored route; r
 
 If a tier or a single defensible benchmark cannot be established, state what is missing instead of inventing an amount. Step 2 retains its two-tier requirement. These extra descriptions provide research provenance; legacy blocks without them are not automatically rejected, but later calculation must establish material comparability or skip with a reason.
 
-Output format:
+## Output format:
 - one ready-to-copy research prompt per country
 - clearly separated by country name
 - do not attempt to answer the research questions yourself in this step

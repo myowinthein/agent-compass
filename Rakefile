@@ -14,11 +14,13 @@ end
 desc "Build the Jekyll site and validate it with HTML-Proofer"
 task :docs_test do
   ruby "scripts/test_asset_digest.rb"
+  ruby "scripts/test_guide_content.rb"
   sh "node --test scripts/test_theme_switcher.cjs"
   sh "node --test scripts/test_setup_tabs.cjs"
   require "html-proofer"
   require "yaml"
   sh "bundle exec jekyll build"
+  ruby "scripts/test_guide_views.rb"
   sh "node --test scripts/test_setup_redirects.cjs"
   sh "node --test scripts/test_site_navigation.cjs"
 

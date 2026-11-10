@@ -6,9 +6,9 @@ This is a dated audit of saved evidence, not a live legal or market re-check. Pr
 
 Approved refreshed evidence takes precedence over older saved visa facts for the same candidate/pathway. If it changes a visa state, amount, period or eligible-pay basis, newly render and check the final table with that evidence instead of copying Step 4 or reusing Step 1's superseded threshold. Record this evidence-only update separately from market salary recalibration; unchanged market inputs retain their raw targets and earlier files remain untouched.
 
-Read prompts/salary-calculator/step4-table-calculation.md for the canonical segment definitions, arithmetic, caption, and six-column output format, and apply skills/sponsorship-threshold-rules.md, skills/salary-comparison-rules.md, and skills/evidence-quality-rules.md. Do not infer current visa rules from legacy table shorthand.
+Read prompts/salary-calculator/step4-table-calculation.md for the canonical segment definitions, arithmetic, caption, and six-column output format, and apply [skills/sponsorship-threshold-rules.md](../../skills/sponsorship-threshold-rules.md), [skills/salary-comparison-rules.md](../../skills/salary-comparison-rules.md), and [skills/evidence-quality-rules.md](../../skills/evidence-quality-rules.md). Do not infer current visa rules from legacy table shorthand.
 
-Read data/output-contracts.json as data and skills/output-helper.md. Use `render-salary` for any newly calculated/legacy-normalized table, preserving the existing country order, and `check-saved` before the parent completes this final step. The same contract remains readable during an explicitly approved manual run; no second template is introduced.
+Read data/output-contracts.json as data and [skills/output-helper.md](../../skills/output-helper.md). Use `render-salary` for any newly calculated/legacy-normalized table, preserving the existing country order, and `check-saved` before the parent completes this final step. The same contract remains readable during an explicitly approved manual run; no second template is introduced.
 
 For every newly rendered table, use the same helper procedure in skills/salary-calculation-helper.md, including parent-executed calculation requests and its explicit manual fallback. Recalibrated segments supply revised raw annual targets, never rounded display values; unaffected segments retain their source inputs. Record the method and exact results in Recalibration. Do not save helper JSON, change Step 4's file or finalize an audit while a calculation request is pending. An unchanged current-format table may be copied without a new invocation only if its shown work records the shared helper or explicit user-approved manual method and its inputs still match the source files. Otherwise verify it through the helper procedure first, even when its columns already match. Correct any arithmetic error in the final file only and distinguish that correction from evidence-based market recalibration.
 
@@ -42,7 +42,7 @@ File format (write the following structure, including the final table, to salary
 
 1. Candidate Positioning
 
-CAREER LEVELS FOR THIS ROLE:
+## CAREER LEVELS FOR THIS ROLE:
 
 Use the career ladder in salary-calculator-05a-career-ladder.md — it was drafted from profile.md and confirmed with me before this step. Do not redraft it or ask me to confirm it again; treat it as settled.
 

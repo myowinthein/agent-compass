@@ -1,6 +1,18 @@
 <link rel="icon" type="image/svg+xml" href="https://myowin.dev/favicon.svg">
 <link rel="sitemap" type="application/xml" href="{{ '/sitemap.xml' | relative_url }}">
 <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}?v={{ '/assets/js/theme-switcher.js' | asset_digest }}"></script>
+{% if page.overview %}
+<style>
+  #site-nav:not([data-guide-nav-ready]) .nav-list-item:has(a[href="{{ page.overview | relative_url }}"]) > .nav-list {
+    display: block;
+  }
+  #site-nav:not([data-guide-nav-ready]) a[href="{{ page.overview | relative_url }}"] {
+    font-weight: 600;
+    text-decoration: none;
+  }
+</style>
+<script src="{{ '/assets/js/guide-nav.js' | relative_url }}?v={{ '/assets/js/guide-nav.js' | asset_digest }}" data-overview-url="{{ page.overview | relative_url }}" defer></script>
+{% endif %}
 {% if page.setup_tabs %}
 <script src="{{ '/assets/js/setup-tabs.js' | relative_url }}?v={{ '/assets/js/setup-tabs.js' | asset_digest }}" defer></script>
 {% endif %}

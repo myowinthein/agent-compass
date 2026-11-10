@@ -4,9 +4,13 @@ parent: country-finder
 grand_parent: Commands
 nav_order: 2
 description: Choose a country scope and check evidence of remote hiring or employer-sponsored relocation for your role, keeping the two tracks independent.
+detailed: /docs/commands/country-finder/step2-country-discovery/detailed.html
+has_toc: false
 ---
 
 # Step 2: Country discovery
+
+{% include guide-depth.html %}
 
 Check which countries have evidence of remote hiring or employer-sponsored relocation for your role.
 
@@ -14,25 +18,13 @@ Check which countries have evidence of remote hiring or employer-sponsored reloc
 
 ```mermaid
 flowchart TD
-  Start(["Read your profile and criteria"]) --> List{"Countries specified?"}
-  List -->|Yes| Scope["Expand regions and apply exclusions<br/>Clarify ambiguous boundaries"]
-  List -->|No| Salary{"Saved Salary Calculator country list?"}
-  Salary -->|Yes| Offer["Offer the saved target countries, names only<br/>Wait: keep, edit, replace or choose default"]
-  Offer -->|Keep, edit or replace| Confirm["Save your country choice in criteria"]
-  Confirm --> Scope
-  Offer -->|Default| Default["Show the default list<br/>Wait for your list or approval"]
-  Salary -->|No usable list| Default
-  Default --> Scope
-  Scope --> Empty{"Any countries left?"}
-  Empty -->|No| Revise(["Ask for a revised list or stop"])
-  Empty -->|Yes| Batch["Save the country scope<br/>Split into batches of at most 15"]
-  Batch --> Cap{"Separate research context<br/>with web access available?"}
-  Cap -->|Yes| Research["Research both tracks for every country<br/>Use self-contained candidate briefs"]
-  Cap -->|No| Manual["Show batch prompts<br/>Wait for manual results"]
-  Research --> Coverage["Collect results and check every country<br/>Resolve missing results"]
-  Manual --> Coverage
-  Coverage --> TZ["Apply your remote timezone limit, if any<br/>Check relevant hubs and seasonal changes"]
-  TZ --> Save(["Save country-finder-02-candidates.md<br/>Continue to Step 3"])
+  Scope{"Your own country list?"} -->|Yes| Research["Research both tracks for the chosen countries"]
+  Scope -->|No| Salary{"Saved salary country names?"}
+  Salary -->|Yes| Offer["Confirm, edit or replace the proposed names"]
+  Salary -->|No| Default["Choose the default list or your own"]
+  Offer --> Research
+  Default --> Research
+  Research --> Save["Save findings, timezone conditions and evidence gaps"]
 ```
 
 ## Choosing countries

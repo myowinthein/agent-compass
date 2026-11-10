@@ -51,7 +51,7 @@ I save the final [priority table]({{ '/docs/commands/country-finder/step6-final-
 
 ### Salary expectations
 
-I save the final [table]({{ '/docs/commands/salary-calculator/step4-table-calculation.html' | relative_url }}#table-format) from `salary-calculator` as a reference for applications and salary discussions.
+I save the final [table]({{ '/docs/commands/salary-calculator/step5b-final-verification.html' | relative_url }}#your-result) from `salary-calculator` as a reference for applications and salary discussions.
 
 ```markdown
 ## Salary expectations

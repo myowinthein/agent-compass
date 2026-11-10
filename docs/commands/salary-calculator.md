@@ -4,11 +4,26 @@ parent: Commands
 nav_order: 3
 has_children: true
 description: Research local-employee salary benchmarks across two employer tiers, estimate targets for your role and audit the final salary framework.
+detailed: /docs/commands/salary-calculator/detailed.html
+has_toc: false
 ---
 
 # salary-calculator
 
+{% include guide-depth.html %}
+
 Estimate salary targets for your role in selected countries, then audit their realism. Mainstream and Premium describe two employer segments paying local employees in the target country, not remote offers from your home country.
+
+## Flow
+
+```mermaid
+flowchart TD
+  Scope["Confirm your profile and countries"] --> Research["Research and validate local salary evidence"]
+  Research --> Calculate["Estimate supported adjustments and targets"]
+  Calculate --> Audit["Confirm the career ladder and audit results"]
+```
+
+New chats start fresh. In the same chat, a matching completed search offers View previous results / Start fresh; an unfinished search offers Resume / Start fresh. Earlier searches are preserved.
 
 ## Start the command
 
@@ -17,31 +32,6 @@ salary-calculator
 ```
 
 Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). The workflow asks for countries, loads or confirms your resume profile, and collects or reuses situational facts before research.
-
-## Flow
-
-```mermaid
-flowchart TD
-  Start(["Select this chat and person"]) --> Status{"Matching salary search?"}
-  Status -->|Completed and View chosen| Replay(["Show the saved final result"])
-  Status -->|Unfinished and Resume chosen| Resume["Resume the next unfinished step"]
-  Status -->|No match or Start fresh chosen| Profile["Create a separate run<br/>Reuse or confirm this person's profile"]
-  Profile --> Resume
-  Status -->|Needs repair| Recover(["Explain the issue<br/>Offer repair or a fresh run"])
-  Resume --> S1["1. Confirm countries<br/>Research local salaries and reference visa salary rules"]
-  S1 --> S2["2. Validate and store research"]
-  S2 --> Stored{"Any country stored?"}
-  Stored -->|No| Repair(["Save the report and checkpoint<br/>Offer evidence repair or stop"])
-  Stored -->|Yes| S3["3. Estimate supported international adjustments"]
-  S3 --> S4["4. Calculate comparable salary targets<br/>Record skipped countries"]
-  S4 --> Usable{"Any country calculated?"}
-  Usable -->|No| Repair
-  Usable -->|Yes| Ladder["5a. Draft or reuse the matching career ladder<br/>Wait for confirmation if needed"]
-  Ladder --> Audit["5b. Audit the salary framework<br/>Revise only when evidence supports it"]
-  Audit --> End(["Show the final salary table<br/>Save the full audit"])
-```
-
-New chats start fresh. In the same chat, a matching completed search offers View previous results / Start fresh; an unfinished search offers Resume / Start fresh. Earlier searches are preserved.
 
 ## What to expect
 

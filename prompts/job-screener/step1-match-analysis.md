@@ -2,7 +2,7 @@ Read profile.md from the workspace and treat it as the canonical candidate profi
 
 If situational-profile.md exists, read it too and reuse its explicit citizenship, location, languages, work-authorization status, and salary-minimum preferences. Do not require that optional file or launch full situational intake just to screen a JD. Candidate facts missing from both files remain unknown. If their facts conflict materially, the parent asks a targeted clarification before deciding the affected blocker; never silently prefer an older value or infer work rights from citizenship/residence.
 
-Apply skills/timezone-rules.md to mandatory hours/location requirements and skills/salary-comparison-rules.md when comparing explicit JD pay with a known minimum. A city establishes neither an agreed work schedule nor willingness to work nights. Unknown availability, authorization, FX, pay basis, or salary is not a blocker. A confirmed JD maximum below an explicitly stated hard floor may be a salary blocker only after a valid comparison; a straddling range or context-only minimum is not one.
+Apply [skills/timezone-rules.md](../../skills/timezone-rules.md) to mandatory hours/location requirements and [skills/salary-comparison-rules.md](../../skills/salary-comparison-rules.md) when comparing explicit JD pay with a known minimum. A city establishes neither an agreed work schedule nor willingness to work nights. Unknown availability, authorization, FX, pay basis, or salary is not a blocker. A confirmed JD maximum below an explicitly stated hard floor may be a salary blocker only after a valid comparison; a straddling range or context-only minimum is not one.
 
 Reply only with:
 
@@ -74,7 +74,7 @@ From this fixed list, report only the items the JD does not explicitly state. If
 
 An item that is unstated here is unknown, not a negative — it can never be a 🚫 blocker or a con on its own.
 
-Rules:
+## Rules:
 
 - Base conclusions only on explicit profile/situational facts, confirmed user clarifications and the current JD, plus sourced normalization under the shared comparison rules. Never infer missing eligibility/availability, use a Country Finder rating as JD eligibility or replace actual JD pay with Salary Calculator targets.
 - Do not assume or infer missing information.

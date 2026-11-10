@@ -14,7 +14,7 @@ These groups are by type and are mutually exclusive — place each portal in exa
 
 Do not include government or official employment-service portals — these are typically citizen/PR-oriented or geared toward expat/relocation information rather than reliable third-party job listings.
 
-For each portal, provide:
+## For each portal, provide:
 - Name, with its official URL in parentheses right after (e.g. LinkedIn (linkedin.com)) — the portal's own domain, not a search engine result or aggregator link
 - Scope — country-dedicated or global/multi-country (this changes how much of its listings are relevant to the target country)
 - One-line description of what it is actually good for (not marketing copy — describe its real strength for an IT/tech job seeker)

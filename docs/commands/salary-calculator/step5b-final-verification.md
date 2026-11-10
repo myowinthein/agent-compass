@@ -4,9 +4,13 @@ parent: salary-calculator
 grand_parent: Commands
 nav_order: 5
 description: Audit the salary framework against your confirmed role, career ladder and saved evidence, revising targets only when the evidence supports it.
+detailed: /docs/commands/salary-calculator/step5b-final-verification/detailed.html
+has_toc: false
 ---
 
 # Step 5: Final verification
+
+{% include guide-depth.html %}
 
 Audit the framework against your target role and saved evidence whenever at least one country was calculated.
 
@@ -14,26 +18,14 @@ Audit the framework against your target role and saved evidence whenever at leas
 
 ```mermaid
 flowchart TD
-  Start(["Draft the career ladder for your actual role<br/>Or reuse a matching confirmed ladder"]) --> Confirm{"Confirmed for this target?"}
-  Confirm -->|No| Edit["Show the ladder<br/>Wait for your confirmation or edits"]
-  Edit --> Confirm
-  Confirm -->|Yes| Model["Offer the optional deep-reasoner<br/>Or use your current model"]
-  Model --> Audit["Audit candidate positioning, framework calibration,<br/>each country and framework recommendations"]
-  Audit --> Current{"Essential current visa evidence missing?"}
-  Current -->|Yes| Choice["Wait for your choice<br/>Refresh evidence, use the dated snapshot or stop"]
-  Choice -->|Approved evidence or snapshot| Verdict
-  Current -->|No| Verdict{"Market revision supported?"}
-  Verdict -->|Yes| Recal["Revise affected targets from evidence<br/>Recheck visa rules and your salary floor"]
-  Verdict -->|No| Keep["Keep valid targets<br/>Distinguish supported from inconclusive"]
-  Recal --> Final["Render and check the final table<br/>Record any approved visa-only update separately"]
-  Keep --> Final
-  Final --> Save["Save checks, verdict, table and skip reasons<br/>Leave earlier research and Step 4 unchanged"]
-  Save --> End(["Show the standard caption and final table<br/>Report audited count and any inconclusive findings"])
+  Ladder["Confirm or reuse the matching career ladder"] --> Audit["Audit positioning, evidence and market realism"]
+  Audit --> Revise["Revise only where evidence supports it"]
+  Revise --> Final["Save the audit and show the final table"]
 ```
 
 ## Confirming your career ladder
 
-Confirm or edit a ladder suited to your role before it is saved to `salary-calculator-05a-career-ladder.md`. A matching confirmed ladder is reused without another question.
+[Confirm or edit a ladder suited to your role](step5b-final-verification/detailed.html#career-ladder-procedure) before it is saved to `salary-calculator-05a-career-ladder.md`. A matching confirmed ladder is reused without another question.
 
 This completes substep 5a; checkpoint 5 waits for the saved, checked final audit.
 

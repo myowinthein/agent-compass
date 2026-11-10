@@ -4,11 +4,24 @@ parent: Commands
 nav_order: 4
 has_children: true
 description: Compare job descriptions with your confirmed profile, receive Apply, Maybe or Skip reports and request application drafts from known facts.
+detailed: /docs/commands/job-screener/detailed.html
+has_toc: false
 ---
 
 # job-screener
 
+{% include guide-depth.html %}
+
 Compare job descriptions with your profile and receive an Apply, Maybe or Skip report. You can also request application drafts.
+
+## Flow
+
+```mermaid
+flowchart TD
+  Profile["Confirm the profile for this person"] --> Job["Read one job or application question"]
+  Job --> Report["Screen the job or draft from known facts"]
+  Report --> Next["Continue with the next paste"]
+```
 
 ## Start the command
 
@@ -17,25 +30,6 @@ job-screener
 ```
 
 Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). Run once in a dedicated chat, then paste one job at a time.
-
-## Flow
-
-```mermaid
-flowchart TD
-  Start(["Run job-screener"]) --> Run{"Matching chat/person JS session?"}
-  Run -->|Continue screening or Resume setup| Profile["Use the selected run's profile<br/>Or extract your resume and wait for confirmation"]
-  Run -->|No match or Start fresh| New["Create an isolated run"]
-  New --> Profile
-  Profile --> Context["Reuse situational-profile.md if present<br/>Clarify only material missing or conflicting facts"]
-  Context --> Wait(["Profile loaded<br/>Wait for your paste"])
-  Wait --> Kind{"What did you send?"}
-  Kind -->|One job description| Screen["Screen this job using the fixed report format"]
-  Kind -->|Application questions or writing| Draft["Draft from confirmed facts<br/>Ask or use placeholders for missing details"]
-  Kind -->|Several jobs or unclear mix| Ask["Ask which to handle first"]
-  Screen --> Wait
-  Draft --> Wait
-  Ask --> Wait
-```
 
 ## Your result
 

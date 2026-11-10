@@ -4,9 +4,13 @@ parent: country-finder
 grand_parent: Commands
 nav_order: 6
 description: Audit country fits and confidence, account for missing evidence and produce application priorities for remote work and sponsorship.
+detailed: /docs/commands/country-finder/step6-final-ranking/detailed.html
+has_toc: false
 ---
 
 # Step 6: Final ranking
+
+{% include guide-depth.html %}
 
 Audit the assessments and assign practical application priorities. This step runs even without a specialist.
 
@@ -14,17 +18,8 @@ Audit the assessments and assign practical application priorities. This step run
 
 ```mermaid
 flowchart TD
-  Start(["Offer the optional deep-reasoner<br/>Or use your current model"]) --> C1["Check confidence<br/>Is it backed by specific, dated evidence?"]
-  C1 --> C2["Check missing countries and tracks<br/>Preserve early exclusions<br/>Distinguish missing from rejected research"]
-  C2 --> C3["Check evidence use<br/>Local remote is not cross-border hiring<br/>A visa route is not employer willingness<br/>One vacancy is not a deep market"]
-  C3 --> Verdict{"Evidence supports a revision?"}
-  Verdict -->|Yes| Revise["Revise affected fits or confidence<br/>Explain the evidence"]
-  Verdict -->|No| Keep["Keep supported assessments<br/>Name inconclusive findings"]
-  Revise --> Summary["Build the post-audit Summary<br/>Account for every candidate on both tracks"]
-  Keep --> Summary
-  Summary --> Priority["Assign application priorities and limitations<br/>Check the saved Summary and table agree"]
-  Priority --> Save["Save audit, Summary, Priority Table<br/>and Effort Allocation"]
-  Save --> End(["Show the Priority Table in chat<br/>Confirm completion and saved file"])
+  Audit["Check evidence, confidence and missing candidates"] --> Summary["Confirm final fits for both tracks"]
+  Summary --> Priority["Assign priorities and save the full audit"]
 ```
 
 ## What the audit protects

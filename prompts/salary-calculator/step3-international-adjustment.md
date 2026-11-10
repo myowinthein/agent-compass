@@ -22,7 +22,7 @@ Use those same confirmed situational facts across countries, including applicabl
 
 Only vary the adjustment based on country-specific hiring practices, employer behavior, and current market conditions.
 
-For each country with a supported numeric estimate, provide:
+## For each country with a supported numeric estimate, provide:
 
 - International candidate adjustment range (%)
 - Typical midpoint adjustment (%)
@@ -32,7 +32,7 @@ For each country with a supported numeric estimate, provide:
 
 For each unestimable country, provide its name, "Adjustment not estimable", and the specific reason/missing evidence. Account for every stored country once; do not silently omit it. Report the salary evidence grade as supplied, including "not provided"; a missing grade is neither a fabricated Low nor proof of High confidence. Justify confidence from the available evidence and disclose its limits.
 
-Consider:
+## Consider:
 
 - openness to international hiring
 - employer willingness to sponsor overseas candidates
@@ -48,7 +48,7 @@ Consider:
 
 Weigh these factors cumulatively rather than requiring each one to carry a separately priced cost, but do not count the same underlying issue twice under different labels (e.g. "visa complexity" and "relocation friction" describing the same fact).
 
-Important:
+## Important:
 
 - This is NOT about legal pay discrimination.
 - This is NOT a prediction of the candidate's future salary.

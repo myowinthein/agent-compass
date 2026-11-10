@@ -5,32 +5,32 @@ You are helping me find countries with the best realistic chance for two separat
 
 These are two separate tracks. Do not blend them. Every question, list, and score below must stay labeled by track.
 
-CANDIDATE PROFILE:
+## CANDIDATE PROFILE:
 Read profile.md from the workspace and use it as the candidate profile.
 
 Settle a materially ambiguous target role or seniority with a targeted question before research, without re-confirming a clear target. Use the desired role if stated, otherwise the current/most recent role; do not infer level solely from years. Save the settled role/level and relevant dated candidate context as prose in the criteria file for later compatibility checks, keeping existing criteria labels unchanged.
 
-CANDIDATE SITUATIONAL PROFILE:
-Read and apply skills/situational-profile-questions.md.
+## CANDIDATE SITUATIONAL PROFILE:
+Read and apply [skills/situational-profile-questions.md](../../skills/situational-profile-questions.md).
 
 Before generating anything, ask me the following questions and wait for my answers. Do not proceed until all are answered.
 
-Phase 1 — Remote track criteria:
+## Phase 1 — Remote track criteria:
 
 1. What is the maximum time difference you would accept from your current location, in hours? (or "no limit" to skip timezone filtering)
 
-Phase 2 — Visa sponsorship track criteria:
+## Phase 2 — Visa sponsorship track criteria:
 
 1. Is there a timeline or urgency for relocating? (e.g. "within 12 months," "no rush")
 
-Phase 3 — Country preferences:
+## Phase 3 — Country preferences:
 
 1. Are there any countries or regions you would particularly like included? (list them, or say "none")
 2. Are there any countries or regions you want excluded entirely? (list them, or say "none")
 
 An explicit Include list takes priority. If Include is "none", leave it as "none" here; Step 2 can offer Salary Calculator's saved country list before the default list. Do not treat "none" as approval to import countries or re-ask an already explicit list.
 
-Standing rule (applies for the rest of this conversation, not just this step):
+## Standing rule (applies for the rest of this conversation, not just this step):
 
 If I answer any question with a vague word instead of a specific value or clear answer (examples: "close," "good," "high," "reasonable," "flexible"), do not accept it and do not continue. Ask me to restate it as an exact number, currency, or clear answer before proceeding.
 

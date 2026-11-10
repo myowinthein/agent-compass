@@ -4,11 +4,26 @@ parent: Commands
 nav_order: 1
 has_children: true
 description: Find countries worth targeting for remote work or employer-sponsored relocation, with independent assessments against your profile and current evidence.
+detailed: /docs/commands/country-finder/detailed.html
+has_toc: false
 ---
 
 # country-finder
 
+{% include guide-depth.html %}
+
 Find countries worth targeting for remote work or employer-sponsored relocation. Each path is assessed separately against your profile and current evidence.
+
+## Flow
+
+```mermaid
+flowchart TD
+  Profile["Confirm your profile and criteria"] --> Discover["Choose countries and research both tracks"]
+  Discover --> Assess["Validate evidence and assess each track"]
+  Assess --> Rank["Audit and rank application priorities"]
+```
+
+New chats start fresh. In the same chat, a matching completed search offers View previous results / Start fresh; an unfinished search offers Resume / Start fresh. Earlier searches are preserved.
 
 ## Start the command
 
@@ -17,23 +32,6 @@ country-finder
 ```
 
 Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). No country argument is needed. If you have no saved profile, provide your resume and confirm the extraction before it is saved.
-
-## Flow
-
-```mermaid
-flowchart TD
-  Start(["Run country-finder"]) --> Status{"Matching chat/person search?"}
-  Status -->|Completed and View chosen| Replay(["Show the saved final result"])
-  Status -->|Unfinished and Resume chosen| Run["Resume the next unfinished step"]
-  Status -->|No match or Start fresh chosen| Profile["Create a separate run<br/>Reuse or confirm this person's profile"]
-  Profile --> Run
-  Status -->|Needs repair| Recover["Explain the issue<br/>Offer repair or a fresh run"]
-  Run --> Steps["1. Collect your criteria<br/>2. Discover suitable countries<br/>3. Research eligible tracks<br/>4. Validate and store research<br/>5. Assess each track<br/>6. Audit and rank"]
-  Steps --> Questions["Pause for questions or required choices<br/>Otherwise continue automatically"]
-  Questions --> Final(["Show the Priority Table<br/>Save the full audit"])
-```
-
-New chats start fresh. In the same chat, a matching completed search offers View previous results / Start fresh; an unfinished search offers Resume / Start fresh. Earlier searches are preserved.
 
 ## What to expect
 

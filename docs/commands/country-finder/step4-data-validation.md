@@ -4,9 +4,13 @@ parent: country-finder
 grand_parent: Commands
 nav_order: 4
 description: Check country research for structural completeness and store accepted content unchanged, without treating those checks as verification of its claims.
+detailed: /docs/commands/country-finder/step4-data-validation/detailed.html
+has_toc: false
 ---
 
 # Step 4: Data validation
+
+{% include guide-depth.html %}
 
 Store structurally complete research unchanged. This checks required content, not the truth of claims.
 
@@ -14,18 +18,8 @@ Store structurally complete research unchanged. This checks required content, no
 
 ```mermaid
 flowchart TD
-  Start(["Read Step 3 research and eligible tracks"]) --> Bounds{"Country blocks clear?"}
-  Bounds -->|No| Ask["Ask for clarification<br/>Wait before storing"]
-  Ask --> Bounds
-  Bounds -->|Yes| Check["Review each block<br/>One recognisable country<br/>Required track fields present<br/>Eligible under Step 2"]
-  Check --> Valid{"Valid and not already stored?"}
-  Valid -->|No| Skip["Record the skip reason<br/>Keep the original for duplicates"]
-  Valid -->|Yes| Store["Copy accepted data verbatim"]
-  Skip --> Report["Save stored data and one validation report<br/>Account for missing expected countries"]
-  Store --> Report
-  Report --> Saved{"Files saved successfully?"}
-  Saved -->|No| Failure(["Report failure<br/>Inspect before retrying; do not advance"])
-  Saved -->|Yes| Next(["Show consolidated counts and reasons<br/>Continue to Step 5"])
+  Read["Check country boundaries and required content"] --> Store["Preserve accepted data and original duplicates"]
+  Store --> Report["Save the validation report and explain gaps"]
 ```
 
 ## What is accepted

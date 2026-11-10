@@ -119,7 +119,7 @@ module CompassValidation
           "Shared runtime must load QM before asking questions")
     workflows.each do |name|
       body = read(resource(root, "workflows/#{name}.md"))
-      check(body.match?(/^## Question points$/) && body.include?("[QM](../prompts/shared/question-mechanism.md)"),
+      check(body.match?(/^## Question points$/) && body.include?("[question mechanism (QM)](../prompts/shared/question-mechanism.md)"),
             "Workflow must map question points through shared QM: #{name}")
     end
     root.glob("{workflows,prompts,skills}/**/*.md").each do |file|

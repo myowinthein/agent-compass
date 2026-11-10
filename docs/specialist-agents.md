@@ -4,11 +4,23 @@ title: Specialist agents
 nav_exclude: true
 permalink: /docs/specialist-agents.html
 description: Learn when Country Finder and Salary Calculator can offer optional specialists, how model and effort choices work and which steps they support.
+detailed: /docs/specialist-agents/detailed.html
+has_toc: false
 ---
 
 # Specialist agents
 
+{% include guide-depth.html %}
+
 Country Finder and Salary Calculator can offer specialists for selected steps. You can accept or stay on your current model.
+
+## Flow
+
+```mermaid
+flowchart TD
+  Offer["Explain the available role, model, effort and cost"] --> Choose["Use the specialist or keep your current model"]
+  Choose --> Verify["Return the result to the parent for checks"]
+```
 
 ## Requested models
 
@@ -18,26 +30,6 @@ Country Finder and Salary Calculator can offer specialists for selected steps. Y
 | `calculator` | Opus, max effort | `gpt-6.1-sol`, max effort | Salary input and table review. |
 
 Availability varies. Matching effort labels do not imply equal capability or token use.
-
-## Flow
-
-```mermaid
-flowchart TD
-  Start(["A step offers a specialist"]) --> Available{"Requested model and effort selectable?"}
-  Available -->|Yes| Offer["Name the role, model and effort<br/>Explain extra tokens and possible cost or time"]
-  Offer --> Choice{"Use the specialist?"}
-  Choice -->|No| Current["Complete the step on your current model"]
-  Choice -->|Yes| Task["Run only the approved step"]
-  Available -->|No| Alternative["Explain the limit<br/>Wait for your choice of available settings"]
-  Alternative -->|Current model| Current
-  Alternative -->|Available specialist| Task
-  Task --> Success{"Handoff succeeds?"}
-  Success -->|No| Retry["Report failure<br/>Wait for retry or another choice"]
-  Retry --> Choice
-  Success -->|Yes| Return["Return the output to the main conversation"]
-  Current --> Check["Check the result and continue the workflow"]
-  Return --> Check
-```
 
 ## Your choice
 

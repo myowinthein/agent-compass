@@ -4,7 +4,7 @@ Check whether salary-calculator-03-adjustments.md exists in the workspace. If it
 
 If both files exist, read them. Using the adjustment values from salary-calculator-03-adjustments.md and the salary data from salary-calculator-02-validated-data.md, calculate adjusted salary targets for each country.
 
-Read and apply skills/salary-calculation-helper.md. The parent first checks whether any country qualifies under the data/comparability rules below, then runs the shared numeric helper before an optional calculator handoff. If none qualify, save a skip-only record with every country/reason and a zero-calculated Summary, complete this checkpoint and apply the workflow's no-usable-estimates stop; no empty table or calculator handoff is needed. Both hosts otherwise use the same implementation and its exact results for every supported calculation. Manual arithmetic requires the explicit user choice described there. Do not compute by intuition; precision takes priority over speed.
+Read and apply [skills/salary-calculation-helper.md](../../skills/salary-calculation-helper.md). The parent first checks whether any country qualifies under the data/comparability rules below, then runs the shared numeric helper before an optional calculator handoff. If none qualify, save a skip-only record with every country/reason and a zero-calculated Summary, complete this checkpoint and apply the workflow's no-usable-estimates stop; no empty table or calculator handoff is needed. Both hosts otherwise use the same implementation and its exact results for every supported calculation. Manual arithmetic requires the explicit user choice described there. Do not compute by intuition; precision takes priority over speed.
 
 When at least one row qualifies, read data/output-contracts.json as data and skills/output-helper.md. The parent prepares `render-salary` inputs/results with the numeric work, and supplies them to any specialist. Use the canonical returned caption/table, then run `check-saved` on the saved table before completion. Skip-only records have no rendered table and do not invoke `render-salary` or `check-saved`; verify their skip coverage and checkpoint instead. A specialist needing revised helper work returns a pending request, never improvises. Under approved manual fallback, read the same contract and follow the identical presentation/check rules without claiming automation ran.
 
@@ -12,11 +12,11 @@ Read situational-profile.md. Note whether a salary minimum was given there and, 
 
 Apply user-confirmed run-only clarifications under the shared runtime, recording their date/scope in Show Your Work for the final audit. Do not silently revert to a superseded salary basis or write the clarification into collected research/profile files.
 
-Read and apply skills/sponsorship-threshold-rules.md for the Visa salary rule column. This shared rule is the canonical source of its display states, period labels, and warning behavior.
+Read and apply [skills/sponsorship-threshold-rules.md](../../skills/sponsorship-threshold-rules.md) for the Visa salary rule column. This shared rule is the canonical source of its display states, period labels, and warning behavior.
 
-Read and apply skills/salary-comparison-rules.md for the candidate's minimum, including currency/period/basis normalization and comparison-only FX. Record the dated rate and unrounded calculation in Show Your Work or Summary, not the salary table. An unavailable or non-comparable minimum check is unverified, not a proven shortfall.
+Read and apply [skills/salary-comparison-rules.md](../../skills/salary-comparison-rules.md) for the candidate's minimum, including currency/period/basis normalization and comparison-only FX. Record the dated rate and unrounded calculation in Show Your Work or Summary, not the salary table. An unavailable or non-comparable minimum check is unverified, not a proven shortfall.
 
-Only calculate countries that have BOTH:
+## Only calculate countries that have BOTH:
 
 - salary data
 - a supported numeric international candidate adjustment, including a supported zero

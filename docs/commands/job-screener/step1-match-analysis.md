@@ -4,9 +4,13 @@ parent: job-screener
 grand_parent: Commands
 nav_order: 1
 description: Compare one job with confirmed profile facts, apply the screening verdict rules and keep unknown qualifications distinct from confirmed gaps.
+detailed: /docs/commands/job-screener/step1-match-analysis/detailed.html
+has_toc: false
 ---
 
 # Step 1: Match analysis
+
+{% include guide-depth.html %}
 
 Compare one job with confirmed profile facts, keeping unknowns distinct from failures.
 
@@ -14,17 +18,8 @@ Compare one job with confirmed profile facts, keeping unknowns distinct from fai
 
 ```mermaid
 flowchart TD
-  Start(["Read one job description<br/>Compare with confirmed profile facts"]) --> Block{"Confirmed hard blocker?"}
-  Block -->|Yes| Skip["Skip"]
-  Block -->|No| Gaps{"Two or more required gaps<br/>Or too uncertain to judge?"}
-  Gaps -->|Yes| Maybe["Maybe"]
-  Gaps -->|No| Most{"Most required qualifications met?"}
-  Most -->|Yes| Apply["Apply"]
-  Most -->|No| Maybe
-  Skip --> Report["Return the fixed report<br/>Keep unknowns distinct from negatives"]
-  Maybe --> Report
-  Apply --> Report
-  Report --> Wait(["Wait for the next job or application question"])
+  Read["Compare one job with confirmed profile facts"] --> Decide["Apply blocker and required-qualification rules"]
+  Decide --> Report["Return the fixed report with gaps and unknowns"]
 ```
 
 ## Verdict rules

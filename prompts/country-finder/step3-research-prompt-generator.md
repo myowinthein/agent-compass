@@ -15,14 +15,14 @@ Each generated prompt must instruct the researcher to use current web research (
 
 Evidence hierarchy, in order of preference: current official government immigration or labour sources; current direct employer vacancy or policy pages; official sponsor or accredited-employer registers (proof of capability only, never of intent); credible specialist job boards, recruiters, or salary surveys; aggregators and search snippets, which need direct verification before use rather than being cited on their own. Instruct the researcher to note which tier each source falls into.
 
-Remote Track section should ask for:
+## Remote Track section should ask for:
 
 - realistic remote pay for the supplied role/level while working from the supplied current location, with amount/range, currency, period, gross/base versus net basis and engagement type (or explicitly unknown). Require evidence of location acceptance; domestic-only or local-employee evidence is not cross-border offer evidence. Local remote is valid if the candidate already lives there.
 - evidence of remote hiring volume or frequency for this role (job postings, hiring reports, company remote policies)
 - typical payment structure norms (local currency vs USD, contractor vs employee status)
 - sources with dates
 
-Read skills/salary-comparison-rules.md and embed the applicable normalization/FX and hard-floor/context-only uncertainty rules in Remote briefs. Request relevant working-language evidence without inventing national-language barriers. Salary Calculator's local-employee targets cannot substitute for this Remote pay evidence.
+Read [skills/salary-comparison-rules.md](../../skills/salary-comparison-rules.md) and embed the applicable normalization/FX and hard-floor/context-only uncertainty rules in Remote briefs. Request relevant working-language evidence without inventing national-language barriers. Salary Calculator's local-employee targets cannot substitute for this Remote pay evidence.
 
 Sponsorship Track section should ask for a pathway where a local employer is the sponsor — a standard employer-sponsored work visa or work permit tied to a job offer, not a digital-nomad, remote-worker, long-stay, or self-qualifying visa (these do not involve a local employer sponsoring the candidate, even if prominent in search results). If the country has both an employer-sponsored route and a digital-nomad-style visa, research the employer-sponsored one only. Ask for:
 
@@ -35,7 +35,7 @@ Sponsorship Track section should ask for a pathway where a local employer is the
 - citizenship-specific complications or restrictions, based on the situational profile
 - sources with dates
 
-Required answer format (instruct the researcher to use this exact structure):
+## Required answer format (instruct the researcher to use this exact structure):
 
 Country: [name]
 
@@ -57,7 +57,7 @@ Sponsorship Track (include only if applicable):
 
 Notes: [dated candidate/role/level and location/path context; working-language findings; applicable threshold category, assumptions and monthly-pay comparability; anything relevant not covered above]
 
-Output:
+## Output:
 
 - One ready-to-copy research prompt per country, clearly labeled with the country name and which track(s) it covers
 - Do not attempt to answer the research questions yourself in this step

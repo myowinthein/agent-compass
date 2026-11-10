@@ -4,9 +4,13 @@ parent: salary-calculator
 grand_parent: Commands
 nav_order: 4
 description: Calculate supported salary targets for each employer tier, keeping exact annual and monthly values separate from rounded table displays.
+detailed: /docs/commands/salary-calculator/step4-table-calculation/detailed.html
+has_toc: false
 ---
 
 # Step 4: Table calculation
+
+{% include guide-depth.html %}
 
 Apply the supported adjustment independently to each employer tier. The assistant saves exact work and the table; the final audit presents it in chat.
 
@@ -14,16 +18,9 @@ Apply the supported adjustment independently to each employer tier. The assistan
 
 ```mermaid
 flowchart TD
-  Start(["Read salary data, adjustments and research coverage"]) --> Eligible{"Any country has comparable data<br/>and a supported numeric adjustment?"}
-  Eligible -->|No| Empty["Save a skip-only record and checkpoint<br/>No empty table or calculator handoff"]
-  Empty --> Repair(["Offer evidence repair or stop"])
-  Eligible -->|Yes| Helper["Run exact shared calculations<br/>Resolve any execution choice before handoff"]
-  Helper --> Model["Offer the optional calculator specialist<br/>Or use your current model"]
-  Model --> Calc["Apply the adjustment to each Realistic amount<br/>Keep raw annual and monthly values"]
-  Calc --> Rules["Check comparable visa rules and your salary floor<br/>Never change targets to clear a minimum"]
-  Rules --> Display["Round display values independently<br/>Render the table in the established country order"]
-  Display --> Save["Save shown work, table and skipped-country reasons<br/>Check the actual saved table"]
-  Save --> Next(["Show brief calculated and skipped counts<br/>Continue to Step 5"])
+  Inputs["Check comparable data and supported adjustments"] --> Calculate["Calculate raw targets and separate display rounding"]
+  Calculate --> Compare["Compare visa rules and hard floors without raising targets"]
+  Compare --> Save["Save the table, shown work and skip reasons"]
 ```
 
 ## Calculation runtime

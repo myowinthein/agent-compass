@@ -68,6 +68,9 @@ nav_external_links:
     url: https://github.com/myowinthein/agent-compass
     hide_icon: false
 
+nav_external_links_new_tab: false
+aux_links_new_tab: false
+
 # Plugins
 plugins:
   - jekyll-seo-tag

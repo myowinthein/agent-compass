@@ -4,21 +4,21 @@ Read country-finder-05-assessment.md from the workspace. Also read country-finde
 
 Use recorded, user-confirmed run-only clarifications under the shared runtime as saved context, not hidden memory. Preserve assessed candidate/role/level, path/location and evidence dates with the file-only audit, outside canonical rendered sections. Material changed-input or contradicted-exclusion issues return to the parent for the shared repair choice before finalisation; never silently override an early reason or rewrite completed outputs.
 
-Read and apply skills/evidence-quality-rules.md and skills/exclusion-transparency-rules.md when auditing classifications, assigning priorities, and summarizing limitations.
+Read and apply [skills/evidence-quality-rules.md](../../skills/evidence-quality-rules.md) and [skills/exclusion-transparency-rules.md](../../skills/exclusion-transparency-rules.md) when auditing classifications, assigning priorities, and summarizing limitations.
 
-Read data/output-contracts.json as data and skills/output-helper.md. After choosing the evidence-supported final decisions below, use `render-cf` with the full candidate universe, original early exclusions and ingestion dispositions. Save its returned Summary and Priority Table sections verbatim, keep its audit notes with the three checks, and run `check-saved` before completion. Pure helper requests unavailable to a specialist return to the parent under the shared runtime. Under an explicitly approved manual run, read this same contract for the format and perform the same checks; do not claim automated rendering ran.
+Read data/output-contracts.json as data and [skills/output-helper.md](../../skills/output-helper.md). After choosing the evidence-supported final decisions below, use `render-cf` with the full candidate universe, original early exclusions and ingestion dispositions. Save its returned Summary and Priority Table sections verbatim, keep its audit notes with the three checks, and run `check-saved` before completion. Pure helper requests unavailable to a specialist return to the parent under the shared runtime. Under an explicitly approved manual run, read this same contract for the format and perform the same checks; do not claim automated rendering ran.
 
-Goal
+## Goal
 
 Perform a focused audit on the Step 5 results across three checks.
 
 Save the three named audit checks and Recalibration verdict at the top of country-finder-06-final-results.md, before Summary, Priority Table, and Effort Allocation. All audit details stay file-only. This step writes only that existing final file; leave source research and Step 5 outputs untouched.
 
-1. Confidence Calibration Check
+## 1. Confidence Calibration Check
 
 For each country marked "High confidence," verify the underlying evidence is genuinely specific, sourced, and dated, not just confidently worded. Flag any confidence level that seems inflated relative to the actual evidence quality, and explain why.
 
-2. Missing Candidate Check
+## 2. Missing Candidate Check
 
 Compare country-finder-02-candidates.md against the countries that actually reached Step 4 and Step 5, and also consider any country that would commonly be expected to appear but is absent. For each missing country, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap — such as being on a Step 2 candidate list but never researched or never reaching Step 4.
 
@@ -26,7 +26,7 @@ Reconcile this per track, not just per country. Preserve each explicit Step 2 "n
 
 If country-finder-03-research.md exists, read its Validation report and available raw blocks to distinguish never-supplied research from researched data rejected in Step 4. Record the exact rejection reason or state that the legacy ingestion outcome is unknown. A duplicate whose original was retained is not a missing country. Do not reinterpret an ingestion error as an evidence-based country exclusion.
 
-3. Evidence Misuse Check
+## 3. Evidence Misuse Check
 
 For each scored country, check the stored Reason text for these specific misreadings:
 - Domestic-only remote-work evidence (a policy or listing that only covers workers already inside that country) counted as proof of cross-border remote hiring.
@@ -35,7 +35,7 @@ For each scored country, check the stored Reason text for these specific misread
 
 Flag any country whose fit classification or confidence rests on one of these misreadings, and explain what the underlying evidence actually supports.
 
-Recalibration
+## Recalibration
 
 If the confidence calibration check found inflated confidence levels, or the evidence misuse check found a misreading that changes a country's real fit:
 - Revise the affected country's confidence level
@@ -44,7 +44,7 @@ If the confidence calibration check found inflated confidence levels, or the evi
 
 If recalibration is not supported, distinguish evidence-supported unchanged fits from an inconclusive audit, naming each material gap rather than always claiming the results remain appropriate. When the only applicable support for a stored track is invalidated, use "not scored (no data)" with the specific reason; raw ingestion is not proof of usable evidence. Weak requires evidence of a weak fit. Keep original research and Step 5 untouched.
 
-Summary
+## Summary
 
 Write a Summary section into the file (not shown in chat — the Priority Table below is the only thing from this step shown in chat) that reorganizes Step 5's final scores (including any revisions from this step) by country rather than by track.
 
@@ -67,7 +67,7 @@ Count each Step 2 candidate once per track, including all separately noted missi
 
 The Summary itself contains no ranking, recommendations, or interpretation beyond the classifications above — ranking is reserved for the Priority Table below.
 
-Priority Table
+## Priority Table
 
 Below the Summary in the file, also write this Priority Table. Unlike the Summary, show this table directly in your chat response too — this is the only thing from this step shown in chat.
 
@@ -124,7 +124,7 @@ Formatting rules:
 
 Use the contract's exact header, produced by `render-cf`, rather than a second template.
 
-Effort Allocation
+## Effort Allocation
 
 Below the Priority Table in the file only (never shown in chat), add a short paragraph expanding its action labels into a practical plan: focused effort and tailored applications for Focus, well-matched openings for Selective, alerts and occasional exceptional matches for Monitor, no active effort for Deprioritize, and research gaps to resolve for Pending evidence. Use the same candidate-specific evidence as the table; do not contradict its labels or allocate effort by an invented numerical formula.
 

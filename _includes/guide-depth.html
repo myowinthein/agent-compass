@@ -1,0 +1,6 @@
+{% assign overview_url = page.overview | default: page.url %}
+{% assign detailed_url = page.detailed | default: page.url %}
+<nav class="guide-depth" aria-label="Guide depth">
+  <a href="{{ overview_url | relative_url }}"{% unless page.overview %} aria-current="page"{% endunless %}>Overview</a>
+  <a href="{{ detailed_url | relative_url }}"{% if page.overview %} aria-current="page"{% endif %}>Detailed guide</a>
+</nav>
