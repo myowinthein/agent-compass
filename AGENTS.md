@@ -32,7 +32,7 @@ When the Claude CLI is available, native validation uses `claude plugin validate
 
 ## Architecture Pointers
 
-- `.claude-plugin/plugin.json` owns shared identity/version metadata; `.codex-plugin/plugin.json` mirrors it and adds Codex presentation. Packaging checks require exact shared-field parity. Keep `agent-compass` and all four workflow names stable. The marketplace references this package without duplicating its version or description. Project descriptions follow [.github/project-description.md](.github/project-description.md).
+- `.claude-plugin/plugin.json` owns shared identity/version metadata; `.codex-plugin/plugin.json` mirrors it and adds Codex presentation. Packaging checks require exact shared-field parity. Keep `agent-compass` and all four workflow names stable. The marketplace references this package without duplicating its version or description.
 - `skills/<command>/SKILL.md` are the four portable entry points. Each only loads the shared runtime and its workflow. Omit `commands` from both manifests and keep `commands/` absent; legacy adapters and generated `source-command-*` entries create duplicate discovery.
 - `workflows/<command>.md` owns orchestration; `prompts/<command>/` owns step behavior, judgment and output instructions. Flat `skills/*.md` files are explicitly loaded rule/interface references, not discoverable skills.
 - `prompts/shared/runtime.md` owns installed-resource resolution, parent/checkpoint responsibilities, research isolation/fallback and host-specific specialist routing. `prompts/shared/question-mechanism.md` adapts existing questions to actual host capabilities without adding approval gates.
@@ -77,7 +77,11 @@ This covers Compass's agent-facing instructions. General prose follows `.claude/
 
 Website files and documentation checks live under `docs/`; run Jekyll there. `docs/_plugins/repository_content.rb` renders the root README and shared plugin icon while retaining published URLs. Canonical agent instructions stay at their package paths.
 
-Before editing documentation, README content or instruction sources rendered into guides, read and follow [docs/documentation.md](docs/documentation.md) alongside the project's active Writing rule.
+Before editing the following content, read and follow its standard alongside the project's active Writing rule:
+
+- Documentation or instruction sources rendered into guides: [docs/standards/documentation.md](docs/standards/documentation.md).
+- README content: [docs/standards/readme.md](docs/standards/readme.md).
+- Project descriptions in GitHub About, plugin manifests, README/site metadata or related variants: [docs/standards/project-description.md](docs/standards/project-description.md).
 
 ## Contributor Review Preference
 

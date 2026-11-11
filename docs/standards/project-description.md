@@ -1,13 +1,13 @@
 # Project descriptions
 
-Use the same description frame in Agent Helm and Agent Compass, with facts and wording suited to each project. Follow the project's active Writing rule. GitHub About is the public main description; the [plugin manifest](../.claude-plugin/plugin.json) stores that approved text in versioned source.
+Use the same description frame in Agent Helm and Agent Compass, with facts and wording suited to each project. Follow the project's active Writing rule. GitHub About is the public main description; the [plugin manifest](../../.claude-plugin/plugin.json) stores that approved text in versioned source.
 
 | Form | What it expresses | Expected maximum | Owner |
 |---|---|---|---|
 | Main | Two sentences: product type, audience and supported clients, then the main outcomes. Group capabilities instead of listing every command. | 250 characters. | Plugin manifest `description`. |
-| Summary | One sentence covering the product's purpose, clients and broad outcomes. Preserve the main description's facts while selecting what fits this shorter form. | 160 characters. | [Site configuration](../docs/_config.yml) `description`. |
+| Summary | One sentence covering the product's purpose, clients and broad outcomes. Preserve the main description's facts while selecting what fits this shorter form. | 160 characters. | [Site configuration](../_config.yml) `description`. |
 | Marketplace | One installation-focused sentence naming the product, what users install and supported clients. | 160 characters. | Marketplace's top-level `description`. |
-| README introduction | Identity and audience, followed by benefits and broad capabilities in the project's voice. | 20 / 50 words. | [README structure](../docs/documentation.md#readme-structure). |
+| README introduction | Identity and audience, followed by benefits and broad capabilities in the project's voice. | 20 / 50 words. | [README introduction](readme.md#introduction). |
 
 Character counts include spaces and punctuation. These are project writing limits, not platform limits or promises about search-result display. Preserve material meaning and necessary qualifications. Taglines keep their separate role as short category labels or brand phrases.
 
