@@ -79,7 +79,7 @@ Website files and documentation checks live under `docs/`; run Jekyll there. `do
 
 Before editing the following content, read and follow its standard alongside the project's active Writing rule:
 
-- Documentation or instruction sources rendered into guides: [docs/standards/documentation.md](docs/standards/documentation.md).
+- Documentation or instruction changes that affect the guides: [docs/standards/documentation.md](docs/standards/documentation.md).
 - README content: [docs/standards/readme.md](docs/standards/readme.md).
 - Project descriptions in GitHub About, plugin manifests, README/site metadata or related variants: [docs/standards/project-description.md](docs/standards/project-description.md).
 
@@ -93,7 +93,7 @@ When consulting Claude for a project review/discussion or running Claude workflo
 - `assets/icon.svg` supplies Codex `interface.logo`/`composerIcon`. Omit `icon` and `interface` from the Claude manifest for Desktop importer compatibility; this forgoes Anthropic directory icon metadata. Keep Codex branding in its own manifest.
 - Native discovery tests inspect Codex's actual `skills/list` catalog for duplicate-free discovery and `plugin/read` for display metadata. They also check Claude's four skills and two agents; they do not establish model behavior.
 - `.gitattributes` excludes canonical `.helm/` and legacy `.claude/helm/` records from Git archives. Preserve both exclusions; `scripts/test_plugin.rb` checks nested canonical paths in an isolated synthetic archive.
-- Detailed guide pages render the canonical `workflows/`, `prompts/<command>/` and `skills/` Markdown through `docs/_plugins/guide_content.rb`, mapping relative links to Detailed pages. `docs/specialist-agents/detailed.md` extracts `## Specialist routing` from `prompts/shared/runtime.md` by exact heading, so renaming it or removing a rendered source fails the site build.
+- Overview and Details are independently authored human guides under `docs/`. Details expands the Overview journey with explanations, examples and meaningful decisions; it never embeds raw agent instructions. `source_files` records reference sources and each page links to the existing repository for implementation depth. `docs/tests/test_human_guides.rb` checks this separation and view pairing; built-site checks preserve the selector, sidebar activation and navigation. Specialist explanations follow the same human-guide approach.
 
 ## Rules
 

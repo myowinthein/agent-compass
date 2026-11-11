@@ -2,17 +2,17 @@ require "jekyll"
 require "nokogiri"
 require "pathname"
 require "yaml"
-require_relative "../_plugins/guide_content"
 
 root = Pathname(__dir__).parent.parent
 base = YAML.safe_load_file(root.join("docs/_config.yml")).fetch("baseurl")
-normal = ->(text) { text.gsub(/\s+/, " ").strip }
 overviews = root.glob("docs/**/*.md").filter_map do |path|
   frontmatter = path.read.match(/\A---\n(.*?)\n---\n/m)
   data = frontmatter && YAML.safe_load(frontmatter[1])
   [path, data] if data && data["detailed"]
 end
-raise "Expected eighteen paired topics" unless overviews.size == 18
+repository = base.delete_prefix("/")
+expected = { "agent-helm" => 19, "agent-compass" => 18 }.fetch(repository)
+raise "Unexpected paired topic inventory" unless overviews.size == expected
 
 overviews.each do |source, data|
   detail_source = root.join(data.fetch("detailed").sub(%r{\A/}, "").sub(/\.html\z/, ".md"))
@@ -33,20 +33,14 @@ overviews.each do |source, data|
     current = links.select { |a| a["aria-current"] == "page" }
     raise "Wrong current view: #{url}" unless current.size == 1 && current.first["href"] == base + url
     raise "Duplicate title: #{url}" unless document.css("main h1").size == 1
-    raise "Missing diagram: #{url}" unless document.at_css("code.language-mermaid")
+    raise "Missing diagram: #{url}" if (url == data["detailed"] || repository == "agent-compass") && !document.at_css("code.language-mermaid")
     if url == data["detailed"]
       raise "Detailed sidebar activation missing: #{url}" unless document.at_css("script[data-overview-url='#{base + overview_url}']")
     end
   end
-  sources = [detail_data["guide_source"], *Array(detail_data["guide_sources"])].compact
-  raise "Detailed page has no canonical source: #{source}" if sources.empty?
-  sources.each do |path|
-    markdown = root.join(path).read.sub(/\A# [^\n]+\n+/, "")
-    expected = Nokogiri::HTML.fragment(Kramdown::Document.new(markdown, input: "GFM").to_html).text
-    unless normal.call(built_detail.at_css("main").text).include?(normal.call(expected))
-      raise "Canonical procedure is incomplete: #{path}"
-    end
-  end
+  explanation = built_detail.at_css("main").text
+  raise "Details body or source navigation missing: #{source}" unless explanation.include?("Explore the source")
+  raise "Unrendered source filter: #{source}" if explanation.match?(/guide_(?:intro|body|full|section)/)
 end
 
-puts "Verified 18 pairs, 36 selectors, stable destinations and complete canonical procedures."
+puts "Verified #{expected} pairs, #{expected * 2} selectors, stable destinations and independently authored Details."

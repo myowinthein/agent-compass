@@ -5,17 +5,18 @@ grand_parent: Commands
 nav_exclude: true
 has_toc: false
 overview: /docs/commands/country-finder/step2-country-discovery.html
-guide_source: prompts/country-finder/step2-country-discovery.md
 permalink: /docs/commands/country-finder/step2-country-discovery/detailed.html
 title_category: Details
-description: "Complete procedure, choices, constraints and outcomes for Step 2: Country discovery."
+description: "Discovery establishes the candidate countries and the evidence for each employment track. Its job is to decide what deserves deeper research while preserving the difference between an explicit exclusion and information that has not been found."
+source_files:
+  - prompts/country-finder/step2-country-discovery.md
 ---
 
 # Step 2: Country discovery
 
 {% include guide-depth.html %}
 
-Check which countries have evidence of remote hiring or employer-sponsored relocation for your role.
+Discovery establishes the candidate countries and the evidence for each employment track. Its job is to decide what deserves deeper research while preserving the difference between an explicit exclusion and information that has not been found.
 
 ## Flow
 
@@ -36,8 +37,6 @@ flowchart TD
   Batch --> Continue["Continue below with the saved country scope"]
 ```
 
-Research covers both tracks in every selected country, with explicit handling for unavailable research access and missing results.
-
 ```mermaid
 flowchart TD
   Batch["Use the saved country batches"] --> Cap{"Separate research context<br/>with web access available?"}
@@ -49,6 +48,39 @@ flowchart TD
   TZ --> Save(["Save country-finder-02-candidates.md<br/>Continue to Step 3"])
 ```
 
-## Complete procedure
+## Choosing countries
 
-{{ page.guide_source | guide_full }}
+An explicit include list comes first. Otherwise the agent can offer Salary Calculator's saved research country names, including countries whose salary data was skipped. You can keep, edit, replace or decline that list. Salary research need not be complete, and none of its conclusions transfer with the names.
+
+If using the default is an option, the full country list is printed by continent before you answer. A question control is not the only place you should be able to inspect it. A clear list you supplied is used directly; uncertain region boundaries need clarification. Exclusions apply after regions have been expanded into countries.
+
+Once chosen, the scope is saved and retained on resume. An empty result needs revised countries or a stop, not an invented research set.
+
+## What gets checked
+
+Research looks at Remote and Sponsorship together for each country, but reaches separate conclusions.
+
+| Track | Evidence that matters |
+|---|---|
+| Remote | Cross-border hiring, engagement and pay arrangements applicable to your actual working location. |
+| Sponsorship | A named employer-sponsored route and relevant evidence that employers hire candidates through it. |
+
+Domestic work-from-home rules do not establish cross-border Remote access. Likewise, a nomad or self-sponsored visa is not an employer-sponsored route. Sponsor registration alone does not prove an employer is willing to hire this candidate.
+
+Findings use dated sources and retain their limits. Missing evidence is not a rejection. A salary-based Remote exclusion needs a valid comparable range entirely below a confirmed hard floor; context-only minima or incomplete comparisons cannot support that decision.
+
+## Timezone preference
+
+Timezone suitability affects Remote only and is skipped for no limit. Unless you choose another period, the check covers relevant hubs over the next twelve months, including daylight-saving changes.
+
+A country with multiple employment hubs can have mixed results. A partial pass keeps the relevant hub or seasonal condition; incomplete coverage remains unverified. One favorable timezone observed today does not establish a full-year result.
+
+## What happens next
+
+The candidate file records scope, track findings, reasons, timezone conditions and evidence gaps. Chat gives brief counts rather than the full research body.
+
+[Detailed research](../step3-research-prompt-generator.html) follows the eligible yes tracks. Exclusions and no-evidence cases remain in the record for the final audit even when they receive no detailed research.
+
+## Explore the source
+
+For implementation details, read [prompts/country-finder/step2-country-discovery.md](https://github.com/myowinthein/agent-compass/blob/main/prompts/country-finder/step2-country-discovery.md).
