@@ -16,7 +16,7 @@ Agent Compass is a career research plugin for IT and tech job seekers using Clau
 
 It helps you focus your job search by researching countries for remote work or employer-sponsored relocation, finding relevant job portals and estimating local salary targets. When a role looks promising, it compares the job description with your profile to help you decide whether to apply.
 
-**[Documentation site](https://myowinthein.github.io/agent-compass)**
+**[Documentation site](https://myowinthein.github.io/agent-compass/)**
 
 ## Why I built this
 
