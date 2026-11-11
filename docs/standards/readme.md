@@ -30,4 +30,7 @@ Use two prose paragraphs per entry. These are expected limits, not reasons to re
 
 ## Closing sections
 
-End with two separate level-two sections: **Contributing**, then **License**. Contributing uses one short paragraph inviting bug reports, feedback on unclear guides and ideas through a meaningful issue-tracker link. Ask briefly for useful context and match the project's voice; do not invent a PR process or promise response times. License uses one sentence stating the actual project license with a link. Preserve existing license meaning and old section anchors.
+End with two separate level-two sections: **Contributing**, then **License**. Keep the same content frame in both plugins, with wording suited to each project's workflows and audience.
+
+- **Contributing:** one short paragraph with two sentences. First invite bug reports, feedback on unclear guides and ideas through a meaningful issue-tracker link. Then ask for the command or workflow, client, steps tried, expected result and actual result. Do not invent a PR process or promise response times.
+- **License:** one sentence naming the project and its actual license, with a link to the governing text. Keep legal names and scope precise rather than varying them for voice; preserve any existing copyright attribution and old section anchors.
