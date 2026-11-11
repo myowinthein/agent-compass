@@ -78,10 +78,10 @@ See [Examples](https://myowinthein.github.io/agent-compass/docs/examples/) for o
 
 ## Contributing
 
-If a workflow gets in the way of your job search, a guide is unclear or you have an idea for Agent Compass, [open an issue on GitHub](https://github.com/myowinthein/agent-compass/issues). Tell me what you were looking for and what would have helped.
+If a workflow gets in the way of your job search, a guide is unclear or you have an idea for Agent Compass, [open an issue on GitHub](https://github.com/myowinthein/agent-compass/issues). For problems, tell me which workflow and client you used, what you expected and what happened.
 
 ## License
 
-Agent Compass is open source under the [MIT license](https://github.com/myowinthein/agent-compass/blob/main/LICENSE).
+Agent Compass is licensed under the [MIT License](https://github.com/myowinthein/agent-compass/blob/main/LICENSE).
 
 <!-- last-reviewed: 4703ae27a1cbe0cb5db874b4b4e54c59c7b27106 -->
