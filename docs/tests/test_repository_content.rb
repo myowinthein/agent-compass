@@ -11,11 +11,15 @@ Dir.mktmpdir("repository-docs-") do |temporary|
   docs.join("setup").mkpath
   docs.join("images").mkpath
   root.join("assets").mkpath
+  root.join(".claude-plugin").mkpath
+  root.join(".claude-plugin/plugin.json").write('{"version":"1.2.3"}')
+  docs.join("_layouts").mkpath
+  docs.join("_layouts/default.html").write('<div class="site-header"><a href="/" class="site-title lh-tight">Fixture</a><button id="menu-button">Menu</button></div>{{ content }}')
   readme = "---\ntitle: Shared homepage\npermalink: /\n---\n# Shared homepage\n\nOne maintained source.\n"
   root.join("README.md").write(readme)
   root.join("assets/icon.svg").write('<svg xmlns="http://www.w3.org/2000/svg"></svg>')
   root.join("private.md").write("Must not be published")
-  docs.join("commands/example.md").write("---\ntitle: Example\n---\n# Example\n")
+  docs.join("commands/example.md").write("---\nlayout: default\ntitle: Example\n---\n# Example\n")
   docs.join("setup/index.md").write("---\ntitle: Setup\n---\n# Setup\n")
   docs.join("commands/details.md").write("---\npermalink: /docs/custom/detailed.html\n---\n# Details\n")
   docs.join("sitemap.xml").write("---\nlayout: null\n---\n<urlset></urlset>\n")
@@ -41,6 +45,11 @@ Dir.mktmpdir("repository-docs-") do |temporary|
   rescue Liquid::ArgumentError
     # The source-relative path is not a public URL after migration.
   end
+  rendered = docs.join("_site/docs/commands/example.html").read
+  raise "Title and version must share the homepage link" unless rendered.include?('<a href="/" class="site-title lh-tight"><span class="site-name">Fixture</span> <span class="site-version">v1.2.3</span></a>')
+  root.join(".claude-plugin/plugin.json").write('{"version":"1.2.4"}')
+  site.process
+  raise "Version did not follow the manifest" unless docs.join("_site/docs/commands/example.html").read.include?('<span class="site-version">v1.2.4</span>')
   root.join("README.md").unlink
   root.join("README.md").make_symlink(root.join("private.md"))
   begin
