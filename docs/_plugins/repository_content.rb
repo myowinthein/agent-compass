@@ -54,6 +54,7 @@ module RepositoryDocs
 
       homepage = Jekyll::PageWithoutAFile.new(site, site.source, "", "index.md")
       homepage.data.merge!(SafeYAML.load(match[1]))
+      homepage.data["title"] = "Home"
       homepage.content = match.post_match
       site.pages << homepage
       site.static_files << Jekyll::StaticFile.new(site, root.to_s, "/assets", "icon.svg")
