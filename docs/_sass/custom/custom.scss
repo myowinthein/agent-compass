@@ -175,3 +175,14 @@ a:is([href^="https://"], [href^="http://"]):not(
     display: block;
   }
 }
+
+.mermaid {
+  margin: $sp-4 0;
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-inline: auto;
+  }
+}

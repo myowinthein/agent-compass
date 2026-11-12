@@ -6,3 +6,4 @@ Gemfile.lock
 .claude/settings.local.json
 .claude/helm/
 .in_use/
+docs/node_modules/

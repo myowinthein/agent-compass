@@ -33,7 +33,21 @@ overviews.each do |source, data|
     current = links.select { |a| a["aria-current"] == "page" }
     raise "Wrong current view: #{url}" unless current.size == 1 && current.first["href"] == base + url
     raise "Duplicate title: #{url}" unless document.css("main h1").size == 1
-    raise "Missing diagram: #{url}" if (url == data["detailed"] || repository == "agent-compass") && !document.at_css("code.language-mermaid")
+    if repository == "agent-compass"
+      diagram_source = url == data["detailed"] ? detail_source : source
+      expected_diagrams = diagram_source.read.scan(/^```mermaid\s*$/).size
+      diagrams = document.css("figure.mermaid img")
+      raise "Diagram inventory changed: #{url}" unless diagrams.size == expected_diagrams
+      raise "Unrendered diagram returned: #{url}" if document.at_css("code.language-mermaid")
+      diagrams.each do |image|
+        raise "Unsized diagram: #{url}" unless image["width"].to_s.match?(/\A[1-9]\d*\z/) && image["height"].to_s.match?(/\A[1-9]\d*\z/)
+        raise "Missing diagram description: #{url}" if image["alt"].to_s.empty?
+        asset = root.join("docs/_site", image["src"].delete_prefix(base + "/"))
+        raise "Missing diagram asset: #{url}" unless asset.file?
+      end
+    elsif !document.at_css("code.language-mermaid")
+      raise "Missing diagram: #{url}"
+    end
     if url == data["detailed"]
       raise "Detailed sidebar activation missing: #{url}" unless document.at_css("script[data-overview-url='#{base + overview_url}']")
     end

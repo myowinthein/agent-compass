@@ -17,13 +17,14 @@ Run commands from the repository root. Helpers require Python 3.11+; Ruby checks
 
 | Command | Purpose |
 |---|---|
-| `BUNDLE_GEMFILE=docs/Gemfile bundle exec rake test` | Full plugin/helper checks, site JavaScript tests, Jekyll build and internal HTML/link/image/script checks; required after documentation or site configuration changes. |
+| `BUNDLE_GEMFILE=docs/Gemfile bundle exec rake test` | Full plugin/helper checks, site JavaScript and isolated Chrome tests, Jekyll build and internal HTML/link/image/script checks; required after documentation or site configuration changes. |
 | `BUNDLE_GEMFILE=docs/Gemfile bundle exec rake plugin_test` | Plugin validation and offline Python/Ruby helper regressions. |
 | `ruby scripts/validate_plugin.rb` | Four skill entries, shared resources/icon and a relocated package with a separate consumer workspace. |
 | `ruby scripts/test_plugin.rb` | Validation edge cases, published arithmetic/table examples, archive attributes and deployment contracts. |
 | `ruby scripts/test_salary_targets.rb` | Salary CLI checks against an independent Ruby Rational oracle. |
 | `python3 -B scripts/test_compass.py` | Offline consumer checks, golden outputs, legacy names, ingestion/retry, state, encoding and relocation. |
 | `python3 -B scripts/test_workflow_replay.py --host claude` or `--host codex` | Optional acceptance replays through the host CLI with fictional data and simulated web evidence. It calls the model and is not part of `rake test`. |
+| `cd docs && bundle install && npm ci --ignore-scripts` | Install the locked Ruby and Node docs dependencies. Chrome is required; `COMPASS_DOCS_CHROME` selects a nonstandard executable. |
 | `cd docs && bundle exec jekyll serve` | Local documentation preview. |
 | `BUNDLE_GEMFILE=docs/Gemfile bundle exec rake client_test` | Optional native discovery regression; requires both Claude and Codex CLIs, uses temporary installations and makes no model calls. |
 | `ruby scripts/check_clients.rb --installed` | Inspect inventories after separately updating installed copies. |
@@ -43,7 +44,7 @@ When the Claude CLI is available, native validation uses `claude plugin validate
 - Bundled resources come from the actual installed plugin root. New searches use the fixed `Path.home() / "Agent Compass"` base resolved by `workspace-base`; CF/SC/JS have isolated run folders, including profiles. Keep legacy files in place; explicit saved-run handoffs do not change the base for new searches.
 - Setup content lives in `docs/_includes/setup/`, composed by `docs/_includes/setup-tabs.html`; the JavaScript and legacy redirects preserve desktop/terminal deep links. Check their tests when changing setup navigation.
 - `.github/workflows/docs.yml` runs checks on main pushes, pull requests and manual runs, with no schedule. Its Python matrix spans Linux/macOS/Windows; the site build waits for it. Only successful main builds deploy. Hosted Pages must use GitHub Actions as its source.
-- `docs/_config.yml` uses `just-the-docs@latest`. CI resolves the latest stable release and temporarily pins it for that build; failed lookup stops the build. Local builds resolve through the remote-theme plugin; restart the preview to fetch a newer release.
+- `docs/_config.yml` uses `just-the-docs@latest`. CI resolves the latest stable release and temporarily pins it for that build; failed lookup stops the build. Local builds resolve through the remote-theme plugin; restart the preview to fetch a newer release. `docs/_plugins/frontend.rb` selects the initial stylesheet, defers the search index until interaction and renders sized Mermaid SVGs through `docs/scripts/render-diagrams.mjs`. The build uses locked Node dependencies and installed Chrome on loopback, caching derived diagrams in `docs/.jekyll-cache/`.
 
 ## Domain Rules
 
