@@ -1,5 +1,5 @@
 ---
-title: "Step 6: Final ranking"
+title: "step 6: final ranking"
 parent: country-finder
 grand_parent: Commands
 nav_exclude: true

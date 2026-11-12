@@ -1,5 +1,5 @@
 ---
-title: "Step 2: Data validation"
+title: "step 2: data validation"
 parent: salary-calculator
 grand_parent: Commands
 nav_exclude: true

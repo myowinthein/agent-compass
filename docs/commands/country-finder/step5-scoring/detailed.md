@@ -1,5 +1,5 @@
 ---
-title: "Step 5: Scoring"
+title: "step 5: scoring"
 parent: country-finder
 grand_parent: Commands
 nav_exclude: true

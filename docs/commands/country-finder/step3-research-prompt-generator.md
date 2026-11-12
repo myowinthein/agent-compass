@@ -1,5 +1,5 @@
 ---
-title: "Step 3: Research prompt generator"
+title: "step 3: research prompt generator"
 parent: country-finder
 grand_parent: Commands
 nav_order: 3

@@ -1,5 +1,5 @@
 ---
-title: "Step 5: Final verification"
+title: "step 5: final verification"
 parent: salary-calculator
 grand_parent: Commands
 nav_order: 5

@@ -1,5 +1,5 @@
 ---
-title: "Step 3: International adjustment"
+title: "step 3: international adjustment"
 parent: salary-calculator
 grand_parent: Commands
 nav_order: 3

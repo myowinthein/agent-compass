@@ -1,5 +1,5 @@
 ---
-title: "Step 1: Portal research"
+title: "step 1: portal research"
 parent: portal-finder
 grand_parent: Commands
 nav_order: 1
