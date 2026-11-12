@@ -1,0 +1,55 @@
+name: Report a problem
+description: Report a problem with a Compass workflow, setup or guide.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Reports are public. Remove API keys, resumes and personal job-search details from text, links and attachments.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe what you expected and what happened instead. Include any error message.
+      placeholder: |
+        Expected: job-screener would use the Apply, Maybe or Skip report format.
+        Actual: the second job received an unstructured paragraph.
+    validations:
+      required: true
+  - type: input
+    id: context
+    attributes:
+      label: Where did it happen?
+      description: Name the workflow or setup step and your Claude or Codex client, or link to the affected guide.
+      placeholder: job-screener in Codex CLI, on the second job description
+    validations:
+      required: false
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Share the steps or a small example we can follow. If it happens intermittently, describe what led up to it and how often it occurs.
+      placeholder: |
+        1. Start job-screener and confirm a sample profile.
+        2. Paste one job description, then another.
+        3. The second report no longer follows the screening format.
+    validations:
+      required: false
+  - type: textarea
+    id: versions
+    attributes:
+      label: Versions and environment
+      description: Include the Agent Compass version, Claude or Codex app/CLI version, model and operating system, if known.
+      placeholder: |
+        Compass: <version>
+        Client: Codex CLI <version>
+        Model: <model>
+        OS: <operating system>
+    validations:
+      required: false
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots or extra details
+      description: Share a relevant research source, output excerpt or screenshot. Use a small anonymised example for profile or job-matching problems.
+    validations:
+      required: false
