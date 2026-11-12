@@ -1,6 +1,8 @@
+require "cgi"
+require "json"
 require "pathname"
 
-# Website sources live in docs/. Keep public paths and the two shared inputs
+# Website sources live in docs/. Keep public paths and shared inputs
 # stable without copying the plugin's instructions or GitHub README.
 module RepositoryDocs
   class Image < Jekyll::StaticFile
@@ -15,6 +17,15 @@ module RepositoryDocs
       raise ArgumentError, "Missing or redirected shared website input: #{relative}"
     end
     file
+  end
+
+  def self.version_header(html, version)
+    title = %r{(<div class="site-header">\s*<a\b[^>]*class="site-title lh-tight"[^>]*>)(.*?)(</a>)}m
+    unless html.scan(title).length == 1
+      raise ArgumentError, "Just the Docs theme changed: expected one sidebar title"
+    end
+    label = %(<span class="site-version">v#{CGI.escapeHTML(version)}</span>)
+    html.sub(title) { "#{$1}<span class=\"site-name\">#{$2.strip}</span> #{label}#{$3}" }
   end
 end
 
@@ -33,6 +44,9 @@ module RepositoryDocs
 
     def generate(site)
       root = Pathname(site.source).realpath.parent
+      site.config["plugin_version"] = JSON.parse(
+        RepositoryDocs.shared_file(root, ".claude-plugin/plugin.json").read
+      ).fetch("version")
       readme = RepositoryDocs.shared_file(root, "README.md").read
       RepositoryDocs.shared_file(root, "assets/icon.svg")
       match = Jekyll::Document::YAML_FRONT_MATTER_REGEXP.match(readme)
@@ -52,4 +66,11 @@ module RepositoryDocs
       end
     end
   end
+end
+
+Jekyll::Hooks.register :pages, :post_render do |page|
+  next unless page.output_ext == ".html" && page.data["layout"]
+  next if %w[redirect setup-redirect].include?(page.data["layout"])
+
+  page.output = RepositoryDocs.version_header(page.output, page.site.config.fetch("plugin_version"))
 end
