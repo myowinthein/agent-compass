@@ -20,7 +20,7 @@ Guides to using Agent Compass for your job search. Each command page explains ho
 
 ## Where files are saved
 
-Country Finder and Salary Calculator save profiles, research and results in a folder named `Agent Compass` in your home directory. Job Screener uses the same base for profiles; its screening reports stay in chat. Portal Finder saves no automatic exports.
+Compass saves profiles, research and results in your home directory, grouped by person and search. Claude and Codex share these files on the same OS account.
 
 | OS | Folder |
 |---|---|
@@ -28,4 +28,4 @@ Country Finder and Salary Calculator save profiles, research and results in a fo
 | Windows | `C:\Users\<username>\Agent Compass\` |
 | Linux | `/home/<username>/Agent Compass/` |
 
-Each person and search gets its own run folder under `runs/`. Claude and Codex share the folder on the same OS account. Containers, WSL and remote machines may use a different home directory.
+These files help agents reuse confirmed profiles, resume research and revisit results.
