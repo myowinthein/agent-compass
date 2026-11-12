@@ -1,3 +1,16 @@
+:root :focus-visible {
+  outline: 2px solid $link-color;
+  outline-offset: 2px;
+}
+
+:root .btn:focus-visible {
+  box-shadow: none;
+}
+
+:root .search-input:focus-visible {
+  outline-offset: -2px;
+}
+
 .theme-switcher {
   display: flex;
   flex: 0 0 auto;
@@ -24,15 +37,14 @@
     &:hover {
       border-color: $link-color;
     }
-
-    &:focus-visible {
-      outline: 2px solid $link-color;
-      outline-offset: 2px;
-    }
   }
 }
 
 @media (forced-colors: active) {
+  :root :focus-visible {
+    outline-color: Highlight;
+  }
+
   .theme-switcher select {
     appearance: auto;
     background-image: none;
@@ -95,11 +107,6 @@ a:is([href^="https://"], [href^="http://"]):not(
       border-bottom-color: currentColor;
       font-weight: 600;
     }
-
-    &:focus-visible {
-      outline: 2px solid $link-color;
-      outline-offset: 2px;
-    }
   }
 }
 
@@ -126,11 +133,6 @@ a:is([href^="https://"], [href^="http://"]):not(
       color: $link-color;
       border-bottom-color: currentColor;
       font-weight: 600;
-    }
-
-    &:focus-visible {
-      outline: 2px solid $link-color;
-      outline-offset: 2px;
     }
   }
 }
