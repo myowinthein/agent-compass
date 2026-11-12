@@ -78,7 +78,7 @@ See [Examples](https://myowinthein.github.io/agent-compass/docs/examples/) for o
 
 ## Contributing
 
-If a workflow gets in the way of your job search, a guide is unclear or you have an idea for Agent Compass, [open an issue](https://github.com/myowinthein/agent-compass/issues/new/choose).
+If a workflow behaves unexpectedly, a guide is unclear or you have an idea for Agent Compass, [open an issue](https://github.com/myowinthein/agent-compass/issues/new/choose).
 
 ## License
 
