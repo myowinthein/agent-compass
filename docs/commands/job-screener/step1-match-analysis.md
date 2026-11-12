@@ -1,5 +1,5 @@
 ---
-title: "Step 1: Match analysis"
+title: "step 1: match analysis"
 parent: job-screener
 grand_parent: Commands
 nav_order: 1

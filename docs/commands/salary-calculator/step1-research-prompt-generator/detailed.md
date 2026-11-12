@@ -1,5 +1,5 @@
 ---
-title: "Step 1: Research prompt generator"
+title: "step 1: research prompt generator"
 parent: salary-calculator
 grand_parent: Commands
 nav_exclude: true

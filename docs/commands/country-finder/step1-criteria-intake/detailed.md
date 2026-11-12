@@ -1,5 +1,5 @@
 ---
-title: "Step 1: Criteria intake"
+title: "step 1: criteria intake"
 parent: country-finder
 grand_parent: Commands
 nav_exclude: true
