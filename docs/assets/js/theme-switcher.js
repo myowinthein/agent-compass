@@ -2,7 +2,7 @@
   const storageKey = 'agent-compass-theme';
   const modes = ['system', 'light', 'dark'];
   const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
-  let stylesheet = document.querySelector('link[rel="stylesheet"]');
+  let stylesheet = document.getElementById('compass-theme-stylesheet') || document.querySelector('link[rel="stylesheet"]');
   let pendingStylesheet;
   let mode = 'system';
 
@@ -22,17 +22,20 @@
     if (stylesheet.href !== href) {
       // Keep the current styles active while the selected theme loads.
       const next = stylesheet.cloneNode();
+      next.removeAttribute('id');
       next.href = href;
       next.addEventListener('load', () => {
         if (pendingStylesheet !== next) return;
         stylesheet.remove();
         stylesheet = next;
+        stylesheet.id = 'compass-theme-stylesheet';
         pendingStylesheet = null;
       });
       next.addEventListener('error', () => {
         if (pendingStylesheet !== next) return;
         next.remove();
         pendingStylesheet = null;
+        document.documentElement.style.colorScheme = stylesheet.href.endsWith('just-the-docs-dark.css') ? 'dark' : 'light';
       });
       pendingStylesheet = next;
       stylesheet.after(next);

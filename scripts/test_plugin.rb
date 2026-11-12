@@ -465,6 +465,15 @@ assert.call(deployment.fetch("on").keys.sort == %w[pull_request push workflow_di
 assert.call(deployment.dig("on", "push", "branches") == ["main"], "Only main pushes should deploy docs")
 assert.call(deployment.fetch("permissions") == { "contents" => "read" }, "Build tokens must remain read-only")
 build_steps = deployment.dig("jobs", "build", "steps")
+node_setup = build_steps.find { |step| step.fetch("uses", "").start_with?("actions/setup-node@") }
+diagram_install = build_steps.find { |step| step.fetch("run", "").start_with?("npm ci ") }
+assert.call(node_setup && node_setup.dig("with", "cache-dependency-path") == "docs/package-lock.json",
+            "Docs must set up Node with the locked docs dependency cache")
+assert.call(diagram_install && diagram_install["working-directory"] == "docs" && diagram_install["run"].include?("--ignore-scripts"),
+            "Diagram dependencies must install in docs without lifecycle scripts")
+assert.call(node_setup && diagram_install && build_steps.index(node_setup) < build_steps.index(diagram_install) &&
+            build_steps.index(diagram_install) < build_steps.index { |step| step["run"] == "bundle exec rake test" },
+            "Diagram tools must be installed before the full site checks")
 assert.call(build_steps.any? { |step| step["run"] == "bundle exec rake test" },
             "Deployment must run the full project checks")
 theme_resolution = build_steps.find { |step| step.fetch("run", "").include?("/releases/latest") }&.fetch("run")

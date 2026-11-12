@@ -81,6 +81,9 @@ plugins:
 
 # These files support authoring and checks rather than published pages.
 exclude:
+  - package.json
+  - package-lock.json
+  - node_modules/
   - Gemfile
   - Gemfile.lock
   - standards/

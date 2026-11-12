@@ -6,7 +6,7 @@ const vm = require('node:vm');
 
 const source = readFileSync(path.join(__dirname, '../assets/js/theme-switcher.js'), 'utf8');
 
-function loadSwitcher({ saved = null, dark = false, blockedStorage = false, autoLoad = true } = {}) {
+function loadSwitcher({ saved = null, dark = false, blockedStorage = false, autoLoad = true, initialTheme = 'default' } = {}) {
   const storage = new Map(saved === null ? [] : [['agent-compass-theme', saved]]);
   const events = {};
   const selector = {
@@ -27,6 +27,7 @@ function loadSwitcher({ saved = null, dark = false, blockedStorage = false, auto
       href,
       events: {},
       cloneNode() { return stylesheet(this.href); },
+      removeAttribute(name) { delete this[name]; },
       addEventListener(name, handler) { this.events[name] = handler; },
       remove() {
         const index = stylesheets.indexOf(this);
@@ -39,13 +40,13 @@ function loadSwitcher({ saved = null, dark = false, blockedStorage = false, auto
       }
     };
   }
-  stylesheets.push(stylesheet('https://docs.example.invalid/agent-compass/assets/css/just-the-docs-default.css'));
+  stylesheets.push(stylesheet(`https://docs.example.invalid/agent-compass/assets/css/just-the-docs-${initialTheme}.css`));
   vm.runInNewContext(source, {
     URL,
     document: {
       documentElement: { style },
       querySelector: () => stylesheets[0],
-      getElementById: () => selector,
+      getElementById: id => id === 'theme-mode' ? selector : stylesheets.find(sheet => sheet.id === id) || null,
       addEventListener: (name, handler) => { events.ready = handler; }
     },
     window: {
@@ -204,3 +205,10 @@ test('returning to the active theme cancels a pending replacement', () => {
   assert.deepEqual(state.stylesheets, [original]);
   assert.equal(state.theme(), 'light');
 });
+
+for (const mode of ['light', 'dark']) {
+  test(`reuses the initial ${mode} stylesheet without another download`, () => {
+    const state = loadSwitcher({ saved: mode, initialTheme: mode });
+    assert.deepEqual([state.theme(), state.requests.length, state.stylesheets.length], [mode, 0, 1]);
+  });
+}
