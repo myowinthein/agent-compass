@@ -30,6 +30,10 @@ class CompassCLI(unittest.TestCase):
         self.assertEqual(completed.returncode, code, completed.stderr.decode("utf-8"))
         return json.loads(completed.stdout if code == 0 else completed.stderr)
 
+    @staticmethod
+    def snapshot(root):
+        return {p.name: p.read_bytes() for p in root.iterdir()}
+
     def test_batch_preserves_order_and_regions(self):
         countries = [f"Example {n}" for n in range(17)]
         result = self.invoke("batch-partition", {"groups": [{"region": "Demo", "countries": countries}]})["result"]
@@ -60,12 +64,12 @@ class CompassCLI(unittest.TestCase):
                     "## Research scope\n- 🇩🇪 Germany\n- 🇫🇷 France\n\nCountry: Germany\nDUMMY incomplete salary data\n",
                     encoding="utf-8")
                 root.joinpath(".salary-calculator-state.json").write_bytes(b"DUMMY unfinished/corrupt state")
-                before = {p.name: p.read_bytes() for p in root.iterdir()}
+                before = self.snapshot(root)
                 result = self.invoke("research-scope", {"workspace": directory, "workflow": "salary-calculator"})["result"]
                 self.assertEqual((result["status"], result["countries"], result["source"]),
                                  ("available", ["🇩🇪 Germany", "🇫🇷 France"], filename))
                 self.assertFalse(result["human_confirmation_checked"])
-                self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+                self.assertEqual(self.snapshot(root), before)
 
     def test_research_scope_normalizes_legacy_lists_without_rewriting_them(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -86,10 +90,10 @@ class CompassCLI(unittest.TestCase):
                 if raw is not None:
                     root.joinpath("salary-calculator-01-research.md").write_bytes(raw)
                 root.joinpath("salary-calculator-05b-final-results.md").write_bytes(b"DUMMY final table: Germany")
-                before = {p.name: p.read_bytes() for p in root.iterdir()}
+                before = self.snapshot(root)
                 result = self.invoke("research-scope", {"workspace": directory, "workflow": "salary-calculator"})["result"]
                 self.assertEqual((result["status"], result["countries"]), (status, []))
-                self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+                self.assertEqual(self.snapshot(root), before)
 
     def test_research_scope_ambiguous_metadata_needs_clarification(self):
         for scope in ("Germany\nNotes: DUMMY old context\n", "none\nGermany\n", "Germany,\n",
@@ -122,7 +126,7 @@ class CompassCLI(unittest.TestCase):
             root = Path(directory)
             root.joinpath("sc-step1-salary-research.md").write_bytes(b"## Research scope\nGermany, France\n")
             root.joinpath("country-finder-01-criteria.md").write_bytes(b"DUMMY confirmed include: France, Canada; exclude: Germany\n")
-            before = {p.name: p.read_bytes() for p in root.iterdir()}
+            before = self.snapshot(root)
             offered = self.invoke("research-scope", {"workspace": directory, "workflow": "salary-calculator"})["result"]
             self.assertEqual(offered["countries"], ["Germany", "France"])
             # The parent applies the user's changes/exclusions, not the scope reader.
@@ -130,7 +134,7 @@ class CompassCLI(unittest.TestCase):
             batches = self.invoke("batch-partition", {"groups": [{"region": "Selected", "countries": confirmed}]})["result"]
             self.assertEqual(batches["expected"], confirmed)
             self.assertEqual(self.invoke("resolve-files", {"workspace": directory, "workflow": "country-finder"})["result"]["naming"], "current")
-            self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+            self.assertEqual(self.snapshot(root), before)
 
     def test_salary_ingestion_preserves_the_full_handoff_list_after_rejection(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -143,10 +147,10 @@ class CompassCLI(unittest.TestCase):
             ingested = self.invoke("ingest", {**payload, "source_hash": scan["source_hash"], "stored_hash": scan["stored_hash"],
                 "decisions": [{"index": 0, "accept": True}, {"index": 1, "accept": False, "reason": "Missing salary tiers"}]})["result"]
             self.assertEqual(ingested["stored"], 1)
-            before = {p.name: p.read_bytes() for p in root.iterdir()}
+            before = self.snapshot(root)
             offered = self.invoke("research-scope", {"workspace": directory, "workflow": "salary-calculator"})["result"]
             self.assertEqual(offered["countries"], ["Germany", "France"])
-            self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+            self.assertEqual(self.snapshot(root), before)
 
     def test_fresh_filename_resolution_is_read_only_and_workflow_scoped(self):
         for workflow, research_file, final_file in (
@@ -163,13 +167,13 @@ class CompassCLI(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             root.joinpath("cf-step1-criteria.md").write_bytes(b"DUMMY criteria\r\n")
-            before = {p.name: p.read_bytes() for p in root.iterdir()}
+            before = self.snapshot(root)
             result = self.invoke("resolve-files", {"workspace": directory, "workflow": "country-finder"})["result"]
             self.assertEqual(result["files"]["final-results"], "cf-step6-final-ranking.md")
             self.assertEqual(result["naming"], "legacy")
             other = self.invoke("resolve-files", {"workspace": directory, "workflow": "salary-calculator"})["result"]
             self.assertEqual(other["naming"], "current")
-            self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+            self.assertEqual(self.snapshot(root), before)
 
     def test_duplicate_filename_aliases_stop_even_when_identical(self):
         for content in (b"DUMMY original", b"DUMMY conflicting"):
@@ -177,10 +181,10 @@ class CompassCLI(unittest.TestCase):
                 root = Path(directory)
                 root.joinpath("cf-step6-final-ranking.md").write_bytes(b"DUMMY original")
                 root.joinpath("country-finder-06-final-results.md").write_bytes(content)
-                before = {p.name: p.read_bytes() for p in root.iterdir()}
+                before = self.snapshot(root)
                 for command in ("resolve-files", "state-check"):
                     self.invoke(command, {"workspace": directory, "workflow": "country-finder"}, 5)
-                self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+                self.assertEqual(self.snapshot(root), before)
 
     def test_mixed_nonduplicate_names_keep_existing_files(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -205,13 +209,13 @@ class CompassCLI(unittest.TestCase):
                     '{"last_completed_step":6,"updated_at":"2026-10-22T00:00:00Z"}', encoding="utf-8")
                 consumer = registry["salary-calculator"]
                 root.joinpath(consumer["artifacts"]["research"][consumer_style]).write_bytes(self.salary_block())
-                before = {p.name: p.read_bytes() for p in root.iterdir()}
+                before = self.snapshot(root)
                 final = self.invoke("state-check", {"workspace": directory, "workflow": "country-finder"})["result"]
                 destination = self.invoke("resolve-files", {"workspace": directory, "workflow": "salary-calculator"})["result"]
                 self.assertTrue(final["completed"])
                 self.assertEqual(final["files"]["final-results"], producer["artifacts"]["final-results"][producer_style])
                 self.assertEqual(destination["files"]["final-results"], consumer["artifacts"]["final-results"][consumer_style])
-                self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+                self.assertEqual(self.snapshot(root), before)
 
     def test_missing_state_reports_orphan_final_and_ladder_without_creating_state(self):
         for filename in ("sc-step5a-career-ladder.md", "salary-calculator-05a-career-ladder.md",
@@ -230,10 +234,10 @@ class CompassCLI(unittest.TestCase):
             payload = {"workspace": directory, "workflow": "salary-calculator", "expected": ["Germany"]}
             scan = self.invoke("research-scan", payload)["result"]
             root.joinpath("sc-step1-salary-research.md").write_bytes(self.salary_block())
-            before = {p.name: p.read_bytes() for p in root.iterdir()}
+            before = self.snapshot(root)
             self.invoke("ingest", {**payload, "source_hash": scan["source_hash"], "stored_hash": scan["stored_hash"],
                 "decisions": [{"index": 0, "accept": True}]}, 5)
-            self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+            self.assertEqual(self.snapshot(root), before)
 
     def test_current_discovery_uses_candidates_without_ingestion(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -273,10 +277,10 @@ class CompassCLI(unittest.TestCase):
                                 root.joinpath(artifact[spelling]).write_bytes(b"DUMMY saved result\r\n")
                         root.joinpath(definition["state"]).write_text(json.dumps({
                             "last_completed_step": step, "updated_at": "2026-10-22T00:00:00Z"}), encoding="utf-8")
-                        before = {p.name: p.read_bytes() for p in root.iterdir()}
+                        before = self.snapshot(root)
                         result = self.invoke("state-check", {"workspace": directory, "workflow": workflow})["result"]
                         self.assertEqual(result["status"], "complete" if step == max(a["step"] for a in definition["artifacts"].values()) else "in_progress")
-                        self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+                        self.assertEqual(self.snapshot(root), before)
 
     def test_final_checkpoints_reject_empty_or_missing_required_artifacts(self):
         registry = json.loads((ROOT / "data" / "workspace-files.json").read_text(encoding="utf-8"))
@@ -297,12 +301,12 @@ class CompassCLI(unittest.TestCase):
                             root.joinpath(missing).write_bytes(b" \r\n\t")
                         else:
                             root.joinpath(missing).unlink()
-                        before = {p.name: p.read_bytes() for p in root.iterdir()}
+                        before = self.snapshot(root)
                         result = self.invoke("state-check", {"workspace": directory, "workflow": workflow})["result"]
                         self.assertEqual(result["status"], "inconsistent")
                         self.assertIs(result["completed"], False)
                         self.assertEqual(result["missing"], [missing])
-                        self.assertEqual({p.name: p.read_bytes() for p in root.iterdir()}, before)
+                        self.assertEqual(self.snapshot(root), before)
 
     def test_current_research_ingestion_preserves_bytes_and_uses_no_legacy_copies(self):
         for workflow, source_name, stored_name, raw, tracks in (
