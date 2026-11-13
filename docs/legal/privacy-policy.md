@@ -8,7 +8,7 @@ permalink: /docs/legal/privacy-policy.html
 
 # Privacy Policy
 
-**Last updated:** 2026-10-29
+**Last updated:** 2026-11-13
 
 Agent Compass is an open source career research plugin for Claude and Codex, maintained by Myo Win Thein. This notice explains information used by the plugin, its documentation site and the maintainer's contact channels.
 
@@ -28,12 +28,12 @@ Provide only information you want those services to process. You can decline age
 
 ## When you visit the documentation
 
-The site does not ask visitors to register an account or upload a resume. Its first-party code does not configure advertising or analytics tracking scripts. It does use browser storage and external resources:
+The site does not ask visitors to register an account or upload a resume. Its first-party code does not configure advertising or analytics tracking scripts. It does use browser storage, and GitHub hosts it:
 
 - **Theme preference:** the `agent-compass-theme` local-storage value remembers your System, Light or Dark choice. The theme code reads it in your browser and does not send that value to the maintainer. You can change the selection or remove the stored value through your browser's site-data controls. The site sets no expiry for it.
 - **GitHub Pages:** hosts the documentation. GitHub records visitors' IP addresses for security, including visits without a GitHub account. See [GitHub's Pages data-collection information](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection) and [privacy statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement).
-- **jsDelivr:** supplies the Mermaid library for diagrams. Its CDN and delivery providers receive request information. Its [privacy policy](https://github.com/jsdelivr/jsdelivr/blob/master/Privacy%20Policy.md) describes usage data such as network addresses, browser details, requested resources and referring domains.
-- **myowin.dev:** supplies the favicon. Loading it sends a request to that host, including your IP address and browser request information. Its logging and retention are not controlled by the theme preference.
+
+The site serves its pages, styles, scripts, diagrams and favicon itself, so loading them does not send a request to another host.
 
 Opening links to job portals, government pages or other websites involves those services' own data practices.
 
