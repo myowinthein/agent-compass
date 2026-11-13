@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "assessed_commit": "a47bda65615757d8dc4a96ed6e3d6290d6c2d159",
-  "full_scan_commit": "ad5222fa11caa5b2bc8f853e2679e6075a691e00",
+  "assessed_commit": "8ced65e9824b9b8452a8088484547a34481c2eec",
+  "full_scan_commit": "8ced65e9824b9b8452a8088484547a34481c2eec",
   "findings": [
     {
       "id": "r-1fa7231b-20d9-4a7e-8515-978c2a01d7b4",
@@ -148,6 +148,132 @@
             "outcome": "447 checks passed before and after the change"
           }
         ]
+      }
+    },
+    {
+      "id": "r-aa193810-8358-45c1-b235-c89f4ceffcd8",
+      "category": "Code Quality",
+      "summary": "CompassValidation.validate packs about eight unrelated package checks into one 148-line method, so adding or locating a rule means editing a monolith whose check order and messages 13 mutation tests depend on.",
+      "paths": [
+        "scripts/validate_plugin.rb",
+        "scripts/test_plugin.rb"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "8ced65e9824b9b8452a8088484547a34481c2eec",
+        "date": "2026-11-13"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "8ced65e9824b9b8452a8088484547a34481c2eec",
+        "date": "2026-11-13",
+        "priority": "medium",
+        "risk": "needs-review",
+        "reason": "Manifest parity, icon SVG safety, registry and contract shape, skill and agent frontmatter, link resolution and duplicate-template checks share one scope and one local variable set. A maintainer changing one concern must read the whole method, and the first-failing-check order is an implicit contract; named steps called in the same order would make each concern findable without changing which message a given defect produces.",
+        "evidence": [
+          "scripts/validate_plugin.rb:33-180 defines validate(root) as a single method covering client manifests and marketplace, the icon SVG, helper and registry resources, the output contract, skills, agents, runtime references and docs frontmatter.",
+          "scripts/test_plugin.rb uses rejected_with 13 times and several String matchers that compare exact validator messages, so reordering or rewording a check changes which fixture is rejected and with what text.",
+          "scripts/validate_plugin.rb run(root) calls validate twice, once on the repository and once on a relocated copy, so any split must keep the same inputs and return value.",
+          "scripts/test_plugin.rb currently runs 462 checks including the validator mutations, giving strong regression coverage for a behavior-preserving split.",
+          "This is a local readability and change-cost judgment, not a framework requirement."
+        ],
+        "invariant": "validate(root) keeps its signature and true return value, runs the same checks in the same order, raises the same messages for the same defects, and still validates a relocated package without writing to the consumer workspace."
+      },
+      "state": "open",
+      "depends_on": []
+    },
+    {
+      "id": "r-208a0b7d-dd05-47e1-ac75-6df03bc916e4",
+      "category": "Tests",
+      "summary": "scripts/test_compass.py repeats the same non-recursive directory snapshot comprehension 20 times in CompassCLI while only RunWorkspaces has a named snapshot helper.",
+      "paths": [
+        "scripts/test_compass.py"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "8ced65e9824b9b8452a8088484547a34481c2eec",
+        "date": "2026-11-13"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "8ced65e9824b9b8452a8088484547a34481c2eec",
+        "date": "2026-11-13",
+        "priority": "low",
+        "risk": "safe",
+        "reason": "Each read-only guarantee test builds its before and after state with an identical inline comprehension; a small named helper would make the intent (nothing in this directory changed) readable at each call site and give one place to adjust the comparison.",
+        "evidence": [
+          "scripts/test_compass.py contains 20 occurrences of {p.name: p.read_bytes() for p in <root>.iterdir()} within CompassCLI tests such as the research-scope, filename-resolution and ingestion cases.",
+          "RunWorkspaces already defines snapshot(self, root) at line 1038, but it is recursive and keyed by relative path, so it is not interchangeable and a distinct helper is needed.",
+          "The helper suite (105 tests) exercises every occurrence and passes at this snapshot, so the replacement is covered by the same assertions.",
+          "Test-quality finding only: it preserves what each test proves and adds no coverage."
+        ],
+        "invariant": "Each affected test keeps its inputs, assertion operands, ordering and subTest structure; the helper returns the same dict of file names to bytes for the same directory."
+      },
+      "state": "open",
+      "depends_on": []
+    },
+    {
+      "id": "r-2a0b74c7-8e41-43ae-9ade-5ca73b8fa9ef",
+      "category": "Tests",
+      "summary": "scripts/test_plugin.rb opens repository files 25 times with inline read(encoding: ...) in two spellings even though it already loads CompassValidation.read, which does the same with a single encoding.",
+      "paths": [
+        "scripts/test_plugin.rb",
+        "scripts/validate_plugin.rb"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "8ced65e9824b9b8452a8088484547a34481c2eec",
+        "date": "2026-11-13"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "8ced65e9824b9b8452a8088484547a34481c2eec",
+        "date": "2026-11-13",
+        "priority": "low",
+        "risk": "safe",
+        "reason": "Twelve calls use encoding \"UTF-8:UTF-8\" and thirteen use \"UTF-8\"; the script already requires validate_plugin and its CompassValidation.read(path) wraps Pathname#read with the explicit UTF-8 pair that the US-ASCII default test relies on. One call form removes the inconsistency and the repeated encoding argument.",
+        "evidence": [
+          "scripts/test_plugin.rb has 25 occurrences of read(encoding: \"UTF-8...\"): 12 with \"UTF-8:UTF-8\" and 13 with \"UTF-8\".",
+          "scripts/validate_plugin.rb:21 defines CompassValidation.read(path) as Pathname(path).read(encoding: \"UTF-8:UTF-8\"), and test_plugin.rb already uses CompassValidation.check and .validate.",
+          "scripts/test_plugin.rb lines 33-37 run the validator under US-ASCII defaults, so explicit decoding must remain.",
+          "ruby scripts/test_plugin.rb (462 checks) reads every one of these files, so any encoding difference would fail it."
+        ],
+        "invariant": "Every file is still decoded as UTF-8 regardless of the process default encoding, with identical text for the same inputs and the same assertions."
+      },
+      "state": "open",
+      "depends_on": []
+    },
+    {
+      "id": "r-0201c9bb-4278-4306-a048-e2500e93d02a",
+      "category": "Code Quality",
+      "summary": "scripts/test_workflow_replay.py check() is a 102-line function that branches on case[\"group\"] strings, so each replay scenario's assertions are interleaved with the others and cannot be read or extended independently.",
+      "paths": [
+        "scripts/test_workflow_replay.py"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "8ced65e9824b9b8452a8088484547a34481c2eec",
+        "date": "2026-11-13"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "8ced65e9824b9b8452a8088484547a34481c2eec",
+        "date": "2026-11-13",
+        "priority": "low",
+        "risk": "needs-review",
+        "reason": "Replay, JD, portal, visa and no-adjustment scenarios share one scope of derived lists (messages, writes, operations, handoffs, questions) and one nested if chain; per-group functions behind a small dispatch would let a new scenario add its own assertions without reading the others.",
+        "evidence": [
+          "scripts/test_workflow_replay.py:242-343 defines check(case, initial, final, trace) with branches for replay, jd and jd-next, portal and portal-supplied, visa-annual, visa-incomparable, visa-pending and a final else for no-adjustment.",
+          "main() also calls check() on saved prior evidence for the successive-JD case, so its signature is used in two places.",
+          "The script is optional acceptance tooling that calls Claude or Codex models, is not part of rake test and has no offline test, so equivalence can only be shown by the same replays or by a separately scoped offline test."
+        ],
+        "invariant": "check() keeps its signature, evaluates the same assertions with the same messages for each group, and the unexpected-fixture-change guard still runs for every case."
+      },
+      "state": "open",
+      "depends_on": [],
+      "blocker": {
+        "kind": "verification",
+        "reason": "The replay script needs the Claude or Codex CLI, calls a paid model and is outside rake test, so an offline equivalence check does not exist; a behavior-preserving split cannot be verified without those replays or a separately scoped offline test."
       }
     }
   ]
