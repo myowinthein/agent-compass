@@ -418,6 +418,21 @@ class CompassCLI(unittest.TestCase):
             payload["minimum"]["amount"] = value
             self.invoke("compare", payload, 2)
 
+    def test_unusable_fx_quote_chains_are_rejected(self):
+        quote = lambda base, target: {"base": base, "quote": target, "rate": "2", "date": "2026-10-21", "source": "https://example.invalid/dummy"}
+        for label, minimum_currency, quotes, message in (
+                ("legs that do not connect", "USD", [quote("GBP", "JPY")], "FX legs do not connect in the supplied order"),
+                ("a chain that stops short of the pay currency", "USD", [quote("USD", "JPY")], "FX quote chain does not reach the pay currency"),
+                ("a cycle", "USD", [quote("USD", "EUR"), quote("EUR", "USD")], "FX quote chain contains a cycle"),
+                ("more than two legs", "USD", [quote("USD", "JPY"), quote("JPY", "CHF"), quote("CHF", "EUR")], "Use at most a two-leg cross quote"),
+                ("a quote for identical currencies", "EUR", [quote("EUR", "USD")], "No FX quotes needed for identical currencies")):
+            with self.subTest(label=label):
+                payload = self.comparison()
+                payload["minimum"]["currency"] = minimum_currency
+                payload["quotes"] = quotes
+                error = self.invoke("compare", payload, 2)["error"]
+                self.assertEqual((error["kind"], error["message"]), ("invalid_input", message))
+
     def test_adjustment_bands_and_evidence(self):
         for value, label in (("0", "Small"), ("5", "Small"), ("5.001", "Moderate"), ("10", "Moderate"), ("10.001", "Significant"), ("15", "Significant")):
             payload = {"low": "0", "high": "15", "typical": value, "label": label, "confidence": "Medium", "salary_evidence": "Low", "evidence": "DUMMY evidence only"}
@@ -459,6 +474,19 @@ class CompassCLI(unittest.TestCase):
         payload = self.salary_request()
         payload["rows"][0]["visa"]["amount"] = "58250"
         self.assertNotIn("⚠️", self.invoke("render-salary", payload)["result"]["markdown"])
+
+    def test_visa_threshold_displays_exact_fractions_and_rejects_non_terminating_amounts(self):
+        for period, amount, label in (("annual", "58275.5", "58,275.5/yr ⚠️"), ("annual", "116551/2", "58,275.5/yr ⚠️"),
+                                      ("monthly", "4856.25", "4,856.25/mo ⚠️")):
+            with self.subTest(period=period, amount=amount):
+                payload = self.salary_request()
+                payload["rows"][0]["visa"].update(amount=amount, period=period)
+                self.assertIn("| " + label + " |", self.invoke("render-salary", payload)["result"]["markdown"])
+        payload = self.salary_request()
+        payload["rows"][0]["visa"]["amount"] = "1/3"
+        error = self.invoke("render-salary", payload, 2)["error"]
+        self.assertEqual(error["kind"], "invalid_input")
+        self.assertIn("exact terminating amount", error["message"])
 
     def test_unverified_monthly_basis_keeps_salary_without_visa_pass(self):
         payload = self.salary_request()
