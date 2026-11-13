@@ -32,6 +32,21 @@ module CompassValidation
 
   def validate(root)
     root = Pathname(root).realpath
+    _, codex = validate_manifests(root)
+    validate_icon(root, codex)
+    validate_helper_resources(root)
+    validate_registry(root)
+    contract = validate_output_contract(root)
+    workflows, skills = validate_entry_points(root)
+    validate_question_mechanism(root, workflows)
+    validate_skills(root, skills)
+    validate_agents(root)
+    validate_references(root, contract)
+    validate_docs_frontmatter(root)
+    true
+  end
+
+  def validate_manifests(root)
     %w[plugin.json .agents/plugins/marketplace.json].each do |path|
       check(!root.join(path).exist? && !root.join(path).symlink?,
             "Keep the two client manifests and one marketplace; root metadata can shadow them")
@@ -55,6 +70,10 @@ module CompassValidation
     check(entry.fetch("source") == "./", "Marketplace must point to this package, not a second copy")
     check(entry.dig("policy", "installation") == "AVAILABLE", "Plugin is not installable in Codex")
     check(!entry.key?("version") && !entry.key?("description"), "Maintain metadata only in plugin.json")
+    [manifest, codex]
+  end
+
+  def validate_icon(root, codex)
     icon = resource(root, "assets/icon.svg")
     %w[logo composerIcon].each do |field|
       check(codex.fetch("interface").fetch(field) == "./assets/icon.svg",
@@ -80,9 +99,15 @@ module CompassValidation
               "Plugin icon must not execute code or load external resources")
       end
     end
+  end
+
+  def validate_helper_resources(root)
     resource(root, "helpers/salary_targets.py")
     resource(root, "helpers/compass.py")
     %w[common files money research runs state tables timezones workspaces].each { |name| resource(root, "helpers/compass_lib/#{name}.py") }
+  end
+
+  def validate_registry(root)
     registry = JSON.parse(read(resource(root, "data/workspace-files.json")))
     check(registry.fetch("schema_version") == 1 && registry.fetch("workflows").keys.sort == %w[country-finder salary-calculator],
           "Unknown workspace filename registry")
@@ -104,16 +129,25 @@ module CompassValidation
       end
     end
     check(filenames.uniq.length == filenames.length, "Artifact filenames must be globally unique")
+  end
+
+  def validate_output_contract(root)
     contract = JSON.parse(read(resource(root, "data/output-contracts.json")))
     check(contract.fetch("schema_version") == 1, "Unknown output contract")
     check(contract.fetch("salary").fetch("headers").length == 6 && contract.fetch("country").fetch("headers").length == 5,
           "Unexpected compact table contract")
+    contract
+  end
 
+  def validate_entry_points(root)
     workflows = root.glob("workflows/*.md").map { |file| file.basename(".md").to_s }.sort
     skills = root.glob("skills/*/SKILL.md").map { |file| file.parent.basename.to_s }.sort
     check(workflows.length == 4 && workflows == skills,
           "Portable skills and workflows must expose the same four names")
+    [workflows, skills]
+  end
 
+  def validate_question_mechanism(root, workflows)
     resource(root, "prompts/shared/question-mechanism.md")
     check(read(resource(root, "prompts/shared/runtime.md")).include?("[Question mechanism (QM)](question-mechanism.md)"),
           "Shared runtime must load QM before asking questions")
@@ -128,7 +162,9 @@ module CompassValidation
       check(!read(file).match?(/\b(?:AskUserQuestion|request_user_input(?:_async)?|multiSelect)\b/),
             "Keep native question fields in shared QM: #{file.relative_path_from(root)}")
     end
+  end
 
+  def validate_skills(root, skills)
     skills.each do |name|
       skill = resource(root, "skills/#{name}/SKILL.md")
       metadata = frontmatter(skill)
@@ -145,7 +181,9 @@ module CompassValidation
       check(targets.include?(root.join("prompts/shared/runtime.md")), "Skill omits shared runtime: #{name}")
 
     end
+  end
 
+  def validate_agents(root)
     # Runtime routing selects these files dynamically, outside literal link checks.
     %w[calculator deep-reasoner].each { |role| resource(root, "agents/#{role}.md") }
     root.glob("agents/*.md").each do |agent|
@@ -163,7 +201,9 @@ module CompassValidation
             "Agent must reference its shared procedure: #{role}")
       check(!read(agent).include?(read(procedure).strip), "Agent duplicates specialist procedure: #{role}")
     end
+  end
 
+  def validate_references(root, contract)
     root.glob("{workflows,prompts,skills,agents}/**/*.md").each do |file|
       read(file).scan(%r{(?<![\w.-])(?:workflows|prompts|skills|agents|data|helpers)/[\w./-]+\.(?:md|py|json)}).uniq.each do |path|
         resource(root, path)
@@ -174,10 +214,12 @@ module CompassValidation
         check(!read(file).include?(template), "Duplicate runtime template; reference output-contracts.json: #{file}")
       end
     end
+  end
+
+  def validate_docs_frontmatter(root)
     root.glob("docs/**/*.md").each do |file|
       frontmatter(file) if read(file).start_with?("---\n")
     end
-    true
   end
 
   def run(root)
