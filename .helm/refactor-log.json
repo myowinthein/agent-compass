@@ -233,8 +233,26 @@
         ],
         "invariant": "Each affected test keeps its inputs, assertion operands, ordering and subTest structure; the helper returns the same dict of file names to bytes for the same directory."
       },
-      "state": "open",
-      "depends_on": []
+      "state": "resolved",
+      "depends_on": [],
+      "closure": {
+        "origin": "native",
+        "kind": "fixed",
+        "commit": "b7a4ad6b0924e077fd8f45fc358e851ed67f2a67",
+        "date": "2026-11-13",
+        "method": "runtime",
+        "evidence": [
+          "scripts/test_compass.py: the 20 inline directory-snapshot comprehensions in CompassCLI are replaced by one static snapshot(root) helper returning the same non-recursive dict of file names to bytes; no assertion, input or subTest structure changed.",
+          "RunWorkspaces keeps its own recursive snapshot helper, which was not interchangeable and was left alone."
+        ],
+        "checks": [
+          {
+            "command": "python3 -B scripts/test_compass.py",
+            "scope": "Full offline helper suite with fictional inputs in temporary directories; local macOS Python 3.14, no network",
+            "outcome": "Ran 105 tests, OK, identical to the pre-change run of 105."
+          }
+        ]
+      }
     },
     {
       "id": "r-2a0b74c7-8e41-43ae-9ade-5ca73b8fa9ef",
@@ -265,7 +283,24 @@
         "invariant": "Every file is still decoded as UTF-8 regardless of the process default encoding, with identical text for the same inputs and the same assertions."
       },
       "state": "open",
-      "depends_on": []
+      "depends_on": [],
+      "decision": {
+        "origin": "native",
+        "action": "skip",
+        "commit": "b7a4ad6b0924e077fd8f45fc358e851ed67f2a67",
+        "date": "2026-11-13",
+        "reason": "Developer asked for a recommendation and accepted it: not worth the churn.",
+        "context": {
+          "paths": [
+            "scripts/test_plugin.rb",
+            "scripts/validate_plugin.rb"
+          ],
+          "evidence": [
+            "CompassValidation.read(root.join(x)) is no shorter than root.join(x).read(encoding: \"UTF-8\"), so the only gain is unifying the encoding spelling across 25 call sites.",
+            "Some call sites are block calls on a file variable, so a mechanical replacement does not fit all of them."
+          ]
+        }
+      }
     },
     {
       "id": "r-0201c9bb-4278-4306-a048-e2500e93d02a",
@@ -298,6 +333,22 @@
       "blocker": {
         "kind": "verification",
         "reason": "The replay script needs the Claude or Codex CLI, calls a paid model and is outside rake test, so an offline equivalence check does not exist; a behavior-preserving split cannot be verified without those replays or a separately scoped offline test."
+      },
+      "decision": {
+        "origin": "native",
+        "action": "defer",
+        "commit": "b7a4ad6b0924e077fd8f45fc358e851ed67f2a67",
+        "date": "2026-11-13",
+        "reason": "Developer asked for a recommendation and accepted it: defer until it can be verified offline.",
+        "context": {
+          "paths": [
+            "scripts/test_workflow_replay.py"
+          ],
+          "evidence": [
+            "The replay script is optional, calls the Claude or Codex CLI with a paid model and is outside rake test.",
+            "No offline test exists, so a behavior-preserving split of check() cannot be verified without those replays or a separate test task."
+          ]
+        }
       }
     }
   ]
