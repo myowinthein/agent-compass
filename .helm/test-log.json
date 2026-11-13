@@ -4,6 +4,25 @@
   "full_scan_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
   "cases": [
     {
+      "id": "g-059fd2f5-7f77-45ea-84a5-8032ddd5062e",
+      "expected": "`render-salary` prints a fractional or rational-terminating visa minimum exactly (for example 58275.5 as 58,275.5/yr) and rejects a non-terminating one such as 1/3 with invalid_input instead of rounding a legal threshold.",
+      "basis": [
+        "helpers/compass_lib/tables.py#exact_display",
+        "AGENTS.md#domain-rules",
+        "scripts/test_compass.py::test_salary_golden_raw_warning"
+      ],
+      "paths": [
+        "helpers/compass_lib/tables.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "medium",
+      "reason": "exact_display is a hand-written formatter that exists to avoid rounding legal thresholds, but only an integer threshold is exercised.",
+      "action": "add",
+      "layer": "Salary table rendering",
+      "state": "open",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
+    },
+    {
       "id": "g-4d9929bb-fe10-48bc-8f16-00560b658ff9",
       "expected": "Canonical .helm operational records are excluded from Git archives alongside legacy developer and host artifacts, with an archive-policy regression check.",
       "basis": [
@@ -79,6 +98,29 @@
         "command": "python3 -B scripts/test_compass.py CompassCLI.test_final_checkpoints_reject_empty_or_missing_required_artifacts CompassCLI.test_checkpoint_completion_supports_both_filename_families CompassCLI.test_corrupt_and_missing_output_state CompassCLI.test_empty_ingestion_is_a_record_not_a_completed_salary_run",
         "scope": "Local macOS read-only state-check CLI on synthetic complete inventories with one defective required artifact, covering current and legacy names."
       }
+    },
+    {
+      "id": "g-50ab1702-5559-4d07-ae7a-0f1be966ad82",
+      "expected": "Both GitHub issue forms parse, have a name, description and non-empty body with unique field ids, a required field, and the public-report warning to remove resumes and personal details; config.yml sets blank_issues_enabled to a boolean.",
+      "basis": [
+        ".github/ISSUE_TEMPLATE/01-bug.yml",
+        ".github/ISSUE_TEMPLATE/02-feedback.yml",
+        "README.md#contributing",
+        "docs/_includes/footer_custom.html",
+        "docs/legal/privacy-policy.md"
+      ],
+      "paths": [
+        ".github/ISSUE_TEMPLATE/01-bug.yml",
+        ".github/ISSUE_TEMPLATE/02-feedback.yml",
+        ".github/ISSUE_TEMPLATE/config.yml",
+        "scripts/test_plugin.rb"
+      ],
+      "priority": "medium",
+      "reason": "The README and footer send every report to these forms, and the privacy policy tells users not to post private data; a malformed form or a lost warning has no test. A static check cannot prove GitHub accepts the schema.",
+      "action": "add",
+      "layer": "Issue-form contract",
+      "state": "open",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
     },
     {
       "id": "g-67d7fc4e-9847-4105-885e-0aeade76a21c",
@@ -338,6 +380,27 @@
       }
     },
     {
+      "id": "g-9b8c232f-4667-42ca-a633-211868da5f76",
+      "expected": "guide-nav.js marks the Overview link active with aria-current=location, activates and expands its ancestor navigation items, sets data-guide-nav-ready, and does nothing when the navigation or link is missing.",
+      "basis": [
+        "docs/assets/js/guide-nav.js",
+        "docs/_includes/head_custom.html",
+        "AGENTS.md#known-traps",
+        "docs/tests/test_guide_views.rb"
+      ],
+      "paths": [
+        "docs/assets/js/guide-nav.js",
+        "docs/tests/test_guide_views.rb",
+        "docs/tasks.rb"
+      ],
+      "priority": "medium",
+      "reason": "Built-site checks only confirm the script tag exists, so a regression would silently drop sidebar activation and aria state on all Details pages.",
+      "action": "add",
+      "layer": "Documentation navigation script",
+      "state": "open",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
+    },
+    {
       "id": "g-a813fc09-e054-477c-94dd-07eb667fbee0",
       "expected": "A run catalog rejects, without writing, metadata whose chat key or run ID does not match its location, a previous-run or profile-source reference to another person, a baseline from another command, a missing referenced run, or a timestamp without a timezone.",
       "basis": [
@@ -535,6 +598,83 @@
         "command": "python3 -B scripts/test_workflow_replay.py --host claude --case visa-refresh-annual --case visa-refresh-incomparable --case visa-refresh-pending --case no-adjustment-fresh-step3 --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-claude-salary-20261028.json\npython3 -B scripts/test_workflow_replay.py --host codex --case visa-refresh-annual --case visa-refresh-incomparable --case visa-refresh-pending --case no-adjustment-fresh-step3 --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-codex-salary-20261028.json\npython3 -B scripts/test_workflow_replay.py --host codex --case visa-refresh-pending --case no-adjustment-fresh-step3 --case no-adjustment-resume-step4 --evidence /tmp/compass-replay-codex-final-20261028.json",
         "scope": "macOS controlled decision replays using native CLIs as model transports, virtual workspace snapshots, real temporary-file writes and parent-executed Python helpers. Requested claude-sonnet-5-5 high and gpt-6.1-sol high; every returned Claude canonical model checked, while Codex JSONL omits returned model identity. Captured replies were rechecked against the final assertions and matching fixtures; unaffected replies were reused. No native plugin-dispatch, live-browsing or whole-pipeline claim."
       }
+    },
+    {
+      "id": "g-cf9a611c-f9a2-41a2-aa47-bec3980985a9",
+      "expected": "`tz-offsets` rejects date-only local times, UTC offsets in local endpoints, reversed or longer-than-two-day windows, and instants without an offset instead of assuming a time.",
+      "basis": [
+        "helpers/compass_lib/timezones.py",
+        "skills/timezone-rules.md",
+        "scripts/test_compass.py::test_timezones_supplied_instants_and_gap_fold"
+      ],
+      "paths": [
+        "helpers/compass_lib/timezones.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "low",
+      "reason": "Only DST gap, fold and overnight cases are tested, so the explicit-time validation that prevents a midnight assumption could regress unnoticed.",
+      "action": "add",
+      "layer": "Timezone helper validation",
+      "state": "open",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
+    },
+    {
+      "id": "g-cfa52b84-982b-43de-b935-034336c63cd4",
+      "expected": "`compare` rejects FX quote sets that cannot normalize the minimum (disconnected legs, a cycle, more than two legs, a chain that does not reach the pay currency, or quotes supplied for identical currencies) with invalid_input and never returns a pass or fail.",
+      "basis": [
+        "helpers/compass_lib/money.py#exchange",
+        "skills/salary-comparison-rules.md",
+        "scripts/test_compass.py::test_fx_exact_reciprocal_and_cross"
+      ],
+      "paths": [
+        "helpers/compass_lib/money.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "medium",
+      "reason": "The exchange chain feeds hard_floor_failed. Tests cover only direct, reciprocal, cross, date-mismatch and zero-rate quotes, so a loosened chain check could silently mis-normalize a visa minimum.",
+      "action": "add",
+      "layer": "Salary comparison helper",
+      "state": "open",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
+    },
+    {
+      "id": "g-d7074818-0944-4250-a852-9f3998e9117e",
+      "expected": "Documentation theme drift fails loudly: version_header raises for zero or two sidebar titles and HTML-escapes the version, and replace_once raises when a patched theme string occurs twice.",
+      "basis": [
+        "docs/_plugins/repository_content.rb#version_header",
+        "docs/_plugins/frontend.rb#replace_once",
+        "AGENTS.md#known-traps"
+      ],
+      "paths": [
+        "docs/_plugins/repository_content.rb",
+        "docs/_plugins/frontend.rb",
+        "docs/tests/test_repository_content.rb",
+        "docs/tests/test_frontend.rb"
+      ],
+      "priority": "low",
+      "reason": "AGENTS.md documents the theme-changed failure as a build trap, but its zero-match, multi-match and escaping branches are untested.",
+      "action": "add",
+      "layer": "Documentation build plugins",
+      "state": "open",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
+    },
+    {
+      "id": "g-dba8015e-ab13-46a9-b30f-04ff0cbfcdfa",
+      "expected": "The helper CLI rejects input larger than 4 MiB with invalid_input and an empty stdout.",
+      "basis": [
+        "helpers/compass_lib/common.py#loads",
+        "scripts/test_compass.py::test_strict_wire_inputs"
+      ],
+      "paths": [
+        "helpers/compass_lib/common.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "low",
+      "reason": "Wire tests cover duplicate keys, NaN, bad Unicode and nesting depth but not the documented size bound.",
+      "action": "add",
+      "layer": "Helper input bounds",
+      "state": "open",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
     },
     {
       "id": "g-ed7f0745-42ad-4282-8d8b-fb0c33ef726e",
