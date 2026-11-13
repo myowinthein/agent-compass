@@ -179,8 +179,32 @@
         ],
         "invariant": "validate(root) keeps its signature and true return value, runs the same checks in the same order, raises the same messages for the same defects, and still validates a relocated package without writing to the consumer workspace."
       },
-      "state": "open",
-      "depends_on": []
+      "state": "resolved",
+      "depends_on": [],
+      "closure": {
+        "origin": "native",
+        "kind": "fixed",
+        "commit": "6b516ed5e5ac8f028d6946bc3934398efcbc70c3",
+        "date": "2026-11-13",
+        "method": "runtime",
+        "evidence": [
+          "scripts/validate_plugin.rb: validate(root) is now a 16-line sequence of named steps (validate_manifests, validate_icon, validate_helper_resources, validate_registry, validate_output_contract, validate_entry_points, validate_question_mechanism, validate_skills, validate_agents, validate_references, validate_docs_frontmatter); the largest step is 28 lines.",
+          "The change only moves existing lines under new method names: every check, message and its order is unchanged, and validate still returns true. A line-sequence comparison of the original body against the concatenated steps matched exactly before the commit.",
+          "The 13 rejected_with mutation fixtures in scripts/test_plugin.rb still reject with the same exact messages."
+        ],
+        "checks": [
+          {
+            "command": "ruby scripts/validate_plugin.rb",
+            "scope": "Repository package and a relocated copy validated with a separate candidate workspace; local macOS Ruby",
+            "outcome": "Validated four shared skill entry points, workflows, and a relocated package, same as the pre-change baseline."
+          },
+          {
+            "command": "ruby scripts/test_plugin.rb",
+            "scope": "All validator mutation, salary-example, country-table, archive-policy, issue-form and deployment checks; local macOS Ruby, no network",
+            "outcome": "Passed 462 checks, identical to the pre-change baseline of 462. This verifies packaging and instruction contracts, not model behavior."
+          }
+        ]
+      }
     },
     {
       "id": "r-208a0b7d-dd05-47e1-ac75-6df03bc916e4",
