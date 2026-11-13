@@ -351,6 +351,13 @@ class CompassCLI(unittest.TestCase):
                 self.assertEqual((result.returncode, result.stdout), (2, b""))
                 self.assertEqual(json.loads(result.stderr)["error"]["kind"], "invalid_input")
 
+    def test_input_over_four_mebibytes_is_rejected(self):
+        raw = b'{"schema_version":1,"groups":[],"padding":"' + b"a" * (4 * 1024 * 1024) + b'"}'
+        result = subprocess.run([sys.executable, "-I", "-B", str(CLI), "batch-partition"], input=raw, capture_output=True)
+        self.assertEqual((result.returncode, result.stdout), (2, b""))
+        error = json.loads(result.stderr)["error"]
+        self.assertEqual((error["kind"], error["message"]), ("invalid_input", "Input exceeds 4 MiB"))
+
     def test_batch_duplicate_alias(self):
         self.invoke("batch-partition", {"groups": [{"region": "Demo", "countries": ["Germany 🇩🇪", "🇩🇪 GERMANY"]}]}, 2)
         self.invoke("batch-partition", {"groups": [{"region": "Demo", "countries": ["USA", "United States"]}], "aliases": {"USA": "United States"}}, 2)
@@ -964,6 +971,25 @@ class CompassCLI(unittest.TestCase):
             {"start": "2026-10-21T22:00:00", "end": "2026-10-22T06:00:00"},
             {"start": "2026-10-21T16:00:00", "end": "2026-10-22T00:00:00"}]]}
         self.assertEqual(self.invoke("tz-offsets", payload)["result"]["overlap_seconds"], [28800])
+
+    def test_timezone_inputs_without_explicit_times_are_rejected(self):
+        try:
+            from zoneinfo import ZoneInfo
+            ZoneInfo("Europe/Berlin")
+        except (ImportError, KeyError):
+            self.skipTest("No system IANA timezone data")
+        manila = {"start": "2026-10-21T09:00:00", "end": "2026-10-21T17:00:00"}
+        base = {"zones": ["Europe/Berlin", "Asia/Manila"], "instants": []}
+        for label, changes in (
+                ("a date-only endpoint", {"schedules": [[{"start": "2026-10-21", "end": "2026-10-22"}, manila]]}),
+                ("a UTC offset in a local endpoint", {"schedules": [[{"start": "2026-10-21T09:00:00+02:00", "end": "2026-10-21T17:00:00"}, manila]]}),
+                ("a reversed window", {"schedules": [[{"start": "2026-10-21T17:00:00", "end": "2026-10-21T09:00:00"}, manila]]}),
+                ("a window over two days", {"schedules": [[{"start": "2026-10-20T09:00:00", "end": "2026-10-23T09:00:00"}, manila]]}),
+                ("an instant without an offset", {"instants": ["2026-10-21T00:00:00"]}),
+                ("a single zone", {"zones": ["Europe/Berlin"], "instants": ["2026-10-21T00:00:00Z"]}),
+                ("no instants or schedules", {})):
+            with self.subTest(label=label):
+                self.assertEqual(self.invoke("tz-offsets", {**base, **changes}, 2)["error"]["kind"], "invalid_input")
 
     def test_old_interpreter_is_distinct(self):
         result = subprocess.run([sys.executable, "-I", "-B", "-c",
