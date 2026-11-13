@@ -19,8 +19,22 @@
       "reason": "exact_display is a hand-written formatter that exists to avoid rounding legal thresholds, but only an integer threshold is exercised.",
       "action": "add",
       "layer": "Salary table rendering",
-      "state": "open",
-      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
+      "state": "resolved",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921",
+      "tests": [
+        "scripts/test_compass.py::test_visa_threshold_displays_exact_fractions_and_rejects_non_terminating_amounts"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_compass.py::test_visa_threshold_displays_exact_fractions_and_rejects_non_terminating_amounts"
+        ],
+        "method": "runtime",
+        "outcome": "The new test passed alongside the 105-test helper suite. It checks 58,275.5/yr from decimal and rational input, 4,856.25/mo, and rejection of 1/3 as invalid_input. Replacing the non-terminating raise with rounding in a throwaway copy made it fail.",
+        "commit": "b6ece5bd6866afa24478eaf7a2ae9b18b74d8a0c",
+        "command": "python3 -B scripts/test_compass.py",
+        "scope": "Local macOS Python 3.14 contributor check; fictional inputs and temporary directories only, no network. Offline helper CLI behavior, not live research."
+      }
     },
     {
       "id": "g-4d9929bb-fe10-48bc-8f16-00560b658ff9",
@@ -119,8 +133,25 @@
       "reason": "The README and footer send every report to these forms, and the privacy policy tells users not to post private data; a malformed form or a lost warning has no test. A static check cannot prove GitHub accepts the schema.",
       "action": "add",
       "layer": "Issue-form contract",
-      "state": "open",
-      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
+      "state": "resolved",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921",
+      "tests": [
+        "scripts/test_plugin.rb: issue form contract checks"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_plugin.rb: issue form contract checks",
+          ".github/ISSUE_TEMPLATE/01-bug.yml",
+          ".github/ISSUE_TEMPLATE/02-feedback.yml",
+          ".github/ISSUE_TEMPLATE/config.yml"
+        ],
+        "method": "runtime",
+        "outcome": "All 462 plugin checks passed, 12 more than before. Both forms parse and have valid unique ids, labels, a required field and the public-report warning. Six single-edit mutations of the form files made the suite fail. This is a static contract check; it does not prove GitHub accepts the form schema.",
+        "commit": "1032908210eb7510b727c1dd64e8336c5e24f48f",
+        "command": "ruby scripts/test_plugin.rb",
+        "scope": "Local macOS Ruby static YAML checks of the repository files; no network or GitHub validation."
+      }
     },
     {
       "id": "g-67d7fc4e-9847-4105-885e-0aeade76a21c",
@@ -397,8 +428,23 @@
       "reason": "Built-site checks only confirm the script tag exists, so a regression would silently drop sidebar activation and aria state on all Details pages.",
       "action": "add",
       "layer": "Documentation navigation script",
-      "state": "open",
-      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
+      "state": "resolved",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921",
+      "tests": [
+        "docs/tests/test_guide_nav.cjs"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "docs/tests/test_guide_nav.cjs",
+          "docs/tasks.rb"
+        ],
+        "method": "runtime",
+        "outcome": "Six new tests passed with the other docs JavaScript suites (42 total). They cover aria-current, ancestor expansion, the ready flag, no-op paths and DOMContentLoaded timing against a fake DOM. Five single-line mutations of guide-nav.js made them fail. Real browser behavior and the full rake test were not run.",
+        "commit": "597d2b0fe69b1a1046fbb8aba8b6987f3527fe31",
+        "command": "node --test docs/tests/test_guide_nav.cjs",
+        "scope": "Local macOS Node v24 check using a fake DOM in node:vm; no browser, network or built site. Wired into docs/tasks.rb but the full rake docs task was not run."
+      }
     },
     {
       "id": "g-a813fc09-e054-477c-94dd-07eb667fbee0",
@@ -615,8 +661,22 @@
       "reason": "Only DST gap, fold and overnight cases are tested, so the explicit-time validation that prevents a midnight assumption could regress unnoticed.",
       "action": "add",
       "layer": "Timezone helper validation",
-      "state": "open",
-      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
+      "state": "resolved",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921",
+      "tests": [
+        "scripts/test_compass.py::test_timezone_inputs_without_explicit_times_are_rejected"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_compass.py::test_timezone_inputs_without_explicit_times_are_rejected"
+        ],
+        "method": "runtime",
+        "outcome": "The new test passed alongside the 105-test helper suite, using system IANA timezone data. Seven invalid inputs return invalid_input. Removing the date-only guard in a throwaway copy made it fail.",
+        "commit": "d75d961d8aa575ddfc7239f0fd3757b41d8635a7",
+        "command": "python3 -B scripts/test_compass.py",
+        "scope": "Local macOS Python 3.14 contributor check; fictional inputs and temporary directories only, no network. Offline helper CLI behavior, not live research."
+      }
     },
     {
       "id": "g-cfa52b84-982b-43de-b935-034336c63cd4",
@@ -634,8 +694,22 @@
       "reason": "The exchange chain feeds hard_floor_failed. Tests cover only direct, reciprocal, cross, date-mismatch and zero-rate quotes, so a loosened chain check could silently mis-normalize a visa minimum.",
       "action": "add",
       "layer": "Salary comparison helper",
-      "state": "open",
-      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
+      "state": "resolved",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921",
+      "tests": [
+        "scripts/test_compass.py::test_unusable_fx_quote_chains_are_rejected"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_compass.py::test_unusable_fx_quote_chains_are_rejected"
+        ],
+        "method": "runtime",
+        "outcome": "The new test passed alongside the 105-test helper suite. It checks that disconnected, cyclic, overlong, non-reaching and identical-currency quote sets return invalid_input with the exact message. Removing the reach, cycle or identical-currency guard in a throwaway copy made it fail.",
+        "commit": "b6ece5bd6866afa24478eaf7a2ae9b18b74d8a0c",
+        "command": "python3 -B scripts/test_compass.py",
+        "scope": "Local macOS Python 3.14 contributor check; fictional inputs and temporary directories only, no network. Offline helper CLI behavior, not live research."
+      }
     },
     {
       "id": "g-d7074818-0944-4250-a852-9f3998e9117e",
@@ -655,8 +729,24 @@
       "reason": "AGENTS.md documents the theme-changed failure as a build trap, but its zero-match, multi-match and escaping branches are untested.",
       "action": "add",
       "layer": "Documentation build plugins",
-      "state": "open",
-      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
+      "state": "resolved",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921",
+      "tests": [
+        "docs/tests/test_repository_content.rb",
+        "docs/tests/test_frontend.rb"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "docs/tests/test_repository_content.rb",
+          "docs/tests/test_frontend.rb"
+        ],
+        "method": "runtime",
+        "outcome": "Both Ruby docs tests passed. version_header now has zero-title, two-title and escaping checks, and a duplicate theme stylesheet is rejected. Removing the title-count, escaping or uniqueness guard in a throwaway edit made them fail.",
+        "commit": "0302625b6cd64539407ad6fff03d13b74aa4882a",
+        "command": "BUNDLE_GEMFILE=docs/Gemfile bundle exec ruby docs/tests/test_repository_content.rb; BUNDLE_GEMFILE=docs/Gemfile bundle exec ruby docs/tests/test_frontend.rb",
+        "scope": "Local macOS Ruby with installed docs gems (bundle check satisfied); temporary Jekyll fixture sites; no Chrome, built site or network."
+      }
     },
     {
       "id": "g-dba8015e-ab13-46a9-b30f-04ff0cbfcdfa",
@@ -673,8 +763,22 @@
       "reason": "Wire tests cover duplicate keys, NaN, bad Unicode and nesting depth but not the documented size bound.",
       "action": "add",
       "layer": "Helper input bounds",
-      "state": "open",
-      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921"
+      "state": "resolved",
+      "assessed_commit": "e7c7853cf7970c5e6beba7e27931da26b3bc9921",
+      "tests": [
+        "scripts/test_compass.py::test_input_over_four_mebibytes_is_rejected"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_compass.py::test_input_over_four_mebibytes_is_rejected"
+        ],
+        "method": "runtime",
+        "outcome": "The new test passed alongside the 105-test helper suite. A 4 MiB plus input exits 2 with empty stdout and invalid_input. Doubling the limit in a throwaway copy made it fail.",
+        "commit": "d75d961d8aa575ddfc7239f0fd3757b41d8635a7",
+        "command": "python3 -B scripts/test_compass.py",
+        "scope": "Local macOS Python 3.14 contributor check; fictional inputs and temporary directories only, no network. Offline helper CLI behavior, not live research."
+      }
     },
     {
       "id": "g-ed7f0745-42ad-4282-8d8b-fb0c33ef726e",
