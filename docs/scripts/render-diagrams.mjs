@@ -51,7 +51,44 @@ try {
     const output = {};
     for (const [id, source] of Object.entries(diagrams)) {
       const result = await mermaid.render(`diagram-${id}`, source);
-      output[id] = result.svg;
+      // Embedded SVG media queries inherit the page's selected color-scheme.
+      const selector = `#diagram-${id}`;
+      const colors = `<style>
+        ${selector} {
+          --diagram-text: #27262b;
+          --diagram-surface: #f5f6fa;
+          --diagram-line: #5c5962;
+        }
+        @media (prefers-color-scheme: dark) {
+          ${selector} {
+            --diagram-text: #e6e1e8;
+            --diagram-surface: #302d36;
+            --diagram-line: #a6a1ad;
+          }
+        }
+        ${selector} text, ${selector} span, ${selector} p, ${selector} .label,
+        ${selector} .cluster text, ${selector} .cluster span {
+          fill: var(--diagram-text);
+          color: var(--diagram-text);
+        }
+        ${selector} .node > :is(rect, circle, ellipse, polygon, path), ${selector} .cluster rect {
+          fill: var(--diagram-surface);
+          stroke: var(--diagram-line);
+        }
+        ${selector} .flowchart-link, ${selector} .edgePath .path {
+          stroke: var(--diagram-line);
+        }
+        ${selector} .marker, ${selector} .arrowheadPath {
+          fill: var(--diagram-line);
+          stroke: var(--diagram-line);
+        }
+        ${selector} .edgeLabel, ${selector} .edgeLabel rect, ${selector} .labelBkg {
+          background-color: var(--diagram-surface);
+          fill: var(--diagram-surface);
+          opacity: 1;
+        }
+      </style>`;
+      output[id] = result.svg.replace('</svg>', `${colors}</svg>`);
     }
     return output;
   }, diagrams);

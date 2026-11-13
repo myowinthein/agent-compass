@@ -27,6 +27,12 @@ source = <<~JS
     jtd.addEvent(searchInput, 'focus', function(){
       setTimeout(update, 0);
     });
+    const updateSearchFocus = function(evt) {
+      const nextFocusedElement = evt.relatedTarget;
+      if (nextFocusedElement.id === 'search-input') return;
+      if (nextFocusedElement.classList.contains('search-result')) return;
+      hideSearch();
+    };
   }
   jtd.onReady(function(){
     initSearch();

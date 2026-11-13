@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { checkThemeColors } from './check-theme-colors.mjs';
 import { chromium } from 'playwright-core';
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
@@ -45,15 +46,22 @@ try {
    assert.equal(await page.locator('figure.mermaid img').evaluateAll(imgs=>imgs.every(img=>img.complete&&img.naturalWidth>0)),true,'Diagram not visible');
    const cls=await page.evaluate(()=>window.shifts.reduce((sum,n)=>sum+n,0));
    assert(cls<0.01,`Initial layout shifted: ${cls}`);
+   assertions += await checkThemeColors(page, scheme);
    const query=page.locator('#search-input');
    if(width===390)await page.locator('#menu-button').click();
    await query.fill('salary');
    await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
    assert.equal(requests.filter(url=>url.includes('search-data.json')).length,1,'Search initialized multiple times');
+   await query.evaluate(input => input.blur());
+   assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('search-active')),false);
+   await query.focus();
+   await page.waitForFunction(()=>document.documentElement.classList.contains('search-active'));
+   assertions+=2;
    await query.press('Escape');
    assert.equal(await query.inputValue(),'');
    await page.locator('#theme-mode').selectOption(scheme==='light'?'dark':'light');
    await page.waitForFunction(expected=>document.querySelector('link[rel="stylesheet"]').href.endsWith(`just-the-docs-${expected}.css`),scheme==='light'?'dark':'light');
+   assertions += await checkThemeColors(page, scheme==='light'?'dark':'light');
    assert.equal(errors.length,0,errors.join('\n'));
    console.log(`PASS ${width}px ${scheme}: one theme stylesheet, no initial index, static diagrams, CLS ${cls.toFixed(3)}, search and theme switching`);
    assertions+=9;

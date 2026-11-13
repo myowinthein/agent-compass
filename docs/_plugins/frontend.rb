@@ -70,6 +70,8 @@ module CompassFrontend
       "    compassSearchStarted = false;\n    console.log('There was a connection error');")
     source = replace_once(source, "  jtd.addEvent(searchInput, 'focus', function(){",
       "  searchInput.addEventListener('input', update);\n\n  jtd.addEvent(searchInput, 'focus', function(){")
+    source = replace_once(source, '    const nextFocusedElement = evt.relatedTarget;',
+      "    const nextFocusedElement = evt.relatedTarget;\n    if (!nextFocusedElement) { hideSearch(); return; }")
     shortcut = source.match(%r{  // add event listener on ctrl[^\n]*\n  jtd\.addEvent\(document, 'keydown',[\s\S]*?\n  \}\);})
     source = source.sub(shortcut[0], '') if shortcut
     replace_once(source, '  initSearch();', <<~JS.chomp)
