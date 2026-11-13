@@ -47,6 +47,13 @@ rescue ArgumentError => error
   raise unless error.message.include?('theme')
 end
 
+begin
+  CompassFrontend.initial_theme(html + html, '/agent-compass')
+  raise 'Duplicate theme stylesheet accepted'
+rescue ArgumentError => error
+  raise unless error.message.include?('theme')
+end
+
 svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 720"><text>Start</text></svg>'
 raise 'Wrong diagram dimensions' unless CompassFrontend.dimensions(svg) == [480.0, 720.0]
 begin

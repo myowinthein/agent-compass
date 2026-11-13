@@ -59,4 +59,14 @@ Dir.mktmpdir("repository-docs-") do |temporary|
     # A shared input cannot redirect the build to a different repository file.
   end
 end
+title = '<div class="site-header"><a href="/" class="site-title lh-tight">Fixture</a></div>'
+["<div>No sidebar title</div>", title + title].each do |html|
+  begin
+    RepositoryDocs.version_header(html, "1.2.3")
+    raise "Accepted a theme with #{html.scan('site-title').length} sidebar titles"
+  rescue ArgumentError => error
+    raise unless error.message.include?("Just the Docs theme changed")
+  end
+end
+raise "Version label was not escaped" unless RepositoryDocs.version_header(title, "1.2<3").include?('<span class="site-version">v1.2&lt;3</span>')
 puts "Passed docs-root builds, stable public paths, shared homepage/icon bytes and redirected-input rejection."
