@@ -459,6 +459,31 @@ Dir.mktmpdir("compass-archive-check-") do |temp|
               "Git archives must omit maintenance records while preserving public files and their bytes")
 end
 
+# The README and documentation footer send every report to these forms, which also warn that reports are public.
+issue_forms = root.glob(".github/ISSUE_TEMPLATE/[0-9]*.yml").sort
+assert.call(issue_forms.size == 2, "Expected the bug and feedback issue forms")
+issue_forms.each do |form|
+  data = YAML.safe_load_file(form)
+  relative = form.relative_path_from(root)
+  assert.call(%w[name description].all? { |key| data[key].is_a?(String) && !data[key].strip.empty? } &&
+              data["body"].is_a?(Array) && !data["body"].empty?,
+              "Issue form needs a name, description and body: #{relative}")
+  fields = data.fetch("body").reject { |item| item["type"] == "markdown" }
+  ids = fields.map { |item| item["id"] }
+  assert.call(!fields.empty? && ids.all? { |id| id.to_s.match?(/\A[A-Za-z0-9_-]+\z/) } && ids.uniq == ids,
+              "Issue form fields need unique valid ids: #{relative}")
+  assert.call(fields.all? { |item| !item.dig("attributes", "label").to_s.strip.empty? },
+              "Issue form fields need labels: #{relative}")
+  assert.call(fields.any? { |item| item.dig("validations", "required") == true },
+              "Issue form needs a required field: #{relative}")
+  warning = data.fetch("body").first
+  notice = warning.dig("attributes", "value").to_s
+  assert.call(warning["type"] == "markdown" && notice.match?(/public/i) && notice.match?(/resumes/i),
+              "Issue form must open with the public-report privacy warning: #{relative}")
+end
+assert.call([true, false].include?(YAML.safe_load_file(root.join(".github/ISSUE_TEMPLATE/config.yml")).fetch("blank_issues_enabled")),
+            "Issue chooser config needs a boolean blank_issues_enabled")
+
 deployment = YAML.safe_load_file(root.join(".github/workflows/docs.yml"))
 assert.call(deployment.fetch("on").keys.sort == %w[pull_request push workflow_dispatch],
             "Docs must build on pushes, pull requests and manual runs without a schedule")
