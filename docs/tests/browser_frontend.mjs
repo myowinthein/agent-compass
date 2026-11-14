@@ -26,7 +26,6 @@ async function createContext(options = {}) {
  await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
  return context;
 }
-let assertions=0;
 try {
  browser=await chromium.launch({executablePath:process.env.COMPASS_DOCS_CHROME||(process.platform==='darwin'?'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome':'/usr/bin/google-chrome'),headless:true});
  for(const width of [1280,390]) {
@@ -46,7 +45,7 @@ try {
    assert.equal(await page.locator('figure.mermaid img').evaluateAll(imgs=>imgs.every(img=>img.complete&&img.naturalWidth>0)),true,'Diagram not visible');
    const cls=await page.evaluate(()=>window.shifts.reduce((sum,n)=>sum+n,0));
    assert(cls<0.01,`Initial layout shifted: ${cls}`);
-   assertions += await checkThemeColors(page, scheme);
+   await checkThemeColors(page, scheme);
    const query=page.locator('#search-input');
    if(width===390)await page.locator('#menu-button').click();
    await query.fill('salary');
@@ -56,15 +55,13 @@ try {
    assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('search-active')),false);
    await query.focus();
    await page.waitForFunction(()=>document.documentElement.classList.contains('search-active'));
-   assertions+=2;
    await query.press('Escape');
    assert.equal(await query.inputValue(),'');
    await page.locator('#theme-mode').selectOption(scheme==='light'?'dark':'light');
    await page.waitForFunction(expected=>document.querySelector('link[rel="stylesheet"]').href.endsWith(`just-the-docs-${expected}.css`),scheme==='light'?'dark':'light');
-   assertions += await checkThemeColors(page, scheme==='light'?'dark':'light');
+   await checkThemeColors(page, scheme==='light'?'dark':'light');
    assert.equal(errors.length,0,errors.join('\n'));
    console.log(`PASS ${width}px ${scheme}: one theme stylesheet, no initial index, static diagrams, CLS ${cls.toFixed(3)}, search and theme switching`);
-   assertions+=9;
    await context.close();
   }
  }
@@ -75,7 +72,7 @@ try {
   await page.route('**/assets/diagrams/*.svg',async route=>{await new Promise(resolve=>setTimeout(resolve,500));await route.continue();});
   await page.goto(`${origin}/agent-compass/docs/commands/country-finder/detailed.html`);
   assert(await page.evaluate(()=>window.diagramShift<0.01));
-  console.log('PASS delayed diagram download: reserved space remains stable');assertions++;await context.close();
+  console.log('PASS delayed diagram download: reserved space remains stable');await context.close();
  }
  // A slow first search must retain text typed before the index becomes ready.
  {
@@ -85,7 +82,7 @@ try {
   await page.locator('#search-input').fill('country');
   await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
   assert.equal(await page.locator('#search-input').inputValue(),'country');assert.equal(count,1);
-  console.log('PASS slow search: first query preserved, one request');assertions+=2;await context.close();
+  console.log('PASS slow search: first query preserved, one request');await context.close();
  }
  // Failed requests may be retried on the next search interaction.
  {
@@ -95,7 +92,7 @@ try {
   await page.locator('#search-input').focus();await page.waitForTimeout(100);
   await page.locator('#search-input').fill('country');
   await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
-  assert.equal(count,2);console.log('PASS failed search: retry succeeds');assertions++;await context.close();
+  assert.equal(count,2);console.log('PASS failed search: retry succeeds');await context.close();
  }
  for(const fault of ['no-js','storage-blocked','saved-light','saved-dark','dark-css-failed']) {
   const context=await createContext({javaScriptEnabled:fault!=='no-js',colorScheme:'dark'});const page=await context.newPage();
@@ -109,7 +106,7 @@ try {
    return expected==='dark'?color==='rgb(39, 38, 43)':color==='rgb(255, 255, 255)';
   },expected);
   assert(await page.locator('figure.mermaid img').evaluateAll(imgs=>imgs.every(img=>img.complete&&img.naturalWidth>0)));
-  console.log(`PASS ${fault}: readable ${expected} theme and diagrams`);assertions++;await context.close();
+  console.log(`PASS ${fault}: readable ${expected} theme and diagrams`);await context.close();
  }
  const shortcut = (await readFile(resolve(root, 'assets/js/just-the-docs.js'), 'utf8')).match(/add event listener on ctrl[^]*?e\.key === '([^']+)'/);
  if (shortcut) {
@@ -119,7 +116,7 @@ try {
   assert.equal(await page.evaluate(()=>document.activeElement.id),'search-input');
   await page.locator('#search-input').fill('country');
   await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
-  console.log('PASS configured search shortcut before index loading');assertions++;await context.close();
+  console.log('PASS configured search shortcut before index loading');await context.close();
  }
  // The header shares feedback while keeping home and release as native links.
  for (const width of [320, 390, 800, 1024, 1280]) for (const scheme of ['light', 'dark']) {
@@ -160,8 +157,7 @@ try {
   await page.waitForURL(release);
   assert.equal(context.pages().length,1);
   console.log(`PASS ${width}px ${scheme}: shared header hover, home area, separate release link and keyboard activation`);
-  assertions+=14;
   await context.close();
  }
- console.log(`Passed ${assertions} browser assertions.`);
+ console.log('Passed browser checks.');
 } finally {await browser?.close();await new Promise(resolve=>server.close(resolve));}

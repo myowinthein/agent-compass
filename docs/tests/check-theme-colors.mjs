@@ -47,5 +47,4 @@ export async function checkThemeColors(page, scheme) {
   }, { png: pixels.toString('base64'), colors: [line, surface, [238, 238, 238]] });
   assert(matches[2] === 0, `${scheme} diagram retained a light-only node background`);
   assert(matches.slice(0, 2).every(count => count > 0), `${scheme} diagram did not render its theme's lines and surfaces`);
-  return 5;
 }
