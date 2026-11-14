@@ -126,6 +126,12 @@ Dir.mktmpdir("compass-icon-check-") do |temp|
   end
   assert.call(CompassValidation.validate(installation), "Restored QM package must validate")
 
+  workflow = installation.join("workflows/country-finder.md")
+  original_workflow = workflow.read(encoding: "UTF-8")
+  workflow.write(original_workflow.sub("- Final step: 6", "- Final step: 7"))
+  rejected = rejected_with.call(installation, "Workflow checkpoint constants must match the registry: country-finder") { workflow.write(original_workflow) }
+  assert.call(rejected, "Validator accepted a workflow checkpoint constant that differs from the registry")
+
   %w[plugin.json .agents/plugins/marketplace.json].each do |path|
     alternate = installation.join(path)
     alternate.parent.mkpath

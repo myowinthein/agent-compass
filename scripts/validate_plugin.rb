@@ -118,6 +118,11 @@ module CompassValidation
       check(spec.fetch("state") == ".#{workflow}-state.json", "Keep checkpoint filenames unchanged")
       artifacts = spec.fetch("artifacts")
       steps = artifacts.values.map { |artifact| artifact.fetch("step") }
+      constants = [["State file", spec.fetch("state")], ["Final step", steps.max],
+                   ["Final output", artifacts.fetch("final-results").fetch("current")]]
+      body = read(resource(root, "workflows/#{workflow}.md"))
+      check(constants.all? { |label, value| body.match?(/^- #{label}: #{Regexp.escape(value.to_s)}\b/) },
+            "Workflow checkpoint constants must match the registry: #{workflow}")
       check(!steps.empty? && steps.all? { |step| step.is_a?(Integer) && step.positive? } && steps.uniq.sort == (1..steps.max).to_a &&
             artifacts.fetch("final-results").fetch("step") == steps.max, "Invalid artifact checkpoint membership")
       artifacts.each_value do |artifact|
