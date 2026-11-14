@@ -10,7 +10,7 @@ The repository README, shared plugin icon and canonical agent instructions remai
 
 ## Reading levels
 
-The sidebar displays `vX.Y.Z` beside the project title; both form one homepage link. Read the version from `.claude-plugin/plugin.json` during the normal docs build; ship maintains that source, so no separate docs version is needed.
+The sidebar displays `vX.Y.Z` beside the project title. The title and surrounding area link to docs home; the version links to its matching GitHub release in the current tab with the standard external indicator. Share the hover highlight across the area and give each link its own keyboard focus target. Read the version from `.claude-plugin/plugin.json` during the normal docs build; ship maintains that source, so no separate docs version is needed.
 
 Documentation provides two human reading modes, with the existing repository available for deeper exploration:
 

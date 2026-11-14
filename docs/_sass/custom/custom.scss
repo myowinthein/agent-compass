@@ -1,3 +1,16 @@
+button:not(:disabled):not([aria-disabled="true"]),
+summary:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
+div.highlighter-rouge,
+div.listingblock > div.content,
+figure.highlight {
+  &:hover > button:not(:disabled):not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+
 :root :focus-visible {
   outline: 2px solid $link-color;
   outline-offset: 2px;
@@ -5,6 +18,16 @@
 
 :root .btn:focus-visible {
   box-shadow: none;
+}
+
+a:not([class]) {
+  text-decoration-color: currentColor;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 2px;
+  }
 }
 
 .search-input::placeholder {
@@ -16,10 +39,38 @@
   outline-offset: -2px;
 }
 
-.site-header .site-title {
-  gap: $sp-2;
+.site-brand {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-self: stretch;
+  align-items: center;
   min-width: 0;
-  padding-right: $sp-2;
+
+  &:hover,
+  &:focus-within {
+    background-image: linear-gradient(-90deg, rgba($feedback-color, 1) 0%, rgba($feedback-color, 0.8) 80%, rgba($feedback-color, 0) 100%);
+  }
+
+  .site-title {
+    flex: 0 1 auto;
+    min-width: 0;
+    padding-right: 0;
+
+    &::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+    }
+
+    &:hover {
+      background-image: none;
+    }
+
+    &:focus-visible {
+      outline-offset: -2px;
+    }
+  }
 }
 
 .site-name {
@@ -29,12 +80,33 @@
 }
 
 .site-version {
+  position: relative;
+  z-index: 1;
   flex: 0 0 auto;
+  margin-inline: $sp-2;
+  padding-block: $sp-2;
   color: $body-text-color;
   font-family: $mono-font-family;
   font-size: 0.75rem;
   font-weight: 400;
+  line-height: 1.5;
   white-space: nowrap;
+
+  &:hover,
+  &:focus-visible {
+    color: $link-color;
+    text-decoration: underline;
+  }
+}
+
+@include mq(md) {
+  .site-brand .site-title {
+    font-size: 1.25rem !important;
+  }
+
+  .site-version {
+    margin-inline: 0.375rem;
+  }
 }
 
 .theme-switcher {

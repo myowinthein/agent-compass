@@ -121,5 +121,44 @@ try {
   await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
   console.log('PASS configured search shortcut before index loading');assertions++;await context.close();
  }
+ // The header shares feedback while keeping home and release as native links.
+ for (const width of [320, 390, 800, 1024, 1280]) for (const scheme of ['light', 'dark']) {
+  const context=await createContext({viewport:{width,height:900},colorScheme:scheme});
+  await context.route('https://github.com/myowinthein/agent-compass/releases/tag/*', route=>route.fulfill({contentType:'text/html',body:'<!doctype html><title>Release fixture</title>'}));
+  const page=await context.newPage();
+  await page.goto(`${origin}/agent-compass/docs/commands/country-finder.html`);
+  const brand=page.locator('.site-brand');
+  const title=brand.locator('.site-title');
+  const version=brand.locator('.site-version');
+  assert(await brand.locator('.site-name').evaluate(el=>el.scrollWidth<=el.clientWidth+1),'Project title is truncated');
+  const label=(await version.textContent()).trim();
+  const release=`https://github.com/myowinthein/agent-compass/releases/tag/${label}`;
+  assert.equal(await title.getAttribute('href'),'/agent-compass/');
+  assert.equal(await version.getAttribute('href'),release);
+  assert.equal(await version.getAttribute('target'),null);
+  assert(await version.evaluate(a=>getComputedStyle(a,'::after').maskImage.includes('external-link.svg')));
+  await title.hover();
+  const highlight=await brand.evaluate(el=>getComputedStyle(el).backgroundImage);
+  assert.notEqual(highlight,'none');
+  await version.hover();
+  assert.equal(await brand.evaluate(el=>getComputedStyle(el).backgroundImage),highlight);
+  const box=await brand.boundingBox();
+  const versionBox=await version.boundingBox();
+  assert(versionBox.height>=24 && versionBox.width>=24);
+  assert(versionBox.x>=box.x && versionBox.x+versionBox.width<=box.x+box.width);
+  await page.mouse.click(box.x+box.width-3,box.y+box.height-3);
+  await page.waitForURL(`${origin}/agent-compass/`);
+  await page.goto(`${origin}/agent-compass/docs/commands/country-finder.html`);
+  await page.locator('.site-brand .site-title').focus();
+  await page.keyboard.press('Tab');
+  const focused=page.locator('.site-brand .site-version');
+  assert(await focused.evaluate(a=>a===document.activeElement && a.matches(':focus-visible') && getComputedStyle(a).outlineStyle!=='none'));
+  await page.keyboard.press('Enter');
+  await page.waitForURL(release);
+  assert.equal(context.pages().length,1);
+  console.log(`PASS ${width}px ${scheme}: shared header hover, home area, separate release link and keyboard activation`);
+  assertions+=13;
+  await context.close();
+ }
  console.log(`Passed ${assertions} browser assertions.`);
 } finally {await browser?.close();await new Promise(resolve=>server.close(resolve));}

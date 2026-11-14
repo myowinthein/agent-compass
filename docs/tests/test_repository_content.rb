@@ -1,6 +1,7 @@
 require "jekyll"
 require "tmpdir"
 require "pathname"
+require "nokogiri"
 require_relative "../_plugins/repository_content"
 require_relative "../_plugins/asset_digest"
 
@@ -46,10 +47,18 @@ Dir.mktmpdir("repository-docs-") do |temporary|
     # The source-relative path is not a public URL after migration.
   end
   rendered = docs.join("_site/docs/commands/example.html").read
-  raise "Title and version must share the homepage link" unless rendered.include?('<a href="/" class="site-title lh-tight"><span class="site-name">Fixture</span> <span class="site-version">v1.2.3</span></a>')
+  header = Nokogiri::HTML(rendered).at_css('.site-header .site-brand')
+  home = header&.at_css('a.site-title')
+  release = header&.at_css('a.site-version')
+  raise "Title must retain its homepage destination" unless home && home['href'] == '/' && home.text.strip == 'Fixture'
+  raise "Version must be a separate release link" unless release && release.parent == home.parent && release['href'] == 'https://github.com/myowinthein/agent-compass/releases/tag/v1.2.3' && release.text == 'v1.2.3'
+  raise "Release must use the current tab" if release['target']
+  raise "Release needs a meaningful accessible name" unless release['aria-label'] == 'Release v1.2.3 on GitHub'
+  raise "Menu button must remain outside the shared title area" if header.at_css('#menu-button')
   root.join(".claude-plugin/plugin.json").write('{"version":"1.2.4"}')
   site.process
-  raise "Version did not follow the manifest" unless docs.join("_site/docs/commands/example.html").read.include?('<span class="site-version">v1.2.4</span>')
+  updated = Nokogiri::HTML(docs.join("_site/docs/commands/example.html").read).at_css('.site-version')
+  raise "Version and release did not follow the manifest" unless updated.text == 'v1.2.4' && updated['href'].end_with?('/releases/tag/v1.2.4')
   root.join("README.md").unlink
   root.join("README.md").make_symlink(root.join("private.md"))
   begin
@@ -68,5 +77,6 @@ title = '<div class="site-header"><a href="/" class="site-title lh-tight">Fixtur
     raise unless error.message.include?("Just the Docs theme changed")
   end
 end
-raise "Version label was not escaped" unless RepositoryDocs.version_header(title, "1.2<3").include?('<span class="site-version">v1.2&lt;3</span>')
+escaped = Nokogiri::HTML(RepositoryDocs.version_header(title, "1.2<3")).at_css('.site-version')
+raise "Version label or release path was not escaped" unless escaped.text == 'v1.2<3' && escaped['href'].end_with?('/releases/tag/v1.2%3C3')
 puts "Passed docs-root builds, stable public paths, shared homepage/icon bytes and redirected-input rejection."
