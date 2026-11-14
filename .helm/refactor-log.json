@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "assessed_commit": "8ced65e9824b9b8452a8088484547a34481c2eec",
-  "full_scan_commit": "8ced65e9824b9b8452a8088484547a34481c2eec",
+  "assessed_commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+  "full_scan_commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
   "findings": [
     {
       "id": "r-1fa7231b-20d9-4a7e-8515-978c2a01d7b4",
@@ -350,6 +350,275 @@
           ]
         }
       }
+    },
+    {
+      "id": "r-2e055747-83f2-4119-abe4-4addde0dfa11",
+      "category": "Consistency",
+      "summary": "The guide-pair inventory and fixed pair count are duplicated in docs/tests/test_human_guides.rb and docs/tests/test_guide_views.rb, so adding or removing a guide pair needs a coordinated edit of both files (AGENTS.md already records this as a trap).",
+      "paths": [
+        "docs/tests/test_human_guides.rb",
+        "docs/tests/test_guide_views.rb"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14",
+        "priority": "medium",
+        "risk": "needs-review",
+        "reason": "Both tests hard-code the same repository-to-count map and rebuild the same detailed-front-matter inventory; a missed edit fails one test with a misleading message, and the project documents the coordinated edit as a known trap.",
+        "evidence": [
+          "docs/tests/test_human_guides.rb:7 and docs/tests/test_guide_views.rb:14 both define { \"agent-helm\" => 19, \"agent-compass\" => 18 }.fetch(repository)",
+          "Both scan docs/**/*.md for a detailed front-matter key (test_human_guides.rb:19-24, test_guide_views.rb:8-13)",
+          "AGENTS.md Known Traps: adding or removing a pair requires updating the fixed pair count in both files"
+        ],
+        "invariant": "Both tests still fail on the same inputs with the same messages, and the expected pair count stays 18 for this repository."
+      },
+      "state": "open",
+      "depends_on": []
+    },
+    {
+      "id": "r-29e5a8ce-876c-4a25-9b16-91ce316f370e",
+      "category": "Tests",
+      "summary": "browser_frontend.mjs keeps a hand-maintained assertion counter whose increments no longer match the assertions executed, so its final 'Passed N browser assertions' line is unreliable.",
+      "paths": [
+        "docs/tests/browser_frontend.mjs",
+        "docs/tests/check-theme-colors.mjs"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14",
+        "priority": "low",
+        "risk": "safe",
+        "reason": "Each added or removed assertion needs a manual number change in several places, and the printed total already appears to disagree with the executed assertions.",
+        "evidence": [
+          "Increments at browser_frontend.mjs lines 59, 67, 78, 88, 98, 112, 122 and 163 are literal numbers; check-theme-colors.mjs:50 returns a literal 5",
+          "The header loop adds 14 per iteration but contains about 12 assert calls (worker count; not run)"
+        ],
+        "invariant": "Every assertion still executes with its existing message; only the printed total changes."
+      },
+      "state": "open",
+      "depends_on": []
+    },
+    {
+      "id": "r-5c83ae40-5471-4c22-a42f-b16b9e9531ab",
+      "category": "Tests",
+      "summary": "scripts/test_compass.py rebuilds the scan-then-ingest request in 14 places and reloads the workspace registry or its final step in 4, so a change to the ingest request shape needs many parallel edits.",
+      "paths": [
+        "scripts/test_compass.py"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14",
+        "priority": "low",
+        "risk": "safe",
+        "reason": "The same {**payload, source_hash, stored_hash, decisions} construction recurs across 25 research-scan calls, and registry/final-step expressions are repeated.",
+        "evidence": [
+          "grep: 14 occurrences of \"source_hash\": scan[\"source_hash\"], 25 of invoke(\"research-scan\"), 4 of workspace-files.json and 4 of max(a[\"step\"]...)"
+        ],
+        "invariant": "Every scenario, input and assertion stays identical, and the 108-test suite still passes with the same test names."
+      },
+      "state": "open",
+      "depends_on": []
+    },
+    {
+      "id": "r-88f84fa5-fc5e-41f4-aec0-6c72ba9575fb",
+      "category": "Consistency",
+      "summary": "prompts/shared/calculator.md lists a narrower, partly conflicting input set than the Step 4 prompt it delegates to (for example 'if it exists' country ordering versus Step 4's selected-producer rule, and no situational profile, research file or output contract).",
+      "paths": [
+        "prompts/shared/calculator.md",
+        "prompts/salary-calculator/step4-table-calculation.md"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14",
+        "priority": "low",
+        "risk": "needs-review",
+        "reason": "A second, older list of required inputs in the specialist procedure can drift from Step 4 and mislead a fresh specialist.",
+        "evidence": [
+          "calculator.md:3 names 02, 03, the threshold rules and an optional country-finder-06 file",
+          "step4-table-calculation.md:11-33 also requires situational-profile.md, the research file, data/output-contracts.json and the helper skills, and limits ordering to the selected compatible producer"
+        ],
+        "invariant": "The specialist still reads Step 4, reports back under the shared step-completion rule and never improvises calculations; scripts/validate_plugin.rb agent checks still pass."
+      },
+      "state": "open",
+      "depends_on": []
+    },
+    {
+      "id": "r-1bbd6433-59e0-4734-88c1-8b11fd555bce",
+      "category": "Consistency",
+      "summary": "prompts/salary-calculator/step2-data-validation.md calls the evidence grade informational for Step 5, but Step 3 and the adjust-check confidence cap also consume it.",
+      "paths": [
+        "prompts/salary-calculator/step2-data-validation.md",
+        "prompts/salary-calculator/step3-international-adjustment.md",
+        "data/output-contracts.json"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14",
+        "priority": "low",
+        "risk": "needs-review",
+        "reason": "The stated purpose of a stored field is narrower than its real consumers, so a later edit could drop a value Step 3 needs.",
+        "evidence": [
+          "step2:17 says informational for Step 5's audit",
+          "step3:60 and data/output-contracts.json low_evidence_confidence_cap use the grade",
+          "helpers/compass_lib/money.py adjust() requires salary_evidence"
+        ],
+        "invariant": "The field is still stored as provided, a missing grade is stored as 'not provided', and no country is skipped for it."
+      },
+      "state": "open",
+      "depends_on": []
+    },
+    {
+      "id": "r-cb56a741-1f61-4f01-ac3c-03174d5e2bde",
+      "category": "Consistency",
+      "summary": "The Country Finder Step 4 and Salary Step 2 prompts tell the parent to persist 'this same' chat report under ## Validation report, while the ingest helper writes a differently formatted generated report and the next paragraph says persistence is already complete.",
+      "paths": [
+        "prompts/country-finder/step4-data-validation.md",
+        "prompts/salary-calculator/step2-data-validation.md",
+        "helpers/compass_lib/research.py"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14",
+        "priority": "low",
+        "risk": "needs-review",
+        "reason": "Two adjacent paragraphs describe one outcome two ways, and the chat report includes a 'not on either candidate list' category the generated report does not have.",
+        "evidence": [
+          "step4-data-validation.md:24-35",
+          "salary step2:32-34 repeats the pattern",
+          "research.py:309-316 builds the generated Stored/Skipped/Expected report"
+        ],
+        "invariant": "Nothing is written after the generated closing marker, the helper output format is unchanged and the chat inventory is still presented once."
+      },
+      "state": "open",
+      "depends_on": []
+    },
+    {
+      "id": "r-5246e302-6044-40e0-8cbd-ad9b7436b084",
+      "category": "Consistency",
+      "summary": "scripts/validate_plugin.rb checks the shape of data/workspace-files.json but never checks that the workflows' hard-coded state filename, final step and final output name still match it.",
+      "paths": [
+        "scripts/validate_plugin.rb",
+        "workflows/country-finder.md",
+        "workflows/salary-calculator.md",
+        "data/workspace-files.json"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14",
+        "priority": "low",
+        "risk": "safe",
+        "reason": "A registry rename or step renumber would leave workflow text stale with no failing check, while the Python helpers follow the registry.",
+        "evidence": [
+          "workflows/country-finder.md:19-21 and salary-calculator.md:17-19 restate the values",
+          "validate_plugin.rb:110-132 validates only the registry's own shape",
+          "state.py derives the final step from the registry"
+        ],
+        "invariant": "Registry remains the sole owner and the added check passes on the current files; existing validator messages and mutation tests are unchanged."
+      },
+      "state": "open",
+      "depends_on": []
+    },
+    {
+      "id": "r-1d06a2ed-6aef-4858-aedd-fc1ae32be9f3",
+      "category": "Architecture",
+      "summary": "The run-selection paragraph is word-for-word identical in workflows/country-finder.md and workflows/salary-calculator.md and restates outcomes owned by skills/run-workspaces.md.",
+      "paths": [
+        "workflows/country-finder.md",
+        "workflows/salary-calculator.md",
+        "skills/run-workspaces.md"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14",
+        "priority": "low",
+        "risk": "needs-review",
+        "reason": "Changing the View, Resume or Start-fresh wording means editing three files.",
+        "evidence": [
+          "Line 7 of both workflows is identical (diff verified)",
+          "skills/run-workspaces.md:26-34 owns the same outcomes"
+        ],
+        "invariant": "Read-first ordering, 'new chats start fresh' and 'preserve earlier runs' semantics are kept; nothing in scripts/ asserts this paragraph."
+      },
+      "state": "open",
+      "depends_on": []
+    },
+    {
+      "id": "r-1fdee550-82fc-4993-a3ef-cb95b832816b",
+      "category": "Code Quality",
+      "summary": "prompts/salary-calculator/step5b-final-verification.md states its delivery contract, helper/render rule, blocked-route handling and Step 4 framework definitions more than once, so a rule change needs several coordinated edits in a 213-line prompt.",
+      "paths": [
+        "prompts/salary-calculator/step5b-final-verification.md",
+        "prompts/salary-calculator/step4-table-calculation.md"
+      ],
+      "found": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14"
+      },
+      "assessment": {
+        "origin": "native",
+        "commit": "91ee6b483af4b5ec2df37f39b0dfb03dcf41b006",
+        "date": "2026-11-14",
+        "priority": "low",
+        "risk": "needs-review",
+        "reason": "Repeated statements in the final-audit prompt can drift from each other and from Step 4, which already owns the definitions.",
+        "evidence": [
+          "step5b:37, 39, 195 and 199 restate the file and chat delivery contract",
+          "step5b:27-31 repeats Step 4 definitions although line 9 points to Step 4",
+          "step5b:203-211 repeats the Goal at 17-25"
+        ],
+        "invariant": "All audit checks, recalibration gates, the blocked return, the single-file write and the test-pinned phrases at scripts/test_plugin.rb:296-303 stay verbatim; a model replay cannot be run offline."
+      },
+      "state": "open",
+      "depends_on": []
     }
   ]
 }
