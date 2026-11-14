@@ -84,4 +84,4 @@ If a workflow behaves unexpectedly, a guide is unclear or you have an idea for A
 
 Agent Compass is licensed under the [MIT License](https://github.com/myowinthein/agent-compass/blob/main/LICENSE). © Myo Win Thein.
 
-<!-- last-reviewed: b5b04b34919a17a40f6e3cbc96ba163dec68db16 -->
+<!-- last-reviewed: 9f239a240b19311f23f3369726540bdd82c9ac01 -->
