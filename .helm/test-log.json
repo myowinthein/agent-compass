@@ -37,6 +37,64 @@
       }
     },
     {
+      "id": "g-24b77b1d-ef12-41bd-97a1-6d0b56a48ef8",
+      "expected": "Rendered Country Finder and Salary table cells escape `&`, `<`, `>`, `|`, `*` and backticks and collapse whitespace, so a limitation, note or country name containing those characters keeps each row at its fixed cell count and renders literally.",
+      "basis": [
+        "helpers/compass_lib/common.py#cell",
+        "data/output-contracts.json",
+        "scripts/test_plugin.rb (example cell-count checks)"
+      ],
+      "paths": [
+        "helpers/compass_lib/common.py",
+        "helpers/compass_lib/tables.py",
+        "helpers/compass_lib/research.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "medium",
+      "reason": "cell() is the single escaping point for every saved table and validation report, but no test passes a pipe, asterisk, backtick, angle bracket or ampersand through it. check-saved compares output with the same renderer, so a regression would not be caught.",
+      "action": "add",
+      "layer": "Table rendering",
+      "state": "open",
+      "assessed_commit": "be2fa90fbfba6f557e7ee59e771130b9c1f14ef7"
+    },
+    {
+      "id": "g-269a1b3b-4783-429f-b178-26ac36645111",
+      "expected": "render-cf rejects an unknown Summary fit, unknown application priority, unknown ingestion disposition and a duplicate expected candidate with invalid_input instead of rendering them.",
+      "basis": [
+        "helpers/compass_lib/tables.py#country",
+        "data/output-contracts.json"
+      ],
+      "paths": [
+        "helpers/compass_lib/tables.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "low",
+      "reason": "Contradiction, duplicate-decision and stored-research rules are tested, but the closed-vocabulary rejections and duplicate expected candidates are not asserted directly.",
+      "action": "add",
+      "layer": "Country table rendering",
+      "state": "open",
+      "assessed_commit": "be2fa90fbfba6f557e7ee59e771130b9c1f14ef7"
+    },
+    {
+      "id": "g-2a75fac9-f3ad-44ba-be51-a91c32836181",
+      "expected": "render-salary rejects a row whose visa rule contradicts its calculation (duplicate country, visa currency or pay basis differing from the calculation, an amount or period differing from the recorded visa comparison, a numeric comparison attached to a non-numeric visa state, a Blocked state without a reason, or an unknown visa state or period) instead of printing a visa figure or warning.",
+      "basis": [
+        "helpers/compass_lib/tables.py#salary",
+        "skills/sponsorship-threshold-rules.md",
+        "AGENTS.md#domain-rules"
+      ],
+      "paths": [
+        "helpers/compass_lib/tables.py",
+        "scripts/test_compass.py"
+      ],
+      "priority": "medium",
+      "reason": "The visa column and its warning marker are a user-facing legal-threshold claim. The renderer has several fail-closed checks, but existing tests cover only the accepted states, exact-fraction display and a pass or fail warning, not these rejections.",
+      "action": "add",
+      "layer": "Salary table rendering",
+      "state": "open",
+      "assessed_commit": "be2fa90fbfba6f557e7ee59e771130b9c1f14ef7"
+    },
+    {
       "id": "g-4d9929bb-fe10-48bc-8f16-00560b658ff9",
       "expected": "Canonical .helm operational records are excluded from Git archives alongside legacy developer and host artifacts, with an archive-policy regression check.",
       "basis": [
