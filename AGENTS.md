@@ -76,7 +76,7 @@ This covers Compass's agent-facing instructions. General prose follows `.claude/
 
 ## Documentation
 
-Website files and documentation checks live under `docs/`; run Jekyll there. `docs/_plugins/repository_content.rb` renders the root README and shared plugin icon while retaining published URLs, and reads the sidebar version from `.claude-plugin/plugin.json`, so release bumps need no docs edit. Canonical agent instructions stay at their package paths.
+Website files and documentation checks live under `docs/`; run Jekyll there. `docs/_plugins/repository_content.rb` renders the root README and shared plugin icon while retaining published URLs, and reads the sidebar version from `.claude-plugin/plugin.json`, so release bumps need no docs edit. The sidebar version links to the matching GitHub release tag, so tags must stay `vX.Y.Z`. The site serves all its resources itself and its privacy policy says so; adding an external host needs a matching update to `docs/legal/privacy-policy.md`. Canonical agent instructions stay at their package paths.
 
 Before editing the following content, read and follow its standard alongside the project's active Writing rule:
 
@@ -96,6 +96,7 @@ When consulting Claude for a project review/discussion or running Claude workflo
 - `.gitattributes` excludes canonical `.helm/` and legacy `.claude/helm/` records from Git archives. Preserve both exclusions; `scripts/test_plugin.rb` checks nested canonical paths in an isolated synthetic archive.
 - Overview and Details are independently authored human guides under `docs/`. Details expands the Overview journey with explanations, examples and meaningful decisions; it never embeds raw agent instructions. `source_files` records reference sources and each page links to the existing repository for implementation depth. `docs/tests/test_human_guides.rb` checks this separation and view pairing; built-site checks preserve the selector, sidebar activation and navigation. Specialist explanations follow the same human-guide approach. Adding or removing a pair requires updating the fixed pair count (18) in `docs/tests/test_human_guides.rb` and `docs/tests/test_guide_views.rb`.
 - `docs/_plugins/frontend.rb` and `repository_content.rb` patch Just the Docs output by exact match and raise `Just the Docs theme changed` when its markup or scripts move. Because the theme follows `@latest`, a theme release can fail the build until the matching patch is updated.
+- Diagram colours are set in `docs/scripts/render-diagrams.mjs` and re-checked as literal values in `docs/tests/check-theme-colors.mjs`, which inspects rendered pixels in light and dark. Change both together.
 
 ## Rules
 
@@ -107,4 +108,4 @@ For repository contributor work, read and follow these shared local rules on bot
 
 These contributor copies are not dependencies of the Compass workflows.
 
-<!-- last-reviewed: 5561863de50f7c2d56368ec1f5e6c5cfe8b52eea -->
+<!-- last-reviewed: 4c6e3c0c5ee6b9082fe16db28ec91d8e73d7556e -->
