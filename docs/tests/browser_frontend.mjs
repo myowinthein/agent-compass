@@ -131,6 +131,9 @@ try {
   const title=brand.locator('.site-title');
   const version=brand.locator('.site-version');
   assert(await brand.locator('.site-name').evaluate(el=>el.scrollWidth<=el.clientWidth+1),'Project title is truncated');
+  await title.evaluate(el=>el.style.fontFamily='Verdana, sans-serif');
+  assert(await brand.locator('.site-name').evaluate(el=>el.scrollWidth<=el.clientWidth+1),`Project title is truncated with a wider fallback font at ${width}px ${scheme}`);
+  await title.evaluate(el=>el.style.removeProperty('font-family'));
   const label=(await version.textContent()).trim();
   const release=`https://github.com/myowinthein/agent-compass/releases/tag/${label}`;
   assert.equal(await title.getAttribute('href'),'/agent-compass/');
@@ -157,7 +160,7 @@ try {
   await page.waitForURL(release);
   assert.equal(context.pages().length,1);
   console.log(`PASS ${width}px ${scheme}: shared header hover, home area, separate release link and keyboard activation`);
-  assertions+=13;
+  assertions+=14;
   await context.close();
  }
  console.log(`Passed ${assertions} browser assertions.`);
