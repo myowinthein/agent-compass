@@ -508,6 +508,35 @@ class CompassCLI(unittest.TestCase):
         self.assertIn("| 🇩🇪 Germany (EUR) | Unknown | 60,000 | 84,000 | 5,000 | 7,000 |", result["markdown"])
         self.assertEqual(result["calculations"][0]["segments"]["mainstream"]["comparisons"], {})
 
+    def test_salary_rows_that_contradict_their_visa_rule_are_rejected(self):
+        recorded = {"visa": {"amount": "50000", "period": "annual", "currency": "EUR", "pay_basis": "gross_base"}}
+        for label, change, message in (
+                ("a duplicate country", lambda p: p["rows"].append(json.loads(json.dumps(p["rows"][0]))), "Duplicate salary country"),
+                ("a visa currency that differs from the targets", lambda p: p["rows"][0]["visa"].update(currency="USD"),
+                 "Visa comparison needs the same currency and eligible base components"),
+                ("a visa pay basis that differs from the targets", lambda p: p["rows"][0]["visa"].update(pay_basis="net"),
+                 "Visa comparison needs the same currency and eligible base components"),
+                ("an amount that differs from the recorded comparison",
+                 lambda p: p["rows"][0]["calculation"].update(comparisons=recorded), "Visa rule contradicts the calculation input"),
+                ("a period that differs from the recorded comparison",
+                 lambda p: (p["rows"][0]["calculation"].update(comparisons={"visa": {**recorded["visa"], "amount": "58275", "period": "monthly"}})),
+                 "Visa rule contradicts the calculation input"),
+                ("a numeric comparison on a nonnumeric state",
+                 lambda p: (p["rows"][0]["calculation"].update(comparisons=recorded), p["rows"][0].update(visa={"state": "Unknown"})),
+                 "Remove numeric visa comparison for a nonnumeric state"),
+                ("numeric fields on a nonnumeric state", lambda p: p["rows"][0].update(visa={"state": "Unknown", "amount": "1"}),
+                 "Use no numeric comparison for a nonnumeric visa state"),
+                ("a numeric rule without its period", lambda p: p["rows"][0]["visa"].pop("period"),
+                 "Numeric visa rule needs amount, period, currency and pay_basis"),
+                ("an unknown pay period", lambda p: p["rows"][0]["visa"].update(period="weekly"), "Unknown visa pay period"),
+                ("an unknown visa state", lambda p: p["rows"][0].update(visa={"state": "Pending"}), "Unknown visa state"),
+                ("a Blocked state without a reason", lambda p: p["rows"][0].update(visa={"state": "Blocked"}), "Expected nonempty text")):
+            with self.subTest(label=label):
+                payload = self.salary_request()
+                change(payload)
+                error = self.invoke("render-salary", payload, 2)["error"]
+                self.assertEqual((error["kind"], error["message"]), ("invalid_input", message))
+
     @staticmethod
     def country_request():
         return {"expected": ["Germany", "Netherlands", "Canada"], "early_exclusions": {"Germany": {"remote": "outside timezone limit"}}, "decisions": [
@@ -522,6 +551,14 @@ class CompassCLI(unittest.TestCase):
         self.assertNotIn("| 🇳🇱 Netherlands |", result["summary_markdown"])
         self.assertEqual(result["counts"]["remote"], {"scored": 1, "excluded": 1, "not_scored": 1})
         self.assertIn("outside timezone limit", " ".join(result["audit_notes"]))
+
+    def test_table_cells_escape_markup_and_keep_the_row_width(self):
+        payload = self.country_request()
+        payload["decisions"][0]["limitation"] = "Pay |  tier\t*A* `x` <b> & c"
+        row = next(line for line in self.invoke("render-cf", payload)["result"]["table_markdown"].splitlines()
+                   if line.startswith("| 🇩🇪 Germany"))
+        self.assertEqual(row, "| 🇩🇪 Germany | 🥉 Monitor | Excluded | Moderate | "
+                              "Pay &#124; tier &#42;A&#42; &#96;x&#96; &lt;b&gt; &amp; c |")
 
     def test_country_priority_order_is_stable_with_alphabetic_pending_rows(self):
         payload = {"expected": ["ZA", "Netherlands", "Canada", "DE", "Austria", "France", "Japan"],
@@ -556,6 +593,18 @@ class CompassCLI(unittest.TestCase):
         payload = self.country_request()
         payload["early_exclusions"]["🇩🇪 Germany"] = {"sponsorship": "other reason"}
         self.invoke("render-cf", payload, 2)
+
+    def test_country_values_outside_the_contract_vocabulary_are_rejected(self):
+        for label, change, message in (
+                ("an unknown fit", lambda p: p["decisions"][0].update(sponsorship="Fine"), "Unknown Summary fit"),
+                ("an unknown priority", lambda p: p["decisions"][0].update(priority="Top"), "Unknown application priority"),
+                ("an unknown ingestion disposition", lambda p: p["decisions"][0].update(ingestion="maybe"), "Unknown ingestion disposition"),
+                ("a duplicate expected candidate", lambda p: p["expected"].append("germany"), "Duplicate expected candidate")):
+            with self.subTest(label=label):
+                payload = self.country_request()
+                change(payload)
+                error = self.invoke("render-cf", payload, 2)["error"]
+                self.assertEqual((error["kind"], error["message"]), ("invalid_input", message))
 
     def test_country_scored_track_requires_stored_research_with_an_exclusion(self):
         for excluded, scored in (("remote", "sponsorship"), ("sponsorship", "remote")):
