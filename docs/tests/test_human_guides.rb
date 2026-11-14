@@ -1,10 +1,11 @@
 require "pathname"
 require "yaml"
+require_relative "guide_pairs"
 
 root = Pathname(__dir__).parent.parent.realpath
 config = YAML.safe_load_file(root.join("docs/_config.yml"))
 repository = config.fetch("baseurl").delete_prefix("/")
-expected_count = { "agent-helm" => 19, "agent-compass" => 18 }.fetch(repository)
+expected_count = GuidePairs::EXPECTED_COUNTS.fetch(repository)
 source_url = "https://github.com/myowinthein/#{repository}/blob/main/"
 
 def document(path)
@@ -13,11 +14,7 @@ def document(path)
   [YAML.safe_load(match[1]), match[2]]
 end
 
-pairs = root.glob("docs/**/*.md").filter_map do |path|
-  next if path.to_s.include?("/_site/")
-  data, = document(path) if path.read.start_with?("---\n")
-  [path, data] if data && data["detailed"]
-end
+pairs = GuidePairs.overviews(root)
 raise "Unexpected paired-guide inventory" unless pairs.size == expected_count
 raise "Source-injection plugin must not return" if root.join("docs/_plugins/guide_content.rb").exist?
 

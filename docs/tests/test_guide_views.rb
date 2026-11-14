@@ -2,16 +2,13 @@ require "jekyll"
 require "nokogiri"
 require "pathname"
 require "yaml"
+require_relative "guide_pairs"
 
 root = Pathname(__dir__).parent.parent
 base = YAML.safe_load_file(root.join("docs/_config.yml")).fetch("baseurl")
-overviews = root.glob("docs/**/*.md").filter_map do |path|
-  frontmatter = path.read.match(/\A---\n(.*?)\n---\n/m)
-  data = frontmatter && YAML.safe_load(frontmatter[1])
-  [path, data] if data && data["detailed"]
-end
+overviews = GuidePairs.overviews(root)
 repository = base.delete_prefix("/")
-expected = { "agent-helm" => 19, "agent-compass" => 18 }.fetch(repository)
+expected = GuidePairs::EXPECTED_COUNTS.fetch(repository)
 raise "Unexpected paired topic inventory" unless overviews.size == expected
 
 overviews.each do |source, data|
