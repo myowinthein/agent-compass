@@ -54,8 +54,22 @@
       "reason": "cell() is the single escaping point for every saved table and validation report, but no test passes a pipe, asterisk, backtick, angle bracket or ampersand through it. check-saved compares output with the same renderer, so a regression would not be caught.",
       "action": "add",
       "layer": "Table rendering",
-      "state": "open",
-      "assessed_commit": "be2fa90fbfba6f557e7ee59e771130b9c1f14ef7"
+      "state": "resolved",
+      "assessed_commit": "be2fa90fbfba6f557e7ee59e771130b9c1f14ef7",
+      "tests": [
+        "scripts/test_compass.py::test_table_cells_escape_markup_and_keep_the_row_width"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_compass.py::test_table_cells_escape_markup_and_keep_the_row_width"
+        ],
+        "method": "runtime",
+        "outcome": "The new test passed alongside the 108-test helper suite. It asserts a Country Finder row whose limitation holds a pipe, asterisks, backticks, angle brackets and an ampersand renders those as entities with whitespace collapsed. Removing the pipe escape in a throwaway copy made it fail.",
+        "commit": "01830b71545298767e39dd4196a2a041a4fafffc",
+        "command": "python3 -B scripts/test_compass.py",
+        "scope": "Local macOS Python 3.14.7 contributor check; fictional inputs and temporary directories only, no network. Offline helper CLI behavior, not live research."
+      }
     },
     {
       "id": "g-269a1b3b-4783-429f-b178-26ac36645111",
@@ -72,8 +86,22 @@
       "reason": "Contradiction, duplicate-decision and stored-research rules are tested, but the closed-vocabulary rejections and duplicate expected candidates are not asserted directly.",
       "action": "add",
       "layer": "Country table rendering",
-      "state": "open",
-      "assessed_commit": "be2fa90fbfba6f557e7ee59e771130b9c1f14ef7"
+      "state": "resolved",
+      "assessed_commit": "be2fa90fbfba6f557e7ee59e771130b9c1f14ef7",
+      "tests": [
+        "scripts/test_compass.py::test_country_values_outside_the_contract_vocabulary_are_rejected"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_compass.py::test_country_values_outside_the_contract_vocabulary_are_rejected"
+        ],
+        "method": "runtime",
+        "outcome": "The new test passed alongside the 108-test helper suite. Four subtests assert an unknown fit, priority, ingestion disposition and a duplicate expected candidate exit 2 with invalid_input and their messages. Not mutation-checked.",
+        "commit": "01830b71545298767e39dd4196a2a041a4fafffc",
+        "command": "python3 -B scripts/test_compass.py",
+        "scope": "Local macOS Python 3.14.7 contributor check; fictional inputs and temporary directories only, no network. Offline helper CLI behavior, not live research."
+      }
     },
     {
       "id": "g-2a75fac9-f3ad-44ba-be51-a91c32836181",
@@ -91,8 +119,22 @@
       "reason": "The visa column and its warning marker are a user-facing legal-threshold claim. The renderer has several fail-closed checks, but existing tests cover only the accepted states, exact-fraction display and a pass or fail warning, not these rejections.",
       "action": "add",
       "layer": "Salary table rendering",
-      "state": "open",
-      "assessed_commit": "be2fa90fbfba6f557e7ee59e771130b9c1f14ef7"
+      "state": "resolved",
+      "assessed_commit": "be2fa90fbfba6f557e7ee59e771130b9c1f14ef7",
+      "tests": [
+        "scripts/test_compass.py::test_salary_rows_that_contradict_their_visa_rule_are_rejected"
+      ],
+      "closure": {
+        "reason": "tested",
+        "refs": [
+          "scripts/test_compass.py::test_salary_rows_that_contradict_their_visa_rule_are_rejected"
+        ],
+        "method": "runtime",
+        "outcome": "The new test passed alongside the 108-test helper suite. Eleven subtests assert each visa/calculation contradiction exits 2 with invalid_input and its message. Removing the duplicate-country check in a throwaway copy made it fail.",
+        "commit": "01830b71545298767e39dd4196a2a041a4fafffc",
+        "command": "python3 -B scripts/test_compass.py",
+        "scope": "Local macOS Python 3.14.7 contributor check; fictional inputs and temporary directories only, no network. Offline helper CLI behavior, not live research."
+      }
     },
     {
       "id": "g-4d9929bb-fe10-48bc-8f16-00560b658ff9",
