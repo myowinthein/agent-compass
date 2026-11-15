@@ -2,12 +2,23 @@
 title: Known issues
 nav_exclude: true
 permalink: /docs/known-issues.html
-description: Review observed Agent Compass limitations in Claude and Codex, including question handling, plugin display and installation behavior.
+description: Review observed Agent Compass limitations in Claude and Codex, including instruction following, question handling, plugin display and installation behavior.
 ---
 
 # Known issues
 
-Observations from maintainer testing and use on macOS, alongside documented platform limitations. Platform documentation was checked on **28–29 October 2026**.
+Observations from maintainer testing and use on macOS, alongside documented platform limitations. References were checked on **28–29 October 2026**, and **16 November 2026** for the instruction-following entry.
+
+## Across agents
+
+<details id="instructions-and-workflow-steps-may-not-be-followed-consistently" markdown="block">
+<summary>Instructions and workflow steps may not be followed consistently</summary>
+
+**Observed:** Claude and Codex have sometimes [skipped rules or command steps](https://github.com/anthropics/claude-code/issues/18454), [stopped before completion](https://github.com/openai/codex/issues/36596), or [changed a required output format](https://github.com/openai/codex/issues/25673).
+
+[Written instructions do not guarantee consistent execution](https://code.claude.com/docs/en/best-practices#deterministic-and-non-deterministic-instructions). Point out the missed requirement and ask the agent to resume from the last verified step. Check the actual result before accepting a completion claim.
+
+</details>
 
 ## Codex CLI
 
