@@ -24,6 +24,8 @@ Other than the Salary Calculator offer, default-list question and any material r
 
 An explicit user-supplied country list and clear exclusions already confirm that scope; do not ask again. Confirm a materially ambiguous region expansion instead. If no countries remain, explain and ask for a revised list or stop before research. Before collecting results, save the confirmed list under `## Research scope` in country-finder-02-candidates.md. Keep that preface country-only; candidate context and provenance belong in findings, not extra preface lines. On resume reuse this scope and successful blocks, not just the countries whose tasks returned.
 
+Read and apply [skills/country-assessment-rules.md](../../skills/country-assessment-rules.md). Embed its applicable comparison and discovery-gap rules literally in each brief.
+
 ## Part B — Research each country for both tracks together
 
 Batch the final country list for parallel research:
@@ -41,6 +43,7 @@ For each batch, generate one ready-to-copy research prompt. Each prompt must emb
 Each prompt must instruct the researcher to use current web research (prioritizing sources from the last 12 months), not memory or general reputation, and must require the researcher to check, for every country in the batch, both of the following:
 
 Remote suitability:
+- Compare role-specific market demand, skill/seniority match and relevant job hubs before assessing access/pay. A promising lead with unpublished terms is grounds for detailed investigation, not a requirement for a fully verified offer at discovery.
 - Do employers in this country commonly hire this role at the stated level while the candidate works from the supplied current location? Require applicable location/region evidence, not domestic-only remote policy. If already in the target country, local remote hiring can qualify; label it accurately.
 - Establish the relevant employee, employer-of-record or contractor route and pay for that population. Local-employee salary or an employer's "remote-first" label alone does not establish cross-border pay or location eligibility.
 - If a minimum monthly salary was specified, does typical remote salary for this role realistically meet or exceed it? Skip this check if none was specified.
@@ -48,6 +51,7 @@ Remote suitability:
 - Evidence must come from remote job boards, remote hiring reports, salary surveys, or company remote-hiring policies.
 
 Sponsorship suitability:
+- Compare the same market and role factors. Verify employer willingness using relevant policies or hiring history as well as current vacancies; no sponsorship wording in one advert is not a country rejection.
 - Does a real, named, documented work-visa pathway exist where a local employer is the sponsor — a standard employer-sponsored work visa or work permit tied to a job offer? Digital-nomad, remote-worker, long-stay, or self-qualifying visas do not count, even if well-known or highly ranked in search results — they do not involve a local employer sponsoring the candidate, which is what this track requires. If a country has both an employer-sponsored route and a digital-nomad-style visa, evaluate only the employer-sponsored one.
 - Does the candidate's occupation appear on any official shortage-occupation or in-demand skills list, if one exists? Being listed is a positive factor (often easing salary thresholds or approval) and, for the minority of visas that make it an explicit legal requirement, check whether that applies to the pathway already identified. Absence from a shortage list does not by itself make Suitable "no" unless the identified pathway explicitly requires it.
 - Consider citizenship-specific visa reciprocity, restrictions, or friction, based on the situational profile.
@@ -56,6 +60,8 @@ Sponsorship suitability:
 - Do not determine Suitable by comparing a visa's salary threshold to the candidate's own stated minimum salary — that minimum reflects what the candidate would accept, not what a real employer would offer. If a salary threshold applies, note it in the Reason field as a fact for later steps to weigh against real market data; it must never by itself make Suitable "no."
 
 Important rule for every prompt:
+
+A discovery yes is a research lead, not certified eligibility. Both yes and no evidence found continue to Step 3; no requires a concrete supported exclusion on this track. Missing pay, one closed vacancy, one employer refusal or an unmentioned employment mechanism cannot alone exclude a country. Save checked factors, useful leads and unresolved gaps in Reason.
 
 Do not report a finding based on reputation alone. If a country is commonly assumed to be a good fit but no real, dated source supports it, report "no evidence found" for that track rather than guessing.
 

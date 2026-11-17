@@ -8,6 +8,7 @@ permalink: /docs/commands/country-finder/detailed.html
 title_category: Details
 description: "Country Finder helps decide where to spend your application effort. It investigates cross-border Remote work and employer-sponsored relocation separately, then turns the evidence into priorities for your confirmed profile."
 source_files:
+  - skills/country-assessment-rules.md
   - workflows/country-finder.md
 ---
 
@@ -43,13 +44,13 @@ flowchart TD
   Criteria["1. Confirm background and search criteria"] --> Scope["2. Choose countries and research Remote/Sponsorship suitability"]
   Scope --> Empty{"Any countries in scope?"}
   Empty -->|No| Ask["Ask for a revised list or stop"]
-  Empty -->|Yes| Research["3. Collect detailed research for eligible tracks; or save a scope-only record"]
+  Empty -->|Yes| Research["3. Research non-excluded tracks and follow up promising gaps"]
   Research --> Data["4. Validate and store accepted research without rewriting it"]
   Data --> Saved{"Required outputs saved and checked?"}
   Saved -->|No| Hold["Preserve results; reconcile failure without advancing"]
   Saved -->|Yes| Assess["5. Assess fit/confidence per track; optional specialist"]
   Assess --> Audit["6. Audit every candidate, exclusions and gaps; optional specialist"]
-  Audit --> Final["Save the audit and Priority Table; show the table in chat"]
+  Audit --> Final["Save the audit; show separate Remote and Relocation priorities"]
 ```
 
 ## Start the command
@@ -70,7 +71,7 @@ That optional transfer uses names only. An unfinished salary search or a skipped
 
 Remote evidence must apply to hiring someone in your actual working location. A company's domestic work-from-home policy does not establish cross-border hiring or pay. Sponsorship needs an employer-sponsored route and relevant willingness to hire; nomad or self-sponsored routes do not satisfy that track.
 
-[Detailed research](step3-research-prompt-generator.html) follows tracks found eligible at discovery. Research tasks receive the needed profile facts directly and are kept separate from each other. If suitable research access is unavailable, you receive prompts and the workflow waits for supplied results rather than inventing findings.
+[Detailed research](step3-research-prompt-generator.html) follows every non-excluded track, including those where discovery found no evidence. It compares demand, personal fit, access and pay consistently, then follows up decision-changing gaps in promising markets. Research tasks receive the needed profile facts directly and are kept separate from each other. If suitable research access is unavailable, you receive prompts and the workflow waits for supplied results rather than inventing findings.
 
 ### Validate, assess and audit
 
@@ -80,14 +81,16 @@ The [final audit](step6-final-ranking.html) checks missing candidates, confidenc
 
 ## Your result
 
-Chat shows a Priority Table with each country, application priority, both track fits and the main limitation. The saved final report contains the fuller audit and effort guidance. Unknown evidence, a known Weak fit and an explicit Exclusion remain different outcomes.
+Chat shows independently ordered Remote and Relocation tables. Each gives the country, priority, fit, confidence, main limitation and next action. The saved report retains the fuller market comparison, audit and effort guidance. Unknown evidence, a known Weak fit and an explicit Exclusion remain different outcomes.
 
-For example, strong Remote evidence can justify pursuing a country while Sponsorship remains unknown. That is not a reason to invent a sponsorship fit. When neither track supports a positive assessment and evidence is missing, Pending evidence is more accurate than a negative ranking.
+For example, a close role match and recurring hiring can justify Investigate next while the employer's Thailand eligibility or comparable pay is unresolved. Supported fit stays visible without implying an application-ready recommendation. Weak relocation evidence can receive Deprioritize even when Remote remains Pending evidence.
 
-A nonempty country scope can still reach an audit when no tracks receive detailed research: exclusions and gaps are accounted for without fabricated scores. An empty country list instead needs a revised scope or a stop.
+Only explicit exclusions skip detailed research. Incomplete tasks need recovery; completed searches can still finish with documented unresolved findings. Fully excluded tracks remain accounted for, and an empty country list needs a revised scope or a stop.
 
 The final Summary records the audited fits. Salary Calculator can use compatible results for its own country selection; [Portal Finder](../portal-finder.html) can help find job boards for one chosen country. Neither follow-up happens automatically.
 
 ## Explore the source
 
 For implementation details, read [workflows/country-finder.md](https://github.com/myowinthein/agent-compass/blob/main/workflows/country-finder.md).
+
+The shared [assessment framework](https://github.com/myowinthein/agent-compass/blob/main/skills/country-assessment-rules.md) defines the evidence factors and verification distinctions.

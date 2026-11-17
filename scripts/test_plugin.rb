@@ -311,11 +311,11 @@ assert.call(audit_prompt.include?("Read prompts/salary-calculator/step4-table-ca
 # Country Finder is Markdown instructions, not an executable scoring engine.
 # Check the declared contract and documentation fixtures; do not claim these
 # assertions exercise a model's evidence judgments or live workflow behavior.
-priority_header = "| Country | Priority | Remote Fit | Sponsorship Fit | Main limitation |"
+priority_header = "| Country | Priority | Fit | Confidence | Main limitation | Next action |"
 old_header = "| Country | Tier | Remote Fit | Sponsorship Fit |"
 final_prompt = root.join("prompts/country-finder/step6-final-ranking.md").read(encoding: "UTF-8:UTF-8")
 final_docs = root.join("docs/commands/country-finder/step6-final-ranking.md").read(encoding: "UTF-8:UTF-8")
-priorities = ["🥇 Focus", "🥈 Selective", "🥉 Monitor", "🎗️ Deprioritize", "Pending evidence"]
+priorities = ["🥇 Focus", "🥈 Selective", "Investigate next", "🥉 Monitor", "🎗️ Deprioritize", "Pending evidence"]
 fits = %w[Strong Moderate Weak Excluded Unknown]
 [final_prompt, final_docs].each do |text|
   assert.call(text.include?(priority_header) || text.include?("data/output-contracts.json"), "Missing Country Finder contract")
@@ -328,7 +328,7 @@ assert.call(final_prompt.include?('including candidates in its separate missing-
             "The final table must account for candidates with wholly missing research")
 assert.call(final_prompt.include?('do not migrate or rewrite an older four-column result'),
             "Completed results must not be silently reformatted")
-assert.call(final_prompt.include?('uses the Priority Table\'s row order'),
+assert.call(final_prompt.include?('uses the Relocation priorities row order') && final_prompt.include?("Priority Table's row order"),
             "Salary Calculator ordering handoff must remain explicit")
 scoring = root.join("prompts/country-finder/step5-scoring.md").read(encoding: "UTF-8:UTF-8")
 assert.call(scoring.include?('never numerical scores, percentages, or a combined priority formula'),
@@ -388,33 +388,38 @@ assert.call(discovery_docs.include?('Salary -->|Yes| Offer') && discovery_docs.i
             "Country discovery docs and diagram must explain confirmed, names-only salary reuse")
 
 examples = final_docs.lines.grep(/^\| 🏳️ Example /).map { |line| line.strip.split("|").drop(1).map(&:strip) }
-assert.call(examples.length == 9, "Expected nine Country Finder presentation/edge-case fixtures")
+assert.call(examples.length == 9, "Expected nine independent-track presentation fixtures")
 examples.each do |cells|
-  assert.call(cells.length == 5, "Country Finder example must contain five cells: #{cells}")
-  country, priority, remote, sponsorship, limitation = cells
-  assert.call(priorities.include?(priority), "Invalid example priority: #{country}")
-  assert.call([remote, sponsorship].all? { |fit| fits.include?(fit) }, "Invalid example fit: #{country}")
-  assert.call(!limitation.empty?, "Missing example limitation: #{country}")
-  usable = [remote, sponsorship].any? { |fit| %w[Strong Moderate].include?(fit) }
-  unknown = [remote, sponsorship].include?("Unknown")
-  valid = if usable
-            priorities.first(3).include?(priority)
-          elsif unknown
-            priority == "Pending evidence"
-          else
-            priority == "🎗️ Deprioritize"
-          end
-  assert.call(valid, "Example priority contradicts track states: #{country}")
+  assert.call(cells.length == 6, "Country Finder track example needs six cells: #{cells}")
+  country, priority, fit, confidence, limitation, action = cells
+  assert.call(priorities.include?(priority) && fits.include?(fit), "Invalid track fixture: #{country}")
+  assert.call(!limitation.empty? && !action.empty?, "Missing condition/action: #{country}")
+  expected = case fit
+             when "Strong", "Moderate" then ["🥇 Focus", "🥈 Selective", "Investigate next", "🥉 Monitor"]
+             when "Weak", "Excluded" then ["🎗️ Deprioritize"]
+             else ["Pending evidence"]
+             end
+  assert.call(expected.include?(priority), "Priority contradicts track fit: #{country}")
+  assert.call(%w[Strong Moderate Weak].include?(fit) ? %w[High Medium Low].include?(confidence) : confidence == "Not assessed",
+              "Confidence contradicts track assessment: #{country}")
 end
 assert.call(examples.map(&:first).uniq.length == examples.length, "Duplicate example country")
-priority_order = examples.map { |cells| priorities.index(cells[1]) }
-assert.call(priority_order == priority_order.sort, "Example priority groups are out of order")
-assert.call(examples.map { |cells| cells[1] }.uniq == priorities, "Examples must cover every priority")
-assert.call(examples.any? { |c| c[2..3].sort == %w[Strong Unknown] }, "Missing usable/unknown example")
-assert.call(examples.any? { |c| c[2..3] == %w[Excluded Excluded] }, "Missing both-excluded example")
-assert.call(examples.any? { |c| c[2..3] == %w[Unknown Weak] }, "Missing unknown/weak example")
-assert.call(examples.any? { |c| c[2..3] == %w[Excluded Unknown] }, "Missing excluded/unknown example")
-assert.call(examples.any? { |c| c[2..3] == %w[Unknown Unknown] }, "Missing wholly unresearched example")
+assert.call(examples.map { |cells| priorities.index(cells[1]) } == examples.map { |cells| priorities.index(cells[1]) }.sort,
+            "Track fixture buckets are out of order")
+assert.call(examples.map { |cells| cells[1] }.uniq == priorities, "Examples must cover every track priority")
+research_prompt = root.join("prompts/country-finder/step3-research-prompt-generator.md").read(encoding: "UTF-8")
+validation_prompt = root.join("prompts/country-finder/step4-data-validation.md").read(encoding: "UTF-8")
+assessment_rules = root.join("skills/country-assessment-rules.md").read(encoding: "UTF-8")
+assert.call(research_prompt.include?('`yes` or `no evidence found`') && !research_prompt.include?('If neither is "yes," run no detailed research'),
+            "Discovery uncertainty must proceed to detailed research")
+%w[Market\ demand Role\ match International\ access Pay\ feasibility Research\ coverage].each do |field|
+  assert.call(research_prompt.scan("- #{field}:").length == 2, "Both research tracks need #{field}")
+end
+assert.call(research_prompt.include?('targeted follow-up') && validation_prompt.include?('Unknown is a valid reported value'),
+            "Research needs targeted recovery without fabricating complete evidence")
+assert.call(assessment_rules.include?('not a filter') && assessment_rules.include?('No automatic contact') &&
+            final_prompt.include?('Expected work not performed returns to the parent'),
+            "Keep research coverage, contact and recovery boundaries")
 
 paths = %w[.helm/example-log.json .helm/archive/nested/example.json .claude/helm/example-log.json .in_use/example .claude/settings.local.json]
 attributes, error, status = Open3.capture3("git", "-C", root.to_s, "check-attr", "export-ignore", "--", *paths)

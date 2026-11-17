@@ -75,7 +75,7 @@ Sources, dates, categories and shortfalls stay in shown work and Summary.
 
 ## Ordering
 
-Use compatible [Country Finder Priority Table](../country-finder/step6-final-ranking.html#priority-table) order, appending user-added countries alphabetically. Without usable ordering, sort all countries alphabetically; optional ordering never blocks calculation.
+Use compatible [Country Finder Relocation priorities](../country-finder/step6-final-ranking.html#priority-table) order, or the combined table in older results, appending user-added countries alphabetically. Without usable ordering, sort all countries alphabetically; optional ordering never blocks calculation.
 
 ## Hard-floor flag
 

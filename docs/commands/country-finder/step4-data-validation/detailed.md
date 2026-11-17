@@ -38,7 +38,9 @@ flowchart TD
 
 ## What is accepted
 
-A country block needs the content required for its discovery-eligible tracks. Missing Remote material is relevant when Remote was eligible; it does not become a reason to invent that track for an explicitly excluded country.
+A country block needs the content required for its non-excluded tracks. Discovery no-evidence findings still require detailed checks. Missing Remote material is relevant when Remote was not excluded; it does not become a reason to invent that track for an explicitly excluded country.
+
+New research includes market demand, role match, international access, pay feasibility and research coverage. Unknown can be a complete reported value with documented checks; omitting the field is incomplete. Older records need a review of their existing evidence rather than invented replacement fields.
 
 Generated research uses top-level `Country:` delimiters. Clear older labels can be recognized when their meaning is unambiguous. If boundaries are unclear, the agent asks rather than guessing which country's evidence a paragraph belongs to.
 
@@ -56,7 +58,7 @@ For example, retaining one valid original and rejecting its later duplicate shou
 
 ## What happens next
 
-Accepted content is stored in the validated-data file, while the original research and separate validation report remain available. Empty eligible research can still proceed to an audit of exclusions and gaps when the candidate scope is nonempty.
+Accepted content is stored in the validated-data file, while the original research and separate validation report remain available. When every track is explicitly excluded, empty research can still proceed to an audit of those exclusions.
 
 After a successful save, [Scoring](../step5-scoring.html) uses only supported data for each track. Missing information is not filled with an assumed Weak fit.
 

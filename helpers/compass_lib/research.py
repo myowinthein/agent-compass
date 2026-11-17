@@ -141,7 +141,7 @@ def blocks(raw, scope=None, aliases=None):
     return result, "".join(lines[:report]).encode("utf-8")
 
 
-def missing_fields(block, workflow, tracks):
+def missing_fields(block, workflow, tracks, comparison_fields=False):
     """Missing canonical labels need human semantic review, not guessed synonyms."""
     if workflow == "salary-calculator":
         required = {heading: ("low", "realistic", "strong", "sources") for heading in
@@ -154,6 +154,9 @@ def missing_fields(block, workflow, tracks):
                             "processing time", "quota or cap limitations", "family or dependent provisions",
                             "citizenship-specific considerations", "sources"),
         }.items() if track in tracks}
+        if comparison_fields:
+            extra = tuple(label.casefold() for label in contract()["country"]["research_fields"])
+            required = {track: labels + extra for track, labels in required.items()}
         headings = {track + " track": track for track in ("remote", "sponsorship")}
     sections, current, fence = {}, None, None
     for line in block["raw"].decode("utf-8").split("\n"):
@@ -183,13 +186,17 @@ def missing_fields(block, workflow, tracks):
 
 def inspect(payload, ingest=False):
     required = ("workspace", "workflow", "expected")
-    optional = ("aliases", "required_tracks", "stage")
+    optional = ("aliases", "required_tracks", "stage", "comparison_fields")
     if ingest:
         required += ("source_hash", "stored_hash", "decisions")
     fields(payload, required, optional)
     workflow = payload["workflow"]
     require(payload.get("stage", "research") in ("research", "discovery"), "Unknown research stage")
     discovery = payload.get("stage") == "discovery"
+    comparison_fields = payload.get("comparison_fields", False)
+    require(type(comparison_fields) is bool, "comparison_fields must be boolean")
+    require(not comparison_fields or workflow == "country-finder" and not discovery,
+            "Comparison fields apply only to Country Finder detailed research")
     require(not discovery or workflow == "country-finder" and not ingest, "Discovery scanning is read-only Country Finder only")
     root = workspace(payload["workspace"])
     layout = resolve(root, workflow)["files"]
@@ -231,7 +238,7 @@ def inspect(payload, ingest=False):
         if key in seen:
             duplicates.append(block["index"])
         seen.add(key)
-        block["missing_fields"] = [] if discovery else missing_fields(block, workflow, tracks.get(key, []))
+        block["missing_fields"] = [] if discovery else missing_fields(block, workflow, tracks.get(key, []), comparison_fields)
         if workflow == "country-finder" and not discovery and key not in tracks:
             block["issues"].append("Country not eligible on either track")
     result = {"source_hash": digest(raw), "stored_hash": digest(old) if stored.exists() and not discovery else None,

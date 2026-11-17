@@ -12,25 +12,27 @@ has_toc: false
 
 {% include guide-depth.html %}
 
-Collect detailed research for each country's eligible tracks.
+Compare each country's non-excluded tracks, including gaps left by discovery.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Scope["Identify eligible country tracks"] --> Research["Collect research in separate contexts or manually"]
+  Scope["Identify non-excluded tracks and discovery gaps"] --> Research["Compare the same factors; follow up promising gaps"]
   Research --> Save["Account for the scope and save findings"]
 ```
 
 ## What each brief covers
 
-Remote briefs cover pay, hiring and payment arrangements for your working location. Sponsorship briefs cover the employer-sponsored route, salary rules, employer willingness, processing, quotas and relevant candidate restrictions.
+Both briefs compare market demand, role match, international access and pay feasibility. Remote research applies to your working location; Sponsorship research adds the employer-sponsored route and candidate-specific conditions. Checked sources and unresolved questions remain visible.
+
+Promising tracks with important gaps receive targeted follow-up before collection finishes. Unpublished or inaccessible evidence can remain unknown after substantive checks.
 
 Each brief contains the confirmed role and relevant background directly. Researchers use current dated sources; unknown facts do not become assumed eligibility.
 
 ## Countries without an eligible track
 
-Only [Step 2 "yes" tracks](step2-country-discovery.html#what-gets-checked) receive detailed research. Explicit rejections and missing evidence remain distinct. With none eligible, a scope-only record lets later steps account for exclusions and gaps without inventing research.
+Only an explicit supported [discovery exclusion](step2-country-discovery.html#what-gets-checked) skips a track. Both positive leads and no-evidence findings receive detailed research. With every track excluded, a scope-only record preserves the reasons without inventing research.
 
 ## What happens next
 

@@ -9,7 +9,7 @@ Apply `skills/helper-runtime.md` and read `data/output-contracts.json` as data. 
 
 ## Salary
 
-Run `render-salary` with `rows: [{country, calculation, visa}, ...]` and optional `priority_order: [countryName, ...]` transcribed from Country Finder's Priority Table. Each display country contains one researched flag and its name; flag position is normalized. `calculation` is the existing complete schema-version-1 input in `skills/salary-calculation-helper.md`, not a fabricated helper result. The renderer reuses that same salary calculation and returns exact `calculations`, `markdown`, `table_markdown`, `notes` and `calculated`.
+Run `render-salary` with `rows: [{country, calculation, visa}, ...]` and optional `priority_order: [countryName, ...]` transcribed from Country Finder's Relocation priorities table for new results, or its legacy combined Priority Table. Each display country contains one researched flag and its name; flag position is normalized. `calculation` is the existing complete schema-version-1 input in `skills/salary-calculation-helper.md`, not a fabricated helper result. The renderer reuses that same salary calculation and returns exact `calculations`, `markdown`, `table_markdown`, `notes` and `calculated`.
 
 Both renderers optionally accept `aliases`, the same explicit direct alias mapping used for research matching. Never fuzzy-merge countries. Numeric visa display requires an exact terminating amount; if official precision for a recurring legal amount cannot be established, preserve the uncertainty rather than inventing rounded legal pay.
 
@@ -19,15 +19,16 @@ Save `markdown` verbatim where the step requests the caption/table, surrounded o
 
 ## Country Finder
 
-Run `render-cf` after the audit with:
+New Country Finder results call `render-cf` with `format: "tracks"` and:
 
-- `expected`: the full Step 2 candidate universe, not additional expected-but-absent audit suggestions.
-- `early_exclusions`: `{countryName: {remote: "exact earlier reason", sponsorship: "exact earlier reason"}}`; include only actual excluded tracks, or an empty object. Read these from Step 2, do not infer them from missing research.
-- `decisions`: one object per expected country, in the model's evidence-led within-priority order: `{country, remote, sponsorship, priority, limitation, ingestion}`. Use the contract's Summary fit labels, not the table-only missing display. For an excluded/missing track include `remote_reason` or `sponsorship_reason`; preserve each early reason exactly. `ingestion` is stored/not_supplied/rejected/unknown; wholly missing countries also need `ingestion_reason`.
+- `expected`: the complete Step 2 candidate universe; `early_exclusions` and optional direct `aliases` retain their existing meanings. Each early exclusion maps a country to remote/sponsorship exact reasons; never infer it from absent research.
+- `orders: {remote: [countryName, ...], sponsorship: [countryName, ...]}`: each contains every expected country exactly once, in the model's independently chosen evidence-led order. The helper sorts priority buckets stably and Pending evidence alphabetically, preserving the supplied order within other buckets.
+- `decisions`: one object per country with `{country, remote, sponsorship, ingestion, tracks}`. Fits use the contract's Summary labels. Missing/excluded fits require `remote_reason` / `sponsorship_reason`; `ingestion` remains stored/not_supplied/rejected/unknown and wholly missing countries need `ingestion_reason`. Scored tracks require stored applicable research even when the other track is excluded.
+- `tracks` contains both `remote` and `sponsorship`, each `{priority, confidence, access, pay, limitation, next_action}`. Read their exact vocabularies from `data/output-contracts.json`. Apply skills/country-assessment-rules.md to select states. The helper rejects contradictions; it does not decide market potential, verify evidence or infer feasibility from a visa route.
 
-Scoring either track requires stored research, even when the other track is excluded. Correct a contradictory request before saving or completing the step.
+The helper returns `summary_markdown`, `table_markdown` (headed Remote priorities and Relocation priorities), contiguous combined `markdown`, `counts` and `audit_notes`. Keep audit notes with the three checks and save `markdown` verbatim as Summary and Priority Table sections, followed by Effort Allocation. Show only both headed tables in chat and the completion message. Missing fits display as Unknown; the Summary and counts retain their original schema.
 
-The helper returns `summary_markdown`, `table_markdown`, combined `markdown`, `counts` and `audit_notes`. Preserve the separate notes for wholly unresearched/rejected research. Put `audit_notes` with the three file-only audit checks, then copy the complete `markdown` verbatim as contiguous Summary and Priority Table sections, followed by the existing Effort Allocation. It counts each candidate once per track and rejects contradictions; the model still chooses fits/priorities and within-bucket order. It sorts priority buckets stably and Pending evidence alphabetically ignoring flags. Show only `table_markdown` in chat, then the step's completion message.
+Without `format: "tracks"`, the existing combined renderer remains available for pinned unfinished/legacy verification: decisions instead use the original `priority` and `limitation`, without tracks/orders. Its five-column output and decision boundaries are unchanged. Do not use this compatibility path to avoid the new workflow, rewrite completed results or mix formats within a report. Completed results replay as saved without a new render.
 
 ## Verify the saved file
 

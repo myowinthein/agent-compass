@@ -38,15 +38,24 @@ For someone pursuing multiple roles, I separate the histories into folders such 
 
 ### Countries to target
 
-I save the final [priority table]({{ '/docs/commands/country-finder/step6-final-ranking.html' | relative_url }}#priority-table) from `country-finder` so I can see where to focus my search.
+I save the final [Remote and Relocation priorities]({{ '/docs/commands/country-finder/step6-final-ranking.html' | relative_url }}#priority-table) from `country-finder` so I can see where to focus my search.
 
 ```markdown
 ## Countries to target
 
-| Country | Priority | Remote Fit | Sponsorship Fit | Main limitation |
-|---|---|---|---|---|
-| 🇩🇪 Germany | 🥇 Focus | Moderate | Strong | Fewer remote roles accept the candidate's location |
-| 🇳🇱 Netherlands | 🥈 Selective | Strong | Unknown | Sponsorship evidence needs further checking |
+### Remote priorities
+
+| Country | Priority | Fit | Confidence | Main limitation | Next action |
+|---|---|---|---|---|---|
+| 🇳🇱 Netherlands | 🥈 Selective | Strong | Medium | Narrow relevant employer pool | Target the identified backend teams |
+| 🇩🇪 Germany | Investigate next | Moderate | Medium | Thailand eligibility unverified | Check the employer's country policy |
+
+### Relocation priorities
+
+| Country | Priority | Fit | Confidence | Main limitation | Next action |
+|---|---|---|---|---|---|
+| 🇩🇪 Germany | 🥇 Focus | Strong | Medium | None identified | Target matching senior roles |
+| 🇳🇱 Netherlands | Investigate next | Moderate | Low | Sponsorship support unverified | Verify the relevant employer policy |
 ```
 
 ### Salary expectations

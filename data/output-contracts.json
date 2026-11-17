@@ -18,7 +18,13 @@
     "summary_headers": ["Country", "Remote fit", "Sponsorship fit"],
     "fits": {"strong": "Strong", "moderate": "Moderate", "weak": "Weak", "excluded": "Excluded", "missing": "not scored (no data)"},
     "missing_display": "Unknown",
-    "priorities": ["🥇 Focus", "🥈 Selective", "🥉 Monitor", "🎗️ Deprioritize", "Pending evidence"]
+    "priorities": ["🥇 Focus", "🥈 Selective", "🥉 Monitor", "🎗️ Deprioritize", "Pending evidence"],
+    "research_fields": ["Market demand", "Role match", "International access", "Pay feasibility", "Research coverage"],
+    "track_headers": ["Country", "Priority", "Fit", "Confidence", "Main limitation", "Next action"],
+    "track_priorities": ["🥇 Focus", "🥈 Selective", "Investigate next", "🥉 Monitor", "🎗️ Deprioritize", "Pending evidence"],
+    "confidence": ["High", "Medium", "Low"],
+    "access_states": ["Supported", "Unverified", "Blocked"],
+    "pay_states": ["Supported", "Unverified", "Not specified", "Below floor"]
   },
   "adjustment": {
     "minimum": "0",

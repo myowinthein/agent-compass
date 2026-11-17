@@ -106,6 +106,7 @@ module CompassValidation
     resource(root, "helpers/compass.py")
     %w[common files money portals research runs state tables timezones workspaces].each { |name| resource(root, "helpers/compass_lib/#{name}.py") }
     resource(root, "skills/portal-results.md")
+    resource(root, "skills/country-assessment-rules.md")
   end
 
   def validate_registry(root)

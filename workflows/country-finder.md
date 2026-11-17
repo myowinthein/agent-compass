@@ -22,14 +22,14 @@ Apply the state tracking instructions in prompts/shared/runtime.md with:
 
 ## Sequence
 
-Apply the shared runtime's changed-input and repair rule on unfinished resumes. Zero eligible tracks, all rejected detailed research and all-Pending evidence are distinct from an empty country scope. A nonempty candidate universe still reaches the final audit with its exclusions/gaps accounted for, using Step 3's scope-only record when necessary; do not invent scores or automatically research every no-evidence track. An empty scope asks for revised countries or stop before research. Contradicted early exclusions return to the parent for a repair choice rather than being silently overridden.
+Apply the shared runtime's changed-input and repair rule on unfinished resumes. All tracks explicitly excluded, all rejected detailed research and wholly unresolved evidence are distinct from an empty country scope. A nonempty candidate universe still reaches the final audit with its exclusions/gaps accounted for, using Step 3's scope-only record only when every track is explicitly excluded; research discovery no-evidence tracks under Step 3, including targeted follow-up for promising gaps; never invent scores. An empty scope asks for revised countries or stop before research. Contradicted early exclusions return to the parent for a repair choice rather than being silently overridden.
 
 1. Read [prompts/country-finder/step1-criteria-intake.md](../prompts/country-finder/step1-criteria-intake.md) and follow it exactly.
 2. Read [prompts/country-finder/step2-country-discovery.md](../prompts/country-finder/step2-country-discovery.md) and follow it exactly.
 3. Read [prompts/country-finder/step3-research-prompt-generator.md](../prompts/country-finder/step3-research-prompt-generator.md) and follow it exactly.
 4. Read [prompts/country-finder/step4-data-validation.md](../prompts/country-finder/step4-data-validation.md) and follow it exactly.
 5. Use the specialist routing rule in [prompts/shared/runtime.md](../prompts/shared/runtime.md) for Step 5 (scoring), role deep-reasoner, prompt [prompts/country-finder/step5-scoring.md](../prompts/country-finder/step5-scoring.md). Run the step on the chosen agent or current model.
-6. Step 6 (final ranking) always runs. Use the specialist routing rule in prompts/shared/runtime.md for Step 6, role deep-reasoner, prompt [prompts/country-finder/step6-final-ranking.md](../prompts/country-finder/step6-final-ranking.md). Routing is optional; this final step is mandatory.
+6. Step 6 (final ranking) always runs and produces independently ordered Remote and Relocation tables. Use the specialist routing rule in prompts/shared/runtime.md for Step 6, role deep-reasoner, prompt [prompts/country-finder/step6-final-ranking.md](../prompts/country-finder/step6-final-ranking.md). Routing is optional; this final step is mandatory.
 
 ## Question points
 

@@ -85,8 +85,12 @@ def salary(payload):
 
 
 def country(payload):
-    fields(payload, ("expected", "decisions", "early_exclusions"), ("aliases",))
+    fields(payload, ("expected", "decisions", "early_exclusions"), ("aliases", "format", "orders"))
     policy = contract()["country"]
+    format_name = payload.get("format", "combined")
+    require(format_name in ("combined", "tracks"), "Unknown country format")
+    separate = format_name == "tracks"
+    require(separate or "orders" not in payload, "Track orders require tracks format")
     fits, priorities = policy["fits"], policy["priorities"]
     normalize = lambda value: identity(value, payload.get("aliases"))
     expected = [normalize(name) for name in array(payload["expected"])]
@@ -96,8 +100,16 @@ def country(payload):
     require(set(early) <= set(expected), "Early exclusion outside candidate universe")
     summary, candidates, notes, audit_notes, seen = [], [], {}, [], set()
     counts = {track: {"scored": 0, "excluded": 0, "not_scored": 0} for track in ("remote", "sponsorship")}
+    track_rows = {track: [] for track in counts}
+    if separate:
+        fields(payload.get("orders"), ("remote", "sponsorship"))
+        orders = {track: [normalize(name) for name in array(payload["orders"][track])] for track in counts}
+        require(all(len(order) == len(expected) and set(order) == set(expected) for order in orders.values()),
+                "Each track order must cover the candidate universe exactly once")
     for decision in array(payload["decisions"]):
-        fields(decision, ("country", "remote", "sponsorship", "priority", "limitation", "ingestion"),
+        required = ("country", "remote", "sponsorship", "ingestion")
+        required += ("tracks",) if separate else ("priority", "limitation")
+        fields(decision, required,
                ("remote_reason", "sponsorship_reason", "ingestion_reason"))
         name = display_country(decision["country"])
         key = normalize(name)
@@ -115,11 +127,22 @@ def country(payload):
             if fit in (fits["excluded"], fits["missing"]):
                 audit_notes.append(name + " " + track + ": " + text(decision.get(track + "_reason")))
             counts[track]["excluded" if fit == fits["excluded"] else "not_scored" if fit == fits["missing"] else "scored"] += 1
-        usable = any(f in (fits["strong"], fits["moderate"]) for f in values)
-        priority = decision["priority"]
-        require(priority in priorities, "Unknown application priority")
-        require(priority in priorities[:3] if usable else priority == priorities[-1] if fits["missing"] in values else priority == priorities[-2],
-                "Priority contradicts the final track states")
+        if separate:
+            fields(decision["tracks"], ("remote", "sponsorship"))
+            for track in counts:
+                row = decision["tracks"][track]
+                fields(row, ("priority", "confidence", "access", "pay", "limitation", "next_action"))
+                fit = decision[track]
+                track_priority(row, fit, policy)
+                track_rows[track].append((row["priority"], key, [name, row["priority"],
+                    policy["missing_display"] if fit == fits["missing"] else fit,
+                    row["confidence"], text(row["limitation"]), text(row["next_action"])]))
+        else:
+            usable = any(f in (fits["strong"], fits["moderate"]) for f in values)
+            priority = decision["priority"]
+            require(priority in priorities, "Unknown application priority")
+            require(priority in priorities[:3] if usable else priority == priorities[-1] if fits["missing"] in values else priority == priorities[-2],
+                    "Priority contradicts the final track states")
         require(decision["ingestion"] in ("stored", "not_supplied", "rejected", "unknown"), "Unknown ingestion disposition")
         require(decision["ingestion"] == "stored" or all(f in (fits["excluded"], fits["missing"]) for f in values),
                 "Scored tracks need stored research")
@@ -128,8 +151,9 @@ def country(payload):
         else:
             heading = {"not_supplied": "Flagged but not researched", "rejected": "Researched but not ingested", "unknown": "Ingestion outcome unknown"}[decision["ingestion"]]
             notes.setdefault(heading, []).append(name + ": " + text(decision.get("ingestion_reason")))
-        candidates.append((priorities.index(priority), key, [name, priority,
-                           *(policy["missing_display"] if f == fits["missing"] else f for f in values), text(decision["limitation"])]))
+        if not separate:
+            candidates.append((priorities.index(priority), key, [name, priority,
+                               *(policy["missing_display"] if f == fits["missing"] else f for f in values), text(decision["limitation"])]))
     require(seen == set(expected), "Every expected candidate needs exactly one final decision")
     candidates.sort(key=lambda row: (row[0], row[1] if row[0] == len(priorities) - 1 else ""))
     rendered_summary = "## Summary\n\n" + table(policy["summary_headers"], summary)
@@ -137,10 +161,41 @@ def country(payload):
         rendered_summary += "\n### " + heading + "\n\n" + "\n".join("- " + cell(v) for v in values) + "\n"
     for track, count in counts.items():
         rendered_summary += f"\n- {track.title()}: {count['scored']} scored, {count['excluded']} excluded, {count['not_scored']} {fits['missing']}\n"
-    rendered_table = table(policy["headers"], [r[2] for r in candidates])
+    if separate:
+        tables = {}
+        for track, rows in track_rows.items():
+            rows.sort(key=lambda row: (policy["track_priorities"].index(row[0]),
+                      row[1] if row[0] == "Pending evidence" else orders[track].index(row[1])))
+            tables[track] = table(policy["track_headers"], [row[2] for row in rows])
+        rendered_table = "### Remote priorities\n\n" + tables["remote"] + "\n### Relocation priorities\n\n" + tables["sponsorship"]
+    else:
+        rendered_table = table(policy["headers"], [r[2] for r in candidates])
     return {"summary_markdown": rendered_summary, "table_markdown": rendered_table,
             "markdown": rendered_summary + "\n## Priority Table\n\n" + rendered_table,
             "counts": counts, "audit_notes": audit_notes}
+
+
+def track_priority(row, fit, policy):
+    """Check caller-selected states; never infer market fit or evidence quality."""
+    fits = policy["fits"]
+    require(row["priority"] in policy["track_priorities"], "Unknown track priority")
+    require(row["access"] in policy["access_states"], "Unknown access state")
+    require(row["pay"] in policy["pay_states"], "Unknown pay state")
+    scored = fit in (fits["strong"], fits["moderate"], fits["weak"])
+    require(row["confidence"] in (policy["confidence"] if scored else ["Not assessed"]),
+            "Confidence must match assessed versus unassessed fit")
+    require(row["access"] != "Blocked" or fit == fits["excluded"], "Blocked access requires an excluded track")
+    require(row["pay"] != "Below floor" or fit in (fits["weak"], fits["excluded"]),
+            "Below-floor pay requires a weak or excluded track")
+    if fit == fits["missing"]:
+        allowed = ["Pending evidence"]
+    elif fit in (fits["weak"], fits["excluded"]):
+        allowed = ["🎗️ Deprioritize"]
+    elif row["access"] == "Unverified" or row["pay"] == "Unverified":
+        allowed = ["Investigate next"]
+    else:
+        allowed = ["🥇 Focus", "🥈 Selective", "🥉 Monitor"]
+    require(row["priority"] in allowed, "Track priority contradicts fit, access or pay")
 
 
 def check_saved(payload):
@@ -154,6 +209,11 @@ def check_saved(payload):
     root = workspace(payload["workspace"])
     saved = read(named(root, resolve(root, workflow)["files"][matches[0]])).decode("utf-8").replace("\r\n", "\n")
     rendered = salary(payload["render_input"]) if payload["kind"] == "salary" else country(payload["render_input"])
+    if payload["kind"] == "country" and payload["render_input"].get("format") == "tracks":
+        header = "| " + " | ".join(contract()["country"]["track_headers"]) + " |\n"
+        require(saved.count(header) == 2, "Saved track tables must each occur exactly once")
+        require(saved.count(rendered["markdown"].rstrip("\n")) == 1, "Saved track tables or Summary differ from canonical rendering")
+        return {"valid": True, "semantic_evidence_checked": False}
     header = rendered["table_markdown"].splitlines()[0] + "\n"
     require(saved.count(header) == 1, "Saved table must occur exactly once")
     tail = saved[saved.index(header):].splitlines(keepends=True)

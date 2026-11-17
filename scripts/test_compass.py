@@ -552,6 +552,117 @@ class CompassCLI(unittest.TestCase):
         self.assertEqual(result["counts"]["remote"], {"scored": 1, "excluded": 1, "not_scored": 1})
         self.assertIn("outside timezone limit", " ".join(result["audit_notes"]))
 
+    @classmethod
+    def track_request(cls):
+        payload = cls.country_request()
+        payload.update(format="tracks", orders={
+            "remote": ["Canada", "Germany", "Netherlands"],
+            "sponsorship": ["Germany", "Canada", "Netherlands"]})
+        for decision in payload["decisions"]:
+            decision.pop("priority")
+            decision.pop("limitation")
+            decision["tracks"] = {}
+            for track in ("remote", "sponsorship"):
+                fit = decision[track]
+                scored = fit in ("Strong", "Moderate", "Weak")
+                decision["tracks"][track] = {
+                    "priority": "🥇 Focus" if fit in ("Strong", "Moderate") else
+                                "Pending evidence" if fit == "not scored (no data)" else "🎗️ Deprioritize",
+                    "confidence": "Medium" if scored else "Not assessed",
+                    "access": "Blocked" if fit == "Excluded" else "Unverified" if not scored else "Supported",
+                    "pay": "Not specified", "limitation": "DUMMY track-specific condition",
+                    "next_action": "DUMMY verify the named condition"}
+        return payload
+
+    def test_track_priorities_do_not_hide_weakness_behind_the_other_unknown(self):
+        payload = self.track_request()
+        canada = payload["decisions"][2]
+        canada.update(sponsorship="not scored (no data)", sponsorship_reason="DUMMY no usable evidence")
+        canada["tracks"]["sponsorship"].update(priority="Pending evidence", confidence="Not assessed", access="Unverified")
+        result = self.invoke("render-cf", payload)["result"]
+        remote, relocation = result["table_markdown"].split("### Relocation priorities")
+        self.assertIn("| 🇨🇦 Canada | 🎗️ Deprioritize | Weak | Medium |", remote)
+        self.assertIn("| 🇨🇦 Canada | Pending evidence | Unknown | Not assessed |", relocation)
+        self.assertIn("outside timezone limit", " ".join(result["audit_notes"]))
+        self.assertEqual(result["counts"]["remote"], {"scored": 1, "excluded": 1, "not_scored": 1})
+
+    def test_new_track_orders_are_independent_and_pending_is_alphabetical(self):
+        payload = self.track_request()
+        for decision in payload["decisions"][:1] + payload["decisions"][2:]:
+            decision.update(remote="Moderate", sponsorship="Moderate")
+            decision.pop("remote_reason", None)
+            decision.pop("sponsorship_reason", None)
+            for row in decision["tracks"].values():
+                row.update(priority="🥇 Focus", confidence="Medium", access="Supported")
+        payload["early_exclusions"] = {}
+        result = self.invoke("render-cf", payload)["result"]
+        remote, relocation = result["table_markdown"].split("### Relocation priorities")
+        self.assertLess(remote.index("🇨🇦 Canada"), remote.index("🇩🇪 Germany"))
+        self.assertLess(relocation.index("🇩🇪 Germany"), relocation.index("🇨🇦 Canada"))
+
+    def test_promising_unverified_tracks_require_investigation_not_focus(self):
+        for field in ("access", "pay"):
+            payload = self.track_request()
+            row = payload["decisions"][0]["tracks"]["sponsorship"]
+            row[field] = "Unverified"
+            self.invoke("render-cf", payload, 2)
+            row["priority"] = "Investigate next"
+            result = self.invoke("render-cf", payload)["result"]
+            self.assertIn("| 🇩🇪 Germany | Investigate next | Moderate | Medium |", result["table_markdown"])
+            row[field] = "Supported"
+            self.invoke("render-cf", payload, 2)
+            row["priority"] = "🥇 Focus"
+            self.invoke("render-cf", payload)
+
+    def test_track_format_rejects_uncovered_or_contradictory_decisions(self):
+        for mutate in (
+            lambda p: p["orders"]["remote"].pop(),
+            lambda p: p["orders"]["sponsorship"].append("Canada"),
+            lambda p: p["orders"]["remote"].__setitem__(0, "Austria"),
+            lambda p: p["decisions"][0]["tracks"].pop("remote"),
+            lambda p: p["decisions"][0]["tracks"]["sponsorship"].update(access="Blocked"),
+            lambda p: p["decisions"][0]["tracks"]["sponsorship"].update(pay="Below floor"),
+            lambda p: p["decisions"][1]["tracks"]["remote"].update(confidence="Low"),
+            lambda p: p["decisions"][2]["tracks"]["remote"].update(priority="Investigate next"),
+            lambda p: p["decisions"][0].update(ingestion="not_supplied"),
+            lambda p: p["decisions"][0].update(remote_reason="changed exclusion"),
+        ):
+            payload = self.track_request()
+            mutate(payload)
+            self.invoke("render-cf", payload, 2)
+
+    def test_track_pay_shortfall_preserves_weak_versus_excluded_distinction(self):
+        payload = self.track_request()
+        canada = payload["decisions"][2]
+        canada["tracks"]["remote"]["pay"] = "Below floor"
+        result = self.invoke("render-cf", payload)["result"]
+        self.assertIn("| 🇨🇦 Canada | 🎗️ Deprioritize | Weak | Medium |", result["table_markdown"])
+        self.assertEqual(result["counts"]["remote"]["excluded"], 1)
+
+    def test_track_pending_order_is_alphabetical_independent_of_supplied_order(self):
+        payload = self.track_request()
+        canada = payload["decisions"][2]
+        canada.update(remote="not scored (no data)", remote_reason="DUMMY evidence unusable")
+        canada["tracks"]["remote"].update(priority="Pending evidence", confidence="Not assessed", access="Unverified")
+        payload["orders"]["remote"] = ["Netherlands", "Canada", "Germany"]
+        remote = self.invoke("render-cf", payload)["result"]["table_markdown"].split("### Relocation priorities")[0]
+        self.assertLess(remote.index("🇨🇦 Canada"), remote.index("🇳🇱 Netherlands"))
+
+    def test_track_saved_check_catches_second_table_changes_and_duplicates(self):
+        payload = self.track_request()
+        result = self.invoke("render-cf", payload)["result"]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory, "country-finder-06-final-results.md")
+            request = {"workspace": directory, "file": path.name, "kind": "country", "render_input": payload}
+            path.write_text("DUMMY audit\n\n" + result["markdown"] + "\n## Effort Allocation\nDUMMY plan\n", encoding="utf-8")
+            self.assertTrue(self.invoke("check-saved", request)["result"]["valid"])
+            original = path.read_text(encoding="utf-8")
+            first, second = original.split("### Relocation priorities")
+            path.write_text(first + "### Relocation priorities" + second.replace("🥇 Focus", "🥉 Monitor"), encoding="utf-8")
+            self.invoke("check-saved", request, 2)
+            path.write_text(original + result["table_markdown"], encoding="utf-8")
+            self.invoke("check-saved", request, 2)
+
     def test_table_cells_escape_markup_and_keep_the_row_width(self):
         payload = self.country_request()
         payload["decisions"][0]["limitation"] = "Pay |  tier\t*A* `x` <b> & c"
@@ -808,6 +919,48 @@ class CompassCLI(unittest.TestCase):
         raw = self.country_block().replace(b"- Sources: DUMMY https://example.invalid/sponsor\n", b"")
         self.assertIn("sponsorship: sources:", research.missing_fields(
             {"raw": raw}, "country-finder", ["remote", "sponsorship"]))
+
+    def test_cf_comparison_checks_require_both_track_fields_and_preserve_unknowns(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory, "country-finder-03-research.md")
+            raw = self.country_block()
+            source.write_bytes(raw)
+            request = {"workspace": directory, "workflow": "country-finder", "expected": ["Germany"],
+                       "required_tracks": {"Germany": ["remote", "sponsorship"]}}
+            legacy = self.invoke("research-scan", request)["result"]
+            self.assertEqual(legacy["blocks"][0]["missing_fields"], [])
+            request["comparison_fields"] = True
+            scan = self.invoke("research-scan", request)["result"]
+            self.assertEqual(len(scan["blocks"][0]["missing_fields"]), 10)
+            self.invoke("ingest", {**request, "source_hash": scan["source_hash"], "stored_hash": None,
+                                   "decisions": [{"index": 0, "accept": True}]}, 4)
+            self.assertEqual(source.read_bytes(), raw)
+            self.assertFalse(Path(directory, "country-finder-04-validated-data.md").exists())
+            extra = (b"- Market demand: Unknown after DUMMY sources checked\n- Role match: DUMMY close match\n"
+                     b"- International access: Unknown\n- Pay feasibility: Unknown\n"
+                     b"- Research coverage: DUMMY sources opened; employer terms unpublished\n")
+            raw = raw.replace(b"Remote Track:\n", b"Remote Track:\n" + extra)
+            source.write_bytes(raw)
+            scan = self.invoke("research-scan", request)["result"]
+            self.assertEqual(len(scan["blocks"][0]["missing_fields"]), 5)
+            self.assertTrue(all(label.startswith("sponsorship:") for label in scan["blocks"][0]["missing_fields"]))
+            raw = raw.replace(b"Sponsorship Track:\n", b"Sponsorship Track:\n" + extra)
+            source.write_bytes(raw)
+            scan = self.invoke("research-scan", request)["result"]
+            self.assertEqual(scan["blocks"][0]["missing_fields"], [])
+            result = self.invoke("ingest", {**request, "source_hash": scan["source_hash"], "stored_hash": None,
+                                           "decisions": [{"index": 0, "accept": True}]})["result"]
+            self.assertEqual(result["stored"], 1)
+            self.assertEqual(Path(directory, "country-finder-04-validated-data.md").read_bytes(), raw)
+
+    def test_cf_comparison_flag_does_not_change_other_research_interfaces(self):
+        for workflow, stage, flag in (("salary-calculator", "research", True),
+                                      ("country-finder", "discovery", True),
+                                      ("country-finder", "research", 1)):
+            with tempfile.TemporaryDirectory() as directory:
+                self.invoke("research-scan", {"workspace": directory, "workflow": workflow,
+                    "expected": [], "required_tracks": {}, "stage": stage, "comparison_fields": flag}, 2)
+                self.assertEqual(list(Path(directory).iterdir()), [])
 
     def test_salary_required_sources_exclude_trailing_metadata(self):
         for trailer in (b"Notes: sources: DUMMY\n", b"Sponsorship salary threshold: Unknown; sources: DUMMY\n",

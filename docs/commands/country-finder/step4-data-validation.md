@@ -24,7 +24,9 @@ flowchart TD
 
 ## What is accepted
 
-Each country needs the fields for its [Step 2 eligible tracks](step2-country-discovery.html#what-gets-checked). Malformed, incomplete, duplicate and unlisted data is skipped with reasons; duplicates preserve stored originals. Older labels are accepted after review when their meaning is clear.
+Each country needs the fields for its [non-excluded tracks](step2-country-discovery.html#what-gets-checked). Malformed, incomplete, duplicate and unlisted data is skipped with reasons; duplicates preserve stored originals. Older labels are accepted after review when their meaning is clear.
+
+A reported unknown can be structurally complete when it explains the checks and limitations. Missing comparison fields in new research are incomplete; older records are reviewed for equivalent meaning.
 
 Generated blocks use top-level `Country:` delimiters. Ambiguous boundaries need clarification.
 
@@ -37,4 +39,4 @@ One report accounts for stored countries, rejected blocks and missing results. R
 - `country-finder-04-validated-data.md`: accepted data.
 - `country-finder-03-research.md`: original findings and separate Validation report.
 
-Empty eligible scope can still proceed to an audit of exclusions/gaps. Failed saves leave progress pending. After successful saving, continue to [Scoring](step5-scoring.html).
+With every track explicitly excluded, empty research can proceed to an audit of those exclusions. Failed saves leave progress pending. After successful saving, continue to [Scoring](step5-scoring.html).

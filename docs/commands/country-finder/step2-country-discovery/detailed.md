@@ -7,8 +7,9 @@ has_toc: false
 overview: /docs/commands/country-finder/step2-country-discovery.html
 permalink: /docs/commands/country-finder/step2-country-discovery/detailed.html
 title_category: Details
-description: "Discovery establishes the candidate countries and the evidence for each employment track. Its job is to decide what deserves deeper research while preserving the difference between an explicit exclusion and information that has not been found."
+description: "Discovery establishes the candidate countries and the evidence for each employment track. It identifies useful leads, constraints and gaps while preserving the difference between an explicit exclusion and information that has not been found."
 source_files:
+  - skills/country-assessment-rules.md
   - prompts/country-finder/step2-country-discovery.md
 ---
 
@@ -16,7 +17,7 @@ source_files:
 
 {% include guide-depth.html %}
 
-Discovery establishes the candidate countries and the evidence for each employment track. Its job is to decide what deserves deeper research while preserving the difference between an explicit exclusion and information that has not been found.
+Discovery establishes the candidate countries and the evidence for each employment track. It identifies useful leads, constraints and gaps while preserving the difference between an explicit exclusion and information that has not been found.
 
 ## Flow
 
@@ -67,6 +68,8 @@ Research looks at Remote and Sponsorship together for each country, but reaches 
 
 Domestic work-from-home rules do not establish cross-border Remote access. Likewise, a nomad or self-sponsored visa is not an employer-sponsored route. Sponsor registration alone does not prove an employer is willing to hire this candidate.
 
+Research compares occupation-level demand, job hubs and personal fit alongside access. One vacancy cannot establish a deep market, and one employer's refusal cannot exclude the whole country. A shortage listing is distinct from both an immigration occupation list and employer willingness.
+
 Findings use dated sources and retain their limits. Missing evidence is not a rejection. A salary-based Remote exclusion needs a valid comparable range entirely below a confirmed hard floor; context-only minima or incomplete comparisons cannot support that decision.
 
 ## Timezone preference
@@ -79,8 +82,10 @@ A country with multiple employment hubs can have mixed results. A partial pass k
 
 The candidate file records scope, track findings, reasons, timezone conditions and evidence gaps. Chat gives brief counts rather than the full research body.
 
-[Detailed research](../step3-research-prompt-generator.html) follows the eligible yes tracks. Exclusions and no-evidence cases remain in the record for the final audit even when they receive no detailed research.
+[Detailed research](../step3-research-prompt-generator.html) covers both positive leads and no-evidence findings. Only explicit supported exclusions skip that track. An unpublished salary or employment arrangement leaves a question to investigate rather than ending research.
 
 ## Explore the source
 
 For implementation details, read [prompts/country-finder/step2-country-discovery.md](https://github.com/myowinthein/agent-compass/blob/main/prompts/country-finder/step2-country-discovery.md).
+
+The shared [assessment framework](https://github.com/myowinthein/agent-compass/blob/main/skills/country-assessment-rules.md) defines the evidence factors and verification distinctions.

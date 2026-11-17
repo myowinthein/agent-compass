@@ -42,7 +42,7 @@ Regions expand into countries before exclusions apply. Clear supplied lists need
 - **Remote:** hiring, pay and engagement evidence applicable to your working location. Domestic remote policies do not prove cross-border hiring.
 - **Sponsorship:** a named employer-sponsored route and relevant hiring evidence. Nomad/self-sponsored visas do not qualify, and sponsor registration alone proves no willingness to hire.
 
-Dated sources support each finding. Missing evidence is not rejection. Only a valid comparison proving pay below a hard floor can cause a salary-based Remote exclusion.
+Each country is checked for role-specific demand, personal fit and hiring access. Shortage lists are useful signals, not proof of sponsorship or an offer. Dated sources support each finding. Missing evidence is not rejection and continues to detailed research. Only a valid comparison proving pay below a hard floor can cause a salary-based Remote exclusion.
 
 ## Timezone preference
 

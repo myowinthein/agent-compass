@@ -4,9 +4,9 @@ Read country-finder-05-assessment.md from the workspace. Also read country-finde
 
 Use recorded, user-confirmed run-only clarifications under the shared runtime as saved context, not hidden memory. Preserve assessed candidate/role/level, path/location and evidence dates with the file-only audit, outside canonical rendered sections. Material changed-input or contradicted-exclusion issues return to the parent for the shared repair choice before finalisation; never silently override an early reason or rewrite completed outputs.
 
-Read and apply [skills/evidence-quality-rules.md](../../skills/evidence-quality-rules.md) and [skills/exclusion-transparency-rules.md](../../skills/exclusion-transparency-rules.md) when auditing classifications, assigning priorities, and summarizing limitations.
+Read and apply [skills/country-assessment-rules.md](../../skills/country-assessment-rules.md), [skills/evidence-quality-rules.md](../../skills/evidence-quality-rules.md) and [skills/exclusion-transparency-rules.md](../../skills/exclusion-transparency-rules.md) when auditing classifications, assigning priorities, and summarizing limitations.
 
-Read data/output-contracts.json as data and [skills/output-helper.md](../../skills/output-helper.md). After choosing the evidence-supported final decisions below, use `render-cf` with the full candidate universe, original early exclusions and ingestion dispositions. Save its returned Summary and Priority Table sections verbatim, keep its audit notes with the three checks, and run `check-saved` before completion. Pure helper requests unavailable to a specialist return to the parent under the shared runtime. Under an explicitly approved manual run, read this same contract for the format and perform the same checks; do not claim automated rendering ran.
+Read data/output-contracts.json as data and [skills/output-helper.md](../../skills/output-helper.md). After choosing the evidence-supported final decisions below, use `render-cf` with `format: "tracks"`, separate evidence-led orders and track decisions, the full candidate universe, original early exclusions and ingestion dispositions. Save its returned Summary and Priority Table sections (the latter contains separate Remote and Relocation tables) verbatim, keep its audit notes with the three checks, and run `check-saved` before completion. Pure helper requests unavailable to a specialist return to the parent under the shared runtime. Under an explicitly approved manual run, read this same contract for the format and perform the same checks; do not claim automated rendering ran.
 
 ## Goal
 
@@ -20,7 +20,7 @@ For each country marked "High confidence," verify the underlying evidence is gen
 
 ## 2. Missing Candidate Check
 
-Compare country-finder-02-candidates.md against the countries that actually reached Step 4 and Step 5, and also consider any country that would commonly be expected to appear but is absent. For each missing country, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap — such as being on a Step 2 candidate list but never researched or never reaching Step 4.
+Compare country-finder-02-candidates.md against the countries that actually reached Step 4 and Step 5, and also consider any country that would commonly be expected to appear but is absent. For each missing country, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap, such as a non-excluded track receiving no detailed research or never reaching Step 4. A discovery no-evidence finding is not a valid reason to omit detailed research in a new run.
 
 Reconcile this per track, not just per country. Preserve each explicit Step 2 "no" and its recorded reason as Excluded, including timezone rejections; missing downstream research after that rejection is expected, not a process gap. Apply this even when resuming from an older Step 5 output that omitted the earlier exclusion. "no evidence found" or absent research without an explicit rejection remains a missing-data case, not Excluded. Never let an earlier exclusion on one track remove the other track.
 
@@ -57,7 +57,7 @@ For each country that has ingested research or a recorded exclusion on at least 
 
 If the Missing Candidate Check identified countries with neither ingested research nor a recorded exclusion on either track, account for them separately. Keep the existing "Flagged but not researched" heading for research genuinely never supplied. Add a file-only note for "Researched but not ingested" with the validation reason when research was rejected, or "Ingestion outcome unknown" for unsupported legacy cases. Do not label rejected research as never researched or put intentionally excluded countries in a process-gap list. These notes do not add Summary fit categories; the Priority Table below renders their missing-data tracks as Unknown.
 
-In those reasons identify the stage: "discovery found no evidence; detailed research not run" is different from no discovery result or rejected detailed research. An all-Pending final is a valid evidence-gap outcome, not a claim every country is unsuitable; do not automatically expand research scope to fix it.
+In those reasons identify the stage: "discovery found no evidence; detailed research not run" is different from completed research that remains inconclusive or rejected research. Expected work not performed returns to the parent for scoped recovery before completion; do not silently certify it as complete. An unfinished legacy run whose old discovery gate omitted tracks needs the existing explicit repair choice before new research. Substantive research with documented remaining gaps may still finish unresolved; do not invent fits or expand scope to force recommendations.
 
 Close the Summary with counts:
 - Remote: [N] scored, [N] excluded, [N] not scored (no data)
@@ -69,71 +69,35 @@ The Summary itself contains no ranking, recommendations, or interpretation beyon
 
 ## Priority Table
 
-Below the Summary in the file, also write this Priority Table. Unlike the Summary, show this table directly in your chat response too — this is the only thing from this step shown in chat.
+Keep this existing section heading for links and downstream compatibility. New results contain **Remote priorities** and **Relocation priorities** as separate tables, each covering the full candidate universe exactly once. Sponsorship remains the internal track name and authoritative Summary label; Relocation is the human-facing priority heading.
 
-The column order and literal display tokens are defined once in the `country` object of data/output-contracts.json. The renderer also supplies a fixed-header Summary table for newly generated results; legacy Summaries remain model-read and are not rewritten on completed replay.
+Use `country.track_headers`, `track_priorities`, confidence and verification-state vocabularies from data/output-contracts.json through skills/output-helper.md. Read fits from this step's post-audit Summary, including every supported recalibration and carried exclusion, including candidates in its separate missing-data/ingestion notes. Keep the Summary's original wording and counts unchanged; only display `not scored (no data)` as Unknown in tables. A change in presentation never changes an assessment.
 
-Read Remote Fit and Sponsorship Fit from this step's post-audit Summary, including every supported recalibration and carried exclusion. The Summary is authoritative for final fit classifications; do not copy a superseded Step 5 rating into this table. Leave country-finder-05-assessment.md untouched as the pre-audit record.
+Apply the assessment rules independently to each track:
 
-Fit display:
-- Strong, Moderate, Weak, and Excluded retain their exact Summary classification.
-- Render "not scored (no data)" as Unknown in this table only, including missing-data cases accounted for in the Summary's separate notes. Keep the Summary's original wording and counts unchanged for downstream consumers.
-- Unknown is missing or unusable evidence, not a weak fit or a proven exclusion. Do not use a dash to collapse these states.
+- 🥇 Focus: supported Strong/Moderate fit, access and pay feasibility, with the strongest supported return on application effort.
+- 🥈 Selective: the same support requirements, but a narrower opportunity set or meaningful limitation favors targeted applications.
+- Investigate next: supported Strong/Moderate fit, with material access or pay feasibility Unverified. This is a lead to verify, not an application-ready recommendation. Do not drop the supported fit simply because an offer term is unpublished.
+- 🥉 Monitor: supported Strong/Moderate fit, access and pay feasibility, but sparse current openings or substantial practical limitations favor alerts and exceptional matches.
+- 🎗️ Deprioritize: this track is Weak or Excluded, regardless of the other track's state.
+- Pending evidence: this track remains unscored after completed research/recovery accounting. Keep it unranked; missing facts do not prove poor fit.
 
-Priority is a holistic judgment of application effort for this specific candidate, not a numerical score, probability, or formula derived from the two fits. Having two usable tracks does not automatically earn a bonus. Use this step's evidence-quality and confidence-calibration findings alongside the final fits; assigning priority must not independently change those fits. Weigh:
-- Direct match to the candidate's seniority, skills, and target industries, from profile.md.
-- Quantity and recency of relevant job opportunities.
-- Evidence that remote positions accept the candidate's current location.
-- Evidence that employers sponsor this specific profession.
-- Salary compatibility.
-- Visa practicality, processing time, and employer burden.
-- Language and citizenship barriers.
-- Strength and reliability of the supporting evidence, informed by this step's Confidence Calibration Check.
+For each table show the track's Fit, Confidence, Main limitation and Next action. Scored confidence is High/Medium/Low; unscored/excluded confidence is Not assessed. The limitation names the most important supported constraint or unresolved condition, or None identified. The next action is a concise concrete instruction grounded in findings: target the relevant employer/role cluster, verify a named location/pay/sponsor condition, set an alert, or resolve a specific research gap. Do not invent contacts or send messages.
 
-Valid Priority values and decision boundaries:
-- 🥇 Focus: at least one track is Strong or Moderate, with the highest supported expected return; concentrate application effort here.
-- 🥈 Selective: at least one track is Strong or Moderate, but a narrower market or material limitation makes well-matched openings the better use of effort.
-- 🥉 Monitor: at least one track is Strong or Moderate, but limited current opportunities or substantial barriers favor alerts and occasional exceptional matches.
-- 🎗️ Deprioritize: both tracks are known Weak or Excluded; neither is currently usable.
-- Pending evidence: neither track is Strong or Moderate and at least one is Unknown. This is unranked, not a negative recommendation; resolve the evidence gap before judging application priority.
+Choose each track's order independently. Sort priority buckets in contract order; within assessed buckets weigh role/domain/level match, recurring relevant opportunities, shortage/trend evidence, practical access, pay feasibility and confidence. Prefer supported expected usefulness to this person's search, not general popularity or a numerical score/probability. Geographic/working-language conditions and material transition gaps remain visible. Alphabetical order is the final tie-breaker; Pending evidence is alphabetical and has no implied opportunity ranking. An unknown second track supplies neither a bonus nor a penalty.
 
-When one track is Strong or Moderate and the other is Unknown, assign Focus, Selective, or Monitor using only the supported usable track and explain the material limitation. Never assume the unknown track helps or fails. There is no quota per priority and no automatic mapping from Strong versus Moderate or confidence alone: a Moderate/Moderate country can still warrant Monitor because of opportunity volume or barriers.
+The helper checks coverage, exact early reasons and consistency of typed decisions. It does not judge source truth. Save the returned Summary and both tables verbatim, retaining audit notes with the three checks. If a later audit invalidates required support, revise the affected fit/access/pay/priority together; do not retain a Focus recommendation on unusable evidence.
 
-Main limitation:
-- Write one short, country-specific phrase naming the most decision-relevant constraint or evidence gap for the candidate's usable track(s), or the reason for Deprioritize/Pending evidence.
-- Use only stored findings and this audit. Do not invent a barrier, perform new research, or turn an informational visa salary threshold into a confirmed salary shortfall. If a constraint affects only one track, identify that track.
-- For Pending evidence, name the missing or rejected research; keep the detailed ingestion reason in the audit. For Deprioritize, summarize the supported weakness or exclusion. If no material limitation is supported, write "None identified"; do not manufacture one to fill the cell.
-- Full reasons and source references stay in the audit, not in this compact phrase.
-
-Sort by Priority: Focus, Selective, Monitor, Deprioritize, then Pending evidence. Within the same assessed priority, sort by the candidate's supported expected chance of obtaining a suitable job using the same factors above, never alphabetically as a first pass. If countries remain effectively tied, apply these tie-breakers in order:
-1. Stronger match to the candidate's stated domain expertise, industry background, and target role, from profile.md.
-2. More concrete named-employer or current-job evidence.
-3. Better accessibility from the candidate's current location, or clearer sponsorship willingness.
-4. Better salary and processing timeline.
-5. Higher evidence confidence.
-6. Alphabetical order, only as the final tie-breaker.
-
-Sort Pending evidence alphabetically by country name, ignoring flag emoji; do not imply an evidence-based ranking among those countries.
-
-Formatting rules:
-- Place the country's flag emoji directly before its name (e.g., "🇭🇰 Hong Kong").
-- Remote Fit and Sponsorship Fit may contain only: Strong, Moderate, Weak, Excluded, or Unknown.
-- Include every country accounted for in the Summary exactly once, including candidates in its separate missing-data/ingestion notes. These candidates receive Unknown on tracks without a recorded fit or exclusion. Do not promote additional expected-but-absent countries outside the candidate universe from audit commentary into the table.
-- Do not add scores, percentages, redundant track words such as Both, citations, asterisks, or footnotes anywhere in the table. Explanatory prose belongs only in Main limitation.
-- Output only the table for this section, with no surrounding commentary.
-
-Use the contract's exact header, produced by `render-cf`, rather than a second template.
+Salary Calculator still selects countries exclusively from the post-audit Summary. For new results it uses the Relocation priorities row order for local-employee salary presentation; legacy compatible outputs use the Priority Table's row order. Missing ordering remains an alphabetical fallback, never a reason to block calculation. Do not select countries from priority labels or treat Investigate next as confirmed eligibility.
 
 ## Effort Allocation
 
-Below the Priority Table in the file only (never shown in chat), add a short paragraph expanding its action labels into a practical plan: focused effort and tailored applications for Focus, well-matched openings for Selective, alerts and occasional exceptional matches for Monitor, no active effort for Deprioritize, and research gaps to resolve for Pending evidence. Use the same candidate-specific evidence as the table; do not contradict its labels or allocate effort by an invented numerical formula.
+In the saved file, briefly explain the leading opportunities, the concrete checks needed for Investigate next, and the main supported reasons for deprioritizing each track. Name coverage limitations and distinguish application effort from further research. Do not allocate effort by invented percentages, force a minimum number of targets or imply an offer probability. Lifestyle factors apply only to confirmed relevant preferences.
 
-Before saving, check that the Summary and Priority Table agree on every country's final fits (only "not scored (no data)" becomes Unknown for display), that every candidate is accounted for exactly once, that each Priority follows its decision boundary, that each Main limitation is supported and consistent with the audit, and that counts preserve early exclusions. Save the audit checks, Recalibration verdict, Summary, Priority Table, and Effort Allocation to country-finder-06-final-results.md in the workspace. Its post-audit Summary is the authoritative classification for later steps or pipelines; prefer it over country-finder-05-assessment.md if both exist. Salary Calculator still selects countries from this Summary and uses the Priority Table's row order, not its Priority labels or limitation text.
+Before completing, verify each table's full coverage and agreement with the authoritative Summary, the independent orders, priority/access/pay consistency and source-supported limitations/actions. Save the three audit checks, Recalibration, Summary, Priority Table and Effort Allocation to the resolved country-finder-06-final-results.md. Run `check-saved` with the exact render input before state advancement. Step 5 and raw research stay untouched.
 
-Use the shared runtime's resolved output filename, keeping existing saved names, Summary classifications and pipeline state unchanged. Completed runs replay their saved final result under the shared runtime; do not migrate or rewrite an older four-column result merely to apply this presentation change.
+Completed results replay as saved: do not migrate or rewrite an older four-column result, a combined five-column result, or a completed new two-table result. New behavior applies to fresh work or explicitly approved repair, never silent resets of old checkpoints or research.
 
-After saving, tell me the pipeline is complete: "Country Finder is complete. Results are saved to country-finder-06-final-results.md if you want to revisit them later without re-running the pipeline. Review the ranked results above." Do not imply a Focus country or an actionable target exists when all results are Deprioritize or Pending evidence. If every row is Pending evidence, replace the final sentence with "Application priorities are pending evidence; see the saved audit for missing research." If there are no rows, replace it with "No countries could be ranked; see the saved audit for exclusions or missing research."
-
-Final response gate: after saving and checking the result, construct the chat reply from only the Priority Table and the completion message above, using the resolved saved filename. Do not append audit findings, scoring-change commentary, check summaries, file lists or execution notes. Keep those details in the saved file even when recalibration occurred. This gate applies to the parent presenting its own result or a specialist's return.
+Final response gate: show only the two rendered priority tables and this completion message, using the resolved saved filename: "Country Finder is complete. Results are saved to country-finder-06-final-results.md. Remote and Relocation priorities are assessed separately; Investigate next identifies conditions to verify before focusing applications." When no track has an assessed fit, replace the last sentence with "Application priorities remain unresolved; the tables identify the research gaps." Do not append audit findings, scoring-change commentary, check summaries, file lists or execution notes. Keep those details in the saved file. Completed legacy replays retain their saved table format.
 
 Step complete. Follow the step-completion rule in prompts/shared/runtime.md.

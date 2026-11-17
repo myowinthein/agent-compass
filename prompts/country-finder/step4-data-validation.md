@@ -6,16 +6,17 @@ If it exists, read it and process each country's data from that file sequentiall
 
 ## Behavior rules:
 
-Parent: use skills/research-helper.md to scan and review every block, then run `ingest` with the exact hashes, expected eligible countries, required tracks and block decisions. It copies accepted raw slices and updates only the existing generated report. Read back both files and present the consolidated inventory below. A legacy label variation needs genuine semantic review, not an automatic skip or acceptance. A partial failure leaves state unchanged; inspect and rescan before a safe retry. Under an approved manual run, follow all existing rules below without claiming Python ran.
+Parent: use skills/research-helper.md to scan and review every block, passing `comparison_fields: true` for newly generated research to both scan and ingest, then run `ingest` with the exact hashes, expected eligible countries, required tracks and block decisions. It copies accepted raw slices and updates only the existing generated report. Read back both files and present the consolidated inventory below. A legacy label variation needs genuine semantic review, not an automatic skip or acceptance. A partial failure leaves state unchanged; inspect and rescan before a safe retry. Under an approved manual run, follow all existing rules below without claiming Python ran.
 
 * Read and apply the cross-pipeline data validation rules in skills/data-validation-rules.md, then follow the additional rules below.
 * Read and silently store the data.
 * Identify country blocks using skills/data-validation-rules.md, not chat-message boundaries. Each block is expected to contain data for exactly one country.
 * If an explicitly bounded block contains multiple country datasets or no recognizable country, skip it and record the issue. Do not store anything from that block. If the boundaries themselves are ambiguous, the parent asks for clarification under the shared rule.
-* Check which track(s) this country was marked suitable for ("yes") in country-finder-02-candidates.md from the workspace.
-* If the data is missing a section or required field for a track this country was expected to cover, skip it and record exactly what is missing. Do not store incomplete data.
-* If a country was not marked suitable for at least one track in country-finder-02-candidates.md, never store it automatically — skip it and record it as unlisted, so it can be reviewed and manually added back if it wasn't a mistake.
+* Check which track(s) this country was not explicitly excluded from ("yes" or "no evidence found") in country-finder-02-candidates.md from the workspace.
+* If the data is missing a section or required field for a track this country was expected to cover (including the five shared comparison fields in newly generated research), skip it and record exactly what is missing. Do not store incomplete data.
+* If a country is outside the confirmed scope or explicitly excluded on both tracks in country-finder-02-candidates.md, never store it automatically — skip it and record it as unlisted, so it can be reviewed and manually added back if it wasn't a mistake.
 * If a country has already been stored, skip it, keep the original, and record it as a duplicate.
+* Unknown is a valid reported value when the research coverage explains the completed checks and limitations; an omitted field is incomplete. Legacy records lacking the new comparison fields need semantic review of their existing evidence, not invented findings or automatic rejection.
 * Preserve all values, wording, and formatting as provided.
 * Do not verify, correct, or critique the supplied data.
 * Do NOT analyze, summarize, calculate, rank, interpret, or generate tables.
