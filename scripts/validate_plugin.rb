@@ -104,7 +104,8 @@ module CompassValidation
   def validate_helper_resources(root)
     resource(root, "helpers/salary_targets.py")
     resource(root, "helpers/compass.py")
-    %w[common files money research runs state tables timezones workspaces].each { |name| resource(root, "helpers/compass_lib/#{name}.py") }
+    %w[common files money portals research runs state tables timezones workspaces].each { |name| resource(root, "helpers/compass_lib/#{name}.py") }
+    resource(root, "skills/portal-results.md")
   end
 
   def validate_registry(root)
@@ -113,6 +114,8 @@ module CompassValidation
           "Unknown workspace filename registry")
     check(registry.fetch("runs").fetch("profile_workflows") == %w[job-screener],
           "Only Job Screener has profile-only runs; keep checkpoint membership separate")
+    check(registry.fetch("portal_reports") == {"directory" => "portal-finder", "metadata" => "report.json", "report" => "portal-finder-results.md"},
+          "Portal Finder reports need their separate immutable country store")
     filenames = []
     registry.fetch("workflows").each do |workflow, spec|
       check(spec.fetch("state") == ".#{workflow}-state.json", "Keep checkpoint filenames unchanged")

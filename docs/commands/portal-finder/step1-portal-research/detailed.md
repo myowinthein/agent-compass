@@ -10,6 +10,7 @@ title_category: Details
 description: "Portal research checks where someone can actually look for country-relevant tech roles. It uses the portal's own deeper pages, deduplicates the results and makes incomplete access visible instead of filling a recommendation quota."
 source_files:
   - prompts/portal-finder/step1-portal-research.md
+  - skills/portal-results.md
 ---
 
 # Step 1: Portal research
@@ -34,8 +35,9 @@ flowchart TD
   Access -->|Yes| Keep["Keep useful official links and verification date<br/>Deduplicate redirects and rebrands"]
   Keep --> Group["Group verified portals by type<br/>Star useful starting picks"]
   Note --> Result
-  Group --> Result(["Return results and coverage notes<br/>Stop after this response"])
+  Group --> Result["Complete the report with coverage notes"]
   Supplied --> Result
+  Result --> Save(["Save a separate dated report<br/>Show the result and its saved location"])
 ```
 
 ## Groups
@@ -62,8 +64,16 @@ For example, a working homepage with a login-only job search does not prove curr
 
 If browsing is unavailable, wait for access or supplied evidence. User-supplied material retains its date and the label **user-supplied; not live verified**, separate from live-verified recommendations. It cannot receive a star that implies live checking.
 
-Preserve successful partial results. When nothing can be verified, explain the specific gap rather than returning an empty success. The final grouped response ends the command; no profile, output file or checkpoint is created.
+Preserve successful partial results. When nothing can be verified, explain the specific gap rather than returning an empty success.
+
+## Saving the result
+
+After the final source check, the completed report is saved under your home directory’s `Agent Compass/portal-finder/` folder. The saved record keeps its country, evidence date, source URLs, verification kind and coverage alongside the exact report. Reports based on supplied evidence retain that label and its dates; saving them does not establish live verification.
+
+Each completed search receives a separate folder, preserving previous reports. Completed partial or no-verified-result reports keep their limitations; pending research and unanswered access questions are not treated as finished results. The assistant shows the final grouped report and saved path in chat, then stops without creating a profile or checkpoint.
+
+If storage fails, the result remains available in chat with an unsaved status. [Saved reports or fresh research](../detailed.html#saved-reports-or-fresh-research) explains how a later invocation offers the latest country report and keeps historical verification distinct from new research.
 
 ## Explore the source
 
-For implementation details, read [prompts/portal-finder/step1-portal-research.md](https://github.com/myowinthein/agent-compass/blob/main/prompts/portal-finder/step1-portal-research.md).
+For implementation details, read [prompts/portal-finder/step1-portal-research.md](https://github.com/myowinthein/agent-compass/blob/main/prompts/portal-finder/step1-portal-research.md) and [saved-report storage](https://github.com/myowinthein/agent-compass/blob/main/skills/portal-results.md).

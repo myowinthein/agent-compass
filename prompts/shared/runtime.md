@@ -29,7 +29,7 @@ Run every numbered step in order under its complete instructions. Do not omit or
 
 ## Parent execution and evidence reuse
 
-Prioritize timely completion of the selected pipeline without changing research depth. Load required instructions/interfaces when their step begins, then reuse complete unchanged reads within the same invocation. Reuse actual saved-input content only while its resolved path/content identity and relevant candidate clarifications, role, country scope, employment path and evidence dates still match; a remembered summary is not saved evidence. Fresh specialists still read their assigned inputs independently. Only the run metadata specified in skills/run-workspaces.md is added; do not add other caches, sidecars or records.
+Prioritize timely completion of the selected pipeline without changing research depth. Load required instructions/interfaces when their step begins, then reuse complete unchanged reads within the same invocation. Reuse actual saved-input content only while its resolved path/content identity and relevant candidate clarifications, role, country scope, employment path and evidence dates still match; a remembered summary is not saved evidence. Fresh specialists still read their assigned inputs independently. Only the run metadata specified in skills/run-workspaces.md and country-report metadata in skills/portal-results.md are added; do not add other caches, sidecars or records.
 
 Retain supported parent-side decisions until relevant inputs change; do not repeatedly debate settled intake, routing or preparation. Missing material facts and unfinished research still use the existing clarification/repair paths. Reuse verified optional read-only lookups or calculations only where the owning step permits and their complete inputs, helper/contract, configuration and execution context match. Run every required stage check, including post-save `state-check` and final `check-saved`; recheck expected hashes before ingestion and never replay writes or treat old success as current readback.
 
@@ -37,7 +37,7 @@ Keep parent narration and tool output focused on the next decision, preserving r
 
 ## Run selection
 
-Before CF/SC/JS reads profiles or artifacts, read skills/run-workspaces.md and select the run for this chat, person and command. A new chat starts fresh. Existing work in the same chat requires the command's run choice before replay or resume; JS uses Continue screening or Resume setup because it has no completed-search state. Keep the base workspace distinct from the selected run workspace throughout all steps.
+Before CF/SC/JS reads profiles or artifacts, read skills/run-workspaces.md and select the run for this chat, person and command. A new chat starts fresh. Existing work in the same chat requires the command's run choice before replay or resume; JS uses Continue screening or Resume setup because it has no completed-search state. Keep the base workspace distinct from the selected run workspace throughout all steps. Portal Finder instead uses skills/portal-results.md for country-scoped report lookup and saving, without profiles or chat/person selection.
 
 ## Candidate clarifications
 
@@ -70,11 +70,11 @@ A pending helper request under skills/helper-runtime.md or skills/salary-calcula
 
 ## Shared Python helpers
 
-Before the first supported mechanical operation, read skills/helper-runtime.md. Both hosts use helpers/compass.py and data/output-contracts.json. Load the relevant research/comparison/output interface when needed. Candidate judgment, research and confirmations stay in prompts. Helpers do not migrate profiles, introduce commands or write pipeline state. Portal Finder remains prompt-based; Job Screener uses only applicable comparison/timezone arithmetic.
+Before the first supported mechanical operation, read skills/helper-runtime.md. Both hosts use helpers/compass.py and data/output-contracts.json. Load the relevant research/comparison/output interface when needed. Candidate judgment, research and confirmations stay in prompts. Helpers do not migrate profiles, introduce commands or write pipeline state. Portal Finder uses only country-report storage; Job Screener uses only applicable comparison/timezone arithmetic and profile-run selection.
 
 ## File locations
 
-For CF/SC and Job Screener, the only base storage folder is `Path.home() / "Agent Compass"`, resolved on the machine where file tools execute. Apply skills/helper-runtime.md and call `workspace-base` with `{}` to obtain its absolute `workspace` without writes. Do not use the current directory, Documents, a plugin/client directory, a remembered custom base or an agent-chosen alternative. Show the resolved location without asking the user to choose it. Both hosts under the same OS account and filesystem use this same base; remote/container/WSL homes may differ. Do not hardcode a username or `/Users`, `/home` or `C:\Users` prefix.
+For all four workflows, the only base storage folder is `Path.home() / "Agent Compass"`, resolved on the machine where file tools execute. Apply skills/helper-runtime.md and call `workspace-base` with `{}` to obtain its absolute `workspace` without writes. Do not use the current directory, Documents, a plugin/client directory, a remembered custom base or an agent-chosen alternative. Show the resolved location without asking the user to choose it. Both hosts under the same OS account and filesystem use this same base; remote/container/WSL homes may differ. Do not hardcode a username or `/Users`, `/home` or `C:\Users` prefix.
 
 `run-start` creates the base and an isolated run for new CF/SC searches and JS screening sessions. Profiles belong in that selected run, never at the base; an existing top-level legacy profile is preserved and is not automatic intake. Creation uses private permissions where supported. If home resolution, access or creation fails, report the actual path/error and stop persistence; do not choose another folder, change permissions or client settings. An approved manual run uses the same OS-resolved home location and rule. Explicit saved-run paths remain available for existing-run handoff and legacy handling; they never override the fixed base for a new search or trigger migration.
 

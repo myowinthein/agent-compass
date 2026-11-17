@@ -20,6 +20,7 @@ Verify portals on their own sites for the chosen country's IT/tech roles.
 flowchart TD
   Research["Open official country-relevant portal pages"] --> Verify["Keep verified coverage and explain access limits"]
   Verify --> Present["Group links and mark useful starting picks"]
+  Present --> Save["Save a new dated report and show its location"]
 ```
 
 ## Groups
@@ -43,3 +44,7 @@ Each entry gives an official link, country/global scope and one-line strength. C
 Failed access becomes a coverage note, not a dead-site claim or verified recommendation. Homepage marketing alone cannot qualify an entry when deeper pages cannot be checked. Other verified results remain usable.
 
 Without browsing, wait for access or supplied evidence. Supplied results are dated and labelled **user-supplied; not live verified**, separate from verified picks. No verified portals means an explicit limitation, not an empty success.
+
+## Saving the result
+
+The completed report is saved with its country, evidence date, sources and verification limits, then shown in chat with its location. Each search keeps a separate report under your home directory’s `Agent Compass/portal-finder/` folder. This includes completed partial results; pending research is not saved as a finished report. [Portal Finder](../portal-finder.html#saved-reports) explains viewing earlier results.

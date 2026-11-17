@@ -31,4 +31,6 @@ Output the groups in one response, in order from group 1 to 3. Any additional gr
 
 Before sending, check every grouped entry and every ⭐ against an opened official country/category/search/job page showing current country-relevant IT/tech coverage. Homepage-only evidence, including IT marketing banners or category links, does not pass. If deeper pages time out or remain inaccessible, move the entry out of the verified groups into a coverage note; adding a caveat does not make it verified. An accessible search page with limited public listings may qualify for that observed coverage, with its access limit stated.
 
+Save the exact completed report and its country, evidence date, source URLs, verification kind and coverage through [Portal results](../../skills/portal-results.md). This includes completed partial or no-verified-result reports, never a pending research/access question. Present the report with its actual saved path after readback. Preserve earlier reports and original dates. Storage failures retain the report in chat with an honest unsaved status. This saved-path/status line is the only addition to the grouped output format above.
+
 Step complete — stop here.

@@ -184,8 +184,12 @@ def helper(operation, payload, workspace):
     request = {"schema_version": 1, **payload}
     if "workspace" in request:
         request["workspace"] = str(workspace)
-    command = [sys.executable, "-I", "-B", str(ROOT / "helpers/compass.py"), operation]
-    result = subprocess.run(command, input=json.dumps(request), text=True, capture_output=True, timeout=15, cwd=workspace)
+    # Home-scoped helpers must stay inside this disposable replay workspace.
+    wrapper = ("import runpy, sys; from pathlib import Path; "
+               "home = Path(sys.argv[1]); script = sys.argv[2]; sys.argv = sys.argv[2:]; "
+               "Path.home = classmethod(lambda cls: home); runpy.run_path(script, run_name='__main__')")
+    command = [sys.executable, "-I", "-B", "-c", wrapper, str(workspace), str(ROOT / "helpers/compass.py"), operation]
+    result = subprocess.run(command, input=json.dumps(request), text=True, encoding="utf-8", capture_output=True, timeout=15, cwd=workspace)
     return {"exit_code": result.returncode, "output": json.loads(result.stdout or result.stderr)}
 
 
@@ -271,6 +275,13 @@ def check(case, initial, final, trace):
             assert "✅ Apply" in response and "🚫" not in response and "employer.example" not in response, response
     elif group.startswith("portal"):
         assert not writes and not handoffs and not questions, messages
+        assert "portal-list" in operations and "portal-save" in operations, operations
+        saves = [result["output"]["result"] for turn in trace for request, result in
+                 zip(turn["reply"]["helpers"], turn["helper_results"]) if request["operation"] == "portal-save"]
+        assert len(saves) == 1, saves
+        saved = saves[0]
+        assert Path(saved["path"]).read_text(encoding="utf-8").strip() in messages, "Final report differs from saved report"
+        assert saved["path"] in messages, "Missing saved report location"
         if group == "portal":
             assert "PublicTech" in messages and "Tech-specific boards" in messages and "2026-10-28" in messages, messages
             assert re.search(r"⭐[^\n]*PublicTech", messages), messages
@@ -284,6 +295,7 @@ def check(case, initial, final, trace):
         else:
             assert "user-supplied; not live verified" in messages.lower() and "2026-10-20" in messages, messages
             assert "SuppliedTech" in messages and "⭐" not in messages, messages
+            assert saved["verification"] == "supplied", saved
     elif group.startswith("visa"):
         n = names("salary-calculator")
         assert not handoffs, "Current-model execution was already chosen"
@@ -384,7 +396,8 @@ def run_case(host, case, timeout, previous=None):
                 assert Path(filename).name == filename and isinstance(content, str), filename
                 (workspace / filename).write_text(content, encoding="utf-8")
             for request in reply["helpers"]:
-                assert request["operation"] in {"render-salary", "check-saved", "adjust-check", "compare", "state-check", "resolve-files"}, request
+                assert request["operation"] in {"render-salary", "check-saved", "adjust-check", "compare", "state-check", "resolve-files",
+                                                 "workspace-base", "portal-list", "portal-read", "portal-save"}, request
                 result = helper(request["operation"], request["input"], workspace)
                 turn["helper_results"].append(result)
                 assert result["exit_code"] == 0, result

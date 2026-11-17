@@ -5,7 +5,7 @@ description: Resolve current and legacy workflow filenames without renaming or d
 
 # Workspace files
 
-Read bundled `data/workspace-files.json` as data. It is the single registry of current/legacy artifact names and checkpoint membership. Shared `profile.md` and `situational-profile.md` are unchanged. Portal Finder and Job Screener have no automatic result exports or checkpoints; do not add them for naming consistency.
+Read bundled `data/workspace-files.json` as data. It is the single registry of artifact names and checkpoint membership. Shared `profile.md` and `situational-profile.md` are unchanged. Portal Finder uses the separate country-report operations in [Portal results](portal-results.md), without checkpoints; do not pass it to `resolve-files`. Job Screener has no result export or checkpoint.
 
 Select the chat/person/command run under skills/run-workspaces.md before resolving artifacts. The `workspace` below is that run directory, not the base output folder. Producer lookups use the separately selected matching producer run. Explicit user-selected legacy paths retain the resolution policy below.
 

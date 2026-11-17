@@ -12,7 +12,7 @@ import uuid
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "helpers"))
-from compass_lib import research, runs, timezones, workspaces
+from compass_lib import portals, research, runs, timezones, workspaces
 from compass_lib.common import Problem
 
 
@@ -1297,6 +1297,14 @@ class RunWorkspaces(unittest.TestCase):
             self.assertEqual((active[0]['run_id'], active[0]['status']), (js['run_id'], 'profile_missing'))
             historical = invoke('run-list', self.request(root, 'claude:fictional-session', workflow='job-screener', include_history=True))
             self.assertEqual([(r['run_id'], r['is_active']) for r in historical['history_runs']], [(js['run_id'], True)])
+            self.assertIsNone(invoke('portal-list', {'country': 'Germany'})['latest'])
+            portal = invoke('portal-save', {'country': 'Germany', 'evidence_date': '2026-10-28',
+                                           'verification': 'supplied', 'coverage': 'partial', 'sources': [],
+                                           'report': 'User-supplied; not live verified. Fictional German tech board.'})
+            self.assertTrue(Path(portal['path']).is_relative_to(Path(expected) / 'portal-finder'))
+            replay = invoke('portal-read', {'country': 'Germany', 'report_id': portal['report_id'],
+                                            'expected_sha256': portal['report_sha256']})
+            self.assertEqual(replay['report'], 'User-supplied; not live verified. Fictional German tech board.')
             self.assertFalse(list(install.rglob('__pycache__')))
 
     def test_fixed_base_resolution_creation_and_override_rejection(self):
@@ -1523,6 +1531,153 @@ class RunWorkspaces(unittest.TestCase):
                            profile_source_run=first['run_id'])
             self.assertEqual(self.snapshot(root), before)
             self.assertEqual(target.read_text(), 'Fictional unrelated private profile')
+
+
+class PortalReports(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.home = Path(self.temporary.name)
+        home = patch('pathlib.Path.home', return_value=self.home)
+        home.start()
+        self.addCleanup(home.stop)
+
+    def request(self, **changes):
+        return {'country': 'Germany', 'evidence_date': '2026-10-28', 'verification': 'live',
+                'coverage': 'partial', 'sources': ['https://example.com/de/software'],
+                'report': 'Verified as of 2026-10-28\n\n⭐ Fictional Tech\n⚠️ Login needed for details.\n', **changes}
+
+    def snapshot(self):
+        return {str(p.relative_to(self.home)): p.read_bytes() for p in self.home.rglob('*') if p.is_file()}
+
+    def test_missing_history_is_read_only_and_profile_free(self):
+        self.assertIsNone(portals.list_reports({'country': 'Germany'})['latest'])
+        self.assertEqual(list(self.home.iterdir()), [])
+        base = self.home / 'Agent Compass'
+        base.mkdir()
+        (base / 'profile.md').write_text('Fictional unrelated private profile')
+        before = self.snapshot()
+        self.assertIsNone(portals.list_reports({'country': 'Germany', 'include_history': True})['latest'])
+        self.assertEqual(self.snapshot(), before)
+
+    def test_all_runs_survive_and_latest_uses_save_time_not_evidence_date(self):
+        first = portals.save_report(self.request())
+        before = Path(first['path']).read_bytes()
+        second = portals.save_report(self.request(evidence_date='2026-10-20', verification='supplied',
+                                                  report='User-supplied; not live verified\nOlder evidence, new search.\n'))
+        result = portals.list_reports({'country': ' 🇩🇪  GERMANY ', 'include_history': True})
+        self.assertEqual([r['report_id'] for r in result['reports']], [second['report_id'], first['report_id']])
+        self.assertEqual(result['latest']['verification'], 'supplied')
+        self.assertEqual(Path(first['path']).read_bytes(), before)
+        self.assertNotEqual(first['path'], second['path'])
+        self.assertFalse(list(self.home.rglob('*state*')))
+        self.assertFalse(list(self.home.rglob('profile.md')))
+
+    def test_selected_report_replays_exact_bytes_without_writes(self):
+        first = portals.save_report(self.request())
+        portals.save_report(self.request(report='A newer report.'))
+        before = self.snapshot()
+        old = portals.read_report({'country': 'Germany', 'report_id': first['report_id'],
+                                   'expected_sha256': first['report_sha256']})
+        self.assertEqual(old['report'], self.request()['report'])
+        self.assertEqual(self.snapshot(), before)
+        with self.assertRaises(Problem):
+            portals.read_report({'country': 'Germany', 'report_id': first['report_id'], 'expected_sha256': 'wrong'})
+
+    def test_countries_remain_separate_and_history_never_falls_back(self):
+        german = portals.save_report(self.request())
+        french = portals.save_report(self.request(country='France'))
+        self.assertEqual(portals.list_reports({'country': 'Germany'})['latest']['report_id'], german['report_id'])
+        with self.assertRaises(OSError):
+            portals.read_report({'country': 'Germany', 'report_id': french['report_id'],
+                                 'expected_sha256': french['report_sha256']})
+        latest = portals.save_report(self.request(report='New German result.'))
+        Path(latest['path']).write_text('Changed outside the helper')
+        before = self.snapshot()
+        with self.assertRaises(ValueError):
+            portals.list_reports({'country': 'Germany'})
+        self.assertEqual(self.snapshot(), before)
+
+    def test_invalid_payloads_create_no_store(self):
+        for changes in [{'report': ''}, {'evidence_date': 'yesterday'}, {'verification': 'verified'},
+                        {'coverage': 'guaranteed'}, {'sources': []},
+                        {'sources': ['file:///private/sample']}, {'sources': ['https://user:pass@example.com/jobs']},
+                        {'workspace': str(self.home)}, {'country': 'Germany\nFrance'}]:
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                portals.save_report(self.request(**changes))
+            self.assertEqual(list(self.home.iterdir()), [])
+
+    def test_completed_no_coverage_report_retains_its_limit(self):
+        saved = portals.save_report(self.request(verification='unverified', coverage='none', sources=[],
+                                                 report='No portals could be verified. The supplied sources were inaccessible.'))
+        latest = portals.list_reports({'country': 'Germany'})['latest']
+        self.assertEqual((latest['verification'], latest['coverage']), ('unverified', 'none'))
+        self.assertEqual(latest['report_id'], saved['report_id'])
+
+    def test_failed_publication_preserves_existing_reports(self):
+        first = portals.save_report(self.request())
+        before = self.snapshot()
+        with patch('compass_lib.portals.os.rename', side_effect=OSError('fictional write failure')):
+            with self.assertRaises(OSError):
+                portals.save_report(self.request(report='New report that cannot be published.'))
+        self.assertEqual(self.snapshot(), before)
+        self.assertEqual(portals.list_reports({'country': 'Germany'})['latest']['report_id'], first['report_id'])
+
+    def test_identifier_collision_never_overwrites_a_report(self):
+        first = portals.save_report(self.request())
+        before = self.snapshot()
+        with patch('compass_lib.portals.uuid.uuid4', return_value=uuid.UUID(first['report_id'])):
+            with self.assertRaises(ValueError):
+                portals.save_report(self.request(report='A colliding result.'))
+        self.assertEqual(self.snapshot(), before)
+
+    def test_uncertain_readback_leaves_one_recoverable_report(self):
+        with patch('compass_lib.portals.record_at', side_effect=OSError('fictional readback failure')):
+            with self.assertRaises(OSError):
+                portals.save_report(self.request())
+        reports = portals.list_reports({'country': 'Germany', 'include_history': True})['reports']
+        self.assertEqual(len(reports), 1)
+        self.assertEqual(reports[0]['report_sha256'], portals.digest(self.request()['report'].encode()))
+
+    def test_symlinked_storage_and_report_files_are_not_followed(self):
+        saved = portals.save_report(self.request())
+        report = Path(saved['path'])
+        outside = self.home / 'outside.md'
+        outside.write_text('Fictional outside data')
+        report.unlink()
+        try:
+            report.symlink_to(outside)
+        except OSError:
+            self.skipTest('This platform does not permit fixture symlinks')
+        with self.assertRaises(ValueError):
+            portals.list_reports({'country': 'Germany'})
+        self.assertEqual(outside.read_text(), 'Fictional outside data')
+        root = self.home / 'Agent Compass' / 'portal-finder'
+        with tempfile.TemporaryDirectory() as destination:
+            empty_country, _, _, _ = portals.location('France')
+            empty_country.symlink_to(destination, target_is_directory=True)
+            with self.assertRaises(ValueError):
+                portals.save_report(self.request(country='France'))
+            self.assertEqual(list(Path(destination).iterdir()), [])
+        self.assertTrue(root.is_dir())
+
+    def test_concurrent_searches_keep_every_complete_report(self):
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=3) as pool:
+            records = list(pool.map(lambda n: portals.save_report(self.request(report=f'Fictional report {n}.')), range(3)))
+        self.assertEqual(len({r['report_id'] for r in records}), 3)
+        reports = portals.list_reports({'country': 'Germany', 'include_history': True})['reports']
+        self.assertEqual({r['report_id'] for r in records}, {r['report_id'] for r in reports})
+
+    def test_optional_replay_helpers_use_only_the_disposable_home(self):
+        import test_workflow_replay as replay
+        with tempfile.TemporaryDirectory() as temporary:
+            workspace = Path(temporary).resolve()
+            result = replay.helper('portal-save', self.request(), workspace)
+            self.assertEqual(result['exit_code'], 0, result)
+            saved = result['output']['result']
+            self.assertTrue(Path(saved['path']).is_relative_to(workspace))
+            self.assertEqual(list(self.home.iterdir()), [])
 
 
 if __name__ == "__main__":

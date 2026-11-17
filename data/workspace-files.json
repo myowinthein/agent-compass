@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "runs": {"directory": "runs", "metadata": ".compass-run.json", "profile_workflows": ["job-screener"]},
+  "portal_reports": {"directory": "portal-finder", "metadata": "report.json", "report": "portal-finder-results.md"},
   "workflows": {
     "country-finder": {
       "state": ".country-finder-state.json",
