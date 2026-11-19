@@ -1,5 +1,5 @@
 ---
-title: "Country-finder"
+title: "Country finder"
 parent: Commands
 nav_exclude: true
 has_toc: false
@@ -12,7 +12,7 @@ source_files:
   - workflows/country-finder.md
 ---
 
-# Country-finder
+# Country finder
 
 {% include guide-depth.html %}
 

@@ -1,6 +1,6 @@
 ---
 title: "Step 1: Criteria intake"
-parent: Country-finder
+parent: Country finder
 grand_parent: Commands
 nav_exclude: true
 has_toc: false

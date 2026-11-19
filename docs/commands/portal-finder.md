@@ -1,5 +1,5 @@
 ---
-title: Portal-finder
+title: Portal finder
 parent: Commands
 nav_order: 2
 has_children: true
@@ -8,7 +8,7 @@ detailed: /docs/commands/portal-finder/detailed.html
 has_toc: false
 ---
 
-# Portal-finder
+# Portal finder
 
 {% include guide-depth.html %}
 

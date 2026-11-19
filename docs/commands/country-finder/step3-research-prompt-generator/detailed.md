@@ -1,6 +1,6 @@
 ---
 title: "Step 3: Research prompt generator"
-parent: Country-finder
+parent: Country finder
 grand_parent: Commands
 nav_exclude: true
 has_toc: false

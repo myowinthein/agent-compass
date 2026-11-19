@@ -32,22 +32,22 @@ defaults:
       path: "commands/country-finder"
       type: pages
     values:
-      title_category: Country-finder
+      title_category: Country finder
   - scope:
       path: "commands/salary-calculator"
       type: pages
     values:
-      title_category: Salary-calculator
+      title_category: Salary calculator
   - scope:
       path: "commands/portal-finder"
       type: pages
     values:
-      title_category: Portal-finder
+      title_category: Portal finder
   - scope:
       path: "commands/job-screener"
       type: pages
     values:
-      title_category: Job-screener
+      title_category: Job screener
   - scope:
       path: "setup"
       type: pages

@@ -1,6 +1,6 @@
 ---
 title: "Step 1: Portal research"
-parent: Portal-finder
+parent: Portal finder
 grand_parent: Commands
 nav_order: 1
 description: Verify job portals on their own sites for a selected country's IT and tech roles, deduplicate results and explain any coverage limits.

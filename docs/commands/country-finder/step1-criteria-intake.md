@@ -1,6 +1,6 @@
 ---
 title: "Step 1: Criteria intake"
-parent: Country-finder
+parent: Country finder
 grand_parent: Commands
 nav_order: 1
 description: Confirm your background, role and search preferences before researching remote work or employer-sponsored relocation in selected countries.

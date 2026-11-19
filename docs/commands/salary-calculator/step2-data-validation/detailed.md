@@ -1,6 +1,6 @@
 ---
 title: "Step 2: Data validation"
-parent: Salary-calculator
+parent: Salary calculator
 grand_parent: Commands
 nav_exclude: true
 has_toc: false

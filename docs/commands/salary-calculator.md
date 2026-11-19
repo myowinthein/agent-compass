@@ -1,5 +1,5 @@
 ---
-title: Salary-calculator
+title: Salary calculator
 parent: Commands
 nav_order: 3
 has_children: true
@@ -8,7 +8,7 @@ detailed: /docs/commands/salary-calculator/detailed.html
 has_toc: false
 ---
 
-# Salary-calculator
+# Salary calculator
 
 {% include guide-depth.html %}
 

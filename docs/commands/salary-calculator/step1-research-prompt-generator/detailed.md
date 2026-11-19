@@ -1,6 +1,6 @@
 ---
 title: "Step 1: Research prompt generator"
-parent: Salary-calculator
+parent: Salary calculator
 grand_parent: Commands
 nav_exclude: true
 has_toc: false
