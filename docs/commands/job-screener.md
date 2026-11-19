@@ -1,5 +1,5 @@
 ---
-title: job-screener
+title: Job-screener
 parent: Commands
 nav_order: 4
 has_children: true
@@ -8,7 +8,7 @@ detailed: /docs/commands/job-screener/detailed.html
 has_toc: false
 ---
 
-# job-screener
+# Job-screener
 
 {% include guide-depth.html %}
 

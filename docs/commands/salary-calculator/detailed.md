@@ -1,5 +1,5 @@
 ---
-title: "salary-calculator"
+title: "Salary-calculator"
 parent: Commands
 nav_exclude: true
 has_toc: false
@@ -11,7 +11,7 @@ source_files:
   - workflows/salary-calculator.md
 ---
 
-# salary-calculator
+# Salary-calculator
 
 {% include guide-depth.html %}
 

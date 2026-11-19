@@ -1,6 +1,6 @@
 ---
-title: "step 5: final verification"
-parent: salary-calculator
+title: "Step 5: Final verification"
+parent: Salary-calculator
 grand_parent: Commands
 nav_exclude: true
 has_toc: false

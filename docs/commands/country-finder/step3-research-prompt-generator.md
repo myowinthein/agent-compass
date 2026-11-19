@@ -1,6 +1,6 @@
 ---
-title: "step 3: research prompt generator"
-parent: country-finder
+title: "Step 3: Research prompt generator"
+parent: Country-finder
 grand_parent: Commands
 nav_order: 3
 description: Collect detailed country research for eligible remote and sponsorship tracks, account for missing results and preserve successful research.

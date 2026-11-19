@@ -1,6 +1,6 @@
 ---
-title: "step 5: final verification"
-parent: salary-calculator
+title: "Step 5: Final verification"
+parent: Salary-calculator
 grand_parent: Commands
 nav_order: 5
 description: Audit the salary framework against your confirmed role, career ladder and saved evidence, revising targets only when the evidence supports it.

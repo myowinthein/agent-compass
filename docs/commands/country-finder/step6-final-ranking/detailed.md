@@ -1,6 +1,6 @@
 ---
-title: "step 6: final ranking"
-parent: country-finder
+title: "Step 6: Final ranking"
+parent: Country-finder
 grand_parent: Commands
 nav_exclude: true
 has_toc: false

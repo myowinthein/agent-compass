@@ -1,5 +1,5 @@
 ---
-title: country-finder
+title: Country-finder
 parent: Commands
 nav_order: 1
 has_children: true
@@ -8,7 +8,7 @@ detailed: /docs/commands/country-finder/detailed.html
 has_toc: false
 ---
 
-# country-finder
+# Country-finder
 
 {% include guide-depth.html %}
 

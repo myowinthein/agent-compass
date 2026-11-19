@@ -1,6 +1,6 @@
 ---
-title: "step 2: country discovery"
-parent: country-finder
+title: "Step 2: Country discovery"
+parent: Country-finder
 grand_parent: Commands
 nav_order: 2
 description: Choose a country scope and check evidence of remote hiring or employer-sponsored relocation for your role, keeping the two tracks independent.

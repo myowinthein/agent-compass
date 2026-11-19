@@ -1,6 +1,6 @@
 ---
-title: "step 2: country discovery"
-parent: country-finder
+title: "Step 2: Country discovery"
+parent: Country-finder
 grand_parent: Commands
 nav_exclude: true
 has_toc: false

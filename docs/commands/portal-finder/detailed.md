@@ -1,5 +1,5 @@
 ---
-title: "portal-finder"
+title: "Portal-finder"
 parent: Commands
 nav_exclude: true
 has_toc: false
@@ -12,7 +12,7 @@ source_files:
   - skills/portal-results.md
 ---
 
-# portal-finder
+# Portal-finder
 
 {% include guide-depth.html %}
 

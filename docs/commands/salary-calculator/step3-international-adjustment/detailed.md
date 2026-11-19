@@ -1,6 +1,6 @@
 ---
-title: "step 3: international adjustment"
-parent: salary-calculator
+title: "Step 3: International adjustment"
+parent: Salary-calculator
 grand_parent: Commands
 nav_exclude: true
 has_toc: false

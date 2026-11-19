@@ -1,6 +1,6 @@
 ---
-title: "step 4: data validation"
-parent: country-finder
+title: "Step 4: Data validation"
+parent: Country-finder
 grand_parent: Commands
 nav_exclude: true
 has_toc: false

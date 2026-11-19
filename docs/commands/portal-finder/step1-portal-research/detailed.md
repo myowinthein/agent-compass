@@ -1,6 +1,6 @@
 ---
-title: "step 1: portal research"
-parent: portal-finder
+title: "Step 1: Portal research"
+parent: Portal-finder
 grand_parent: Commands
 nav_exclude: true
 has_toc: false

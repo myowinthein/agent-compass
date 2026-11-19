@@ -1,6 +1,6 @@
 ---
-title: "step 5: scoring"
-parent: country-finder
+title: "Step 5: Scoring"
+parent: Country-finder
 grand_parent: Commands
 nav_order: 5
 description: Assess Remote and Sponsorship separately using categorical fits and confidence, preserving exclusions and reasons for missing evidence.

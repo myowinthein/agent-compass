@@ -1,6 +1,6 @@
 ---
-title: "step 1: research prompt generator"
-parent: salary-calculator
+title: "Step 1: Research prompt generator"
+parent: Salary-calculator
 grand_parent: Commands
 nav_order: 1
 description: Confirm target countries and collect sourced local salary benchmarks for your role and level, with two employer tiers assessed separately.

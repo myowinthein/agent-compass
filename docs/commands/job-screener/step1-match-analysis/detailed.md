@@ -1,6 +1,6 @@
 ---
-title: "step 1: match analysis"
-parent: job-screener
+title: "Step 1: Match analysis"
+parent: Job-screener
 grand_parent: Commands
 nav_exclude: true
 has_toc: false

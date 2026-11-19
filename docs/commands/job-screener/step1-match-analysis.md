@@ -1,6 +1,6 @@
 ---
-title: "step 1: match analysis"
-parent: job-screener
+title: "Step 1: Match analysis"
+parent: Job-screener
 grand_parent: Commands
 nav_order: 1
 description: Compare one job with confirmed profile facts, apply the screening verdict rules and keep unknown qualifications distinct from confirmed gaps.

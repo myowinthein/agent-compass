@@ -1,6 +1,6 @@
 ---
-title: "step 4: table calculation"
-parent: salary-calculator
+title: "Step 4: Table calculation"
+parent: Salary-calculator
 grand_parent: Commands
 nav_exclude: true
 has_toc: false

@@ -1,6 +1,6 @@
 ---
-title: "step 2: data validation"
-parent: salary-calculator
+title: "Step 2: Data validation"
+parent: Salary-calculator
 grand_parent: Commands
 nav_order: 2
 description: Store accepted salary research unchanged after structural checks, preserving sources and original duplicates without claiming market verification.

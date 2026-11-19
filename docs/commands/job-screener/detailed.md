@@ -1,5 +1,5 @@
 ---
-title: "job-screener"
+title: "Job-screener"
 parent: Commands
 nav_exclude: true
 has_toc: false
@@ -11,7 +11,7 @@ source_files:
   - workflows/job-screener.md
 ---
 
-# job-screener
+# Job-screener
 
 {% include guide-depth.html %}
 

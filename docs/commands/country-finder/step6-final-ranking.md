@@ -1,6 +1,6 @@
 ---
-title: "step 6: final ranking"
-parent: country-finder
+title: "Step 6: Final ranking"
+parent: Country-finder
 grand_parent: Commands
 nav_order: 6
 description: Audit country fits and confidence, account for missing evidence and produce application priorities for remote work and sponsorship.
