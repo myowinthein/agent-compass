@@ -7,7 +7,7 @@ description: Review observed Agent Compass limitations in Claude and Codex, incl
 
 # Known issues
 
-Observations from maintainer testing and use on macOS, alongside documented platform limitations. References were checked on **28–29 October 2026**, and **16 November 2026** for the instruction-following entry.
+Observations from maintainer testing and use on macOS, alongside documented platform limitations.
 
 ## Across agents
 
