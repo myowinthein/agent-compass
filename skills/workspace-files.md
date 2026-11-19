@@ -9,15 +9,15 @@ Read bundled `data/workspace-files.json` as data. It is the single registry of a
 
 Select the chat/person/command run under skills/run-workspaces.md before resolving artifacts. The `workspace` below is that run directory, not the base output folder. Producer lookups use the separately selected matching producer run. Explicit user-selected legacy paths retain the resolution policy below.
 
-Before accessing Country Finder or Salary Calculator artifacts, apply `skills/helper-runtime.md` and run the read-only `resolve-files` operation:
+Before accessing Country Finder or Salary Calculator artifacts, apply `skills/helper-runtime.md`. When the step needs checkpoint verification, use the `files`, `naming` and `existing_outputs` returned by its required fresh `state-check`; that operation already resolves filenames. Otherwise run the read-only `resolve-files` operation:
 
 ```json
 {"schema_version":1,"workspace":"<absolute consumer directory>","workflow":"country-finder"}
 ```
 
-Use `salary-calculator` for that workflow. Resolve a producer separately before an optional cross-workflow read; one workflow's naming never controls the other. This lookup establishes paths, not completion, profile compatibility or permission to overwrite anything.
+Use `salary-calculator` for that workflow. Do not wrap `state-check` with a redundant `resolve-files` call for the same unchanged workspace/workflow. Reuse a resolution only while its run, registry and relevant file metadata remain unchanged; recheck before writes and after a resume. Resolve a producer separately before an optional cross-workflow read; one workflow's naming never controls the other. Filename resolution alone establishes no completion, profile compatibility or permission to overwrite anything.
 
-The result contains `files` keyed by artifact (`research`, `validated-data`, `final-results`, etc., plus `state`), `existing_outputs`, and `naming` (`current`, `legacy` or `mixed`). Prefix each returned filename with the selected workspace path. Recheck resolution before writes and after a resume; if paths changed since a handoff, stop and reconcile before saving. Pass specialists the resolved absolute input/output paths and this rule, not just canonical names. Completion messages name the actual saved file.
+The result contains `files` keyed by artifact (`research`, `validated-data`, `final-results`, etc., plus `state`), `existing_outputs`, and `naming` (`current`, `legacy` or `mixed`). Prefix each returned filename with the selected workspace path. If paths changed since a handoff, stop and reconcile before saving. Pass specialists the resolved absolute input/output paths and this rule, not just canonical names. Completion messages name the actual saved file.
 
 ## Resolution policy
 

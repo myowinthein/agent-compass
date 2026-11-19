@@ -8,7 +8,8 @@ import tempfile
 from urllib.parse import urlsplit
 import uuid
 
-from .common import ROOT, Problem, array, dated, digest, fields, identity, loads, named, read, require, text
+from .common import Problem, array, dated, digest, fields, identity, loads, named, read, require, text
+from .files import registry
 from .runs import directory, token
 from .workspaces import base
 
@@ -17,7 +18,7 @@ def location(country):
     country = text(country).strip()
     require(len(country) <= 200 and not any(ord(c) < 32 for c in country), "Expected one country name")
     key = identity(country)
-    spec = loads(read(ROOT / "data" / "workspace-files.json"))["portal_reports"]
+    spec = registry()["portal_reports"]
     root = directory(base(), spec["directory"])
     return directory(root, "country-" + digest(key.encode("utf-8"))), country, key, spec
 

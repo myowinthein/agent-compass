@@ -9,7 +9,7 @@ Apply `skills/helper-runtime.md` and read `data/output-contracts.json` as data. 
 
 ## Salary
 
-Run `render-salary` with `rows: [{country, calculation, visa}, ...]` and optional `priority_order: [countryName, ...]` transcribed from Country Finder's Relocation priorities table for new results, or its legacy combined Priority Table. Each display country contains one researched flag and its name; flag position is normalized. `calculation` is the existing complete schema-version-1 input in `skills/salary-calculation-helper.md`, not a fabricated helper result. The renderer reuses that same salary calculation and returns exact `calculations`, `markdown`, `table_markdown`, `notes` and `calculated`.
+Run `render-salary` once for the complete eligible `rows: [{country, calculation, visa}, ...]`, with optional `priority_order: [countryName, ...]` transcribed from Country Finder's Relocation priorities table for new results, or its legacy combined Priority Table. Each display country contains one researched flag and its name; flag position is normalized. `calculation` is the complete schema-version-1 input in skills/salary-calculation-helper.md, not a fabricated result. This one call performs the arithmetic and returns exact `calculations`, `markdown`, `table_markdown`, `notes` and `calculated`; no separate per-country CLI calls are required first. `check-saved` remains a fresh required check of the actual saved file.
 
 Both renderers optionally accept `aliases`, the same explicit direct alias mapping used for research matching. Never fuzzy-merge countries. Numeric visa display requires an exact terminating amount; if official precision for a recurring legal amount cannot be established, preserve the uncertainty rather than inventing rounded legal pay.
 

@@ -48,7 +48,9 @@ flowchart TD
 
 ## Calculation runtime
 
-Both hosts use the bundled standard-library Python helpers, requiring Python 3.11 or later. The main conversation prepares numeric inputs and verifies the returned results before any optional AI calculator review.
+Both hosts use the bundled standard-library Python helpers, requiring Python 3.11 or later. The main conversation prepares all eligible rows and obtains their exact calculations and formatted table together, before any optional AI calculator review. It does not need separate calculation calls for every country first. The saved table still receives an independent check against those inputs before the step completes.
+
+These are fixed helpers shipped with Compass. The agent does not generate a wrapper or arithmetic program during the search. Research quality, visa comparability, skipped countries and any evidence-supported revision remain decisions for the agent to assess and explain.
 
 If execution is unavailable, you choose repair or a disclosed manual fallback. Invalid data still needs clarification or a skip; missing package files need repair. Choosing an AI specialist is a separate decision and does not establish that the Python calculation ran.
 

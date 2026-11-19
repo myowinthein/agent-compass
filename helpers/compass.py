@@ -4,6 +4,7 @@ Read skills/helper-runtime.md and the relevant helper reference before use.
 """
 
 import argparse
+from importlib import import_module
 from pathlib import Path
 import sys
 
@@ -21,14 +22,15 @@ def main():
     if sys.version_info < (3, 11):
         emit({"error": {"kind": "runtime_unavailable", "message": "Python 3.11 or newer is required"}}, sys.stderr)
         return 3
-    from compass_lib import files, money, portals, research, runs, state, tables, timezones, workspaces
     from compass_lib.common import LIMIT, Problem, loads, require
-    commands = {"batch-partition": research.partition, "research-scope": research.scope, "research-scan": research.scan, "ingest": research.ingest,
-                "compare": money.compare, "adjust-check": money.adjust, "tz-offsets": timezones.offsets,
-                "render-cf": tables.country, "render-salary": tables.salary,
-                "check-saved": tables.check_saved, "state-check": state.check, "resolve-files": files.resolve_request,
-                "run-list": runs.list_runs, "run-start": runs.start, "workspace-base": workspaces.resolve,
-                "portal-list": portals.list_reports, "portal-read": portals.read_report, "portal-save": portals.save_report}
+    commands = {"batch-partition": ("research", "partition"), "research-scope": ("research", "scope"),
+                "research-scan": ("research", "scan"), "ingest": ("research", "ingest"),
+                "compare": ("money", "compare"), "adjust-check": ("money", "adjust"), "tz-offsets": ("timezones", "offsets"),
+                "render-cf": ("tables", "country"), "render-salary": ("tables", "salary"),
+                "check-saved": ("tables", "check_saved"), "state-check": ("state", "check"), "resolve-files": ("files", "resolve_request"),
+                "chat-key": ("runs", "chat_key"), "run-list": ("runs", "list_runs"), "run-start": ("runs", "start"),
+                "workspace-base": ("workspaces", "resolve"),
+                "portal-list": ("portals", "list_reports"), "portal-read": ("portals", "read_report"), "portal-save": ("portals", "save_report")}
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=commands)
     arguments = parser.parse_args()
@@ -38,7 +40,8 @@ def main():
                 "Expected schema_version integer1")
         original = dict(payload)
         del payload["schema_version"]
-        result = commands[arguments.command](payload)
+        module, operation = commands[arguments.command]
+        result = getattr(import_module("compass_lib." + module), operation)(payload)
     except Problem as error:
         emit({"error": {"kind": error.kind, "message": str(error), **error.details}}, sys.stderr)
         return {"runtime_unavailable": 3, "needs_clarification": 4, "conflict": 5, "io_error": 6}[error.kind]

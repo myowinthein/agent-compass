@@ -11,17 +11,17 @@ Read skills/helper-runtime.md for execution and the shared run-scoped fallback. 
 
 ## Execution and handoff
 
-The parent reads the required workspace inputs and runs the helper before Step 4's optional calculator handoff. Give the specialist the inputs and returned results as task context, not a new workspace file. The specialist checks the echoed inputs against the original files and applies the existing table rules.
+The parent reads the required workspace inputs and normally calls `render-salary` once for all eligible rows under skills/output-helper.md. That call already returns each country's exact `calculations` and the canonical table; do not first run a separate per-country calculation for the same rows. Give any optional calculator specialist that request and its actual results as task context, not a new workspace file. The specialist checks echoed inputs against the original files and applies the table rules. No eligible rows means the existing skip-only path, without numeric/rendering calls.
 
 For new calculations discovered during an audit, a specialist returns a pending calculation request to the parent, with the country, exact raw inputs and evidence-backed reason for any revision. It does not save an unfinished final result, ask the user or advance state. The parent runs the helper and continues the approved assignment under the pending-request rule in `prompts/shared/runtime.md`. When running without a specialist, the parent does both tasks.
 
-Use an available Python 3.11+ interpreter in the current execution environment. Check its version rather than assuming the desktop app, terminal or subagent shares the same runtime. Do not install software or change permissions automatically. Resolve the helper's absolute path from the installed plugin root under `prompts/shared/runtime.md`, not from the workspace or a fixed cache path. With a `python3` interpreter, invoke:
+Execution, paths, Python availability and the run-scoped manual choice follow skills/helper-runtime.md; reuse that resolution in the same execution environment. For isolated arithmetic when complete rendering inputs are not ready, the retained v1 CLI accepts one country:
 
 ```text
 python3 -I -B "<plugin-root>/helpers/salary_targets.py"
 ```
 
-Send one country's JSON via stdin and read JSON from stdout. Keep candidate text as data, not interpolated executable shell syntax. `-I -B` isolates Python's import environment and avoids bytecode writes. The helper writes no files; do not save temporary JSON sidecars in either the workspace or plugin. Save calculations only in the step's existing Markdown output.
+Send the input below through stdin. This CLI writes no files and creates no rendering result. Its exact results can be reused while source inputs, contract and execution context match; a later rendering call supplies its own calculations. Keep requests/results transient and save shown work only in the existing Markdown output. Use no generated wrapper or arithmetic program.
 
 ## Input
 
@@ -58,9 +58,6 @@ On success, stdout contains `input` (the supplied values unchanged) and `segment
 
 Check the echoed country, segment inputs, currency, pay basis and periods against the source files before using the result. A successful calculation cannot establish that its inputs were transcribed correctly or that the research is reliable. Use the shared renderer and check the saved result under skills/output-helper.md, not host-specific formatting code.
 
-- Exit `2` with `invalid_input` on stderr means fix the malformed or contradictory input from its source, or ask the parent for missing facts. It is not permission to bypass validation with manual arithmetic. Leave state unchanged while unresolved.
-- An invocation/usage error without that JSON error is a command problem to diagnose, not a successful calculation or a reason to bypass input validation.
-- Missing Python, insufficient Python version (exit `3`, `runtime_unavailable`), unavailable code execution or a runtime failure goes to the parent. Explain the actual limitation and ask whether to fix execution or calculate manually under Step 4's verified-arithmetic rules. Wait for the user's choice. Never silently substitute manual results or claim the helper ran successfully.
-- A missing bundled helper is a broken installation: report its resolved path and stop for repair, rather than substituting another installation's file.
+Use skills/helper-runtime.md for failures and the explicit repair/manual choice. The standalone CLI reports invalid input as exit `2` and insufficient Python as exit `3`; a usage error is no result, and missing packaged code stops for installation repair. Invalid data cannot be bypassed with manual arithmetic. Keep the checkpoint unchanged until the applicable calculation, review and saved-output checks succeed.
 
 Record `Calculation method: shared Python helper` or `Calculation method: manual (user approved)` in Step 4's Show Your Work and in Step 5b's Recalibration section when it computes new values. Record the scope of any manual approval in that same prose. Reuse an explicitly run-scoped choice rather than asking twice; on resume, use its saved disclosure only when that scope is clear. Otherwise ask. Note any separately verified comparison. Do not add state/profile fields, overwrite the pre-audit table or write an extra output file.

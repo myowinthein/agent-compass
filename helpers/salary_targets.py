@@ -35,7 +35,7 @@ def rounded(value, step):
     return units.numerator // units.denominator * step
 
 
-def calculate(payload):
+def calculate(payload, *, policy=None):
     """Calculate two employer segments and already-comparable numeric minima."""
     fields(payload, ("schema_version", "country", "currency", "pay_basis", "segments"), ("comparisons",))
     if type(payload["schema_version"]) is not int or payload["schema_version"] != 1:
@@ -58,7 +58,8 @@ def calculate(payload):
                 comparison["pay_basis"] != payload["pay_basis"]):
             raise ValueError("Comparison currency and pay basis must match the targets; no implicit FX or tax conversion")
 
-    policy = contract()
+    if policy is None:
+        policy = contract()
     results = {}
     adjustments = set()
     for name, segment in payload["segments"].items():

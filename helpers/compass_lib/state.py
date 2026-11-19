@@ -9,8 +9,8 @@ from .files import definition, resolve
 def check(payload):
     fields(payload, ("workspace", "workflow"))
     root = workspace(payload["workspace"])
-    layout = resolve(root, payload["workflow"])
     spec = definition(payload["workflow"])
+    layout = resolve(root, payload["workflow"], spec=spec)
     path = named(root, layout["files"]["state"])
     if not path.exists():
         return {**layout, "status": "missing", "completed": False}

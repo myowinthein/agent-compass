@@ -3,16 +3,22 @@
 from .common import ROOT, Problem, fields, loads, named, read, require, workspace
 
 
+def registry():
+    spec = loads(read(ROOT / "data" / "workspace-files.json"))
+    require(spec["schema_version"] == 1, "Unknown workspace filename registry")
+    return spec
+
+
 def definition(workflow):
-    registry = loads(read(ROOT / "data" / "workspace-files.json"))
-    require(registry["schema_version"] == 1, "Unknown workspace filename registry")
-    require(isinstance(workflow, str) and workflow in registry["workflows"], "Unknown checkpointed workflow")
-    return registry["workflows"][workflow]
+    spec = registry()["workflows"]
+    require(isinstance(workflow, str) and workflow in spec, "Unknown checkpointed workflow")
+    return spec[workflow]
 
 
-def resolve(root, workflow):
+def resolve(root, workflow, *, spec=None):
     """Keep existing names; use legacy for missing artifacts if this run has any."""
-    spec = definition(workflow)
+    if spec is None:
+        spec = definition(workflow)
     present = {}
     spellings = set()
     for key, artifact in spec["artifacts"].items():

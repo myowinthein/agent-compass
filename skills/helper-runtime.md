@@ -20,7 +20,7 @@ python3 -I -B "<plugin-root>/helpers/compass.py" <subcommand>
 Read only the applicable interface:
 
 - Fixed base storage: `workspace-base` takes `{}` (read-only) or parent-only `{create: true}` (creates the home/Agent Compass directory only). It returns `{workspace, exists}`. There is no path override; a missing base is normal before the first run. See shared runtime File locations.
-- Chat/person run selection: `skills/run-workspaces.md`; `run-list` is read-only, while parent-only `run-start` creates an isolated run and optional confirmed profile copies.
+- Chat/person run selection: `skills/run-workspaces.md`; `chat-key` takes no operation fields and returns a random fallback `chat_id` without storage access, only when a trusted host ID is unavailable and no prior association is lost. `run-list` is read-only, while parent-only `run-start` creates an isolated run and optional confirmed profile copies.
 - Country-scoped Portal Finder reports: `skills/portal-results.md`; `portal-list` and `portal-read` are read-only, while parent-only `portal-save` writes a separate completed report and its metadata.
 - Current/legacy artifact paths: `skills/workspace-files.md`; `resolve-files` takes `{workspace, workflow}` and writes nothing.
 - Research scope, blocks and storage: `skills/research-helper.md`; read-only `research-scope` can extract a saved country list without requiring completed research.

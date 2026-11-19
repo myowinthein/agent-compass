@@ -9,24 +9,22 @@ import re
 import tempfile
 import uuid
 
-from .common import ROOT, Problem, fields, loads, named, read, require, text, workspace
-from .files import definition
+from .common import Problem, fields, loads, named, read, require, text, workspace
+from .files import registry
 from .state import check
 from .workspaces import base
 
 
-def registry():
-    return loads(read(ROOT / "data" / "workspace-files.json"))
+def chat_key(payload):
+    fields(payload, ())
+    return {"chat_id": "local:" + str(uuid.uuid4())}
 
 
 def require_workflow(workflow):
-    require(isinstance(workflow, str), "Expected a run workflow")
-    if workflow not in registry()["runs"]["profile_workflows"]:
-        definition(workflow)
-
-
-def checkpointed(workflow):
-    return workflow not in registry()["runs"]["profile_workflows"]
+    spec = registry()
+    require(isinstance(workflow, str) and
+            (workflow in spec["runs"]["profile_workflows"] or workflow in spec["workflows"]), "Unknown run workflow")
+    return workflow in spec["workflows"]
 
 
 def token(value):
@@ -151,7 +149,7 @@ def list_runs(payload):
                 earlier = records.get(earlier["previous_run_id"])
         path = folder / ("run-" + record["run_id"])
         try:
-            if checkpointed(command):
+            if require_workflow(command):
                 status = check({"workspace": str(path), "workflow": command})
             else:
                 profile = named(path, "profile.md")

@@ -33,7 +33,8 @@ def exact_display(value):
 
 def salary(payload):
     fields(payload, ("rows",), ("priority_order", "aliases"))
-    policy = contract()["salary"]
+    calculation_policy = contract()
+    policy = calculation_policy["salary"]
     priority = array(payload.get("priority_order", []))
     normalize = lambda value: identity(value, payload.get("aliases"))
     order = [normalize(country) for country in priority]
@@ -45,7 +46,7 @@ def salary(payload):
         key = normalize(country)
         require(key not in seen, "Duplicate salary country")
         seen.add(key)
-        result = calculate(row["calculation"])
+        result = calculate(row["calculation"], policy=calculation_policy)
         source = result["input"]
         require(normalize(source["country"]) == key, "Country does not match calculation")
         visa = row["visa"]
@@ -203,11 +204,12 @@ def check_saved(payload):
     require(payload["kind"] in ("salary", "country"), "Unknown rendered kind")
     workflow = "salary-calculator" if payload["kind"] == "salary" else "country-finder"
     allowed = ("salary-table", "final-results") if payload["kind"] == "salary" else ("final-results",)
-    matches = [key for key, artifact in definition(workflow)["artifacts"].items()
+    spec = definition(workflow)
+    matches = [key for key, artifact in spec["artifacts"].items()
                if key in allowed and payload["file"] in (artifact["current"], artifact["legacy"])]
     require(len(matches) == 1, "Unsupported rendered output filename")
     root = workspace(payload["workspace"])
-    saved = read(named(root, resolve(root, workflow)["files"][matches[0]])).decode("utf-8").replace("\r\n", "\n")
+    saved = read(named(root, resolve(root, workflow, spec=spec)["files"][matches[0]])).decode("utf-8").replace("\r\n", "\n")
     rendered = salary(payload["render_input"]) if payload["kind"] == "salary" else country(payload["render_input"])
     if payload["kind"] == "country" and payload["render_input"].get("format") == "tracks":
         header = "| " + " | ".join(contract()["country"]["track_headers"]) + " |\n"

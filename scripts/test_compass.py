@@ -12,8 +12,9 @@ import uuid
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "helpers"))
-from compass_lib import portals, research, runs, timezones, workspaces
+from compass_lib import files, portals, research, runs, state, tables, timezones, workspaces
 from compass_lib.common import Problem
+import salary_targets
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,6 +34,55 @@ class CompassCLI(unittest.TestCase):
     @staticmethod
     def snapshot(root):
         return {p.name: p.read_bytes() for p in root.iterdir()}
+
+    def test_comparison_loads_only_its_mechanical_module(self):
+        result = subprocess.run([sys.executable, "-I", "-B", "-X", "importtime", str(CLI), "compare"],
+                                input=json.dumps({"schema_version": 1, **self.comparison()}).encode(), capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr.decode())
+        self.assertEqual(json.loads(result.stdout)["result"]["outcome"], "pass")
+        imported = [line.rsplit("|", 1)[-1].strip() for line in result.stderr.decode().splitlines()]
+        for module in ("portals", "research", "runs", "state", "tables", "timezones", "workspaces"):
+            self.assertNotIn("compass_lib." + module, imported)
+
+    def test_fallback_chat_key_is_generated_without_storage_access(self):
+        with patch("pathlib.Path.home", side_effect=AssertionError("Chat key must not inspect storage")):
+            result = runs.chat_key({})
+        key = result["chat_id"]
+        self.assertTrue(key.startswith("local:"))
+        identifier = uuid.UUID(key.removeprefix("local:"))
+        self.assertEqual(identifier.version, 4)
+        self.assertEqual(key, "local:" + str(identifier))
+        self.assertTrue(self.invoke("chat-key", {})["result"]["chat_id"].startswith("local:"))
+        self.assertEqual(self.invoke("chat-key", {"workspace": "/unselected"}, 2)["error"]["kind"], "invalid_input")
+
+    def test_state_check_resolves_paths_with_one_registry_read(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with patch("compass_lib.files.definition", wraps=files.definition) as resolver, \
+                    patch("compass_lib.state.definition", wraps=state.definition) as checkpoint:
+                result = state.check({"workspace": directory, "workflow": "salary-calculator"})
+            self.assertEqual(resolver.call_count + checkpoint.call_count, 1)
+            self.assertEqual(result["status"], "missing")
+            self.assertIn("final-results", result["files"])
+            self.assertEqual(list(Path(directory).iterdir()), [])
+
+    def test_run_workflow_validation_reads_registry_once(self):
+        with patch("compass_lib.runs.read", wraps=runs.read) as run_reads, \
+                patch("compass_lib.files.read", wraps=files.read) as registry_reads:
+            runs.require_workflow("country-finder")
+        self.assertEqual(run_reads.call_count + registry_reads.call_count, 1)
+
+    def test_salary_batch_reads_one_contract_and_retains_every_exact_result(self):
+        payload = self.salary_request()
+        extra = self.salary_request()["rows"][0]
+        extra["country"], extra["calculation"]["country"] = "🇫🇷 France", "France"
+        payload["rows"].append(extra)
+        with patch("compass_lib.tables.contract", wraps=tables.contract) as renderer, \
+                patch("salary_targets.contract", wraps=salary_targets.contract) as calculation:
+            result = tables.salary(payload)
+        self.assertEqual(renderer.call_count + calculation.call_count, 1)
+        self.assertEqual(result["calculated"], 2)
+        self.assertEqual([row["segments"]["mainstream"]["raw_annual"] for row in result["calculations"]],
+                         ["58250", "58250"])
 
     def test_batch_preserves_order_and_regions(self):
         countries = [f"Example {n}" for n in range(17)]
