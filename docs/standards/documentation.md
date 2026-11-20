@@ -1,34 +1,37 @@
 # Documentation
 
-Keep this file identical in Agent Helm and Agent Compass. When changing the frame, update and compare both copies; report any copy that cannot be synchronized. Each project's documentation keeps its own voice, terminology, examples and workflow-specific detail. Paths in this guide refer to the repository root.
+Help developers understand and use the project comfortably. Choose detail for the reader's task and reading level; the amount of agent instruction or implementation detail available does not determine what belongs in a guide.
+
+Keep this standard identical in Agent Helm and Agent Compass. Update and compare both copies when changing it; report any copy that cannot be synchronized. Each project's guides keep their own voice, terminology, examples and workflow-specific detail. Paths below refer to the repository root.
 
 ## File ownership
 
-Keep website pages, included setup text, layouts, styles, scripts, renderers, configuration, dependencies and documentation checks under `docs/`. Build or preview from that directory; the output stays in `docs/_site/`. Documentation support files and `docs/standards/` are excluded from published content.
+Keep website source, tooling, dependencies and checks under `docs/`. Build or preview there, with output in `docs/_site/`. Exclude documentation support files and `docs/standards/` from the published site.
 
-The repository README, shared plugin icon and canonical agent instructions remain at their existing package paths. The site renders the root README and shared icon without maintained copies. Guides link to agent instructions as source references; they do not render those instructions into reader-facing pages. Rebuild after changing external site inputs such as the README. Preserve published page/image URLs, section anchors and setup redirects. GitHub Actions stays in `.github/workflows/` and calls the documentation build; the root Rakefile coordinates project checks.
+The root README, shared plugin icon and canonical agent instructions retain their existing paths. Render the README and icon without maintained copies; rebuild when those external site inputs change. Preserve published URLs, section anchors and setup redirects. Use the existing build and checks rather than adding another publishing arrangement.
 
 ## Reading levels
 
-The sidebar displays `vX.Y.Z` beside the project title. The title and surrounding area link to docs home; the version links to its matching GitHub release in the current tab with the standard external indicator. Share the hover highlight across the area and give each link its own keyboard focus target. Read the version from `.claude-plugin/plugin.json` during the normal docs build; ship maintains that source, so no separate docs version is needed.
-
-Documentation provides two human reading modes, with the existing repository available for deeper exploration:
+Documentation provides two human reading modes, with existing source available for implementation depth:
 
 | Level | Reader's goal | Content |
 |---|---|---|
 | Overview | Understand the command or rule quickly and comfortably. | Purpose, main phases, meaningful choices, outcomes and necessary constraints. |
-| Details | Understand the same journey in greater depth. | Independently written explanations, richer diagrams, examples, decision reasons, important exceptions and recovery or follow-up where relevant. |
-| Existing source | Explore exact agent instructions or implementation. | Link directly to the existing workflows, prompts, rules or code. Do not create a third website mode or another source copy. |
+| Details | Understand the same journey more fully. | Independently written reasons, examples, material exceptions and recovery guidance where they help someone understand or decide. Exhaustive workflow coverage is not required. |
+| Existing source | Explore exact agent instructions or implementation. | Link to the existing workflows, prompts, rules or code. Do not create a third website mode or another source copy. |
 
-Both modes follow the project's active Writing rule and its complete reference-link workflow. Read the relevant source to verify behavior before authoring or updating a guide. Details is neither an embedded source file nor a line-by-line paraphrase of agent instructions. Avoid execution directives aimed at agents, internal question maps and mechanical bookkeeping unless they help a reader understand a meaningful choice or result. Sources remain authoritative for agent behavior; documentation explains that behavior without defining new policy.
+Follow the project's active Writing rule, including its reference-link workflow. Verify behavior against the relevant source. Sources define agent behavior; human guides explain it without introducing new policy. Agent execution directives, internal question maps and mechanical bookkeeping belong in source unless a reader needs them to understand a meaningful choice or result.
 
 ## Guide structure
 
-- Use **Overview / Details** for paired topics. Overview is the default. Details follows the same order of ideas while expanding their explanation; headings and presentation can differ. Do not force a second depth onto indexes, short installation procedures, examples or unrelated policies.
-- Put `docs/_includes/guide-depth.html` immediately below the title in both views. Keep labels, placement and behavior consistent. Use ordinary current-tab navigation with stable URLs, native browser history and an accessible current-page indication. Preserve existing overview URLs and meaningful section anchors, including targets reached through tabs, redirects or collapsed content.
-- Give Overview an early, compact Mermaid summary when a diagram clarifies the topic. Details diagrams cover the meaningful routes, decisions, approvals, exits and recovery outcomes. Split complex phases into connected diagrams; do not draw every mechanical action or create one oversized canvas. Keep essential meaning in text.
-- Let text explain more than the diagram. Use connected paragraphs, short lists, comparisons, tables and examples where useful. Details can be rich and precise without becoming an encyclopedia, diagram transcript or overloaded instruction manual. Remove filler, hype and generic AI phrasing. Brevity is not a word, line or node quota.
-- Preserve decision-changing constraints, consequential effects, approvals and the distinctions readers need to interpret results. Explain relevant coverage, state/recovery limits, research confidence, independent tracks or tiers, arithmetic and output guarantees at the reader's level. Link exact implementation contracts instead of reproducing every field or protocol. A simpler explanation must not imply broader permission or stronger verification.
-- Write Details content directly in its Markdown page under `docs/`. Use `source_files` front matter to identify the existing instruction sources behind it, and provide useful source links for further exploration. Never use Liquid filters, includes or a generator to insert complete agent prompts into a guide. Canonical agent instructions retain their owners, loading conditions and package paths.
-- Apply Writing's complete reference-link workflow as part of the same maintenance pass. Follow references outside the menu when relevant, link specific human-guide sections for reader tasks and existing repository sections for implementation detail, and avoid linking every possible phrase. Verify destination meaning, anchors and available interaction behavior; report gaps.
-- When behavior changes, review both reading modes for affected explanations and references. A source edit does not automatically update authored documentation. Preserve the distinction between code checks, factual review and browser interaction checks. If files actually move, update their references and required checks together; do not change skill loading paths merely to publish a guide.
+- Use **Overview / Details** for paired topics, with Overview as the default. Keep a compatible reading order, adding depth only where useful; headings and presentation can differ. Do not pad every topic or force a second view onto indexes, short installation procedures, examples or unrelated policies.
+- Put `docs/_includes/guide-depth.html` immediately below the title in both views. Keep labels and placement consistent, with current-tab navigation, native browser history and an accessible current-page indication. Preserve existing overview URLs and section targets, including those reached through tabs, redirects or collapsed content.
+- Give Overview an early, compact Mermaid summary when it clarifies the topic. Details can show relevant decisions, approvals, exits and recovery without tracing every mechanical branch. Split a complex diagram when helpful. Text and diagrams should complement each other; use prose to explain reasons or conditions rather than repeat every node, and keep essential meaning available in text.
+- Use connected paragraphs, short lists, tables and examples when they help the reader. Preserve meaningful choices, consequential effects, approvals and limits needed to interpret results, at the reader's level. Simpler wording must not imply broader permission or stronger verification. Brevity is not a word, line or diagram-node quota.
+- Author Details directly in its Markdown page under `docs/`, with `source_files` front matter and useful links to existing sources for exact contracts. Do not embed complete agent prompts through Liquid, includes or generators, or paraphrase instructions line by line. Canonical instructions retain their owners and loading conditions.
+
+## Maintenance
+
+When behavior changes, review both reading modes for affected explanations and references. Rewrite the affected passage at its intended depth instead of appending an explanation for every changed instruction. Merge related information and remove obsolete or repeated explanations within scope. Details adds useful understanding; it is not a destination for everything omitted from Overview. Leave exact protocols in linked source unless readers need them to act or interpret the outcome.
+
+Preserve useful existing structure and unrelated content. Check that the revised explanation is accurate, comfortable to follow and sufficient for the reader's task. Verify affected references through Writing's reference-link workflow and preserve required project checks. Distinguish source review from rendered-page and browser-interaction evidence, reporting relevant gaps in the normal handoff. File moves require related reference and check updates; publishing a guide does not justify moving skill entry points.
