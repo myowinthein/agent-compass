@@ -73,8 +73,10 @@ a:not([class]) {
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba($body-text-color, 0.12);
 
-  &:hover {
-    background: $sidebar-color;
+  @media (hover: hover) {
+    &:hover {
+      background: mix($link-color, $body-background-color, 12%);
+    }
   }
 
   &[hidden] {
