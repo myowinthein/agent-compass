@@ -20,7 +20,7 @@ For each country marked "High confidence," verify the underlying evidence is gen
 
 ## 2. Missing Candidate Check
 
-Compare country-finder-02-candidates.md against the countries that actually reached Step 4 and Step 5, and also consider any country that would commonly be expected to appear but is absent. For each missing country, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap, such as a non-excluded track receiving no detailed research or never reaching Step 4. A discovery no-evidence finding is not a valid reason to omit detailed research in a new run.
+Compare country-finder-02-candidates.md against the countries that actually reached Step 4 and Step 5. For each missing country, state whether the absence was a real, evidence-based elimination (cite the reason from earlier steps) or a process gap, such as a non-excluded track receiving no detailed research or never reaching Step 4. Check any apparent selection mistake against the confirmed criteria and recorded scope. An evidenced omission from that scope returns to the parent for the existing repair choice; do not add countries during this audit. A discovery no-evidence finding is not a valid reason to omit detailed research in a new run.
 
 Reconcile this per track, not just per country. Preserve each explicit Step 2 "no" and its recorded reason as Excluded, including timezone rejections; missing downstream research after that rejection is expected, not a process gap. Apply this even when resuming from an older Step 5 output that omitted the earlier exclusion. "no evidence found" or absent research without an explicit rejection remains a missing-data case, not Excluded. Never let an earlier exclusion on one track remove the other track.
 
@@ -63,7 +63,7 @@ Close the Summary with counts:
 - Remote: [N] scored, [N] excluded, [N] not scored (no data)
 - Sponsorship: [N] scored, [N] excluded, [N] not scored (no data)
 
-Count each Step 2 candidate once per track, including all separately noted missing-data/ingestion cases. Count explicit early rejections as excluded, not missing data. Report any additional expected-but-absent countries separately from these candidate-universe totals.
+Count each Step 2 candidate once per track, including all separately noted missing-data/ingestion cases. Count explicit early rejections as excluded, not missing data. Report selection gaps against the confirmed scope separately from these candidate-universe totals.
 
 The Summary itself contains no ranking, recommendations, or interpretation beyond the classifications above — ranking is reserved for the Priority Table below.
 

@@ -81,9 +81,7 @@ Inventory carried over from agent-helm research dated 2026-10-26 against the off
 
 Both clients document MCP elicitation. It is not a built-in Compass question tool and is not installed, configured or called by this Markdown contract. A future already-authorized integration must verify client capability, supported schema and actual rendering before using it; the protocol does not mandate a particular UI. Ordinary host tools/fallback remain available without an MCP dependency.
 
-The standard form elements are: object `properties`/`required`; field `title`/`description`/`default`; string with `minLength`/`maxLength` and `email`/`uri`/`date`/`date-time` formats; number/integer with `minimum`/`maximum`; Boolean; single enum via `enum` or titled `oneOf`/`const`; multiple enum via array `items.enum` or titled `items.anyOf`/`const`, with `minItems`/`maxItems`. Legacy `enumNames` exists but is deprecated. Nested objects and general arrays are not portable form inputs. These cover typed Input, Single and Multi without making defaults into consent.
-
-MCP also carries request message/schema and identity, and separate `accept`/`decline`/`cancel` responses with submitted `content`. URL mode uses `url`/`elicitationId` for external flows; it is not an ordinary Compass question or permission to navigate/upload. Codex additionally documents gated `openai/form`; its generated schema includes legacy `openaiForm` and device-proof `openai/userVerification` extensions plus `_meta`. These are client/integration surfaces, not model-callable QM fields or a way to collect secrets/bypass approval. No custom HTML, form server, device verification or OAuth flow is introduced here.
+MCP protocol features are not model-callable QM fields or permission to navigate, upload evidence, collect secrets or bypass approvals. This contract introduces no custom form server, device verification or OAuth flow.
 
 ## Evidence
 

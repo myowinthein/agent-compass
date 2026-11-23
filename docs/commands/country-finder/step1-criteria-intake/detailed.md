@@ -49,7 +49,7 @@ An optional salary minimum needs an amount, currency and gross/net basis, plus w
 
 ## Your preferences
 
-Remote uses your maximum time difference, or **no limit**. Sponsorship uses your relocation timeline, including **no rush**. These choices constrain different tracks; a timezone restriction should not become a relocation exclusion.
+Remote uses your maximum time difference, or **no limit**. Sponsorship uses your relocation timeline, including **no rush**. These choices constrain different tracks; a timezone restriction should not become a relocation exclusion. Clarification is needed only when an ambiguity affects eligibility, a comparison or the next step.
 
 State countries or regions to include and exclude, or say none. Clear choices do not need a duplicate confirmation, while vague regions and contradictory boundaries require clarification before they become the candidate scope.
 

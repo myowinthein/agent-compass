@@ -38,7 +38,7 @@ flowchart TD
 
 Confidence calibration, missing candidates and evidence misuse receive separate checks. The audit distinguishes a statistical shortage, a legal route, employer willingness and an actual vacancy. One opening does not establish a deep market; absent sponsorship wording does not prove a country's employers refuse it.
 
-Every candidate is accounted for on both tracks, including exclusions, rejected research and documented unresolved findings. Research that never ran requires recovery before completion. Older unfinished work that skipped discovery gaps needs an explicit repair choice before new research; completed results replay unchanged.
+Every Step 2 candidate is accounted for on both tracks, including exclusions, rejected research and documented unresolved findings. If the candidate list omits a country you selected, the agent returns for a repair choice; the audit does not add countries because they are popular recommendations. Research that never ran requires recovery before completion. Older unfinished work that skipped discovery gaps needs an explicit repair choice before new research; completed results replay unchanged.
 
 The audit can revise a fit when evidence warrants it. It retains the source research and Step 5 assessment as the earlier record. Material profile changes or contradicted exclusions return for a repair choice rather than silently changing the search.
 

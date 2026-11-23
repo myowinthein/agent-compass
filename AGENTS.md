@@ -17,7 +17,7 @@ Run commands from the repository root. Helpers require Python 3.11+; Ruby checks
 
 | Command | Purpose |
 |---|---|
-| `BUNDLE_GEMFILE=docs/Gemfile bundle exec rake test` | Full plugin/helper checks, site JavaScript and isolated Chrome tests, Jekyll build and internal HTML/link/image/script checks; required after documentation or site configuration changes. |
+| `BUNDLE_GEMFILE=docs/Gemfile bundle exec rake test` | Full plugin/helper checks, site JavaScript and isolated Chrome tests, Jekyll build and internal HTML/link/image/script checks. |
 | `BUNDLE_GEMFILE=docs/Gemfile bundle exec rake plugin_test` | Plugin validation and offline Python/Ruby helper regressions. |
 | `ruby scripts/validate_plugin.rb` | Four skill entries, shared resources/icon and a relocated package with a separate consumer workspace. |
 | `ruby scripts/test_plugin.rb` | Validation edge cases, published arithmetic/table examples, archive attributes and deployment contracts. |
@@ -28,6 +28,8 @@ Run commands from the repository root. Helpers require Python 3.11+; Ruby checks
 | `cd docs && bundle exec jekyll serve` | Local documentation preview. |
 | `BUNDLE_GEMFILE=docs/Gemfile bundle exec rake client_test` | Optional native discovery regression; requires both Claude and Codex CLIs, uses temporary installations and makes no model calls. |
 | `ruby scripts/check_clients.rb --installed` | Inspect inventories after separately updating installed copies. |
+
+Choose local checks from the changed behavior and affected consumers, using the individual scripts and tasks above and in `docs/tasks.rb`. A prose-only guide correction does not require salary or workspace regressions. Broaden to the full suite when focused coverage is insufficient or impact is uncertain. Preserve required CI and publication checks.
 
 When the Claude CLI is available, native validation uses `claude plugin validate .claude-plugin/plugin.json` and `claude plugin validate skills`. Offline checks use fictional fixtures; passing them does not establish live research accuracy or model/workflow compliance.
 

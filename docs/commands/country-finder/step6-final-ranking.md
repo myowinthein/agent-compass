@@ -27,7 +27,7 @@ flowchart TD
 
 ## What the audit protects
 
-The audit checks confidence, candidate coverage and evidence use. Missing evidence does not become Weak fit. Explicit exclusions retain their reasons, and each track stands independently.
+The audit checks confidence, coverage of your confirmed country scope and evidence use. Missing evidence does not become Weak fit. Explicit exclusions retain their reasons, and each track stands independently.
 
 Expected research that was not performed needs recovery. Completed checks can still leave an unresolved finding; the report names the gap without inventing a recommendation.
 

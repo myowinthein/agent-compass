@@ -30,9 +30,9 @@ Before generating anything, ask me the following questions and wait for my answe
 
 An explicit Include list takes priority. If Include is "none", leave it as "none" here; Step 2 can offer Salary Calculator's saved country list before the default list. Do not treat "none" as approval to import countries or re-ask an already explicit list.
 
-## Standing rule (applies for the rest of this conversation, not just this step):
+## Clarifying criteria
 
-If I answer any question with a vague word instead of a specific value or clear answer (examples: "close," "good," "high," "reasonable," "flexible"), do not accept it and do not continue. Ask me to restate it as an exact number, currency, or clear answer before proceeding.
+Clarify an answer only when its ambiguity affects eligibility, a comparison or the next step in this workflow. Ask for the specific missing value or meaning; do not require an exact number for preferences that need none. Accept clear choices such as "no limit", "no rush", "none" and an explicitly unknown fact where the relevant rule permits it.
 
 Once all questions are answered, save the criteria to country-finder-01-criteria.md in the workspace:
 
