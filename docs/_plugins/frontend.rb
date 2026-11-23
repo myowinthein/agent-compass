@@ -13,7 +13,7 @@ module CompassFrontend
     unless source.scan(Regexp.new(Regexp.escape(before))).size == 1
       raise ArgumentError, "Just the Docs theme changed: expected one #{before.strip.inspect}"
     end
-    source.sub(before, after)
+    source.sub(before) { after }
   end
 
   def self.initial_theme(html, base, viewer: false)
@@ -57,64 +57,49 @@ module CompassFrontend
     HTML
   end
 
-  def self.lazy_search(source)
-    source = replace_once(source, 'function initSearch() {', <<~JS.chomp)
-      let compassSearchStarted = false;
-      let compassSearchReady = false;
-      let compassSearchFailedState = false;
-      let compassSearchPendingTimer;
-      let compassSearchErrorTimer;
-      let compassSearchInput;
-      let compassSearchStatus;
-      let compassSearchRetry;
-      function clearCompassSearchFeedback() {
-        clearTimeout(compassSearchPendingTimer);
-        clearTimeout(compassSearchErrorTimer);
-        compassSearchStatus.textContent = '';
-      }
-      function compassSearchFailed() {
-        clearCompassSearchFeedback();
-        compassSearchFailedState = true;
-        compassSearchInput.removeAttribute('aria-busy');
-        compassSearchRetry.hidden = false;
-        compassSearchRetry.disabled = false;
-        compassSearchStatus.textContent = 'Search unavailable. Press Enter or select Retry search.';
-        const dismiss = () => {
-          if (document.activeElement === compassSearchStatus) compassSearchErrorTimer = setTimeout(dismiss, 500);
-          else compassSearchStatus.textContent = '';
-        };
-        compassSearchErrorTimer = setTimeout(dismiss, 4000);
-      }
-      function initSearch(retry = false) {
-        if (compassSearchStarted || (compassSearchFailedState && retry !== true)) return;
-        compassSearchStarted = true;
-        compassSearchFailedState = false;
-        clearCompassSearchFeedback();
-        compassSearchRetry.disabled = true;
-        compassSearchInput.setAttribute('aria-busy', 'true');
-        compassSearchPendingTimer = setTimeout(() => { compassSearchStatus.textContent = 'Loading search…'; }, 200);
+  def self.lazy_search(source, library_url: nil)
+    init = source.match(/function initSearch\(\) \{.*?(?=function searchLoaded\(index, docs\) \{)/m)&.to_s
+    index_rules = init&.match(/      lunr\.tokenizer\.separator =.*?(?=      searchLoaded\(index, docs\);)/m)&.to_s
+    query_rules = source.match(/    var results = index\.query\(function \(query\) \{.*?(?=    if \(results.length == 0\) \{)/m)&.to_s
+    index_url = init&.match(/request\.open\('GET', '([^']+)', true\);/)&.[](1)
+    unless init && index_rules && query_rules && index_url&.end_with?('/search-data.json')
+      raise ArgumentError, 'Just the Docs theme changed: missing search initialization or query rules'
+    end
+    worker_url = index_url.sub(/search-data\.json\z/, 'search-worker.js')
+    library_url ||= index_url.sub(/search-data\.json\z/, 'vendor/lunr.min.js')
+    worker = File.read(File.expand_path('../_includes/search-worker.js', __dir__))
+    worker = replace_once(worker, '/* INDEX_RULES */', replace_once(index_rules, 'var index = lunr(', 'index = lunr('))
+    worker = replace_once(worker, '/* QUERY_RULES */', query_rules)
+    client = File.read(File.expand_path('../_includes/search-client.js', __dir__))
+    { '"/* WORKER_URL */"' => worker_url, '"/* LIBRARY_URL */"' => library_url, '"/* INDEX_URL */"' => index_url }.each do |marker, url|
+      client = replace_once(client, marker, JSON.generate(url))
+    end
+    source = source.sub(init) { client + "\n\n" }
+    source = replace_once(source, query_rules, <<~JS)
+        var searchIndex = currentSearchIndex;
+        index.search(input).then(function(reply) {
+          if (searchIndex !== currentSearchIndex) return;
+          var results = reply.results;
+          docs = reply.docs;
     JS
-    source = replace_once(source, '      var docs = JSON.parse(request.responseText);',
-      "      try {\n      var docs = JSON.parse(request.responseText);")
-    source = replace_once(source, '      searchLoaded(index, docs);', <<~JS.chomp)
-            searchLoaded(index, docs);
-            compassSearchReady = true;
-            clearCompassSearchFeedback();
-            compassSearchRetry.hidden = true;
-            compassSearchInput.removeAttribute('aria-busy');
-            const input = document.getElementById('search-input');
-            if (document.activeElement === input) input.dispatchEvent(new Event("focus"));
-            } catch {
-              compassSearchStarted = false;
-              compassSearchFailed();
-            }
+    source = replace_once(source, '    function addResults(resultsList, results, start, batchSize, batchMillis, searchIndex) {', <<~JS.chomp)
+        }).catch(function() {
+          if (searchIndex !== currentSearchIndex) return;
+          currentInput = undefined;
+          searchResults.innerHTML = '';
+        });
+
+        function addResults(resultsList, results, start, batchSize, batchMillis, searchIndex) {
     JS
-    source = replace_once(source,
-      "      console.log('Error loading ajax request. Request status:' + request.status);",
-      "      compassSearchStarted = false;\n      compassSearchFailed();\n      console.log('Error loading ajax request. Request status:' + request.status);")
-    source = replace_once(source,
-      "    console.log('There was a connection error');",
-      "    compassSearchStarted = false;\n    compassSearchFailed();\n    console.log('There was a connection error');")
+    source = replace_once(source, "    if (input === '') {\n      return;\n    }",
+      "    if (input === '' || !compassSearchReady) {\n      return;\n    }")
+    source = replace_once(source, '  var currentInput;', <<~JS.chomp)
+        var currentInput;
+        searchInput.addEventListener('docs-search-ready', function() {
+          currentInput = undefined;
+          update();
+        });
+    JS
     source = replace_once(source, "  jtd.addEvent(searchInput, 'focus', function(){",
       "  searchInput.addEventListener('input', update);\n\n  jtd.addEvent(searchInput, 'focus', function(){")
     source = replace_once(source, '    const nextFocusedElement = evt.relatedTarget;',
@@ -214,6 +199,7 @@ module CompassFrontend
           if (document.activeElement === searchInput || searchInput.value) initSearch();
         }
     JS
+    yield worker if block_given?
     source
   end
 
@@ -350,6 +336,10 @@ module CompassFrontend
       raise 'Missing generated search index' unless index
 
       loader.output = replace_once(loader.output, "#{site.baseurl}#{index.url}", versioned_asset_url(site.baseurl, index))
+      worker = assets.find { |page| page.url == '/assets/js/search-worker.js' }
+      if worker
+        loader.output = replace_once(loader.output, "#{site.baseurl}#{worker.url}", versioned_asset_url(site.baseurl, worker))
+      end
     end
     urls = assets.to_h { |asset| ["#{site.baseurl}#{asset.url}", versioned_asset_url(site.baseurl, asset)] }
     return if urls.empty?
@@ -397,6 +387,7 @@ module CompassFrontend
     pages.each do |page|
       html = initial_theme(page.output, site.baseurl.to_s)
       if html.include?('id="search-input"')
+        html = replace_once(html, %(<script src="#{site.baseurl}/assets/js/vendor/lunr.min.js"></script>), '')
         html = replace_once(html, '<div id="search-results" class="search-results"></div>',
           '<p id="search-status" class="interaction-feedback search-status" role="status"></p><div id="search-results" class="search-results"></div>')
         html = replace_once(html, 'id="search-input"', 'id="search-input" aria-describedby="search-status"')
@@ -418,7 +409,18 @@ module CompassFrontend
       end
     end
     site.pages.select { |page| page.url == '/assets/js/just-the-docs.js' }.each do |page|
-      page.output = lazy_search(page.output) unless site.config['search_enabled'] == false
+      unless site.config['search_enabled'] == false
+        library = site.static_files.find { |asset| asset.url == '/assets/js/vendor/lunr.min.js' }
+        raise ArgumentError, 'Just the Docs theme changed: missing Lunr library' unless library
+
+        library_url = "#{site.baseurl}#{library.url}?v=#{Digest::SHA256.file(library.path).hexdigest[0, 16]}"
+        page.output = lazy_search(page.output, library_url: library_url) do |body|
+          asset = Jekyll::PageWithoutAFile.new(site, site.source, 'assets/js', 'search-worker.js')
+          asset.data.merge!('layout' => nil, 'sitemap' => false)
+          asset.output = body
+          site.pages << asset
+        end
+      end
       page.output = clipboard_feedback(page.output) unless site.config['enable_copy_code_button'] == false
     end
     version_assets(site)

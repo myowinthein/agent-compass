@@ -10,89 +10,127 @@ raise 'No-JavaScript CSS fallback lost' unless optimized.include?('<noscript><li
 raise 'Theme must block rendering until its CSS is ready' unless optimized.include?('blocking')
 raise 'Non-theme HTML changed' unless CompassFrontend.initial_theme('<head></head>', '/agent-compass') == '<head></head>'
 
-source = <<~JS
-  function initSearch() {
-    var request = new XMLHttpRequest();
-    request.onload = function(){
-      if (request.status >= 200 && request.status < 400) {
-        var docs = JSON.parse(request.responseText);
-        searchLoaded(index, docs);
-      } else {
-        console.log('Error loading ajax request. Request status:' + request.status);
-      }
-    };
-    request.onerror = function(){
-      console.log('There was a connection error');
-    };
-  }
-  function searchLoaded(index, docs) {
-    function update() {
-      currentSearchIndex++;
+source = <<~'JS'
+function initSearch() {
+  var request = new XMLHttpRequest();
+  request.open('GET', '/fixture/assets/js/search-data.json', true);
+  request.onload = function(){
+    if (request.status >= 200 && request.status < 400) {
+      var docs = JSON.parse(request.responseText);
+      lunr.tokenizer.separator = /[\s\-/]+/
 
-      if (input === currentInput) return;
-      currentInput = input;
+      var index = lunr(function(){
+        this.ref('id');
+        this.field('title', { boost: 200 });
+        this.field('content', { boost: 2 });
+        this.field('relUrl');
+        this.metadataWhitelist = ['position']
+
+        for (var i in docs) {
+
+          this.add({
+            id: i,
+            title: docs[i].title,
+            content: docs[i].content,
+            relUrl: docs[i].relUrl
+          });
+        }
+      });
+
+      searchLoaded(index, docs);
     }
-    jtd.addEvent(searchInput, 'focus', function(){
-      setTimeout(update, 0);
-    });
-    const updateSearchFocus = function(evt) {
-      const nextFocusedElement = evt.relatedTarget;
-      if (nextFocusedElement.id === 'search-input') return;
-      if (nextFocusedElement.classList.contains('search-result')) return;
-      hideSearch();
-    };
-    jtd.addEvent(searchInput, 'keydown', function(e){
-      switch (e.keyCode) {
-        case 38:
-          if (active) {
-            if (active.parentElement.previousSibling) {
-              previous.classList.add('active');
-            }
-          }
-          return;
-        case 40:
-          if (active) {
-            if (active.parentElement.nextSibling) {
-              next.classList.add('active');
-            }
-          } else {
-            if (next) {
-              next.classList.add('active');
-            }
-          }
-          return;
-        case 13:
-          return;
-      }
+  };
+}
+function searchLoaded(index, docs) {
+  var currentInput;
+  function update() {
+    var input = searchInput.value;
+    currentSearchIndex++;
+
+    if (input === currentInput) return;
+    currentInput = input;
+    if (input === '') {
+      return;
+    }
+    var results = index.query(function (query) {
+      var tokens = lunr.tokenizer(input)
+      query.term(tokens, {
+        boost: 10
+      });
+      query.term(tokens, {
+        wildcard: lunr.Query.wildcard.TRAILING
+      });
     });
 
-    jtd.addEvent(document, 'click', function(e){
-      hideSearch();
-    });
+    if ((results.length == 0) && (input.length > 2)) {
+      var tokens = lunr.tokenizer(input).filter(function(token, i) {
+        return token.str.length < 20;
+      })
+      if (tokens.length > 0) {
+        results = index.query(function (query) {
+          query.term(tokens, {
+            editDistance: Math.round(Math.sqrt(input.length / 2 - 1))
+          });
+        });
+      }
+    }
+
+    if (results.length == 0) {
+      searchResults.innerHTML = '';
+    }
+    function addResults(resultsList, results, start, batchSize, batchMillis, searchIndex) {}
   }
-  jtd.onReady(function(){
-    initSearch();
+  jtd.addEvent(searchInput, 'focus', function(){
+    setTimeout(update, 0);
   });
+  const updateSearchFocus = function(evt) {
+    const nextFocusedElement = evt.relatedTarget;
+    if (nextFocusedElement.id === 'search-input') return;
+    if (nextFocusedElement.classList.contains('search-result')) return;
+    hideSearch();
+  };
+  jtd.addEvent(searchInput, 'keydown', function(e){
+    switch (e.keyCode) {
+      case 38:
+        if (active) {
+          if (active.parentElement.previousSibling) {
+            previous.classList.add('active');
+          }
+        }
+        return;
+      case 40:
+        if (active) {
+          if (active.parentElement.nextSibling) {
+            next.classList.add('active');
+          }
+        } else {
+          if (next) {
+            next.classList.add('active');
+          }
+        }
+        return;
+      case 13:
+        return;
+    }
+  });
+
+  jtd.addEvent(document, 'click', function(e){
+    hideSearch();
+  });
+}
+jtd.onReady(function(){
+  initSearch();
+});
 JS
-# The fixture retains the theme's actual indentation at each patch boundary.
-source = source.sub('    searchLoaded(index, docs);', '      searchLoaded(index, docs);')
-source = source.sub("    console.log('Error loading", "      console.log('Error loading")
-source = source.sub("  console.log('There was", "    console.log('There was")
-lazy = CompassFrontend.lazy_search(source)
+worker = nil
+lazy = CompassFrontend.lazy_search(source) { |body| worker = body }
 raise 'Search still starts before interaction' unless lazy.include?('addEventListener("focus", initSearch)')
-raise 'Typing during index loading would be lost' unless lazy.include?('dispatchEvent(new Event("focus"))')
-raise 'Failed requests cannot be retried' unless lazy.include?('initSearch(true)')
-raise 'Typing retries a failed prerequisite' unless lazy.include?('compassSearchFailedState && retry !== true')
+raise 'Typing during worker initialization would be lost' unless lazy.include?("dispatchEvent(new Event('docs-search-ready'))")
+raise 'Index/query work remained on the page thread' if lazy.include?('lunr(') || lazy.include?('lunr.tokenizer')
+raise 'Worker did not retain the theme index/query rules' unless worker.include?('index = lunr(') && worker.include?('editDistance:') && worker.include?('metadataWhitelist')
 begin
   CompassFrontend.lazy_search(source.sub('  initSearch();', '  startSearch();'))
   raise 'Unknown theme initialization accepted'
-rescue ArgumentError => error
-  raise unless error.message.include?('theme')
-end
-
-begin
-  CompassFrontend.initial_theme(html + html, '/agent-compass')
-  raise 'Duplicate theme stylesheet accepted'
 rescue ArgumentError => error
   raise unless error.message.include?('theme')
 end
@@ -169,11 +207,12 @@ end
 asset_type = Struct.new(:url, :output, :output_ext)
 style = asset_type.new('/assets/css/theme.css', 'body {color: black}', '.css')
 index = asset_type.new('/assets/js/search-data.json', '{"title":"Before"}', '.json')
+worker = asset_type.new('/assets/js/search-worker.js', 'self.onmessage = first', '.js')
 loader = asset_type.new('/assets/js/just-the-docs.js', '', '.js')
 page = asset_type.new('/guide.html', '', '.html')
-site = Struct.new(:pages, :baseurl, :config).new([style, index, loader, page], '/fixture', {})
+site = Struct.new(:pages, :baseurl, :config).new([style, index, worker, loader, page], '/fixture', {})
 render_versions = lambda do
-  loader.output = "fetch('/fixture/assets/js/search-data.json');"
+  loader.output = "fetch('/fixture/assets/js/search-data.json'); new Worker('/fixture/assets/js/search-worker.js');"
   page.output = '<link href="/fixture/assets/css/theme.css"><script src="/fixture/assets/js/just-the-docs.js"></script>'
   CompassFrontend.version_assets(site)
   page.output.dup
@@ -190,8 +229,11 @@ changed_index = render_versions.call
 expected = Digest::SHA256.hexdigest(index.output)[0, 16]
 raise 'Changed index did not update the loader request and HTML URL' unless loader.output.include?("search-data.json?v=#{expected}") && !changed_index.include?(loader_url)
 raise 'HTML version does not match final loader bytes' unless changed_index.include?("just-the-docs.js?v=#{Digest::SHA256.hexdigest(loader.output)[0, 16]}")
+worker.output = 'self.onmessage = changed'
+changed_worker = render_versions.call
+raise 'Changed worker did not invalidate its URL and loader' unless changed_worker != changed_index && loader.output.include?("search-worker.js?v=#{Digest::SHA256.hexdigest(worker.output)[0, 16]}")
 site.baseurl = ''
-loader.output = "fetch('/assets/js/search-data.json');"
+loader.output = "fetch('/assets/js/search-data.json'); new Worker('/assets/js/search-worker.js');"
 page.output = '<script src="/assets/js/just-the-docs.js"></script>'
 CompassFrontend.version_assets(site)
 raise 'Root preview lost content versions' unless loader.output.include?("/assets/js/search-data.json?v=#{expected}") && page.output.include?('/assets/js/just-the-docs.js?v=')

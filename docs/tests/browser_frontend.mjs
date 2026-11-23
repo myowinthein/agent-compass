@@ -44,13 +44,14 @@ try {
    const context=await createContext({viewport:{width,height:900},colorScheme:scheme});
    const page=await context.newPage();
    const requests=[];const errors=[];
-   page.on('request',r=>requests.push(r.url()));
+   context.on('request',r=>requests.push(r.url()));
    page.on('pageerror',e=>errors.push(e.message));
    await page.addInitScript(()=>{window.shifts=[];new PerformanceObserver(list=>window.shifts.push(...list.getEntries().filter(e=>!e.hadRecentInput).map(e=>e.value))).observe({type:'layout-shift',buffered:true});});
    await page.goto(`${origin}/agent-compass/docs/commands/country-finder/detailed.html`);
    await page.waitForTimeout(300);
    assert(!requests.some(url=>url.includes('search-data.json')),'Search downloaded before interaction');
    assert(!requests.some(url=>url.includes('mermaid')),'Browser downloaded Mermaid');
+   assert(!requests.some(url=>/search-worker\.js|vendor\/lunr/.test(url)),'Search code loaded before interaction');
    assert.equal(requests.filter(url=>/just-the-docs-(default|light|dark)\.css/.test(url)).length,1,'Duplicate initial theme stylesheets');
    assert(requests.some(url=>new URL(url).pathname.endsWith(`just-the-docs-${scheme}.css`)),'Wrong system theme');
    for(const url of requests.filter(url=>/\/assets\/(?:css\/.*\.css|js\/just-the-docs\.js)(?:\?|$)/.test(url)))assert(/^[0-9a-f]{16}$/.test(new URL(url).searchParams.get('v')||''),'Generated stylesheet or loader has no content version');
@@ -78,6 +79,71 @@ try {
    console.log(`PASS ${width}px ${scheme}: one theme stylesheet, no initial index, static diagrams, CLS ${cls.toFixed(3)}, search and theme switching`);
    await context.close();
   }
+ }
+ // Exercise the worker's real tokenizer, prefix/fuzzy matching and preview metadata.
+ {
+  const context=await createContext();const page=await context.newPage();
+  const loader=await readFile(resolve(root,'assets/js/just-the-docs.js'),'utf8');
+  const workerUrl=JSON.parse(loader.match(/new Worker\(("[^"]+")\)/)[1]);
+  const libraryUrl=JSON.parse(loader.match(/libraryUrl: ("[^"]+")/)[1]);
+  const fixture={
+   a:{title:'Refactor',doc:'Refactor',content:'Preserve behavior and improve project code.',relUrl:'/refactor',url:'/fixture/refactor'},
+   b:{title:'A guide',doc:'A guide',content:'Refactor project modules safely.',relUrl:'/guide',url:'/fixture/guide'},
+   c:{title:'Work flow',doc:'Work flow',content:'A separate process for a release.',relUrl:'/work-flow',url:'/fixture/work-flow'}
+  };
+  await context.route('**/fixtures/search.json',route=>route.fulfill({contentType:'application/json',body:JSON.stringify(fixture)}));
+  await page.goto(pageUrl('docs/commands/country-finder.html'));
+  assert.equal(await page.evaluate(()=>typeof window.lunr),'undefined','Lunr loaded on the page thread');
+  const replies=await page.evaluate(async({workerUrl,libraryUrl,indexUrl})=>{
+   const worker=new Worker(workerUrl);const pending=new Map();let ready;
+   const initialized=new Promise(resolve=>{ready=resolve;});
+   worker.onmessage=({data})=>{if(data.type==='ready')ready();else if(data.type==='results'){pending.get(data.id)(data);pending.delete(data.id);}};
+   worker.postMessage({type:'init',libraryUrl,indexUrl});await initialized;
+   const replies=[];for(const input of ['refac','refctor','work/flow','zzzzzzzzzzzzzzzzzzzzzzzz']){
+    const id=replies.length+1;const reply=new Promise(resolve=>pending.set(id,resolve));worker.postMessage({type:'query',id,input});replies.push(await reply);
+   }
+   worker.terminate();return replies;
+  },{workerUrl,libraryUrl,indexUrl:pageUrl('fixtures/search.json')});
+  for(const reply of replies.slice(0,2))assert.equal(reply.results.map(r=>r.ref).sort().join(','),'a,b','Prefix or fuzzy search changed');
+  assert.equal(replies[0].results[0].ref,'a','Exact title boost changed');
+  assert(Object.values(replies[0].results[0].matchData.metadata).some(m=>m.title?.position?.some(p=>p[0]===0&&p[1]===8)),'Worker lost title highlight positions');
+  assert.equal(replies[2].results.map(r=>r.ref).join(','),'c','Slash-separated search changed');
+  assert.equal(replies[3].results.length,0);
+  for(const reply of replies)assert.equal(Object.keys(reply.docs).sort().join(','),reply.results.map(r=>r.ref).sort().join(','),'Worker returned unrelated documents');
+  console.log('PASS search worker: prefix/fuzzy matching, title boost, separators, highlight metadata and matched documents');await context.close();
+ }
+ // A late response must not replace newer results or reopen cleared search.
+ {
+  const context=await createContext();const page=await context.newPage();
+  await page.addInitScript(()=>{const Native=Worker;window.workerReplies=[];window.Worker=class extends Native{constructor(...args){super(...args);this.addEventListener('message',({data})=>{if(data.type==='results')workerReplies.push(data.id);});}};});
+  await context.route('**/search-worker.js?v=*',async route=>{const response=await route.fetch();await route.fulfill({response,body:(await response.text())+"\nconst send=self.postMessage.bind(self);self.postMessage=data=>{if(data.type==='results'&&data.id===1)setTimeout(()=>send(data),250);else send(data);};"});});
+  await page.goto(pageUrl('docs/commands/country-finder.html'));const query=page.locator('#search-input');
+  await query.fill('country');await page.waitForFunction(()=>!document.getElementById('search-input').hasAttribute('aria-busy'));
+  await query.fill('salary');await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
+  const latest=await page.locator('#search-results a').evaluateAll(links=>links.map(a=>a.href));
+  await page.waitForFunction(()=>workerReplies.includes(1)&&workerReplies.includes(2));
+  assert.equal(await page.locator('#search-results > ul').count(),1,'Late worker results appended an obsolete list');
+  assert.equal((await page.locator('#search-results a').evaluateAll((links,length)=>links.slice(0,length).map(a=>a.href),latest.length)).join('|'),latest.join('|'),'Late worker results replaced the latest query');
+  await query.press('Escape');assert.equal(await page.locator('#search-results a').count(),0);assert.equal(await query.inputValue(),'');
+  console.log('PASS search worker: out-of-order replies keep the latest results and Escape clears them');await context.close();
+ }
+ // Startup failure and a later crash retain an explicit retry with one UI binding.
+ for(const failure of ['startup','query']) {
+  const context=await createContext();const page=await context.newPage();let workers=0;
+  await context.route('**/search-worker.js?v=*',async route=>{
+   workers++;if(workers===1&&failure==='startup')return route.abort();
+   const response=await route.fetch();let body=await response.text();
+   if(workers===1&&failure==='query')body+="\nconst handle=self.onmessage;self.onmessage=event=>{if(event.data.type==='query'&&event.data.input==='crash-fixture')throw new Error('Fixture worker failure');return handle(event);};";
+   await route.fulfill({response,body});
+  });
+  await page.goto(pageUrl('docs/commands/country-finder.html'));const query=page.locator('#search-input');await query.fill('country');
+  if(failure==='query'){await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);await query.fill('crash-fixture');}
+  await page.waitForFunction(()=>document.getElementById('search-status').textContent.includes('Search unavailable'));
+  await query.fill('salary');assert.equal(workers,1,'Typing restarted a failed worker');
+  await page.locator('#search-retry').click();await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
+  assert.equal(workers,2);assert.equal(await query.inputValue(),'salary');assert.equal(await page.locator('#search-retry').isVisible(),false);
+  await query.press('ArrowDown');assert(await page.locator('#search-results a').first().evaluate(a=>a===document.activeElement),'Retry installed duplicate keyboard handlers');
+  console.log(`PASS worker ${failure} failure: preserved input, deliberate retry and one keyboard binding`);await context.close();
  }
  // The closing fade must not swallow the next navigation click.
  for(const scheme of ['light','dark']) for(const reducedMotion of ['no-preference','reduce']) {
@@ -419,7 +485,7 @@ try {
  // A slow first search must retain text typed before the index becomes ready.
  {
   const context=await createContext();const page=await context.newPage();let count=0;
-  await page.route('**/search-data.json?v=*',async route=>{count++;await new Promise(resolve=>setTimeout(resolve,500));await route.continue();});
+  await context.route('**/search-data.json?v=*',async route=>{count++;await new Promise(resolve=>setTimeout(resolve,500));await route.continue();});
   await page.goto(`${origin}/agent-compass/docs/commands/country-finder.html`);
   await page.locator('#search-input').fill('country');
   await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
@@ -430,7 +496,7 @@ try {
  for(const fault of ['http','network','json']) {
   const context=await createContext({viewport:{width:390,height:800}});const page=await context.newPage();let count=0;
   const errors=[];page.on('pageerror',error=>errors.push(error.message));
-  await page.route('**/search-data.json?v=*',async route=>{
+  await context.route('**/search-data.json?v=*',async route=>{
    count++;
    if(count>1)return route.continue();
    if(fault==='network')return route.abort();
@@ -512,7 +578,7 @@ try {
  for(const kind of ['copy','theme','search']) {
   const context=await createContext({viewport:{width:320,height:844},hasTouch:true,isMobile:true,colorScheme:'light'});const page=await context.newPage();
   if(kind==='copy')await page.addInitScript(()=>Object.defineProperty(navigator,'clipboard',{value:{writeText:()=>Promise.reject(new Error('Denied'))}}));
-  if(kind==='search')await page.route('**/search-data.json?v=*',route=>route.abort());
+  if(kind==='search')await context.route('**/search-data.json?v=*',route=>route.abort());
   await page.goto(pageUrl(kind==='copy'?'docs/setup/claude.html#terminal':'docs/commands/country-finder.html'));
   await page.addStyleTag({content:'html{font-size:200%!important;}'});
   await page.waitForFunction(()=>document.documentElement.classList.contains('compass-compact'));
