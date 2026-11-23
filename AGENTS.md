@@ -83,6 +83,17 @@ Before editing the following content, read and follow its standard alongside the
 - Documentation or instruction changes that affect the guides: [docs/standards/documentation.md](docs/standards/documentation.md).
 - README content: [docs/standards/readme.md](docs/standards/readme.md).
 - Project descriptions in GitHub About, plugin manifests, README/site metadata or related variants: [docs/standards/project-description.md](docs/standards/project-description.md).
+- Mechanical helper development or review, including callers: [docs/standards/mechanical-helper-audit.md](docs/standards/mechanical-helper-audit.md).
+
+<!-- shared-standards-maintenance:start -->
+### Shared standards maintenance
+
+The four files in `docs/standards/` are maintained together with the sibling Agent Helm/Agent Compass checkout. Changes may originate in either project; neither copy automatically wins a conflict. Before changing a standard or its checker/tests, read the sibling project's instructions and compare current contents.
+
+Keep `documentation.md`, `readme.md` and `project-description.md` byte-for-byte identical. In `mechanical-helper-audit.md`, keep the marked shared core identical and review each project's local requirements against its own runtime/helper contracts. Preserve intentional local differences and unrelated edits. The two checker/test scripts and this marked maintenance instruction stay identical too.
+
+For authorized shared changes, update both repositories, run `ruby scripts/check_standards.rb` from either root, and run each project's affected required checks before committing. The checker accepts an explicit sibling path when needed and only reads local files; it does not fetch, copy, commit or publish. Missing/unreadable sibling content leaves synchronization unverified. Report synchronization status, retained local adaptations and any outstanding file; do not silently certify one-sided work. Loading these instructions starts no synchronization scan or workflow. These are project-only standards, outside Adopt.
+<!-- shared-standards-maintenance:end -->
 
 ## Contributor Review Preference
 
