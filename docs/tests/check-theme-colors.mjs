@@ -1,4 +1,4 @@
-import assert from 'node:assert/strict';
+import assertStrict from 'node:assert/strict';
 
 function contrast(a, b) {
   const luminance = rgb => rgb.map(v => v / 255).map(v => v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)
@@ -7,7 +7,7 @@ function contrast(a, b) {
   return (high + 0.05) / (low + 0.05);
 }
 
-export async function checkThemeColors(page, scheme) {
+export async function checkThemeColors(page, scheme, assert = assertStrict) {
   const { placeholder, background } = await page.locator('#search-input').evaluate(input => {
     const rgb = color => color.match(/[\d.]+/g).slice(0, 3).map(Number);
     let parent = input;
@@ -18,11 +18,39 @@ export async function checkThemeColors(page, scheme) {
 
   const line = scheme === 'dark' ? [166, 161, 173] : [92, 89, 98];
   const surface = scheme === 'dark' ? [48, 45, 54] : [245, 246, 250];
-  const text = scheme === 'dark' ? [230, 225, 232] : [39, 38, 43];
   assert(contrast(line, background) >= 3 && contrast(line, surface) >= 3, `${scheme} diagram boundaries have insufficient contrast`);
-  assert(contrast(text, surface) >= 4.5, `${scheme} diagram labels have insufficient contrast`);
-  // Inspect the embedded image's rendered pixels, including manual theme overrides.
   const image = page.locator('figure.mermaid img').first();
+  // Load the same SVG and fragment in a same-origin frame so its label styles
+  // can be inspected. Inherit the image's color scheme, including manual modes.
+  const labels = await image.evaluate(async image => {
+    const frame = document.createElement('iframe');
+    frame.style.cssText = `position:fixed;left:-100000px;width:${image.naturalWidth}px;height:${image.naturalHeight}px;`;
+    frame.style.colorScheme = getComputedStyle(image).colorScheme;
+    frame.src = image.currentSrc;
+    try {
+      await new Promise((resolve, reject) => {
+        frame.onload = resolve;
+        frame.onerror = () => reject(new Error('Diagram style inspection failed'));
+        document.body.append(frame);
+      });
+      const view = frame.contentWindow, svg = frame.contentDocument.documentElement;
+      const rgb = value => value.match(/^rgb\(([\d.]+), ([\d.]+), ([\d.]+)\)$/)?.slice(1).map(Number);
+      return Array.from(svg.querySelectorAll('text, foreignObject span, foreignObject p')).filter(label => label.textContent.trim()).map(label => {
+        const style = view.getComputedStyle(label);
+        const node = label.closest('.node, .cluster');
+        const shape = node?.querySelector(':scope > rect, :scope > circle, :scope > ellipse, :scope > polygon, :scope > path');
+        const edge = label.closest('.edgeLabel');
+        const background = shape ? view.getComputedStyle(shape).fill :
+          view.getComputedStyle(edge || svg).backgroundColor;
+        return { text: rgb(label.localName === 'text' ? style.fill : style.color), background: rgb(background) };
+      });
+    } finally {
+      frame.remove();
+    }
+  });
+  assert(labels.length > 0, `${scheme} diagram has no inspectable labels`);
+  assert(labels.every(label => label.text && label.background && contrast(label.text, label.background) >= 4.5), `${scheme} diagram labels have insufficient contrast`);
+  // Inspect the embedded image's rendered pixels, including manual theme overrides.
   const pixels = await image.screenshot({ animations: 'disabled' });
   const matches = await page.evaluate(async ({ png, colors }) => {
     const image = new Image();

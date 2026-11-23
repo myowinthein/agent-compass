@@ -4,6 +4,7 @@ require 'fileutils'
 require 'json'
 require 'open3'
 require 'rexml/document'
+require 'tempfile'
 
 module CompassFrontend
   DIAGRAM = %r{<pre><code class="language-mermaid">(.*?)</code></pre>}m
@@ -38,6 +39,8 @@ module CompassFrontend
           stylesheet.id = 'compass-theme-stylesheet';
           stylesheet.rel = 'stylesheet';
           stylesheet.setAttribute('blocking', 'render');
+          stylesheet.dataset.lightHref = light;
+          stylesheet.dataset.darkHref = dark;
           stylesheet.href = theme === 'dark' ? dark : light;
           stylesheet.addEventListener('error', () => {
             stylesheet.dataset.themeLoadFailed = 'true';
@@ -116,6 +119,51 @@ module CompassFrontend
       "  searchInput.addEventListener('input', update);\n\n  jtd.addEvent(searchInput, 'focus', function(){")
     source = replace_once(source, '    const nextFocusedElement = evt.relatedTarget;',
       "    const nextFocusedElement = evt.relatedTarget;\n    if (!nextFocusedElement) { hideSearch(); return; }")
+    # Focus and repeated input events must not cancel unchanged result batches.
+    source = replace_once(source, "    currentSearchIndex++;\n\n", '')
+    source = replace_once(source, '    currentInput = input;',
+      "    currentInput = input;\n    currentSearchIndex++;")
+    source = replace_once(source, "  jtd.addEvent(searchInput, 'keydown', function(e){", <<~JS.chomp)
+        function focusSearchResult(result) {
+          result.focus({ preventScroll: true });
+          result.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
+        }
+        function handleSearchKeydown(e) {
+          if (e.isComposing) return;
+    JS
+    source = replace_once(source, "            previous.classList.add('active');",
+      "            previous.classList.add('active');\n            focusSearchResult(previous);")
+    next_selection = "            next.classList.add('active');"
+    unless source.scan(Regexp.new(Regexp.escape(next_selection))).size == 2
+      raise ArgumentError, 'Just the Docs theme changed: expected two next-result selections'
+    end
+    source = source.gsub(next_selection, "#{next_selection}\n            focusSearchResult(next);")
+    previous_selection = "            previous.classList.add('active');\n            focusSearchResult(previous);\n          }"
+    source = replace_once(source, previous_selection,
+      "#{previous_selection} else {\n            searchInput.focus();\n          }")
+    keyboard_end = "        return;\n    }\n  });\n\n  jtd.addEvent(document, 'click', function(e){"
+    source = replace_once(source, keyboard_end, <<~JS.chomp)
+              return;
+            case 27:
+              e.preventDefault();
+              searchInput.value = '';
+              update();
+              searchInput.focus();
+              return;
+          }
+        }
+        searchInput.addEventListener('keydown', handleSearchKeydown);
+        searchResults.addEventListener('keydown', handleSearchKeydown);
+        searchResults.addEventListener('focusin', event => {
+          const result = event.target.closest('a.search-result');
+          if (!result) return;
+          const active = searchResults.querySelector('.search-result.active');
+          if (active) active.classList.remove('active');
+          result.classList.add('active');
+        });
+
+        jtd.addEvent(document, 'click', function(e){
+    JS
     shortcut = source.match(%r{  // add event listener on ctrl[^\n]*\n  jtd\.addEvent\(document, 'keydown',[\s\S]*?\n  \}\);})
     source = source.sub(shortcut[0], '') if shortcut
     source = replace_once(source, '  initSearch();', <<~JS.chomp)
@@ -234,11 +282,82 @@ module CompassFrontend
   end
 
   def self.dimensions(svg)
-    view_box = REXML::Document.new(svg).root.attributes['viewBox'].to_s.split.map { |number| Float(number) }
+    raise ArgumentError, 'Invalid Mermaid diagram SVG' unless svg.is_a?(String)
+
+    root = REXML::Document.new(svg).root
+    raise ArgumentError, 'Invalid Mermaid diagram SVG' unless root && root.name == 'svg' && root.namespace == 'http://www.w3.org/2000/svg'
+
+    view_box = root.attributes['viewBox'].to_s.split.map { |number| Float(number) }
     unless view_box.size == 4 && view_box.all?(&:finite?) && view_box[2..].all?(&:positive?)
       raise ArgumentError, 'Invalid Mermaid diagram dimensions'
     end
     view_box[2..]
+  rescue REXML::ParseException
+    raise ArgumentError, 'Invalid Mermaid diagram SVG', cause: nil
+  end
+
+  def self.cached_diagram(path)
+    svg = File.read(path)
+    dimensions(svg)
+    svg
+  rescue SystemCallError, IOError, ArgumentError
+    nil
+  end
+
+  def self.cache_diagram(path, svg)
+    FileUtils.mkdir_p(File.dirname(path))
+    Tempfile.create(['.mermaid-', '.tmp'], File.dirname(path)) do |file|
+      file.write(svg)
+      file.close
+      File.rename(file.path, path)
+    end
+  rescue SystemCallError, IOError => error
+    Jekyll.logger.warn 'Mermaid cache:', "Could not save #{File.basename(path)} (#{error.class}); using rendered diagram."
+  end
+
+  def self.render_diagrams(site, worker, diagrams)
+    cache = File.join(site.cache_dir, 'mermaid/assets/diagrams') unless site.config['disable_disk_cache'] || site.config['safe']
+    rendered = {}
+    diagrams.each_key do |id|
+      svg = cached_diagram(File.join(cache, "#{id}.svg")) if cache
+      rendered[id] = svg if svg
+    end
+    missing = diagrams.reject { |id, _| rendered.key?(id) }
+    unless missing.empty?
+      output, error, status = Open3.capture3('node', worker, stdin_data: JSON.generate(missing))
+      raise "Diagram rendering failed: #{error}" unless status.success?
+      fresh = JSON.parse(output)
+      raise 'Incomplete Mermaid render result' unless fresh.is_a?(Hash) && fresh.keys.sort == missing.keys.sort
+
+      fresh.each_value { |svg| dimensions(svg) }
+      fresh.each do |id, svg|
+        cache_diagram(File.join(cache, "#{id}.svg"), svg) if cache
+        rendered[id] = svg
+      end
+    end
+    rendered
+  end
+
+  def self.versioned_asset_url(base, asset)
+    "#{base}#{asset.url}?v=#{Digest::SHA256.hexdigest(asset.output)[0, 16]}"
+  end
+
+  def self.version_assets(site)
+    assets = site.pages.select { |page| page.url.start_with?('/assets/') && page.url.match?(/\.(?:css|js|json)\z/) }
+    loader = assets.find { |page| page.url == '/assets/js/just-the-docs.js' }
+    if loader && site.config['search_enabled'] != false
+      index = assets.find { |page| page.url == '/assets/js/search-data.json' }
+      raise 'Missing generated search index' unless index
+
+      loader.output = replace_once(loader.output, "#{site.baseurl}#{index.url}", versioned_asset_url(site.baseurl, index))
+    end
+    urls = assets.to_h { |asset| ["#{site.baseurl}#{asset.url}", versioned_asset_url(site.baseurl, asset)] }
+    return if urls.empty?
+
+    references = /(?:#{Regexp.union(urls.keys)})(?=["'\s<>])/
+    site.pages.select { |page| page.output_ext == '.html' }.each do |page|
+      page.output = page.output.gsub(references) { |url| urls.fetch(url) }
+    end
   end
 
   def self.diagram_viewer(site, guide, index, image_url, width, height)
@@ -268,21 +387,12 @@ module CompassFrontend
         diagrams[id] = source
       end
     end
-    cache = File.join(site.source, '.jekyll-cache/mermaid/assets/diagrams')
-    FileUtils.mkdir_p(cache) unless diagrams.empty?
-    missing = diagrams.reject { |id, _| File.file?(File.join(cache, "#{id}.svg")) }
-    unless missing.empty?
-      output, error, status = Open3.capture3('node', worker, stdin_data: JSON.generate(missing))
-      raise "Diagram rendering failed: #{error}" unless status.success?
-      rendered = JSON.parse(output)
-      raise 'Incomplete Mermaid render result' unless rendered.keys.sort == missing.keys.sort
-      rendered.each do |id, svg|
-        dimensions(svg)
-        File.write(File.join(cache, "#{id}.svg"), svg)
-      end
-    end
-    diagrams.each_key do |id|
-      site.static_files << Jekyll::StaticFile.new(site, File.join(site.source, '.jekyll-cache/mermaid'), '/assets/diagrams', "#{id}.svg")
+    rendered = render_diagrams(site, worker, diagrams)
+    rendered.each do |id, svg|
+      asset = Jekyll::PageWithoutAFile.new(site, site.source, 'assets/diagrams', "#{id}.svg")
+      asset.data.merge!('layout' => nil, 'sitemap' => false)
+      asset.output = svg
+      site.pages << asset
     end
     pages.each do |page|
       html = initial_theme(page.output, site.baseurl.to_s)
@@ -300,7 +410,7 @@ module CompassFrontend
         diagram_index += 1
         source = CGI.unescapeHTML(Regexp.last_match(1))
         id = Digest::SHA256.hexdigest(renderer + source)
-        width, height = dimensions(File.read(File.join(cache, "#{id}.svg")))
+        width, height = dimensions(rendered.fetch(id))
         label = CGI.escapeHTML("Workflow diagram for #{page.data['title']}")
         url = "#{site.baseurl}/assets/diagrams/#{id}.svg"
         viewer_url, anchor = diagram_viewer(site, page, diagram_index, url, width, height)
@@ -311,6 +421,7 @@ module CompassFrontend
       page.output = lazy_search(page.output) unless site.config['search_enabled'] == false
       page.output = clipboard_feedback(page.output) unless site.config['enable_copy_code_button'] == false
     end
+    version_assets(site)
   end
 end
 

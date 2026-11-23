@@ -32,6 +32,11 @@ async function createContext(options = {}) {
  await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
  return context;
 }
+async function openCompactMenu(page) {
+ const menu=page.locator('#menu-button');
+ await menu.waitFor({state:'visible'});
+ if(await menu.getAttribute('aria-expanded')!=='true')await menu.click();
+}
 try {
  browser=await chromium.launch({executablePath:process.env.COMPASS_DOCS_CHROME||(process.platform==='darwin'?'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome':'/usr/bin/google-chrome'),headless:true});
  for(const width of [1280,390]) {
@@ -47,7 +52,8 @@ try {
    assert(!requests.some(url=>url.includes('search-data.json')),'Search downloaded before interaction');
    assert(!requests.some(url=>url.includes('mermaid')),'Browser downloaded Mermaid');
    assert.equal(requests.filter(url=>/just-the-docs-(default|light|dark)\.css/.test(url)).length,1,'Duplicate initial theme stylesheets');
-   assert(requests.some(url=>url.endsWith(`just-the-docs-${scheme}.css`)),'Wrong system theme');
+   assert(requests.some(url=>new URL(url).pathname.endsWith(`just-the-docs-${scheme}.css`)),'Wrong system theme');
+   for(const url of requests.filter(url=>/\/assets\/(?:css\/.*\.css|js\/just-the-docs\.js)(?:\?|$)/.test(url)))assert(/^[0-9a-f]{16}$/.test(new URL(url).searchParams.get('v')||''),'Generated stylesheet or loader has no content version');
    assert.equal(await page.locator('figure.mermaid img').evaluateAll(imgs=>imgs.every(img=>img.complete&&img.naturalWidth>0)),true,'Diagram not visible');
    const cls=await page.evaluate(()=>window.shifts.reduce((sum,n)=>sum+n,0));
    assert(cls<0.01,`Initial layout shifted: ${cls}`);
@@ -57,6 +63,7 @@ try {
    await query.fill('salary');
    await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
    assert.equal(requests.filter(url=>url.includes('search-data.json')).length,1,'Search initialized multiple times');
+   assert(/^[0-9a-f]{16}$/.test(new URL(requests.find(url=>url.includes('search-data.json'))).searchParams.get('v')||''),'Search index has no content version');
    await query.evaluate(input => input.blur());
    assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('search-active')),false);
    await query.focus();
@@ -64,12 +71,197 @@ try {
    await query.press('Escape');
    assert.equal(await query.inputValue(),'');
    await page.locator('#theme-mode').selectOption(scheme==='light'?'dark':'light');
-   await page.waitForFunction(expected=>document.querySelector('link[rel="stylesheet"]').href.endsWith(`just-the-docs-${expected}.css`),scheme==='light'?'dark':'light');
+   await page.waitForFunction(expected=>new URL(document.querySelector('link[rel="stylesheet"]').href).pathname.endsWith(`just-the-docs-${expected}.css`),scheme==='light'?'dark':'light');
    await checkThemeColors(page, scheme==='light'?'dark':'light');
+   assert(/^[0-9a-f]{16}$/.test(new URL(await page.locator('#compass-theme-stylesheet').getAttribute('href'),page.url()).searchParams.get('v')||''),'Theme change lost its content version');
    assert.equal(errors.length,0,errors.join('\n'));
    console.log(`PASS ${width}px ${scheme}: one theme stylesheet, no initial index, static diagrams, CLS ${cls.toFixed(3)}, search and theme switching`);
    await context.close();
   }
+ }
+ // The closing fade must not swallow the next navigation click.
+ for(const scheme of ['light','dark']) for(const reducedMotion of ['no-preference','reduce']) {
+  const context=await createContext({viewport:{width:1280,height:900},colorScheme:scheme,reducedMotion});
+  const page=await context.newPage();const guide=pageUrl('docs/commands/country-finder.html');await page.goto(guide);
+  const query=page.locator('#search-input'),overlay=page.locator('.search-overlay'),link=page.locator('.guide-depth a').nth(1);
+  const destination=new URL(await link.getAttribute('href'),page.url()).href;
+  await query.fill('salary');await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
+  await overlay.evaluate(el=>el.getAnimations().forEach(animation=>animation.finish()));
+  let box=await page.locator('#site-nav').getByRole('link',{name:'Home',exact:true}).boundingBox();
+  await page.mouse.click(box.x+box.width/2,box.y+box.height/2);
+  await page.waitForFunction(()=>!document.documentElement.classList.contains('search-active'));
+  assert.equal(page.url(),guide,'The active search overlay allowed navigation instead of dismissing search');
+  await query.focus();await page.waitForFunction(()=>document.documentElement.classList.contains('search-active'));
+  await overlay.evaluate(el=>el.getAnimations().forEach(animation=>animation.finish()));
+  await query.press('Escape');
+  // Hold the fade in progress so this check cannot pass by waiting it out.
+  if(reducedMotion==='no-preference') {
+   await overlay.evaluate(el=>el.getAnimations().forEach(animation=>animation.pause()));
+   assert(await overlay.evaluate(el=>parseFloat(getComputedStyle(el).opacity)>0),'The closing fade was removed');
+  }
+  box=await link.boundingBox();await page.mouse.click(box.x+box.width/2,box.y+box.height/2);
+  await page.waitForURL(destination);
+  console.log(`PASS ${scheme} ${reducedMotion}: active overlay dismisses search, closing overlay releases navigation immediately`);
+  await context.close();
+ }
+ // Arrow navigation uses real link focus and keeps the selected result visible.
+ for(const width of [390,1280]) for(const scheme of ['light','dark']) {
+  const context=await createContext({viewport:{width,height:390},colorScheme:scheme,reducedMotion:'reduce'});
+  const page=await context.newPage();await page.goto(pageUrl('docs/commands/country-finder.html'));
+  if(width<800)await page.locator('#menu-button').click();
+  const query=page.locator('#search-input');await query.pressSequentially('country');
+  await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>12);
+  for(let i=0;i<12;i++)await page.keyboard.press('ArrowDown');
+  const selected=page.locator('.search-result.active');
+  assert(await selected.evaluate(el=>el===document.activeElement&&el.matches(':focus-visible')),'Search selection has no real keyboard focus');
+  assert(await selected.evaluate(el=>{const a=el.getBoundingClientRect(),r=document.getElementById('search-results').getBoundingClientRect();return a.top>=r.top-1&&a.bottom<=r.bottom+1;}),'Keyboard selection is outside the visible result list');
+  assert(await page.locator('#search-results').evaluate(el=>el.scrollTop>0));
+  await page.keyboard.press('Escape');
+  assert(await query.evaluate(el=>el===document.activeElement));assert.equal(await query.inputValue(),'');
+  assert.equal(await page.locator('#search-results').isVisible(),false);
+  await query.fill('salary');await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
+  await page.keyboard.press('Tab');
+  assert(await page.locator('.search-result.active').evaluate(el=>el===document.activeElement),'Tab focus and selected result diverged');
+  const destination=new URL(await page.locator('.search-result.active').getAttribute('href'),page.url()).href;
+  await page.keyboard.press('Enter');await page.waitForURL(destination);
+  console.log(`PASS ${width}px ${scheme}: typed search, result scrolling, real link focus, Escape, Tab and Enter`);
+  await context.close();
+ }
+ // Expanded search must fit even when the header has wrapped with larger text.
+ for(const width of [800,1280]) for(const scheme of ['light','dark']) {
+  const context=await createContext({viewport:{width,height:390},colorScheme:scheme,reducedMotion:'reduce'});
+  const page=await context.newPage();await page.goto(pageUrl('docs/commands/country-finder.html'));
+  await page.addStyleTag({content:'html {font-size:32px!important;}'});
+  await openCompactMenu(page);
+  await page.locator('#search-input').fill('salary');await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
+  for(const selector of ['#search-input','#search-results']) {
+   const box=await page.locator(selector).boundingBox();
+   assert(box.x>=0&&box.x+box.width<=width+1,`${selector} overflows with enlarged text`);
+   assert(box.height>0&&box.y+box.height<=390+1,`${selector} is clipped in a short viewport`);
+  }
+  const title=await page.locator('.search-result-title').first().boundingBox();
+  const preview=await page.locator('.search-result-previews').first().boundingBox();
+  const stacked=await page.locator('#search-results').evaluate(el=>el.clientWidth<=28*parseFloat(getComputedStyle(document.documentElement).fontSize));
+  if(stacked)assert(preview.y>=title.y+title.height-1,'Enlarged result columns did not stack in the narrow panel');
+  else assert(preview.x>=title.x+title.width-1,'Wide result columns overlap');
+  console.log(`PASS ${width}px ${scheme}: enlarged search field and results stay in the visible viewport`);
+  await context.close();
+ }
+ // CSS masks retain the system link color in forced-colors palettes.
+ for(const scheme of ['light','dark']) {
+  const context=await createContext({colorScheme:scheme,forcedColors:'active'});const page=await context.newPage();
+  await page.goto(pageUrl('docs/commands/country-finder.html'));
+  const link=page.locator('.footer-links a[href^="https://github.com"]').first();
+  const colors=await link.evaluate(el=>({text:getComputedStyle(el).color,icon:getComputedStyle(el,'::after').backgroundColor,body:getComputedStyle(document.body).backgroundColor}));
+  assert.equal(colors.icon,colors.text);assert.notEqual(colors.icon,colors.body);
+  console.log(`PASS forced colors ${scheme}: external icons retain the system link color`);await context.close();
+ }
+ // A label color regression must fail even while diagram lines/surfaces remain.
+ for(const scheme of ['light','dark']) {
+  const context=await createContext({colorScheme:scheme});const page=await context.newPage();
+  await page.route('**/assets/diagrams/*.svg',async route=>{
+   const response=await route.fetch();
+   const body=(await response.text()).replace(/--diagram-text:\s*#[0-9a-f]+;/gi,'--diagram-text: var(--diagram-surface);');
+   await route.fulfill({response,body});
+  });
+  await page.goto(pageUrl('docs/commands/country-finder/detailed.html'));await background(scheme)(page);
+  await assert.rejects(()=>checkThemeColors(page,scheme),/diagram labels have insufficient contrast/);
+  console.log(`PASS ${scheme}: unreadable diagram labels are rejected with unchanged lines and surfaces`);
+  await context.close();
+ }
+ // Focus frames must leave surrounding words readable, including wrapped links.
+ for(const width of [320,1280]) for(const scheme of ['light','dark']) for(const forcedColors of ['none','active']) {
+  const context=await createContext({viewport:{width,height:900},colorScheme:scheme,forcedColors,reducedMotion:'reduce'});
+  const page=await context.newPage();
+  for(const [path,selectors] of [
+   ['docs/commands/country-finder.html',['main p a[href$="#run-a-command"]','figcaption a','.footer-links a:first-child',width<800?'footer .d-md-none a':'.site-footer a']],
+   ['', ['main a[href*="/docs/commands/country-finder.html"]','div.highlight[tabindex]']],
+   ['docs/commands.html',['td a']],
+   ['docs/known-issues.html',['details p a','summary']],
+  ]) {
+   await page.goto(pageUrl(path));
+   await page.locator('details').evaluateAll(details=>details.forEach(el=>el.open=true));
+   for(const selector of selectors) {
+    const target=page.locator(selector).first();
+    const before=await target.evaluate(el=>({top:el.getBoundingClientRect().top+scrollY,height:document.documentElement.scrollHeight}));
+    await target.focus();
+    // Let scroll-driven controls settle before checking the adjacent Tab stops.
+    await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+    await page.keyboard.press('Shift+Tab');await page.keyboard.press('Tab');
+    const result=await target.evaluate(el=>{
+     const style=getComputedStyle(el),width=parseFloat(style.outlineWidth),offset=parseFloat(style.outlineOffset);
+     const frames=Array.from(el.getClientRects(),r=>({left:r.left-offset-width,right:r.right+offset+width,top:r.top-offset-width,bottom:r.bottom+offset+width,innerLeft:r.left-offset,innerRight:r.right+offset,innerTop:r.top-offset,innerBottom:r.bottom+offset}));
+     const scope=el.closest('p,td,figcaption,.site-footer,.d-md-none');const collisions=[];
+     if(scope) {
+      const walker=document.createTreeWalker(scope,NodeFilter.SHOW_TEXT);
+      for(let node;node=walker.nextNode();) {
+       if(el.contains(node)||node.parentElement.closest('.sr-only,[hidden]'))continue;
+       const range=document.createRange();
+       for(const word of node.textContent.matchAll(/\S+/g)) {
+        range.setStart(node,word.index);range.setEnd(node,word.index+word[0].length);
+        for(const r of range.getClientRects())for(const f of frames) {
+         const intersects=r.right>f.left+.5&&r.left<f.right-.5&&r.bottom>f.top+.5&&r.top<f.bottom-.5;
+         const inside=r.left>=f.innerLeft&&r.right<=f.innerRight&&r.top>=f.innerTop&&r.bottom<=f.innerBottom;
+         if(intersects&&!inside)collisions.push(word[0]);
+        }
+       }
+      }
+     }
+     return {focused:el===document.activeElement&&el.matches(':focus-visible'),visible:style.outlineStyle==='solid'&&width>0,collisions,inViewport:frames.every(f=>f.left>=-.6&&f.top>=-.6&&f.right<=innerWidth+.6&&f.bottom<=innerHeight+.6),top:el.getBoundingClientRect().top+scrollY,height:document.documentElement.scrollHeight};
+    });
+    assert(result.focused&&result.visible,`${selector} lost its keyboard focus indicator`);
+    assert.equal(result.collisions.length,0,`${selector} covers neighboring words: ${result.collisions.join(', ')}`);
+    assert(result.inViewport,`${selector} focus frame is clipped by the viewport`);
+    assert(Math.abs(result.top-before.top)<1&&result.height===before.height,`${selector} moves content when focus appears`);
+   }
+  }
+  console.log(`PASS ${width}px ${scheme}, forced colors ${forcedColors}: prose, wrapped links, tables, captions, footer and code frames avoid adjacent text, clipping and focus layout shifts`);
+  await context.close();
+ }
+ // Each sidebar row has one Tab stop, with keyboard and pointer submenu access.
+ for(const width of [390,1280]) for(const scheme of ['light','dark']) {
+  const context=await createContext({viewport:{width,height:900},colorScheme:scheme});
+  const page=await context.newPage();await page.goto(pageUrl('docs/commands/country-finder.html'));
+  if(width<800)await page.locator('#menu-button').click();
+  const navigation=page.locator('#site-nav');
+  const setup=navigation.getByRole('link',{name:'Setup',exact:true});
+  const commands=navigation.getByRole('link',{name:'Commands',exact:true});
+  const setupButton=navigation.getByRole('button',{name:'Setup submenu',exact:true});
+  assert(await navigation.locator('.nav-list-expander').evaluateAll(buttons=>buttons.every(button=>button.tabIndex===-1)));
+  assert(await navigation.locator('.nav-list-link').evaluateAll(links=>links.every(link=>link.hasAttribute('href'))),'A current-page row lost its Tab stop');
+  await navigation.getByRole('link',{name:'Home',exact:true}).focus();
+  await page.keyboard.press('Tab');assert(await setup.evaluate(el=>el===document.activeElement),'Tab stopped on the arrow before the row');
+  assert(await setup.evaluate(el=>el.matches(':focus-visible')&&getComputedStyle(el).outlineStyle==='solid'));
+  const initial=page.url();await page.keyboard.press('ArrowRight');
+  assert.equal(page.url(),initial);assert.equal(await setup.getAttribute('aria-expanded'),'true');
+  assert.equal(await setupButton.getAttribute('aria-expanded'),'true');
+  assert.equal(await setup.getAttribute('aria-controls'),await setupButton.getAttribute('aria-controls'));
+  await page.keyboard.press('ArrowRight');assert.equal(await setup.getAttribute('aria-expanded'),'true');
+  await page.keyboard.press('Tab');assert(await navigation.getByRole('link',{name:'Claude',exact:true}).evaluate(el=>el===document.activeElement));
+  await page.keyboard.press('Shift+Tab');assert(await setup.evaluate(el=>el===document.activeElement));
+  await page.keyboard.press('ArrowLeft');assert.equal(await setup.getAttribute('aria-expanded'),'false');
+  assert.equal(await setupButton.getAttribute('aria-expanded'),'false');
+  await page.keyboard.press('Tab');assert(await commands.evaluate(el=>el===document.activeElement),'Tab visited the collapsed submenu or a second row control');
+  await page.keyboard.press('Shift+Tab');assert(await setup.evaluate(el=>el===document.activeElement));
+  await setupButton.click();assert.equal(await setup.getAttribute('aria-expanded'),'true');
+  await setupButton.click();assert.equal(await setup.getAttribute('aria-expanded'),'false');
+  const country=navigation.getByRole('link',{name:'Country finder',exact:true});
+  await country.focus();await page.keyboard.press('ArrowRight');
+  assert.equal(await country.getAttribute('aria-expanded'),'true');
+  await page.keyboard.press('Tab');assert(await navigation.getByRole('link',{name:'Step 1: Criteria intake',exact:true}).evaluate(el=>el===document.activeElement));
+  await page.keyboard.press('Shift+Tab');await page.keyboard.press('ArrowLeft');
+  assert.equal(await country.getAttribute('aria-expanded'),'false');
+  await setup.focus();await page.keyboard.press('Enter');await page.waitForURL(pageUrl('docs/setup/'));
+  if(width<800)await page.locator('#menu-button').click();
+  const current=page.locator('#site-nav').getByRole('link',{name:'Setup',exact:true});
+  assert.equal(await current.getAttribute('href'),'/agent-compass/docs/setup/');
+  assert.equal(await current.getAttribute('aria-expanded'),'true');
+  await current.focus();await page.keyboard.press('ArrowLeft');assert.equal(await current.getAttribute('aria-expanded'),'false');
+  await page.goto(pageUrl('docs/commands/country-finder/detailed.html'));
+  if(width<800)await page.locator('#menu-button').click();
+  assert.equal(await page.locator('#site-nav').getByRole('link',{name:'Commands',exact:true}).getAttribute('aria-expanded'),'true');
+  console.log(`PASS ${width}px ${scheme}: one sidebar Tab stop per row, arrows, nested menus, pointer toggles, Enter and current-page access`);
+  await context.close();
  }
  // Manual appearance travels with full-size links, including blocked storage.
  for(const system of ['light','dark']) for(const blocked of [false,true]) {
@@ -82,6 +274,14 @@ try {
   assert((await link.getAttribute('href')).endsWith(`#theme-${manual}`));
   await link.click();await background(manual)(page);
   assert(await page.locator('.diagram-viewer__image').evaluate(el=>el.complete&&el.naturalWidth>0&&getComputedStyle(el).colorScheme===getComputedStyle(document.documentElement).colorScheme));
+  if(!blocked) {
+   const direct=await context.newPage();const url=new URL(await page.locator('.diagram-viewer__image').getAttribute('src'),page.url());url.hash=`theme-${manual}`;
+   await direct.goto(url.href);
+   const colors=await direct.locator('svg').evaluate(el=>({background:getComputedStyle(el).backgroundColor,text:getComputedStyle(el.querySelector('foreignObject span, text')).color}));
+   assert.equal(colors.background,manual==='dark'?'rgb(39, 38, 43)':'rgb(255, 255, 255)','Direct SVG ignored the selected theme');
+   assert.equal(colors.text,manual==='dark'?'rgb(230, 225, 232)':'rgb(39, 38, 43)','Direct SVG labels ignored the selected theme');
+   await direct.close();
+  }
   await page.goBack();
   if(!await page.locator('#theme-mode').isVisible())await page.locator('#menu-button').click();
   await page.locator('#theme-mode').selectOption('system');
@@ -219,7 +419,7 @@ try {
  // A slow first search must retain text typed before the index becomes ready.
  {
   const context=await createContext();const page=await context.newPage();let count=0;
-  await page.route('**/search-data.json',async route=>{count++;await new Promise(resolve=>setTimeout(resolve,500));await route.continue();});
+  await page.route('**/search-data.json?v=*',async route=>{count++;await new Promise(resolve=>setTimeout(resolve,500));await route.continue();});
   await page.goto(`${origin}/agent-compass/docs/commands/country-finder.html`);
   await page.locator('#search-input').fill('country');
   await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
@@ -230,7 +430,7 @@ try {
  for(const fault of ['http','network','json']) {
   const context=await createContext({viewport:{width:390,height:800}});const page=await context.newPage();let count=0;
   const errors=[];page.on('pageerror',error=>errors.push(error.message));
-  await page.route('**/search-data.json',async route=>{
+  await page.route('**/search-data.json?v=*',async route=>{
    count++;
    if(count>1)return route.continue();
    if(fault==='network')return route.abort();
@@ -254,7 +454,7 @@ try {
  for(const scheme of ['light','dark']) {
   const context=await createContext({colorScheme:scheme});const page=await context.newPage();const target=scheme==='light'?'dark':'light';let count=0;
   await page.goto(pageUrl('docs/commands/country-finder/detailed.html'));await background(scheme)(page);
-  await page.route(`**/just-the-docs-${target}.css`,async route=>{count++;await new Promise(resolve=>setTimeout(resolve,300));if(count===1)await route.abort();else await route.continue();});
+  await page.route(`**/just-the-docs-${target}.css?v=*`,async route=>{count++;await new Promise(resolve=>setTimeout(resolve,300));if(count===1)await route.abort();else await route.continue();});
   const chooser=page.locator('#theme-mode');await chooser.selectOption(target);
   assert.equal(await page.evaluate(()=>localStorage.getItem('agent-compass-theme')),null,'Pending theme was persisted');
   await page.waitForFunction(()=>document.getElementById('theme-status').textContent.includes('unavailable'));
@@ -271,7 +471,7 @@ try {
  {
   const context=await createContext({colorScheme:'light'});const page=await context.newPage();let fail=true;
   await page.goto(pageUrl('docs/commands/country-finder.html'));await background('light')(page);
-  await page.route('**/just-the-docs-dark.css',route=>fail?route.abort():route.continue());
+  await page.route('**/just-the-docs-dark.css?v=*',route=>fail?route.abort():route.continue());
   await page.emulateMedia({colorScheme:'dark'});
   await page.waitForFunction(()=>document.getElementById('theme-status').textContent.includes('unavailable'));
   assert.equal(await page.locator('#theme-mode').inputValue(),'system');await background('light')(page);
@@ -312,14 +512,14 @@ try {
  for(const kind of ['copy','theme','search']) {
   const context=await createContext({viewport:{width:320,height:844},hasTouch:true,isMobile:true,colorScheme:'light'});const page=await context.newPage();
   if(kind==='copy')await page.addInitScript(()=>Object.defineProperty(navigator,'clipboard',{value:{writeText:()=>Promise.reject(new Error('Denied'))}}));
-  if(kind==='search')await page.route('**/search-data.json',route=>route.abort());
+  if(kind==='search')await page.route('**/search-data.json?v=*',route=>route.abort());
   await page.goto(pageUrl(kind==='copy'?'docs/setup/claude.html#terminal':'docs/commands/country-finder.html'));
   await page.addStyleTag({content:'html{font-size:200%!important;}'});
   await page.waitForFunction(()=>document.documentElement.classList.contains('compass-compact'));
   if(kind==='copy')await page.locator('div.highlighter-rouge:visible > button').first().click();
   else {
    await page.locator('#menu-button').click();
-   if(kind==='theme'){await page.route('**/just-the-docs-dark.css',route=>route.abort());await page.selectOption('#theme-mode','dark');}
+   if(kind==='theme'){await page.route('**/just-the-docs-dark.css?v=*',route=>route.abort());await page.selectOption('#theme-mode','dark');}
    else await page.locator('#search-input').fill('country');
   }
   const selector=kind==='copy'?'.copy-status:not(:empty)':`#${kind}-status`;
@@ -337,7 +537,7 @@ try {
   const context=await createContext({javaScriptEnabled:fault!=='no-js',colorScheme:'dark'});const page=await context.newPage();
   if(fault==='storage-blocked')await page.addInitScript(()=>Object.defineProperty(window,'localStorage',{get(){throw new DOMException('Blocked','SecurityError');}}));
   if(fault.startsWith('saved-'))await page.addInitScript(mode=>localStorage.setItem('agent-compass-theme',mode),fault.slice(6));
-  if(fault==='dark-css-failed')await page.route('**/just-the-docs-dark.css',route=>route.abort());
+  if(fault==='dark-css-failed')await page.route('**/just-the-docs-dark.css?v=*',route=>route.abort());
   await page.goto(`${origin}/agent-compass/docs/commands/country-finder/detailed.html`);
   if(fault==='no-js')assert.equal(await page.locator('#back-to-top').isVisible(),false,'Nonfunctional arrow appears without JavaScript');
   const expected=['no-js','saved-light','dark-css-failed'].includes(fault)?'light':'dark';

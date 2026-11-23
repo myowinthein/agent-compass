@@ -55,21 +55,36 @@ try {
       const [, , width, height] = svg.getAttribute('viewBox').split(/\s+/).map(Number);
       svg.setAttribute('width', width);
       svg.setAttribute('height', height);
+      for (const theme of ['light', 'dark']) {
+        const view = document.createElementNS('http://www.w3.org/2000/svg', 'view');
+        view.id = `theme-${theme}`;
+        view.setAttribute('viewBox', svg.getAttribute('viewBox'));
+        svg.append(view);
+      }
       // Embedded SVG media queries inherit the page's selected color-scheme.
       const selector = `#diagram-${id}`;
-      const colors = `<style>
-        ${selector} {
-          --diagram-text: #27262b;
+      const palettes = {
+        light: `--diagram-text: #27262b;
           --diagram-surface: #f5f6fa;
           --diagram-line: #5c5962;
+          --diagram-background: #fff;`,
+        dark: `--diagram-text: #e6e1e8;
+          --diagram-surface: #302d36;
+          --diagram-line: #a6a1ad;
+          --diagram-background: #27262b;`,
+      };
+      const colors = `<style>
+        ${selector} {
+          ${palettes.light}
+          background-color: var(--diagram-background);
         }
         @media (prefers-color-scheme: dark) {
           ${selector} {
-            --diagram-text: #e6e1e8;
-            --diagram-surface: #302d36;
-            --diagram-line: #a6a1ad;
+            ${palettes.dark}
           }
         }
+        ${selector}:has(> #theme-light:target) { ${palettes.light} }
+        ${selector}:has(> #theme-dark:target) { ${palettes.dark} }
         ${selector} text, ${selector} span, ${selector} p, ${selector} .label,
         ${selector} .cluster text, ${selector} .cluster span {
           fill: var(--diagram-text);

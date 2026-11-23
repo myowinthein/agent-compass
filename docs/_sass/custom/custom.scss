@@ -9,6 +9,10 @@ figure.highlight {
   &:hover > button:not(:disabled):not([aria-disabled="true"]) {
     cursor: pointer;
   }
+
+  > button:focus:not(:focus-visible) {
+    outline: none;
+  }
 }
 
 @media (hover: none), (any-pointer: coarse) {
@@ -16,6 +20,36 @@ figure.highlight {
   div.listingblock > div.content > button,
   figure.highlight > button {
     opacity: 1;
+  }
+}
+
+.search-results {
+  container-type: inline-size;
+}
+
+// Release the page immediately while the inactive overlay finishes fading.
+.search-overlay {
+  pointer-events: none;
+}
+
+.search-active .search-overlay {
+  pointer-events: auto;
+}
+
+@container (max-width: 28rem) {
+  .search-result-title,
+  .search-result-previews {
+    display: block;
+    width: auto;
+  }
+
+  .search-result-title {
+    padding-right: 0;
+  }
+
+  .search-result-previews {
+    padding-left: 1rem;
+    margin-left: 0.5rem;
   }
 }
 
@@ -90,13 +124,34 @@ figure.highlight > button[aria-busy="true"] {
   opacity: 1;
 }
 
-:root :focus-visible {
+.highlight[tabindex] {
+  scroll-margin-block: $sp-4;
+}
+
+:root :focus-visible,
+:root .nav-list-link:focus-visible,
+:root .setup-tabs__panel:focus-visible > .setup-tabs__heading + h2,
+:root .nav-list-expander:focus-visible + .nav-list-link {
   outline: 2px solid $link-color;
-  outline-offset: 2px;
+  outline-offset: -2px;
+}
+
+// The submenu arrow shares its row's focus indicator.
+:root .nav-list-expander:focus-visible {
+  outline: none;
+}
+
+// Mark the panel's opening heading without outlining the full instruction set.
+:root .setup-tabs__panel:has(> .setup-tabs__heading + h2):focus-visible {
+  outline: none;
 }
 
 :root .btn:focus-visible {
   box-shadow: none;
+}
+
+.main-content summary {
+  padding: $sp-2 $sp-3;
 }
 
 // Extend the theme's original row highlight to arrow hover, excluding child rows.
@@ -117,6 +172,14 @@ figure.highlight > button[aria-busy="true"] {
 
 a:not([class]) {
   text-decoration-color: currentColor;
+
+  // Reserve each inline fragment's focus space before keyboard interaction.
+  &:not(.guide-depth a) {
+    padding: 0.125em 0.25em 0.55em;
+    line-height: 2;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
 
   &:hover,
   &:focus-visible {
@@ -167,6 +230,10 @@ a:not([class]) {
   a {
     white-space: nowrap;
   }
+}
+
+.site-footer {
+  line-height: 2;
 }
 
 .back-to-top {
@@ -243,7 +310,7 @@ a:not([class]) {
 
 .site-version {
   flex: 0 0 auto;
-  padding-block: $sp-2;
+  padding: $sp-2;
   color: $body-text-color;
   font-family: $mono-font-family;
   font-size: 0.8125rem;
@@ -395,7 +462,10 @@ a:not([class]) {
 }
 
 @media (forced-colors: active) {
-  :root :focus-visible {
+  :root :focus-visible,
+  :root .nav-list-link:focus-visible,
+  :root .setup-tabs__panel:focus-visible > .setup-tabs__heading + h2,
+  :root .nav-list-expander:focus-visible + .nav-list-link {
     outline-color: Highlight;
   }
 
@@ -436,6 +506,11 @@ a:is([href^="https://"], [href^="http://"]):not(
   vertical-align: -0.1em;
   background-color: currentColor;
   mask: url("../icons/external-link.svg") center / contain no-repeat;
+
+  @media (forced-colors: active) {
+    forced-color-adjust: none;
+    background-color: LinkText;
+  }
 }
 
 .guide-depth {
@@ -495,6 +570,10 @@ a:is([href^="https://"], [href^="http://"]):not(
   }
 }
 
+.setup-tabs__panel {
+  scroll-margin-block: $sp-4;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .theme-switcher select,
   .setup-tabs__list button {
@@ -548,12 +627,6 @@ a:is([href^="https://"], [href^="http://"]):not(
   figcaption {
     margin-top: $sp-2;
     font-size: 0.875rem;
-  }
-
-  [data-diagram-full-size] {
-    display: inline-block;
-    max-width: 100%;
-    padding: $sp-2;
   }
 
   img {
