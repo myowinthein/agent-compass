@@ -31,6 +31,11 @@ figure.highlight {
   );
 }
 
+:root a {
+  text-decoration-skip-ink: none;
+  text-underline-offset: 0.25em;
+}
+
 a:not([class]) {
   text-decoration-color: currentColor;
 
@@ -310,8 +315,6 @@ a:is([href^="https://"], [href^="http://"]):not(
     display: inline-block;
     max-width: 100%;
     padding: $sp-2;
-    text-decoration-skip-ink: none;
-    text-underline-offset: 0.25em;
   }
 
   img {
