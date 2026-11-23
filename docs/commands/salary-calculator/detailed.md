@@ -25,11 +25,10 @@ Salary Calculator builds an evidence-based salary framework for your role in sel
 flowchart TD
   Start(["Select this chat and person"]) --> Status{"Matching salary search?"}
   Status -->|Completed and View chosen| Replay(["Show the saved final result"])
-  Status -->|Unfinished and Resume chosen| Resume["Resume the next unfinished step"]
+  Status -->|Unfinished and Resume chosen| Resume(["Resume the saved next unfinished step<br/>Keep completed work"])
   Status -->|No match or Start fresh chosen| Profile["Create a separate run<br/>Reuse or confirm this person's profile"]
-  Profile --> Resume
   Status -->|Needs repair| Recover(["Explain the issue<br/>Offer repair or a fresh run"])
-  Resume --> S1["1. Confirm countries<br/>Research local salaries and reference visa salary rules"]
+  Profile --> S1["1. Confirm countries<br/>Research local salaries and reference visa salary rules"]
   S1 --> S2["2. Validate and store research"]
   S2 --> Stored{"Any country stored?"}
   Stored -->|No| Repair(["Record what is known<br/>Offer evidence repair or stop"])
@@ -43,7 +42,7 @@ flowchart TD
   S3["3. Estimate supported international adjustments"]
   S3 --> S4["4. Calculate comparable salary targets<br/>Record skipped countries"]
   S4 --> Usable{"Any country calculated?"}
-  Usable -->|No| Repair
+  Usable -->|No| Repair(["Save the skip-only outcome<br/>Offer evidence repair or stop"])
   Usable -->|Yes| Ladder["5a. Draft or reuse the matching career ladder<br/>Wait for confirmation if needed"]
   Ladder --> Audit["5b. Audit the salary framework<br/>Revise only when evidence supports it"]
   Audit --> Fresh{"Essential evidence needs refresh?"}
