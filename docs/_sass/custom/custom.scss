@@ -179,7 +179,7 @@ a:not([class]) {
 
   // Leave a small inset for the focus outline without increasing line height.
   &:not(.guide-depth a) {
-    padding: 0.125em 2px 0.2em;
+    padding: 0.125em 2px calc(0.2em + 2px);
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
