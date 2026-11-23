@@ -40,7 +40,7 @@ When I’m deciding where to focus my job search, I use Country Finder to [find 
 Codex → $country-finder    Claude → /country-finder
 ```
 
-It confirms my profile, preferences and countries, then researches remote work and sponsorship separately. I can choose countries myself or review a list from Salary Calculator for the same person in this chat. It checks the evidence and ranks application priorities, showing both kinds of fit and their limitations. Missing evidence stays visible rather than becoming a poor-fit rating.
+It confirms my profile, preferences and countries, then researches remote work and sponsorship separately. I can choose countries myself or review a list from Salary Calculator for the same person in this chat. It checks the evidence and ranks Remote and Relocation priorities independently in two tables, showing each track’s fit and limitations. Missing evidence stays visible rather than becoming a poor-fit rating.
 
 ### Portal Finder
 
