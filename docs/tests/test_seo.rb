@@ -7,6 +7,10 @@ require 'yaml'
 root = File.expand_path(ARGV.fetch(0, '../_site'), __dir__)
 config = YAML.safe_load_file(File.expand_path('../_config.yml', __dir__))
 base = config.fetch('url') + config.fetch('baseurl', '')
+not_found = Nokogiri::HTML(File.read(File.join(root, '404.html')))
+robots = not_found.at_css('head meta[name="robots"]')&.[]('content').to_s.downcase.split(/[\s,]+/)
+raise '404 page is not excluded from indexing' unless robots.include?('noindex')
+
 canonicals = []
 titles = []
 
@@ -40,5 +44,6 @@ raise 'No indexable pages were checked' if canonicals.empty?
 raise 'Duplicate page titles or canonical URLs' unless titles.uniq == titles && canonicals.uniq == canonicals
 sitemap = Nokogiri::XML(File.read(File.join(root, 'sitemap.xml'))) { |parser| parser.strict }
 urls = sitemap.xpath('//*[local-name()="loc"]').map(&:text)
+raise '404 page is included in the sitemap' if urls.include?(base + '/404.html')
 raise 'Sitemap differs from the indexable canonical pages' unless urls.uniq == urls && urls.to_set == canonicals.to_set
 puts "Passed metadata, sharing, homepage identity and sitemap checks for #{canonicals.size} indexable pages."
