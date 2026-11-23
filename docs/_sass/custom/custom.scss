@@ -11,6 +11,85 @@ figure.highlight {
   }
 }
 
+@media (hover: none), (any-pointer: coarse) {
+  div.highlighter-rouge > button,
+  div.listingblock > div.content > button,
+  figure.highlight > button {
+    opacity: 1;
+  }
+}
+
+.interaction-feedback {
+  box-sizing: border-box;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: $body-text-color;
+  z-index: 10;
+
+  &:not(:empty) {
+    padding: $sp-2 $sp-3;
+    background: $body-background-color;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+  }
+}
+
+.search-status {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.search-retry {
+  position: absolute;
+  top: 50%;
+  right: $sp-3;
+  transform: translateY(-50%);
+  padding: $sp-1 $sp-2;
+  font: inherit;
+  color: $link-color;
+  background: $body-background-color;
+  border: 1px solid $border-color;
+  border-radius: 4px;
+  max-width: calc(100% - 6rem);
+
+  &:active {
+    background: mix($link-color, $body-background-color, 12%);
+  }
+}
+
+.search-input-wrap:has(.search-retry:not([hidden])) .search-input {
+  padding-right: 7rem;
+}
+
+.theme-switcher {
+  position: relative;
+}
+
+.theme-status {
+  position: absolute;
+  top: 100%;
+  right: $sp-4;
+  width: 18rem;
+  max-width: calc(100vw - 2rem);
+}
+
+.copy-status {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  max-width: 100%;
+}
+
+div.highlighter-rouge > button[aria-busy="true"],
+div.listingblock > div.content > button[aria-busy="true"],
+figure.highlight > button[aria-busy="true"] {
+  cursor: default;
+  opacity: 1;
+}
+
 :root :focus-visible {
   outline: 2px solid $link-color;
   outline-offset: 2px;

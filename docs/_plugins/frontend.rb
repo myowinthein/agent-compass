@@ -40,6 +40,7 @@ module CompassFrontend
           stylesheet.setAttribute('blocking', 'render');
           stylesheet.href = theme === 'dark' ? dark : light;
           stylesheet.addEventListener('error', () => {
+            stylesheet.dataset.themeLoadFailed = 'true';
             if (stylesheet.href !== new URL(light, document.baseURI).href) {
               stylesheet.href = light;
               document.documentElement.style.colorScheme = 'light';
@@ -56,36 +57,179 @@ module CompassFrontend
   def self.lazy_search(source)
     source = replace_once(source, 'function initSearch() {', <<~JS.chomp)
       let compassSearchStarted = false;
-      function initSearch() {
-        if (compassSearchStarted) return;
+      let compassSearchReady = false;
+      let compassSearchFailedState = false;
+      let compassSearchPendingTimer;
+      let compassSearchErrorTimer;
+      let compassSearchInput;
+      let compassSearchStatus;
+      let compassSearchRetry;
+      function clearCompassSearchFeedback() {
+        clearTimeout(compassSearchPendingTimer);
+        clearTimeout(compassSearchErrorTimer);
+        compassSearchStatus.textContent = '';
+      }
+      function compassSearchFailed() {
+        clearCompassSearchFeedback();
+        compassSearchFailedState = true;
+        compassSearchInput.removeAttribute('aria-busy');
+        compassSearchRetry.hidden = false;
+        compassSearchRetry.disabled = false;
+        compassSearchStatus.textContent = 'Search unavailable. Press Enter or select Retry search.';
+        const dismiss = () => {
+          if (document.activeElement === compassSearchStatus) compassSearchErrorTimer = setTimeout(dismiss, 500);
+          else compassSearchStatus.textContent = '';
+        };
+        compassSearchErrorTimer = setTimeout(dismiss, 4000);
+      }
+      function initSearch(retry = false) {
+        if (compassSearchStarted || (compassSearchFailedState && retry !== true)) return;
         compassSearchStarted = true;
+        compassSearchFailedState = false;
+        clearCompassSearchFeedback();
+        compassSearchRetry.disabled = true;
+        compassSearchInput.setAttribute('aria-busy', 'true');
+        compassSearchPendingTimer = setTimeout(() => { compassSearchStatus.textContent = 'Loading search…'; }, 200);
     JS
+    source = replace_once(source, '      var docs = JSON.parse(request.responseText);',
+      "      try {\n      var docs = JSON.parse(request.responseText);")
     source = replace_once(source, '      searchLoaded(index, docs);', <<~JS.chomp)
             searchLoaded(index, docs);
+            compassSearchReady = true;
+            clearCompassSearchFeedback();
+            compassSearchRetry.hidden = true;
+            compassSearchInput.removeAttribute('aria-busy');
             const input = document.getElementById('search-input');
             if (document.activeElement === input) input.dispatchEvent(new Event("focus"));
+            } catch {
+              compassSearchStarted = false;
+              compassSearchFailed();
+            }
     JS
     source = replace_once(source,
       "      console.log('Error loading ajax request. Request status:' + request.status);",
-      "      compassSearchStarted = false;\n      console.log('Error loading ajax request. Request status:' + request.status);")
+      "      compassSearchStarted = false;\n      compassSearchFailed();\n      console.log('Error loading ajax request. Request status:' + request.status);")
     source = replace_once(source,
       "    console.log('There was a connection error');",
-      "    compassSearchStarted = false;\n    console.log('There was a connection error');")
+      "    compassSearchStarted = false;\n    compassSearchFailed();\n    console.log('There was a connection error');")
     source = replace_once(source, "  jtd.addEvent(searchInput, 'focus', function(){",
       "  searchInput.addEventListener('input', update);\n\n  jtd.addEvent(searchInput, 'focus', function(){")
     source = replace_once(source, '    const nextFocusedElement = evt.relatedTarget;',
       "    const nextFocusedElement = evt.relatedTarget;\n    if (!nextFocusedElement) { hideSearch(); return; }")
     shortcut = source.match(%r{  // add event listener on ctrl[^\n]*\n  jtd\.addEvent\(document, 'keydown',[\s\S]*?\n  \}\);})
     source = source.sub(shortcut[0], '') if shortcut
-    replace_once(source, '  initSearch();', <<~JS.chomp)
+    source = replace_once(source, '  initSearch();', <<~JS.chomp)
         const searchInput = document.getElementById('search-input');
         if (searchInput) {
+          compassSearchInput = searchInput;
+          compassSearchStatus = document.getElementById('search-status');
+          compassSearchRetry = document.getElementById('search-retry');
+          const search = searchInput.closest('.search');
+          // Keep the search field and recovery reachable before the index is ready.
+          const showSearchShell = () => {
+            if (!compassSearchReady) document.documentElement.classList.add('search-active');
+          };
+          search.addEventListener('focusin', showSearchShell);
+          search.addEventListener('focusout', event => {
+            if (!compassSearchReady && !search.contains(event.relatedTarget)) document.documentElement.classList.remove('search-active');
+          });
+          document.addEventListener('click', event => {
+            if (!compassSearchReady && !search.contains(event.target)) document.documentElement.classList.remove('search-active');
+          });
           searchInput.addEventListener("focus", initSearch);
-          searchInput.addEventListener("input", initSearch);
+          searchInput.addEventListener("input", () => {
+            showSearchShell();
+            if (!compassSearchFailedState) initSearch();
+          });
+          search.addEventListener("keydown", event => {
+            if (event.key === 'Escape' && !compassSearchReady) {
+              event.preventDefault();
+              searchInput.value = '';
+              clearCompassSearchFeedback();
+              searchInput.focus();
+              document.documentElement.classList.remove('search-active');
+              searchInput.scrollIntoView({ block: 'nearest' });
+            }
+          });
+          searchInput.addEventListener("keydown", event => {
+            if (event.key === 'Enter' && !event.isComposing && !event.repeat && compassSearchFailedState) {
+              event.preventDefault();
+              initSearch(true);
+            }
+          });
+          compassSearchRetry.addEventListener("click", () => {
+            initSearch(true);
+            searchInput.focus();
+          });
           const mainHeader = document.getElementById('main-header');
           #{shortcut && shortcut[0]}
           if (document.activeElement === searchInput || searchInput.value) initSearch();
         }
+    JS
+    source
+  end
+
+  def self.clipboard_feedback(source)
+    source = replace_once(source, '  codeBlocks.forEach(codeBlock => {',
+      "  let clearCopyConfirmation = null;\n  let clearCopyFailure = null;\n  codeBlocks.forEach(codeBlock => {")
+    source = replace_once(source, "    copyButton.addEventListener('click', function () {", <<~JS.chomp)
+          const feedback = document.createElement('span');
+          feedback.className = 'interaction-feedback copy-status';
+          feedback.setAttribute('role', 'status');
+          codeBlock.append(feedback);
+          let copying = false;
+          const resetConfirmation = () => {
+            clearTimeout(timeout);
+            timeout = null;
+            copyButton.innerHTML = svgCopy;
+            feedback.textContent = '';
+            if (clearCopyConfirmation === resetConfirmation) clearCopyConfirmation = null;
+            if (clearCopyFailure === resetConfirmation) clearCopyFailure = null;
+          };
+          const dismissConfirmation = () => {
+            if (document.activeElement === feedback) timeout = setTimeout(dismissConfirmation, 500);
+            else resetConfirmation();
+          };
+          copyButton.addEventListener('click', async function () {
+    JS
+    source = replace_once(source, '      if(timeout === null) {', <<~JS.chomp)
+            if (!copying) {
+              if (clearCopyFailure) clearCopyFailure();
+              clearTimeout(timeout);
+              if (clearCopyConfirmation === resetConfirmation) clearCopyConfirmation = null;
+              copying = true;
+              copyButton.setAttribute('aria-busy', 'true');
+              copyButton.setAttribute('aria-disabled', 'true');
+              const pendingFeedback = setTimeout(() => {
+                copyButton.innerHTML = svgCopy;
+                feedback.textContent = 'Copying…';
+              }, 200);
+              try {
+    JS
+    source = replace_once(source, '        window.navigator.clipboard.writeText(code);',
+      '        await window.navigator.clipboard.writeText(code);')
+    source = replace_once(source, '        copyButton.innerHTML = svgCopied;', <<~JS.chomp)
+            if (clearCopyConfirmation) clearCopyConfirmation();
+            if (clearCopyFailure) clearCopyFailure();
+            clearCopyConfirmation = resetConfirmation;
+            copyButton.innerHTML = svgCopied;
+            feedback.textContent = 'Copied';
+    JS
+    source = replace_once(source, '        var timeoutSetting = 4000;', '        var timeoutSetting = 2000;')
+    replace_once(source, "        timeout = setTimeout(function () {\n          copyButton.innerHTML = svgCopy;\n          timeout = null;\n        }, timeoutSetting);", <<~JS.chomp)
+              timeout = setTimeout(dismissConfirmation, timeoutSetting);
+              } catch {
+                if (clearCopyFailure) clearCopyFailure();
+                clearCopyFailure = resetConfirmation;
+                copyButton.innerHTML = svgCopy;
+                feedback.textContent = 'Could not copy. Try again or select the code to copy it manually.';
+                timeout = setTimeout(dismissConfirmation, 4000);
+              } finally {
+                clearTimeout(pendingFeedback);
+                copying = false;
+                copyButton.removeAttribute('aria-busy');
+                copyButton.removeAttribute('aria-disabled');
+              }
     JS
   end
 
@@ -142,6 +286,15 @@ module CompassFrontend
     end
     pages.each do |page|
       html = initial_theme(page.output, site.baseurl.to_s)
+      if html.include?('id="search-input"')
+        html = replace_once(html, '<div id="search-results" class="search-results"></div>',
+          '<p id="search-status" class="interaction-feedback search-status" role="status"></p><div id="search-results" class="search-results"></div>')
+        html = replace_once(html, 'id="search-input"', 'id="search-input" aria-describedby="search-status"')
+        label = html.match(%r{<label for="search-input" class="search-label">.*?</label>}m)&.to_s
+        raise ArgumentError, 'Just the Docs theme changed: missing search label' unless label
+        html = replace_once(html, label,
+          label + '<button id="search-retry" class="search-retry" type="button" aria-label="Search unavailable. Retry search." title="Search unavailable" hidden>Retry search</button>')
+      end
       diagram_index = 0
       page.output = html.gsub(DIAGRAM) do
         diagram_index += 1
@@ -156,6 +309,7 @@ module CompassFrontend
     end
     site.pages.select { |page| page.url == '/assets/js/just-the-docs.js' }.each do |page|
       page.output = lazy_search(page.output) unless site.config['search_enabled'] == false
+      page.output = clipboard_feedback(page.output) unless site.config['enable_copy_code_button'] == false
     end
   end
 end

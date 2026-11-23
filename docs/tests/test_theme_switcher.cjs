@@ -11,10 +11,15 @@ function loadSwitcher({ saved = null, dark = false, blockedStorage = false, auto
   const events = {};
   const selector = {
     value: 'system',
+    setAttribute(name, value) { this[name] = value; },
+    removeAttribute(name) { delete this[name]; },
     addEventListener: (name, handler) => { events[name] = handler; },
     closest: () => container
   };
   const container = { hidden: true };
+  const status = { textContent: '', hidden: true };
+  const timers = new Map();
+  let timerId = 0;
   const style = {};
   const media = {
     matches: dark,
@@ -25,6 +30,7 @@ function loadSwitcher({ saved = null, dark = false, blockedStorage = false, auto
   function stylesheet(href) {
     return {
       href,
+      dataset: {},
       events: {},
       cloneNode() { return stylesheet(this.href); },
       removeAttribute(name) { delete this[name]; },
@@ -43,11 +49,13 @@ function loadSwitcher({ saved = null, dark = false, blockedStorage = false, auto
   stylesheets.push(stylesheet(`https://docs.example.invalid/agent-compass/assets/css/just-the-docs-${initialTheme}.css`));
   vm.runInNewContext(source, {
     URL,
+    setTimeout: handler => { timers.set(++timerId, handler); return timerId; },
+    clearTimeout: id => timers.delete(id),
     document: {
       documentElement: { style, hasAttribute: () => false },
       querySelector: () => stylesheets[0],
       querySelectorAll: () => [],
-      getElementById: id => id === 'theme-mode' ? selector : stylesheets.find(sheet => sheet.id === id) || null,
+      getElementById: id => id === 'theme-mode' ? selector : id === 'theme-status' ? status : stylesheets.find(sheet => sheet.id === id) || null,
       addEventListener: (name, handler) => { events.ready = handler; }
     },
     window: {
@@ -67,7 +75,7 @@ function loadSwitcher({ saved = null, dark = false, blockedStorage = false, auto
   });
   events.ready();
   const theme = () => new URL(stylesheets[0].href).pathname.match(/just-the-docs-(\w+)\.css$/)[1];
-  return { storage, events, selector, container, media, theme, style, stylesheets, requests };
+  return { storage, events, selector, container, media, theme, style, stylesheets, requests, status };
 }
 
 for (const dark of [false, true]) {
@@ -213,3 +221,44 @@ for (const mode of ['light', 'dark']) {
     assert.deepEqual([state.theme(), state.requests.length, state.stylesheets.length], [mode, 0, 1]);
   });
 }
+
+test('a deliberate choice is saved only after its stylesheet loads', () => {
+  const state = loadSwitcher({ saved: 'light', initialTheme: 'light', autoLoad: false });
+  state.selector.value = 'dark';
+  state.events.change();
+  assert.equal(state.storage.get('agent-compass-theme'), 'light');
+  assert.equal(state.selector['aria-busy'], 'true');
+  state.requests.at(-1).events.load();
+  assert.equal(state.storage.get('agent-compass-theme'), 'dark');
+  assert.equal(state.selector.value, 'dark');
+  assert.equal(state.selector['aria-busy'], undefined);
+});
+
+test('a failed deliberate choice restores the control and saved working preference', () => {
+  const state = loadSwitcher({ saved: 'light', initialTheme: 'light', autoLoad: false });
+  state.selector.value = 'dark';
+  state.events.change();
+  state.requests.at(-1).events.error();
+  assert.deepEqual([state.theme(), state.selector.value, state.storage.get('agent-compass-theme')], ['light', 'light', 'light']);
+  assert.match(state.status.textContent, /Theme unavailable/);
+  state.selector.value = 'dark';
+  state.events.change();
+  state.requests.at(-1).events.load();
+  assert.equal(state.status.textContent, '');
+  assert.equal(state.storage.get('agent-compass-theme'), 'dark');
+});
+
+test('failed automatic appearance keeps System and recovers on a later change without saving', () => {
+  const state = loadSwitcher({ initialTheme: 'light', autoLoad: false });
+  state.media.matches = true;
+  state.events.system();
+  state.requests.at(-1).events.error();
+  assert.deepEqual([state.theme(), state.selector.value, state.storage.size], ['light', 'system', 0]);
+  state.media.matches = false;
+  state.events.system();
+  state.media.matches = true;
+  state.events.system();
+  state.requests.at(-1).events.load();
+  assert.deepEqual([state.theme(), state.selector.value, state.storage.size], ['dark', 'system', 0]);
+  assert.equal(state.status.textContent, '');
+});

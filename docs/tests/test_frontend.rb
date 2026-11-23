@@ -14,6 +14,7 @@ source = <<~JS
     var request = new XMLHttpRequest();
     request.onload = function(){
       if (request.status >= 200 && request.status < 400) {
+        var docs = JSON.parse(request.responseText);
         searchLoaded(index, docs);
       } else {
         console.log('Error loading ajax request. Request status:' + request.status);
@@ -45,7 +46,8 @@ source = source.sub("  console.log('There was", "    console.log('There was")
 lazy = CompassFrontend.lazy_search(source)
 raise 'Search still starts before interaction' unless lazy.include?('addEventListener("focus", initSearch)')
 raise 'Typing during index loading would be lost' unless lazy.include?('dispatchEvent(new Event("focus"))')
-raise 'Failed requests cannot be retried' unless lazy.scan('compassSearchStarted = false').size >= 3
+raise 'Failed requests cannot be retried' unless lazy.include?('initSearch(true)')
+raise 'Typing retries a failed prerequisite' unless lazy.include?('compassSearchFailedState && retry !== true')
 begin
   CompassFrontend.lazy_search(source.sub('  initSearch();', '  startSearch();'))
   raise 'Unknown theme initialization accepted'

@@ -6,6 +6,9 @@
   let pendingStylesheet;
   let mode = 'system';
   let committedMode = mode;
+  let savePendingChoice = false;
+  let feedback = '';
+  let pendingFeedbackTimer;
 
   const updateDiagramLinks = () => {
     document.querySelectorAll('[data-diagram-full-size]').forEach(link => {
@@ -20,6 +23,58 @@
     }
   };
 
+  const showFeedback = message => {
+    feedback = message;
+    const status = document.getElementById('theme-status');
+    if (status) {
+      status.textContent = message;
+      status.hidden = !message;
+    }
+  };
+  const clearFeedback = () => {
+    clearTimeout(pendingFeedbackTimer);
+    showFeedback('');
+  };
+  const finishChange = () => {
+    committedMode = mode;
+    updateDiagramLinks();
+    const selector = document.getElementById('theme-mode');
+    if (selector) {
+      selector.value = committedMode;
+      selector.removeAttribute('aria-busy');
+    }
+    if (savePendingChoice) {
+      try {
+        localStorage.setItem(storageKey, committedMode);
+      } catch {
+        // Keep the working choice in memory when storage is unavailable.
+      }
+    }
+    savePendingChoice = false;
+    clearFeedback();
+  };
+  const reportFailure = () => {
+    clearFeedback();
+    pendingStylesheet?.remove();
+    pendingStylesheet = null;
+    const current = new URL(stylesheet.href).pathname.endsWith('just-the-docs-dark.css') ? 'dark' : 'light';
+    // A failed automatic appearance change does not change the preference.
+    mode = committedMode === 'system' ? 'system' : current;
+    committedMode = mode;
+    updateDiagramLinks();
+    savePendingChoice = false;
+    document.documentElement.style.colorScheme = current;
+    const selector = document.getElementById('theme-mode');
+    if (selector) {
+      selector.value = committedMode;
+      selector.removeAttribute('aria-busy');
+    }
+    showFeedback('Theme unavailable. Choose a theme to try again.');
+  };
+  stylesheet.addEventListener('error', () => {
+    if (stylesheet.dataset.themeLoadFailed) reportFailure();
+  });
+
   try {
     const saved = localStorage.getItem(storageKey);
     if (modes.includes(saved)) mode = saved;
@@ -31,9 +86,12 @@
   }
   committedMode = mode;
 
-  const applyTheme = () => {
+  const applyTheme = (save = false) => {
+    delete stylesheet.dataset.themeLoadFailed;
+    clearFeedback();
+    savePendingChoice = save;
     const theme = mode === 'system' ? (systemTheme.matches ? 'dark' : 'light') : mode;
-    const href = new URL(`just-the-docs-${theme}.css`, stylesheet.href).href;
+    const href = new URL(stylesheet.dataset[`${theme}Href`] || `just-the-docs-${theme}.css`, stylesheet.href).href;
     pendingStylesheet?.remove();
     pendingStylesheet = null;
 
@@ -48,31 +106,37 @@
         stylesheet = next;
         stylesheet.id = 'compass-theme-stylesheet';
         pendingStylesheet = null;
-        committedMode = mode;
-        updateDiagramLinks();
+        document.documentElement.style.colorScheme = theme;
+        finishChange();
       });
       next.addEventListener('error', () => {
         if (pendingStylesheet !== next) return;
         next.remove();
         pendingStylesheet = null;
-        document.documentElement.style.colorScheme = stylesheet.href.endsWith('just-the-docs-dark.css') ? 'dark' : 'light';
+        reportFailure();
       });
       pendingStylesheet = next;
+      pendingFeedbackTimer = setTimeout(() => {
+        if (pendingStylesheet === next) showFeedback('Loading theme…');
+      }, 200);
       stylesheet.after(next);
     }
 
-    document.documentElement.style.colorScheme = theme;
     if (!pendingStylesheet) {
-      committedMode = mode;
-      updateDiagramLinks();
+      document.documentElement.style.colorScheme = theme;
+      finishChange();
     }
     const selector = document.getElementById('theme-mode');
-    if (selector) selector.value = mode;
+    if (selector) {
+      selector.value = committedMode;
+      if (pendingStylesheet) selector.setAttribute('aria-busy', 'true');
+    }
   };
 
-  applyTheme();
+  if (stylesheet.dataset.themeLoadFailed) reportFailure();
+  else applyTheme();
   systemTheme.addEventListener('change', () => {
-    if (mode === 'system') applyTheme();
+    if (mode === 'system') applyTheme(savePendingChoice);
   });
 
   window.addEventListener('storage', event => {
@@ -85,16 +149,13 @@
     updateDiagramLinks();
     const selector = document.getElementById('theme-mode');
     if (!selector) return;
-    selector.value = mode;
+    selector.value = committedMode;
+    showFeedback(feedback);
+    if (pendingStylesheet) selector.setAttribute('aria-busy', 'true');
     selector.closest('.theme-switcher').hidden = false;
     selector.addEventListener('change', () => {
       mode = selector.value;
-      applyTheme();
-      try {
-        localStorage.setItem(storageKey, mode);
-      } catch {
-        // Switching still works when the preference cannot be saved.
-      }
+      applyTheme(true);
     });
   });
 })();

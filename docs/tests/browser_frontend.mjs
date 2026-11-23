@@ -226,15 +226,112 @@ try {
   assert.equal(await page.locator('#search-input').inputValue(),'country');assert.equal(count,1);
   console.log('PASS slow search: first query preserved, one request');await context.close();
  }
- // Failed requests may be retried on the next search interaction.
- {
-  const context=await createContext();const page=await context.newPage();let count=0;
-  await page.route('**/search-data.json',async route=>{count++;if(count===1)await route.fulfill({status:503,body:'Unavailable'});else await route.continue();});
-  await page.goto(`${origin}/agent-compass/docs/commands/country-finder.html`);
-  await page.locator('#search-input').focus();await page.waitForTimeout(100);
-  await page.locator('#search-input').fill('country');
+ // An unchanged failed index needs a deliberate retry, including network and parse failures.
+ for(const fault of ['http','network','json']) {
+  const context=await createContext({viewport:{width:390,height:800}});const page=await context.newPage();let count=0;
+  const errors=[];page.on('pageerror',error=>errors.push(error.message));
+  await page.route('**/search-data.json',async route=>{
+   count++;
+   if(count>1)return route.continue();
+   if(fault==='network')return route.abort();
+   await route.fulfill({status:fault==='http'?503:200,body:fault==='json'?'{invalid':'Unavailable'});
+  });
+  await page.goto(pageUrl('docs/commands/country-finder.html'));
+  await page.locator('#menu-button').click();
+  const query=page.locator('#search-input');const retry=page.getByRole('button',{name:'Search unavailable. Retry search.',exact:true});
+  await query.focus();await retry.waitFor({state:'visible'});
+  await query.pressSequentially('country',{delay:40});
+  assert.equal(count,1,'Typing retried a failed search prerequisite');
+  assert.match(await page.locator('#search-status').textContent(),/Search unavailable/);
+  assert(await page.locator('#search-status').evaluate(el=>{const box=el.getBoundingClientRect();return box.x>=0&&box.right<=innerWidth&&box.y>=0&&box.bottom<=innerHeight;}),'Search error escaped the viewport');
+  if(fault==='network')await query.press('Enter');else {await query.press('Tab');assert(await retry.evaluate(el=>el===document.activeElement));await page.keyboard.press('Enter');}
   await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
-  assert.equal(count,2);console.log('PASS failed search: retry succeeds');await context.close();
+  assert.equal(await query.inputValue(),'country');assert.equal(count,2);assert.equal(await retry.isVisible(),false);
+  assert.equal(await page.locator('#search-status').textContent(),'');assert.deepEqual(errors,[]);
+  console.log(`PASS ${fault} search failure: visible feedback, no typing retries, keyboard retry and preserved query`);await context.close();
+ }
+ // Failed manual preferences never replace the working theme or get saved.
+ for(const scheme of ['light','dark']) {
+  const context=await createContext({colorScheme:scheme});const page=await context.newPage();const target=scheme==='light'?'dark':'light';let count=0;
+  await page.goto(pageUrl('docs/commands/country-finder/detailed.html'));await background(scheme)(page);
+  await page.route(`**/just-the-docs-${target}.css`,async route=>{count++;await new Promise(resolve=>setTimeout(resolve,300));if(count===1)await route.abort();else await route.continue();});
+  const chooser=page.locator('#theme-mode');await chooser.selectOption(target);
+  assert.equal(await page.evaluate(()=>localStorage.getItem('agent-compass-theme')),null,'Pending theme was persisted');
+  await page.waitForFunction(()=>document.getElementById('theme-status').textContent.includes('unavailable'));
+  assert.equal(await chooser.inputValue(),'system');await background(scheme)(page);
+  assert.equal(await page.evaluate(()=>localStorage.getItem('agent-compass-theme')),null,'Failed theme was persisted');
+  await chooser.selectOption(target);await background(target)(page);
+  await page.waitForFunction(target=>localStorage.getItem('agent-compass-theme')===target,target);
+  assert.equal(await page.locator('#theme-status').textContent(),'');
+  assert((await page.locator('[data-diagram-full-size]').first().getAttribute('href')).endsWith(`#theme-${target}`));
+  await page.reload();await background(target)(page);assert.equal(await chooser.inputValue(),target);
+  console.log(`PASS failed ${target} preference: rollback, delayed persistence, successful retry, diagram links and reload`);await context.close();
+ }
+ // Automatic appearance failures keep System and later recover without saving an override.
+ {
+  const context=await createContext({colorScheme:'light'});const page=await context.newPage();let fail=true;
+  await page.goto(pageUrl('docs/commands/country-finder.html'));await background('light')(page);
+  await page.route('**/just-the-docs-dark.css',route=>fail?route.abort():route.continue());
+  await page.emulateMedia({colorScheme:'dark'});
+  await page.waitForFunction(()=>document.getElementById('theme-status').textContent.includes('unavailable'));
+  assert.equal(await page.locator('#theme-mode').inputValue(),'system');await background('light')(page);
+  fail=false;await page.emulateMedia({colorScheme:'light'});await page.waitForFunction(()=>document.getElementById('theme-status').textContent==='');await page.emulateMedia({colorScheme:'dark'});await background('dark')(page);
+  assert.equal(await page.locator('#theme-mode').inputValue(),'system');assert.equal(await page.evaluate(()=>localStorage.getItem('agent-compass-theme')),null);
+  console.log('PASS automatic theme failure: retained System, later recovery and no saved override');await context.close();
+ }
+ // Clipboard feedback follows settled writes and only the latest successful copy.
+ for(const scheme of ['light','dark']) {
+  const context=await createContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,colorScheme:scheme});const page=await context.newPage();const errors=[];
+  page.on('pageerror',error=>errors.push(error.message));
+  await page.addInitScript(()=>{
+   window.copyWrites=[];
+   Object.defineProperty(navigator,'clipboard',{value:{writeText:text=>new Promise((resolve,reject)=>window.copyWrites.push({text,resolve,reject}))}});
+  });
+  await page.goto(pageUrl('docs/setup/claude.html#terminal'));await page.locator('[data-setup-tabs][data-enhanced]').waitFor();
+  await page.clock.install();await page.clock.pauseAt(new Date());
+  const blocks=page.locator('div.highlighter-rouge:visible');const first=blocks.nth(0);const second=blocks.nth(1);
+  const button=first.locator('button');const status=first.locator('.copy-status');const other=second.locator('.copy-status');
+  assert.equal(await button.evaluate(el=>getComputedStyle(el).opacity),'1','Touch copy control needs hover');
+  await button.click();await button.evaluate(el=>el.click());
+  assert.equal(await page.evaluate(()=>window.copyWrites.length),1,'Pending copies were duplicated');
+  assert.equal(await first.locator('use').getAttribute('xlink:href'),'#svg-copy');
+  await page.clock.runFor(2500);assert.equal(await status.textContent(),'Copying…');
+  await page.evaluate(()=>window.copyWrites[0].resolve());assert.equal(await status.textContent(),'Copied');
+  await second.locator('button').click();assert.equal(await status.textContent(),'Copied','A pending write cleared another success');
+  await page.evaluate(()=>window.copyWrites[1].reject(new Error('Clipboard denied')));
+  assert.match(await other.textContent(),/Try again or select the code/);assert.equal(await status.textContent(),'Copied','A failed write cleared another success');
+  await second.locator('button').click();assert.equal(await other.textContent(),'','A new attempt retained stale copy error');
+  await page.evaluate(()=>window.copyWrites[2].resolve());assert.equal(await status.textContent(),'');assert.equal(await other.textContent(),'Copied');
+  await page.clock.runFor(1999);assert.equal(await other.textContent(),'Copied');
+  await page.clock.runFor(1);assert.equal(await other.textContent(),'');assert.deepEqual(errors,[]);
+  await second.locator('button').focus();await page.keyboard.press('Tab');await page.keyboard.press('Shift+Tab');
+  assert(await second.locator('button').evaluate(el=>el===document.activeElement&&el.matches(':focus-visible')&&getComputedStyle(el).outlineStyle!=='none'));
+  console.log(`PASS ${scheme} touch clipboard: visible control, pending deduplication, confirmed success, recoverable failure, latest confirmation and two-second timer`);await context.close();
+ }
+ // Enlarged text and off-screen anchors must keep recovery inside the viewport.
+ for(const kind of ['copy','theme','search']) {
+  const context=await createContext({viewport:{width:320,height:844},hasTouch:true,isMobile:true,colorScheme:'light'});const page=await context.newPage();
+  if(kind==='copy')await page.addInitScript(()=>Object.defineProperty(navigator,'clipboard',{value:{writeText:()=>Promise.reject(new Error('Denied'))}}));
+  if(kind==='search')await page.route('**/search-data.json',route=>route.abort());
+  await page.goto(pageUrl(kind==='copy'?'docs/setup/claude.html#terminal':'docs/commands/country-finder.html'));
+  await page.addStyleTag({content:'html{font-size:200%!important;}'});
+  await page.waitForFunction(()=>document.documentElement.classList.contains('compass-compact'));
+  if(kind==='copy')await page.locator('div.highlighter-rouge:visible > button').first().click();
+  else {
+   await page.locator('#menu-button').click();
+   if(kind==='theme'){await page.route('**/just-the-docs-dark.css',route=>route.abort());await page.selectOption('#theme-mode','dark');}
+   else await page.locator('#search-input').fill('country');
+  }
+  const selector=kind==='copy'?'.copy-status:not(:empty)':`#${kind}-status`;
+  await page.waitForFunction(selector=>{
+   const el=document.querySelector(selector);if(!el?.textContent.trim())return false;
+   const box=el.getBoundingClientRect();return box.width>0&&box.x>=0&&box.right<=innerWidth&&box.y>=0&&box.bottom<=innerHeight;
+  },selector);
+  const status=page.locator(selector);
+  await page.setViewportSize({width:390,height:600});
+  await page.waitForFunction(selector=>{const box=document.querySelector(selector).getBoundingClientRect();return box.x>=0&&box.right<=innerWidth&&box.y>=0&&box.bottom<=innerHeight;},selector);
+  assert(await status.isVisible());
+  console.log(`PASS enlarged ${kind} feedback: viewport containment before and after resize`);await context.close();
  }
  for(const fault of ['no-js','storage-blocked','saved-light','saved-dark','dark-css-failed']) {
   const context=await createContext({javaScriptEnabled:fault!=='no-js',colorScheme:'dark'});const page=await context.newPage();
