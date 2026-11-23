@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { checkThemeColors } from './check-theme-colors.mjs';
+import { checkListCounterContrast, checkThemeColors } from './check-theme-colors.mjs';
 import { chromium } from 'playwright-core';
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
@@ -76,7 +76,9 @@ try {
    await checkThemeColors(page, scheme==='light'?'dark':'light');
    assert(/^[0-9a-f]{16}$/.test(new URL(await page.locator('#compass-theme-stylesheet').getAttribute('href'),page.url()).searchParams.get('v')||''),'Theme change lost its content version');
    assert.equal(errors.length,0,errors.join('\n'));
-   console.log(`PASS ${width}px ${scheme}: one theme stylesheet, no initial index, static diagrams, CLS ${cls.toFixed(3)}, search and theme switching`);
+   await page.goto(pageUrl('docs/setup/codex.html'));
+   await checkListCounterContrast(page, scheme==='light'?'dark':'light');
+   console.log(`PASS ${width}px ${scheme}: one theme stylesheet, no initial index, static diagrams, CLS ${cls.toFixed(3)}, search, theme switching and list-counter contrast`);
    await context.close();
   }
  }

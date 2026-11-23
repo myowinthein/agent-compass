@@ -7,6 +7,20 @@ function contrast(a, b) {
   return (high + 0.05) / (low + 0.05);
 }
 
+export async function checkListCounterContrast(page, scheme, assert = assertStrict) {
+  const counters = await page.locator('.main-content ol > li').evaluateAll(items => {
+    const rgb = color => color.match(/[\d.]+/g).slice(0, 3).map(Number);
+    return items.filter(item => item.checkVisibility()).map(item => {
+      const marker = getComputedStyle(item, '::before');
+      let parent = item;
+      while (getComputedStyle(parent).backgroundColor === 'rgba(0, 0, 0, 0)') parent = parent.parentElement;
+      return { content: marker.content, text: rgb(marker.color), background: rgb(getComputedStyle(parent).backgroundColor) };
+    });
+  });
+  assert(counters.length > 0, `${scheme} page has no visible ordered-list counters`);
+  assert(counters.every(counter => counter.content.includes('counter(') && contrast(counter.text, counter.background) >= 4.5), `${scheme} ordered-list counters have insufficient contrast`);
+}
+
 export async function checkThemeColors(page, scheme, assert = assertStrict) {
   const { placeholder, background } = await page.locator('#search-input').evaluate(input => {
     const rgb = color => color.match(/[\d.]+/g).slice(0, 3).map(Number);

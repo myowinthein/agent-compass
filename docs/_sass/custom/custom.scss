@@ -154,6 +154,10 @@ figure.highlight > button[aria-busy="true"] {
   padding: $sp-2 $sp-3;
 }
 
+.main-content ol > li::before {
+  color: $body-text-color;
+}
+
 // Extend the theme's original row highlight to arrow hover, excluding child rows.
 .nav-list .nav-list-item:has(> .nav-list-expander:hover) > .nav-list-link {
   color: darken($link-color, 5%);
