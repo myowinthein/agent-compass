@@ -177,19 +177,20 @@ figure.highlight > button[aria-busy="true"] {
 a:not([class]) {
   text-decoration-color: currentColor;
 
-  // Reserve each inline fragment's focus space before keyboard interaction.
-  &:not(.guide-depth a) {
-    padding: 0.125em 0.25em 0.55em;
-    line-height: 2;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-  }
-
   &:hover,
   &:focus-visible {
     text-decoration-color: currentColor;
     text-decoration-thickness: 2px;
   }
+}
+
+// Highlight text links without adding space to the surrounding sentence.
+:root a:not([class]):not(.guide-depth a):focus-visible {
+  outline: none;
+  color: $body-background-color;
+  background-color: $link-color;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .search-input::placeholder {
@@ -238,13 +239,6 @@ a:not([class]) {
 
 .side-bar .site-footer {
   line-height: 1.4;
-
-  // Keep focus padding inside the line box without loosening the whole credit.
-  a:not([class]) {
-    display: inline-block;
-    line-height: 1.25;
-    padding-block: 0.25em 0.4em;
-  }
 }
 
 .back-to-top {
@@ -473,6 +467,12 @@ a:not([class]) {
 }
 
 @media (forced-colors: active) {
+  :root a:not([class]):not(.guide-depth a):focus-visible {
+    forced-color-adjust: none;
+    color: HighlightText;
+    background-color: Highlight;
+  }
+
   :root :focus-visible,
   :root .nav-list-link:focus-visible,
   :root .setup-tabs__panel:focus-visible > .setup-tabs__heading + h2,

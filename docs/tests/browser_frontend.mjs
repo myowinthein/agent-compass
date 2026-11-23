@@ -237,27 +237,34 @@ try {
   console.log(`PASS ${scheme}: unreadable diagram labels are rejected with unchanged lines and surfaces`);
   await context.close();
  }
- // Focus frames must leave surrounding words readable, including wrapped links.
- for(const width of [320,1280]) for(const scheme of ['light','dark']) for(const forcedColors of ['none','active']) {
+ // Compact text links and focus indicators must leave surrounding words readable.
+ for(const width of [320,800,1280]) for(const scheme of ['light','dark']) for(const forcedColors of ['none','active']) for(const enlarged of [false,true]) {
   const context=await createContext({viewport:{width,height:900},colorScheme:scheme,forcedColors,reducedMotion:'reduce'});
   const page=await context.newPage();
   for(const [path,selectors] of [
-   ['docs/commands/country-finder.html',['main p a[href$="#run-a-command"]','figcaption a','.footer-links a:first-child',width<800?'footer .d-md-none a':'.site-footer a']],
+   ['docs/commands/country-finder.html',['main p a[href$="#run-a-command"]','figcaption a','.footer-links a:first-child','.site-footer a:visible,footer .d-md-none a:visible']],
    ['', ['main a[href*="/docs/commands/country-finder.html"]','div.highlight[tabindex]']],
    ['docs/commands.html',['td a']],
    ['docs/known-issues.html',['details p a','summary']],
   ]) {
    await page.goto(pageUrl(path));
+   if(enlarged)await page.addStyleTag({content:'html {font-size:200%!important;} * {line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important;} p {margin-bottom:2em!important;}'});
    await page.locator('details').evaluateAll(details=>details.forEach(el=>el.open=true));
    for(const selector of selectors) {
     const target=page.locator(selector).first();
-    const before=await target.evaluate(el=>({top:el.getBoundingClientRect().top+scrollY,height:document.documentElement.scrollHeight}));
+    const before=await target.evaluate(el=>({top:el.getBoundingClientRect().top+scrollY,height:document.documentElement.scrollHeight,background:getComputedStyle(el).backgroundColor}));
     await target.focus();
     // Let scroll-driven controls settle before checking the adjacent Tab stops.
     await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
     await page.keyboard.press('Shift+Tab');await page.keyboard.press('Tab');
     const result=await target.evaluate(el=>{
-     const style=getComputedStyle(el),width=parseFloat(style.outlineWidth),offset=parseFloat(style.outlineOffset);
+     const style=getComputedStyle(el);
+     const textLink=el.matches('a:not([class]):not(.guide-depth a)');
+     const width=textLink?0:parseFloat(style.outlineWidth),offset=textLink?0:parseFloat(style.outlineOffset);
+     const luminance=color=>color.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+     const [low,high]=[style.color,style.backgroundColor].map(luminance).sort((a,b)=>a-b);
+     const contrast=(high+.05)/(low+.05);
+     const highlight=textLink&&style.backgroundColor!=='rgba(0, 0, 0, 0)'&&contrast>=4.5;
      const frames=Array.from(el.getClientRects(),r=>({left:r.left-offset-width,right:r.right+offset+width,top:r.top-offset-width,bottom:r.bottom+offset+width,innerLeft:r.left-offset,innerRight:r.right+offset,innerTop:r.top-offset,innerBottom:r.bottom+offset}));
      const scope=el.closest('p,td,figcaption,.site-footer,.d-md-none');const collisions=[];
      if(scope) {
@@ -270,20 +277,22 @@ try {
         for(const r of range.getClientRects())for(const f of frames) {
          const intersects=r.right>f.left+.5&&r.left<f.right-.5&&r.bottom>f.top+.5&&r.top<f.bottom-.5;
          const inside=r.left>=f.innerLeft&&r.right<=f.innerRight&&r.top>=f.innerTop&&r.bottom<=f.innerBottom;
-         if(intersects&&!inside)collisions.push(word[0]);
+         if(intersects&&(highlight||!inside))collisions.push(word[0]);
         }
        }
       }
      }
-     return {focused:el===document.activeElement&&el.matches(':focus-visible'),visible:style.outlineStyle==='solid'&&width>0,collisions,inViewport:frames.every(f=>f.left>=-.6&&f.top>=-.6&&f.right<=innerWidth+.6&&f.bottom<=innerHeight+.6),top:el.getBoundingClientRect().top+scrollY,height:document.documentElement.scrollHeight};
+     return {focused:el===document.activeElement&&el.matches(':focus-visible'),visible:textLink?highlight:style.outlineStyle==='solid'&&width>0,textLink,background:style.backgroundColor,compact:!textLink||(['paddingTop','paddingRight','paddingBottom','paddingLeft'].every(p=>parseFloat(style[p])===0)&&style.lineHeight===getComputedStyle(el.parentElement).lineHeight),collisions,inViewport:frames.every(f=>f.left>=-.6&&f.top>=-.6&&f.right<=innerWidth+.6&&f.bottom<=innerHeight+.6),top:el.getBoundingClientRect().top+scrollY,height:document.documentElement.scrollHeight};
     });
     assert(result.focused&&result.visible,`${selector} lost its keyboard focus indicator`);
+    assert(result.compact,`${selector} adds space around inline text`);
+    if(result.textLink)assert.notEqual(result.background,before.background,`${selector} has no distinct keyboard focus state`);
     assert.equal(result.collisions.length,0,`${selector} covers neighboring words: ${result.collisions.join(', ')}`);
     assert(result.inViewport,`${selector} focus frame is clipped by the viewport`);
     assert(Math.abs(result.top-before.top)<1&&result.height===before.height,`${selector} moves content when focus appears`);
    }
   }
-  console.log(`PASS ${width}px ${scheme}, forced colors ${forcedColors}: prose, wrapped links, tables, captions, footer and code frames avoid adjacent text, clipping and focus layout shifts`);
+  console.log(`PASS ${width}px ${scheme}, forced colors ${forcedColors}, enlarged ${enlarged}: compact links and contrasting focus avoid adjacent text, clipping and layout shifts`);
   await context.close();
  }
  // Each sidebar row has one Tab stop, with keyboard and pointer submenu access.
@@ -372,7 +381,12 @@ try {
   assert.equal(await fullSize.getAttribute('target'),null,'Viewer unexpectedly opens another tab');
   await fullSize.focus();
   await page.keyboard.press('Shift+Tab');await page.keyboard.press('Tab');
-  assert(await fullSize.evaluate(el=>el===document.activeElement&&el.matches(':focus-visible')&&getComputedStyle(el).outlineStyle!=='none'),'Full-size link has no keyboard focus indication');
+  assert(await fullSize.evaluate(el=>{
+   const style=getComputedStyle(el);
+   const luminance=color=>color.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+   const [low,high]=[style.color,style.backgroundColor].map(luminance).sort((a,b)=>a-b);
+   return el===document.activeElement&&el.matches(':focus-visible')&&style.backgroundColor!=='rgba(0, 0, 0, 0)'&&(high+.05)/(low+.05)>=4.5;
+  }),'Full-size link has no contrasting keyboard focus indication');
   await fullSize.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
   const scroll=await page.evaluate(()=>scrollY);
   const destination=new URL(await fullSize.getAttribute('href'),page.url()).href;
