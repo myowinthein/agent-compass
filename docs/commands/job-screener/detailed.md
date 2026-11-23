@@ -21,7 +21,7 @@ Job Screener compares one opportunity at a time with a confirmed candidate profi
 
 ```mermaid
 flowchart TD
-  Start(["Run job-screener"]) --> Run{"Matching chat/person JS session?"}
+  Start(["Run job-screener"]) --> Run{"Matching Job Screener session<br/>for this chat and person?"}
   Run -->|Continue screening or Resume setup| Profile["Use the selected run's profile<br/>Or extract your resume and wait for confirmation"]
   Run -->|No match or Start fresh| New["Create an isolated run"]
   New --> Profile

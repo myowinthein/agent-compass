@@ -38,7 +38,7 @@ Annual Target = Realistic amount × (1 − Adjustment %)
 Monthly Reference = unrounded Annual Target ÷ 12
 ```
 
-Missing data, incomparable inputs or unestimable adjustment causes a reported skip, not a partial row or assumed 0%.
+The workflow skips a country if required data is missing, inputs are not comparable or its adjustment cannot be estimated. It explains the skip rather than showing a partial row or assuming 0%.
 
 Display annual values to the nearest 500 and monthly references to the nearest 50, halfway upward, each from raw values. Dividing displayed annual pay may give a different monthly number. Monthly references are not necessarily payslips; no automatic salary ranges are generated.
 

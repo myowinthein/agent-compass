@@ -39,7 +39,7 @@ flowchart TD
 
 ## Choosing countries
 
-You can provide targets directly or use compatible Country Finder results. A completed final Summary supplies countries with a Strong or Moderate track, with Relocation priorities order available for presentation, or the combined table in older results. Only when no final exists can a ready Step 5 result provide a clearly labelled pre-audit list.
+You can provide targets directly or use compatible Country Finder results. A completed final Summary supplies countries with a Strong or Moderate fit on either track. The Relocation priorities table can supply their presentation order; older results use the combined table. Only when no final exists can a ready Step 5 result provide a clearly labelled pre-audit list.
 
 You can keep, edit or replace the proposed names. Draft, mismatched or uncertain upstream evidence needs an explicit reuse choice. No Country Finder result is required, and an empty list needs revised targets or stop rather than resurrecting older ratings.
 

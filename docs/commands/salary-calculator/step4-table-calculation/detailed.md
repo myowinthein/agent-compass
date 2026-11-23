@@ -65,7 +65,7 @@ Annual Target = Realistic amount × (1 − typical Adjustment %)
 Monthly Reference = unrounded Annual Target ÷ 12
 ```
 
-Both tiers need comparable data and a supported numeric adjustment, including a supported zero. Missing, incomparable or unestimable inputs produce an explained skip rather than a partial row. Mainstream being higher than Premium is not automatically corrected to force a preferred ordering.
+Both tiers need comparable data and a supported numeric adjustment, including a supported zero. The workflow skips a country if required data is missing, inputs are not comparable or its adjustment cannot be estimated. It explains the skip instead of showing a partial row. Mainstream being higher than Premium is not automatically corrected to force a preferred ordering.
 
 Displayed annual values round to the nearest 500 and monthly references to the nearest 50, halfway upward. Both come independently from raw values. For a fictional Realistic amount of 80,000 and adjustment of 7%, the raw annual target is 74,400 and monthly reference is 6,200; their displays are 74,500 and 6,200. Dividing the displayed annual figure would produce a different monthly calculation.
 

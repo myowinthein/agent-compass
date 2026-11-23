@@ -71,7 +71,7 @@ Mainstream covers mid-size or mainstream local-market employers, while Premium c
 
 [Validation](step2-data-validation.html) checks required content and stores accepted research unchanged. Missing or rejected country data is explained, and original duplicates are retained.
 
-[International adjustment](step3-international-adjustment.html) estimates a defensible reduction from local benchmarks for this candidate's position in that market. Missing evidence means unestimable, not an automatic 0%. A well-supported zero and a lack of information have different implications.
+[International adjustment](step3-international-adjustment.html) estimates a defensible reduction from local benchmarks for this candidate's position in that market. Without enough evidence, it records that the adjustment cannot be estimated instead of assuming 0%. A well-supported zero and a lack of information have different implications.
 
 ### Calculate and verify the framework
 
