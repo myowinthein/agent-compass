@@ -17,7 +17,9 @@ Respect reduced-motion preferences across affected controls, feedback and transi
 
 ### Keyboard focus and autofocus
 
-Keep keyboard focus visible on the actual focused control independently of hover, for as long as it remains focused; feedback dismissal timers never apply to focus indicators. Reuse the project's focus treatment across comparable controls, with appropriate contrast in supported themes and forced-colors mode. A replacement for the native indicator must remain clearly visible; a shadow alone can disappear in forced colors. Keep custom indicators complete and unclipped at control, scroll-container and viewport edges, with clear separation from underlines and enough space around text and icons. Follow the component's border-alignment convention without moving surrounding content. Exact colors, shape, thickness, offsets and padding remain project choices, subject to accessibility requirements.
+Keep keyboard focus visible on the actual focused control independently of hover, for as long as it remains focused; feedback dismissal timers never apply to focus indicators. Reuse the project's focus treatment across comparable controls, with appropriate contrast in supported themes and forced-colors mode; spacing fixes preserve its established visual style. A replacement for the native indicator must remain clearly visible; a shadow alone can disappear in forced colors.
+
+Keep custom indicators complete and unclipped at control, scroll-container and viewport edges. For inline text links, preserve natural word spacing and paragraph line height. Use only the clearance needed around text and icons to keep the indicator visibly separate from the underline, including when links wrap or text is enlarged. Follow the component's border-alignment convention without moving surrounding content. Exact colors, shape, thickness, offsets and padding remain project choices, subject to accessibility requirements.
 
 [Focus Appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html) adds AAA criteria, not an automatic AA requirement.
 
