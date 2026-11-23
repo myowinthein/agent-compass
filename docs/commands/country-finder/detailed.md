@@ -9,6 +9,8 @@ title_category: Details
 description: "Country Finder helps decide where to spend your application effort. It investigates cross-border Remote work and employer-sponsored relocation separately, then turns the evidence into priorities for your confirmed profile."
 source_files:
   - skills/country-assessment-rules.md
+  - skills/run-workspaces.md
+  - prompts/shared/resume-extraction-prompt.md
   - workflows/country-finder.md
 ---
 
@@ -61,7 +63,9 @@ flowchart TD
 
 ## Start the command
 
-Run country-finder in a chat for the person being assessed. If a profile is missing, provide a resume and confirm the extraction before research continues. Relevant situational facts are confirmed separately rather than guessed from job titles or nationality.
+Run country-finder in a chat for the person being assessed. The assistant uses an established identity or the name in your supplied resume; a separate label is needed only when identity is missing or unclear. In a chat with several people, identify whose search you want so their profiles stay separate.
+
+If a profile is missing, review the extracted resume and reply **yes** to save the version shown, or give corrections. A revised profile is shown before its save decision; approving an unchanged version does not trigger another full review. Relevant situational facts are confirmed separately rather than guessed from job titles or nationality.
 
 A new chat starts a fresh search. In the same chat, a completed matching search offers View previous results or Start fresh; an unfinished search offers Resume or Start fresh. Earlier runs remain preserved, and another person's profile is not selected by recency.
 
@@ -100,3 +104,5 @@ The final Summary records the audited fits. Salary Calculator can use compatible
 For implementation details, read [workflows/country-finder.md](https://github.com/myowinthein/agent-compass/blob/main/workflows/country-finder.md).
 
 The shared [assessment framework](https://github.com/myowinthein/agent-compass/blob/main/skills/country-assessment-rules.md) defines the evidence factors and verification distinctions.
+
+The [run-selection rules](https://github.com/myowinthein/agent-compass/blob/main/skills/run-workspaces.md) and [resume intake prompt](https://github.com/myowinthein/agent-compass/blob/main/prompts/shared/resume-extraction-prompt.md) define identity handling and profile confirmation.

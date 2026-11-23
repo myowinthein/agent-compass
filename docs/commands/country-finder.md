@@ -31,7 +31,7 @@ New chats start fresh. In the same chat, a matching completed search offers View
 Codex → $country-finder    Claude → /country-finder
 ```
 
-Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). No country argument is needed. If you have no saved profile, provide your resume and confirm the extraction before it is saved.
+Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). No country argument is needed. If you have no saved profile, provide your resume; its name can identify the person. Review the extraction and reply **yes** to save it, or list corrections.
 
 ## What to expect
 

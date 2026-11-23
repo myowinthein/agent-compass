@@ -62,6 +62,46 @@ def profiles():
     }
 
 
+def extracted_profile():
+    return """[IDENTITY]
+* Full name: Alex Example
+* Current or most recent title: Senior Python engineer
+* Target or desired role: Not stated.
+* Location: Not stated.
+* Work authorization or citizenship: Not stated.
+
+[POSITIONING SUMMARY]
+Not stated.
+
+[EXPERIENCE SUMMARY]
+Not stated.
+
+[WORK HISTORY]
+Not stated.
+
+[SKILLS]
+* Programming Languages: Python
+
+[LANGUAGES]
+Not stated.
+
+[EDUCATION]
+Not stated.
+
+[CERTIFICATIONS]
+Not stated.
+
+[NOTABLE PROJECTS]
+Not stated.
+
+[LEADERSHIP OR MANAGEMENT EXPERIENCE]
+Not stated.
+
+[NEEDS CONFIRMATION]
+None found.
+"""
+
+
 def salary_files():
     n = names("salary-calculator")
     files = profiles()
@@ -165,6 +205,31 @@ def country_final_files():
 
 def fixture_cases():
     cases = []
+    for variant, question, answer in (
+        ("yes", "Is this profile correct and ready to save to profile.md? Reply yes to save it, or list your corrections.", "yes"),
+        ("legacy-yes", "Does this look correct, or would you like to make any changes before I save it?", "yes"),
+        ("corrections", "Is this profile correct and ready to save to profile.md? Reply yes to save it, or list your corrections.",
+         "yes, but change my current title to Staff Python engineer"),
+    ):
+        cases.append(dict(id=f"profile-{variant}", group=f"profile-{variant}", workflow="country-finder", files={},
+                          stop_after_write="profile.md" if variant != "corrections" else None,
+                          run_selection="This person's run is selected. The prior exchange below records the profile review. "
+                          "Use the current workspace and any returned operations in continuation to determine whether the profile is saved. "
+                          "Only resume intake is requested; no checkpoint or research is needed.",
+                          conversation=[{"role": "user", "content": "Only finish resume intake for now; stop before Step 1."},
+                                        {"role": "assistant", "content": extracted_profile() + "\n" + question}], user=answer))
+    selection = ("Run selection is not complete. The fixed base workspace and trusted chat key are already resolved. "
+                 "The unfiltered run-list for this invocation has returned the catalog below; no profiles have been read. "
+                 "Identify the person and take the next action under skills/run-workspaces.md. "
+                 "The driver will stop before executing run-start so its person binding can be reviewed.")
+    for variant, user in (
+        ("resume", "Run country-finder. Here is my resume: Alex Example\nSenior Python engineer\nProgramming Languages: Python."),
+        ("missing-resume", "Run country-finder."),
+        ("multiple", "Run country-finder."),
+    ):
+        cases.append(dict(id=f"identity-{variant}", group=f"identity-{variant}", workflow="country-finder", files={},
+                          run_selection=selection, catalog_people=["Alex Example", "Blair Example"] if variant == "multiple" else [],
+                          stop_before="run-start", user=user))
     for workflow, final_step in (("country-finder", 6), ("salary-calculator", 5)):
         for family in ("current", "legacy"):
             n = names(workflow, family)
@@ -361,6 +426,29 @@ def check(case, initial, final, trace):
         assert not writes and not handoffs and not questions and not operations, "Completed replay performed extra actions"
         assert initial[case["final"]].strip() in messages and "complete" in messages.lower(), messages
         assert final == initial, "Completed replay changed bytes"
+    elif group.startswith("profile-"):
+        assert set(operations) <= {"resolve-files"} and not handoffs, "Resume intake ran later workflow actions"
+        if group == "profile-corrections":
+            assert not writes and len(questions) == 1, "Correction was saved without reviewing the changed profile"
+            assert "Staff Python engineer" in messages and "[IDENTITY]" in messages, messages
+        else:
+            assert writes == {"profile.md"} and not questions, "A clear yes repeated review instead of saving"
+            assert final["profile.md"].strip() == extracted_profile().strip(), "Affirmative changed the shown profile"
+            assert "[IDENTITY]" not in messages, "Saved profile was needlessly reprinted"
+    elif group.startswith("identity-"):
+        assert not writes and not handoffs and final == initial, "Identity selection wrote candidate data"
+        if group == "identity-resume":
+            assert not questions and operations == ["run-start"], "Supplied resume name triggered another identity question"
+            request = trace[-1]["reply"]["helpers"][0]["input"]
+            assert request["person_label"] == "Alex Example" and request["workflow"] == "country-finder", request
+            assert not any(key in request for key in ("person_id", "previous_run_id", "profile_source_run")), request
+        else:
+            assert not operations and len(questions) == 1, "Unresolved identity proceeded before user input"
+            if group == "identity-multiple":
+                assert "Alex Example" in messages and "Blair Example" in messages, messages
+            else:
+                assert re.search(r"resume|résumé|CV\b", questions[0], re.I), "New candidate was asked for a label before their resume"
+                assert not re.search(r"(?:your|person|candidate|group)\s+(?:name|label)", questions[0], re.I), questions
     elif group.startswith("cf-scope"):
         n = names("country-finder")
         assert not handoffs, "Country selection invented a specialist handoff"
@@ -540,7 +628,19 @@ def run_case(host, case, timeout, previous=None):
             (workspace / n["salary-table"]).write_text("Show Your Work\nCalculation method: shared Python helper\nMainstream 62500 × (1 − 4%) = 60000 raw annual, 5000 monthly. Premium 87500 × (1 − 4%) = 84000 raw annual, 7000 monthly. Both 12 equal gross-base payments; old threshold 55000/yr. Sources and scope match Step 2/3.\n\n" + rendered["output"]["result"]["markdown"] + "\nSummary\nCountries calculated: 1\nCountries skipped: 0\n", encoding="utf-8")
         initial = snapshot(workspace)
         context = {"bundled_resources": sources(case["workflow"]), "workspace": initial, "user": case["user"]}
-        if case["workflow"] in ("country-finder", "salary-calculator"):
+        if "run_selection" in case:
+            context["run_selection"] = case["run_selection"]
+            if "conversation" in case:
+                context["conversation"] = case["conversation"]
+            if "catalog_people" in case:
+                context["workspace_base_result"] = helper("workspace-base", {}, workspace)
+                context["chat_id"] = "codex:fictional-intake-replay"
+                context["run_list_result"] = {"active_runs": [
+                    {"person_label": label, "person_id": str(index) * 32, "workflow": "job-screener",
+                     "run_id": str(index + 2) * 32, "status": "ready", "completed": False,
+                     "workspace": str(workspace / "Agent Compass" / f"fictional-run-{index}")}
+                    for index, label in enumerate(case["catalog_people"], 1)]}
+        elif case["workflow"] in ("country-finder", "salary-calculator"):
             context["run_selection"] = (
                 "The user explicitly selected this virtual saved workspace for the confirmed fictional person "
                 "and command. Run selection is complete; use these existing filenames without creating a new run. "
@@ -559,13 +659,20 @@ def run_case(host, case, timeout, previous=None):
             context["state_check_result"] = helper("state-check", {"workspace": str(workspace), "workflow": case["workflow"]}, workspace)
             assert context["state_check_result"]["output"]["result"]["completed"]
         trace = []
+        exhausted = False
         for _ in range(6):
             prompt = PROTOCOL + "\n" + json.dumps(context, ensure_ascii=False)
             reply, metadata = call_model(host, prompt, workspace, timeout)
             turn = {"reply": reply, "metadata": metadata, "helper_results": []}
             trace.append(turn)
+            if case.get("stop_before") and any(r["operation"] == case["stop_before"] for r in reply["helpers"]):
+                assert not reply["writes"], "Pending selection also attempted a write"
+                break
             for filename, content in reply["writes"].items():
-                assert filename in set(names(case["workflow"]).values()) | {REGISTRY.get(case["workflow"], {}).get("state")}, filename
+                allowed = set(names(case["workflow"]).values()) | {REGISTRY.get(case["workflow"], {}).get("state")}
+                if case["group"].startswith("profile-"):
+                    allowed.add("profile.md")
+                assert filename in allowed, filename
                 assert Path(filename).name == filename and isinstance(content, str), filename
                 (workspace / filename).write_text(content, encoding="utf-8")
             for request in reply["helpers"]:
@@ -574,16 +681,20 @@ def run_case(host, case, timeout, previous=None):
                 result = helper(request["operation"], request["input"], workspace)
                 turn["helper_results"].append(result)
                 assert result["exit_code"] == 0, result
+            # Intake acceptance ends at the successful save, before later workflow steps.
+            if case.get("stop_after_write") in reply["writes"] and not reply["helpers"]:
+                break
             if reply["questions"] or not (reply["helpers"] or reply["writes"]):
                 break
             context.update(workspace=snapshot(workspace), continuation=trace)
         else:
-            raise AssertionError("Replay did not reach a user question or terminal response within six turns")
+            exhausted = True
         final = snapshot(workspace)
         result = {"case": case["id"], "host": host, "turns": len(trace), "trace": trace,
                   "final": final, "initial_sha256": {k: hashlib.sha256(v.encode()).hexdigest() for k, v in initial.items()},
                   "source_sha256": {k: hashlib.sha256(v.encode()).hexdigest() for k, v in context["bundled_resources"].items()}}
         try:
+            assert not exhausted, "Replay did not reach a user question or terminal response within six turns"
             check(case, initial, final, trace)
         except AssertionError as error:
             error.replay_result = result

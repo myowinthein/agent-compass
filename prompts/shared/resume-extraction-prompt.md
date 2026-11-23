@@ -75,6 +75,8 @@ Group into categories as they appear in the resume. Use whatever categories fit 
 * List every ambiguity, inconsistency, outdated detail, or unclear item found during extraction.
 * If nothing needs confirmation, write "None found."
 
-After extraction, output the full profile in the format above and ask: "Does this look correct, or would you like to make any changes before I save it?" Wait for my answer.
+After extraction, output the full profile in the format above and ask: "Is this profile correct and ready to save to profile.md? Reply yes to save it, or list your corrections." Wait for my answer.
 
-Once I confirm, or after applying any corrections I request and showing the updated profile back to me, save the full output to profile.md in the workspace. Your job is done — stop.
+A clear affirmative such as "yes", "correct" or "looks good", with no requested changes, confirms saving the profile just shown. This also applies when continuing a pending review asked with the older "Does this look correct, or would you like to make any changes before I save it?" wording. Save that version without reprinting it or asking the same question again. If I request corrections, show the revised full profile and ask the save question for that revision unless I already explicitly approved saving those exact changes; an affirmative followed by corrections does not approve the unchanged profile. Clarify only a genuinely unresolved answer or revision.
+
+After saving the full confirmed profile to profile.md in the selected workspace, report the save in one line. Extraction is complete; return to the parent workflow for its next step rather than restarting intake.
