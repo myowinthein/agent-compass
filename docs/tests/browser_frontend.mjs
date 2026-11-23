@@ -84,7 +84,7 @@ try {
   await page.goBack();
   if(!await page.locator('#theme-mode').isVisible())await page.locator('#menu-button').click();
   await page.locator('#theme-mode').selectOption('system');
-  await page.waitForFunction(()=>document.getElementById('theme-mode').value==='system');
+  await page.waitForFunction(()=>document.getElementById('theme-mode').value==='system'&&!document.querySelector('[data-diagram-full-size]').getAttribute('href').includes('#'));
   assert(!(await page.locator('[data-diagram-full-size]').first().getAttribute('href')).includes('#'),'System choice retained a manual diagram override');
   console.log(`PASS full-size ${manual} on ${system} system${blocked?', storage blocked':''}: manual theme retained and System clears it`);
   await context.close();
@@ -259,6 +259,62 @@ try {
   await page.locator('#search-input').fill('country');
   await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
   console.log('PASS configured search shortcut before index loading');await context.close();
+ }
+ // Enlarged text and spacing must leave setup controls, breadcrumbs and search reachable.
+ for(const width of [320,800,1280]) for(const scheme of ['light','dark']) for(const mode of ['large-text','spacing']) {
+  const context=await createContext({viewport:{width,height:900},colorScheme:scheme});const page=await context.newPage();
+  for(const path of ['docs/setup/codex.html','docs/commands/salary-calculator/step4-table-calculation.html']) {
+   await page.goto(pageUrl(path));
+   await page.addStyleTag({content:mode==='large-text'?'html {font-size:200%!important;}':'* {line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important;} p {margin-bottom:2em!important;}'});
+   await page.waitForFunction(()=>document.documentElement.classList.contains('compass-compact')===(!matchMedia('(min-width:50rem)').matches||innerWidth<50*parseFloat(getComputedStyle(document.documentElement).fontSize)));
+   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Adjusted text causes horizontal page scrolling');
+   assert(await page.locator('.breadcrumb-nav-list-item').evaluateAll(items=>items.every(el=>{
+    const box=el.getBoundingClientRect(),parent=el.parentElement.getBoundingClientRect();return box.left>=parent.left-1&&box.right<=parent.right+1;
+   })),'Breadcrumbs escape their available width');
+   if(path.includes('/setup/')) {
+    assert(await page.locator('[data-setup-tab]').evaluateAll(tabs=>tabs.every(el=>{
+     const box=el.getBoundingClientRect(),parent=el.parentElement.getBoundingClientRect();return box.left>=parent.left-1&&box.right<=parent.right+1;
+    })),'Setup tabs overflow');
+    await page.locator('#desktop-tab').focus();await page.keyboard.press('End');
+    assert.equal(await page.locator('#terminal-tab').getAttribute('aria-selected'),'true');
+   }
+  }
+  const menu=page.locator('#menu-button');if(await menu.isVisible())await menu.click();
+  assert(await page.locator('.header-controls').evaluate(el=>el.getBoundingClientRect().right<=innerWidth),'Header controls overflow');
+  const query=page.locator('#search-input');await query.fill('salary');
+  await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
+  assert(await page.locator('#search-results').evaluate(el=>{
+   const box=el.getBoundingClientRect();return box.left>=-1&&box.right<=innerWidth+1&&box.top>=0&&box.bottom<=innerHeight+1&&box.height>0;
+  }),'Adjusted search results escape the viewport');
+  await query.press('Escape');
+  assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('search-active')),false);
+  console.log(`PASS ${width}px ${scheme} ${mode}: reflow, wrapping breadcrumbs/setup tabs, keyboard activation and contained search`);
+  await context.close();
+ }
+ // A layout transition keeps active search and focus, including a disappearing menu button.
+ {
+  const context=await createContext({viewport:{width:1280,height:900}});const page=await context.newPage();
+  await page.goto(pageUrl('docs/commands/country-finder.html'));
+  const query=page.locator('#search-input');await query.fill('country');
+  await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
+  await query.press('ArrowDown');
+  const focused=await page.evaluateHandle(()=>document.activeElement);
+  await page.addStyleTag({content:'html {font-size:200%!important;}'});
+  await page.waitForFunction(()=>document.documentElement.classList.contains('compass-compact'));
+  assert(await focused.evaluate(el=>el===document.activeElement&&el.checkVisibility()),'Compact transition lost search focus');
+  assert.equal(await query.inputValue(),'country');
+  assert.equal(await page.locator('#menu-button').getAttribute('aria-expanded'),'true');
+  await page.setViewportSize({width:800,height:900});
+  await page.evaluate(()=>document.documentElement.style.setProperty('font-size','100%','important'));
+  await page.waitForFunction(()=>!document.documentElement.classList.contains('compass-compact'));
+  assert(await focused.evaluate(el=>el===document.activeElement&&el.checkVisibility()),'Desktop transition lost search focus');
+  assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('search-active')),true);
+  await query.focus();await query.press('Escape');
+  await page.setViewportSize({width:390,height:900});await page.locator('#menu-button').focus();
+  await page.setViewportSize({width:1280,height:900});
+  await page.waitForFunction(()=>document.activeElement===document.querySelector('.site-title'));
+  console.log('PASS responsive transitions: search, selected-result focus and menu focus remain usable');
+  await context.close();
  }
  // The release follows the theme chooser while home remains a native sidebar link.
  for (const width of [320, 390, 800, 1024, 1280]) for (const scheme of ['light', 'dark']) {
