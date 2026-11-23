@@ -594,6 +594,16 @@ class CompassCLI(unittest.TestCase):
             {"country": "🇳🇱 Netherlands", "remote": "not scored (no data)", "sponsorship": "not scored (no data)", "priority": "Pending evidence", "limitation": "Missing research", "ingestion": "rejected", "ingestion_reason": "Missing sources", "remote_reason": "Missing sources", "sponsorship_reason": "Missing sources"},
             {"country": "🇨🇦 Canada", "remote": "Weak", "sponsorship": "Excluded", "priority": "🎗️ Deprioritize", "limitation": "Limited role market", "ingestion": "stored", "sponsorship_reason": "DUMMY unavailable route"}]}
 
+    def test_country_replay_research_fixture_is_structurally_complete(self):
+        import test_workflow_replay as replay
+        files = replay.country_final_files()
+        raw = files[replay.names("country-finder")["validated-data"]].encode("utf-8")
+        blocks, _ = research.blocks(raw)
+        self.assertEqual([block["country"] for block in blocks], ["Germany", "Netherlands"])
+        for block in blocks:
+            self.assertEqual(block["issues"], [])
+            self.assertEqual(research.missing_fields(block, "country-finder", ["remote", "sponsorship"], True), [])
+
     def test_country_golden_and_coverage(self):
         result = self.invoke("render-cf", self.country_request())["result"]
         self.assertIn("| 🇩🇪 Germany | 🥉 Monitor | Excluded | Moderate | Remote timezone |", result["table_markdown"])

@@ -25,10 +25,10 @@ Before generating anything, ask me the following questions and wait for my answe
 
 ## Phase 3 — Country preferences:
 
-1. Are there any countries or regions you would particularly like included? (list them, or say "none")
+1. Are there any countries or regions you would particularly like included? (list them, or say "none") I will also look for other promising countries unless you say to search only your list.
 2. Are there any countries or regions you want excluded entirely? (list them, or say "none")
 
-An explicit Include list takes priority. If Include is "none", leave it as "none" here; Step 2 can offer Salary Calculator's saved country list before the default list. Do not treat "none" as approval to import countries or re-ask an already explicit list.
+An Include list records preferred countries, not an exclusive scope. Honor an explicit "only these countries" or other clear restriction; clarify scope only when the answer is materially ambiguous. A bare list answering the preference question remains open to other suggestions. If Include is "none", leave it as "none" here; Step 2 can offer Salary Calculator's saved country names before the default list. Do not treat "none" as approval to import countries.
 
 ## Clarifying criteria
 
@@ -45,6 +45,8 @@ Sponsorship track:
 Country preferences:
 - Include: [list or "none"]
 - Exclude: [list or "none"]
+
+Record open discovery or the user's explicit restriction as prose after these existing fields, preserving the original preferred countries. Step 2 confirms any proposed additions; this note does not pre-confirm a country list or change an older run's scope.
 
 Tell me in one line that this was saved to country-finder-01-criteria.md — no need to repeat the criteria back, since I just gave them to you.
 

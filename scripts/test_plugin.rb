@@ -361,20 +361,25 @@ runtime = root.join("prompts/shared/runtime.md").read(encoding: "UTF-8:UTF-8")
 salary_intake = root.join("prompts/salary-calculator/step1-research-prompt-generator.md").read(encoding: "UTF-8:UTF-8")
 assert.call(discovery.index('has an Include list') < discovery.index('run `research-scope`') &&
             discovery.index('run `research-scope`') < discovery.index('read data/default-preferred-countries.md'),
-            "Country choice must prioritize explicit includes, then offer salary scope, then the default")
-assert.call(discovery.include?('Wait for my answer before selecting the base or doing research') &&
-            discovery.include?('Keep this list, add or remove countries, provide a new list'),
-            "Salary-country reuse must wait for an explicit editable choice")
+            "Starting names must prioritize preferences, then salary scope, then the default")
+assert.call(discovery.include?('Wait for my answer before country-specific suitability research') &&
+            discovery.include?('Ask one scope question') && discovery.include?('approval twice'),
+            "Proposed scope and salary-country reuse must share an explicit editable choice")
 assert.call(discovery.include?('Do not infer the selected list from salary rows, Country blocks or the final salary table') &&
             discovery.include?('missing, rejected or skipped'),
             "Salary-country suggestions must preserve requested countries without selecting from calculated subsets")
 assert.call(discovery.include?('Never import salary amounts, visa flags or salary conclusions') &&
             runtime.include?('does not require salary completion or a valid salary checkpoint'),
             "Names-only reuse must remain independent of completed salary conclusions")
-assert.call(discovery.include?("existing criteria file's Include field") &&
+assert.call(discovery.include?('Preserve the original Include/Exclude answers') &&
             discovery.include?('Do not change Salary Calculator files or checkpoints') &&
             discovery.include?('For same-scope recovery of an unfinished Step 2'),
             "Accepted countries must persist only in Country Finder, preserving resumed scopes")
+intake = root.join("prompts/country-finder/step1-criteria-intake.md").read(encoding: "UTF-8")
+assert.call(intake.include?('An Include list records preferred countries, not an exclusive scope') &&
+            discovery.include?('explicit restricted scope uses only those countries') &&
+            discovery.include?('countries beyond it') && discovery.include?('Apply explicit exclusions before suggesting additions'),
+            "Open discovery must preserve preferences and exclusions while explicit restrictions remain binding")
 assert.call(salary_intake.include?('one country per bullet line') && salary_intake.include?('do not shrink this list to the salary table'),
             "Salary research must retain a reusable full confirmed country scope")
 assert.call(salary_intake.include?('select countries exclusively from its post-audit Summary') &&
@@ -383,7 +388,7 @@ assert.call(salary_intake.include?('select countries exclusively from its post-a
 assert.call(root.join("skills/research-helper.md").read(encoding: "UTF-8:UTF-8").include?('Under explicitly approved manual fallback'),
             "Saved-country reuse must retain the shared manual-fallback path")
 discovery_docs = root.join("docs/commands/country-finder/step2-country-discovery.md").read(encoding: "UTF-8:UTF-8")
-assert.call(discovery_docs.include?('Salary -->|Yes| Offer') && discovery_docs.include?('waits for your answer before researching') &&
+assert.call(discovery_docs.include?('Discover --> Offer') && discovery_docs.include?('waits for your answer before researching') &&
             discovery_docs.include?('only country names are reused'),
             "Country discovery docs and diagram must explain confirmed, names-only salary reuse")
 

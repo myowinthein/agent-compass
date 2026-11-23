@@ -18,24 +18,27 @@ Check which countries have evidence of remote hiring or employer-sponsored reloc
 
 ```mermaid
 flowchart TD
-  Scope{"Your own country list?"} -->|Yes| Research["Research both tracks for the chosen countries"]
-  Scope -->|No| Salary{"Saved salary country names?"}
-  Salary -->|Yes| Offer["Confirm, edit or replace the proposed names"]
-  Salary -->|No| Default["Choose the default list or your own"]
+  Scope{"Search only your list?"} -->|Yes| Research["Research both tracks for the chosen countries"]
+  Scope -->|No| Start["Keep preferred countries or offer saved/default names"]
+  Start --> Discover["Look for other promising markets"]
+  Discover --> Offer["Show the full proposal and confirm countries"]
   Offer --> Research
-  Default --> Research
   Research --> Save["Save findings, timezone conditions and evidence gaps"]
 ```
 
 ## Choosing countries
 
-Your include list comes first. Otherwise, [Salary Calculator](../salary-calculator/step1-research-prompt-generator.html#what-happens-next)'s saved research scope can supply a proposed list. You can keep, edit, replace it or choose the default. The assistant waits for your answer before researching.
+Countries you would like included are preferences. The assistant keeps them and looks for other markets with relevant demand or hiring leads. Saying **only these countries** restricts the search to your list.
+
+For an open search, you see the proposed additions and their reasons before choosing the full research list. Keep, edit or replace the proposal, or use only the starting countries. The assistant waits for your answer before researching each country's suitability.
+
+Without preferred countries, [Salary Calculator](../salary-calculator/step1-research-prompt-generator.html#what-happens-next)'s saved research scope can supply starting names before the default list. Source reuse and the proposed scope share one country-choice question.
 
 Salary research need not be complete: only country names are reused, including targets whose salary data was skipped. No salary or visa conclusions transfer. Missing scope leaves your own list or the default available.
 
-When offering the default, the assistant first prints every country grouped by continent in chat, then asks whether to use that list or provide your own. You can read the list before answering; it is not shown only inside the question control or after your answer.
+When offering the default, the assistant first prints every country grouped by continent in chat, with any additions shown separately. The default is a starting list, not a claim that other countries lack potential.
 
-Regions expand into countries before exclusions apply. Clear supplied lists need no second confirmation; ambiguous boundaries do. Accepted choices are saved in criteria and retained on resume.
+Regions expand before exclusions apply, and excluded countries are never added back as suggestions. Clear restricted or already confirmed lists need no second approval; ambiguous boundaries do. Resumes keep the saved scope. If live discovery is unavailable, you can supply evidence or choose a disclosed starting-list-only search.
 
 ## What gets checked
 

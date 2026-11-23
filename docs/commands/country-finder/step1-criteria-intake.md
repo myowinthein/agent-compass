@@ -32,9 +32,9 @@ Only unclear target roles, seniority or material facts need clarification.
 
 - Remote: maximum time difference, or "no limit".
 - Sponsorship: relocation timeline, including "no rush".
-- Countries/regions to include and exclude, or "none".
+- Preferred countries/regions and exclusions, or "none". Say **only these countries** to restrict the search; otherwise other promising markets can be suggested.
 
-Answers need clarification only when ambiguity affects a comparison, eligibility or what happens next. Without an include list, [Step 2](step2-country-discovery.html#choosing-countries) can offer saved Salary Calculator countries for confirmation before the default list.
+Answers need clarification only when ambiguity affects a comparison, eligibility or what happens next. [Step 2](step2-country-discovery.html#choosing-countries) confirms additions for open searches. Without preferred countries, it can offer saved Salary Calculator names before the default list.
 
 ## What happens next
 

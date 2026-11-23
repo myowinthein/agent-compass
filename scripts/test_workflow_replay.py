@@ -89,6 +89,80 @@ Not a measured effect of citizenship. Salary evidence grade Medium.
     return files
 
 
+def country_scope_files(intent="open"):
+    n = names("country-finder")
+    files = profiles()
+    files[n["criteria"]] = (
+        "Remote track:\n- Maximum timezone difference: no limit\n\n"
+        "Sponsorship track:\n- Relocation timeline: no rush\n\n"
+        "Country preferences:\n- Include: Germany\n- Exclude: France\n\n"
+        "Confirmed target: Senior Python backend engineer. "
+        + ("Country selection is open discovery; Germany is preferred, not exclusive.\n"
+           if intent == "open" else "The user explicitly restricted the search to Germany only.\n")
+    )
+    files[REGISTRY["country-finder"]["state"]] = state(1)
+    return files
+
+
+def country_final_files():
+    n = names("country-finder")
+    files = country_scope_files("restricted")
+    files[n["criteria"]] = files[n["criteria"]].replace("Include: Germany", "Include: Germany, Netherlands").replace(
+        "Germany only", "Germany and Netherlands only")
+    files[n["criteria"]] += "Confirmed country display labels: 🇩🇪 Germany; 🇳🇱 Netherlands.\n"
+    files[n["candidates"]] = "## Research scope\n- Germany\n- Netherlands\n\n" + "\n".join(
+        f"Country: {country}\nRemote:\n- Suitable: yes\n- Reason: fictional role leads\n"
+        "- Source: https://employers.example/leads\n- Date: 2026-10-28\n"
+        "Sponsorship:\n- Suitable: yes\n- Reason: fictional role leads\n"
+        "- Source: https://employers.example/leads\n- Date: 2026-10-28\n"
+        for country in ("Germany", "Netherlands"))
+    blocks = []
+    for country in ("Germany", "Netherlands"):
+        remote = (
+            "Market demand: Official occupation outlook and recurring openings at Fictional Alpha and Beta support senior Python demand.\n"
+            "Role match: Python, SQL, Linux and API duties match the confirmed profile.\n"
+            "International access: Alpha/Beta advertise international remote roles, but Thailand acceptance remains unpublished.\n"
+            if country == "Germany" else
+            "Market demand: Unresolved after substantive initial and targeted follow-up searches; opened occupation and employer sources cover unrelated roles only.\n"
+            "Role match: No applicable Python role evidence remains.\n"
+            "International access: Unverified; no applicable location policy found.\n")
+        blocks.append(
+            f"Country: {country}\nRemote Track:\n- " + remote.replace("\n", "\n- ").rstrip("- ") +
+            "- Pay feasibility: Not specified; no personal hard floor.\n"
+            "- Research coverage: Initial and targeted follow-up checks completed; no task or expected result is missing.\n"
+            "- Confirmed salary range: Unknown; no published comparable offer terms.\n"
+            "- Hiring prevalence evidence: As described in Market demand; no invented vacancy totals.\n"
+            "- Payment structure norms: Unknown.\n"
+            "- Sources: https://official.example/occupation and https://employers.example/policies, 2026-10-28.\n"
+            "Sponsorship Track:\n- Market demand: Dated official occupation outlook and recurring relevant openings at Alpha and Beta.\n"
+            "- Role match: Senior Python, SQL, Linux and API duties match.\n"
+            "- International access: Both employers explicitly sponsor senior Python applicants from the candidate's citizenship category.\n"
+            "- Pay feasibility: Not specified; no personal hard floor.\n"
+            "- Research coverage: Role, market, applicable employer policies and fictional route checked; no missing task.\n"
+            "- Visa or pathway name: Fictional Skilled Employer Permit.\n"
+            "- Minimum salary threshold: No fixed threshold in this fictional route; other conditions still apply.\n"
+            "- Employer willingness: Alpha/Beta's applicable policies support sponsorship, not merely sponsor registration.\n"
+            "- Processing time: Unknown.\n- Quota or cap limitations: Unknown.\n"
+            "- Family or dependent provisions: Unknown; not relevant to confirmed preferences.\n"
+            "- Citizenship-specific considerations: Applicable employer and official category evidence supports this route.\n"
+            "- Sources: https://official.example/permit and https://employers.example/sponsorship, 2026-10-28.\n"
+            "Notes: Fictional dated evidence, Senior Python backend engineer in Thailand; no salary minimum.\n")
+    research = "\n".join(blocks)
+    files[n["research"]] = "## Research scope\n- Germany\n- Netherlands\n\n" + research + "\n## Validation report\nStored: 2 countries. No rejected or missing results.\n"
+    files[n["validated-data"]] = research
+    files[n["assessment"]] = (
+        "Remote Track Results\nGermany: Moderate fit, Medium confidence. Supported recurring demand and close role match; "
+        "access Unverified because Thailand acceptance is unpublished; pay Not specified. Follow-up completed.\n"
+        "Netherlands: not scored (no data). All opened Remote support was inapplicable to the target role after completed "
+        "initial and targeted checks; access Unverified, pay Not specified. This is unresolved evidence, not an exclusion.\n\n"
+        "Sponsorship Track Results\nGermany: Moderate fit, Medium confidence; applicable market, role, route and employer evidence. "
+        "Access Supported, pay Not specified.\nNetherlands: Moderate fit, Medium confidence; applicable market, role, route and employer evidence. "
+        "Access Supported, pay Not specified.\n\nSummary\nRemote: 1 scored, 0 excluded, 1 not scored (no data).\n"
+        "Sponsorship: 2 scored, 0 excluded.\n")
+    files[REGISTRY["country-finder"]["state"]] = state(5)
+    return files
+
+
 def fixture_cases():
     cases = []
     for workflow, final_step in (("country-finder", 6), ("salary-calculator", 5)):
@@ -99,6 +173,38 @@ def fixture_cases():
             files[REGISTRY[workflow]["state"]] = state(final_step)
             cases.append(dict(id=f"completed-{workflow}-{family}", group="replay", workflow=workflow,
                               files=files, user=f"Run {workflow}.", final=n["final-results"]))
+    discovery_evidence = """Controlled opened-source transcript, all facts fictional, as of 2026-10-28:
+open('https://official.example/nl/backend') -> Netherlands occupation outlook names recurring senior Python demand.
+open('https://employer.example/nl/remote') -> Dutch employer seeks senior Python/SQL engineers for cross-border remote hiring.
+open('https://official.example/fr/backend') -> France has a similar lead, but France is explicitly excluded.
+There are no other preliminary findings. These are country-suggestion leads, not completed suitability research.
+"""
+    cases.append(dict(id="cf-preferred-open", group="cf-scope-open", workflow="country-finder",
+                      files=country_scope_files(), user="Continue Step 2 Part A only. Germany is preferred, and other promising countries are welcome. "
+                      "No Salary Calculator producer exists. Use the supplied opened-source transcript for the preliminary proposal; "
+                      "ask me to choose the country list, then wait before Part B. No answer to that question is supplied.\n" + discovery_evidence))
+    cases.append(dict(id="cf-restricted-only", group="cf-scope-restricted", workflow="country-finder",
+                      files=country_scope_files("restricted"), user="Execute Step 2 Part A only, then stop before Part B as requested. "
+                      "I explicitly want Germany only. Do not ask me to approve the same scope again. "
+                      "No new research or country additions are requested.\n" + discovery_evidence))
+    resumed = country_scope_files()
+    resumed[names("country-finder")["candidates"]] = "## Research scope\n- Germany\n"
+    cases.append(dict(id="cf-resume-keeps-scope", group="cf-scope-resume", workflow="country-finder", files=resumed,
+                      user="Resume the already-selected unfinished Step 2, same scope. I previously confirmed Germany as the full scope. "
+                      "Its saved scope is valid; research has not started yet. Execute Part A only and stop before Part B. "
+                      "Do not offer new countries or ask me to confirm that list again.\n" + discovery_evidence))
+    cases.append(dict(id="cf-fit-with-unverified-access", group="cf-final", workflow="country-finder", files=country_final_files(),
+                      user="Complete Step 6 only from the saved Step 5 checkpoint. All context is confirmed; the user declined "
+                      "specialist routing for this run. No Salary Calculator producer exists. Use the stored fictional evidence only. "
+                      "All expected initial and targeted research was completed; unavailable facts remain unresolved. "
+                      "Do not conduct new research or rewrite earlier artifacts."))
+    scoring = country_final_files()
+    scoring.pop(names("country-finder")["assessment"])
+    scoring[REGISTRY["country-finder"]["state"]] = state(4)
+    cases.append(dict(id="cf-scoring-with-unverified-access", group="cf-scoring", workflow="country-finder", files=scoring,
+                      user="Execute Step 5 scoring only, then stop before Step 6 as requested. Candidate context is confirmed, "
+                      "specialist routing was declined, no Salary Calculator producer exists and all expected research and "
+                      "targeted follow-up is complete. Use only the saved fictional evidence; do not perform new research."))
     cases.append(dict(id="jd-independent-blockers", group="jd", workflow="job-screener", files=profiles(), user="""Profile loading already completed. Screen this single JD:
 ExampleCo, Senior Python backend engineer. Requires Python, SQL, Linux and APIs.
 Permanent employment, on site in Berlin from 2026-11-15, no remote option.
@@ -255,6 +361,73 @@ def check(case, initial, final, trace):
         assert not writes and not handoffs and not questions and not operations, "Completed replay performed extra actions"
         assert initial[case["final"]].strip() in messages and "complete" in messages.lower(), messages
         assert final == initial, "Completed replay changed bytes"
+    elif group.startswith("cf-scope"):
+        n = names("country-finder")
+        assert not handoffs, "Country selection invented a specialist handoff"
+        assert writes <= {n["criteria"], n["candidates"]}, "Part A advanced state or wrote research before approval"
+        assert final[REGISTRY["country-finder"]["state"]] == initial[REGISTRY["country-finder"]["state"]]
+        assert not ({"batch-partition", "research-scan", "ingest", "render-cf"} & set(operations)), "Part A ran country research mechanics"
+        if group == "cf-scope-open":
+            assert len(questions) == 1 and "Germany" in messages and "Netherlands" in messages, messages
+            visible_text = " ".join(re.sub(r"[*_`]", "", messages).casefold().split())
+            question_lead = " ".join(re.sub(r"[*_`]", "", questions[0].split("?", 1)[0]).casefold().split())
+            assert question_lead in visible_text, "Scope question is not shown in the user-facing message"
+            before_question = visible_text[:visible_text.index(question_lead)]
+            assert "germany" in before_question and "netherlands" in before_question, "Country list was hidden inside the scope question"
+            assert "- Include: Germany" in final[n["criteria"]] and "- Exclude: France" in final[n["criteria"]]
+            assert "https://official.example/nl/backend" in messages or "https://employer.example/nl/remote" in messages, messages
+            assert n["candidates"] not in final, "Unapproved proposal became confirmed research scope"
+            assert "2026-10-28" in messages, "Country addition has no evidence date"
+        else:
+            assert not questions, "Restricted or resumed scope was needlessly reopened"
+            if group == "cf-scope-resume":
+                assert final[n["candidates"]] == initial[n["candidates"]], "Resume changed confirmed scope"
+            else:
+                assert "## Research scope" in final[n["candidates"]] and "Germany" in final[n["candidates"]]
+                assert "Netherlands" not in final[n["candidates"]] and "France" not in final[n["candidates"]]
+    elif group == "cf-scoring":
+        n = names("country-finder")
+        assert not handoffs and not questions, "Confirmed scoring introduced a new choice"
+        assert writes <= {n["assessment"], REGISTRY["country-finder"]["state"]}, "Scoring wrote outside its step"
+        for path, content in initial.items():
+            if path != REGISTRY["country-finder"]["state"]:
+                assert final[path] == content, f"Scoring changed original {path}"
+        output = final[n["assessment"]]
+        remote, sponsorship = re.split(r"Sponsorship Track Results", output, maxsplit=1, flags=re.I)
+        assert re.search(r"Germany[^\n]*(?:\n[^\n]*){0,2}\b(?:Strong|Moderate)\b", remote, re.I), "Unverified access erased supported Remote fit"
+        missing_inline = re.search(r"Netherlands[^\n]*(?:\n[^\n]*){0,2}not scored \(no data\)", remote, re.I)
+        missing_heading = re.search(r"^\s*(?:#{1,6}\s+)?(?:\*\*)?Not scored \(no data\)(?:\*\*)?\s*:?\s*$", remote, re.I | re.M)
+        missing_group = missing_heading and "Netherlands" in remote[missing_heading.end():]
+        assert missing_inline or missing_group, "Netherlands has no recorded unscored Remote outcome"
+        assert re.search(r"Netherlands[^\n]*(?:\n[^\n]*){0,2}\b(?:Strong|Moderate)\b", sponsorship, re.I), "Unknown Remote evidence contaminated Sponsorship"
+        assert json.loads(final[REGISTRY["country-finder"]["state"]])["last_completed_step"] == 5
+    elif group == "cf-final":
+        n = names("country-finder")
+        assert not handoffs and not questions, "Confirmed current-model audit introduced a new choice"
+        assert writes <= {n["final-results"], REGISTRY["country-finder"]["state"]}, "Audit overwrote earlier evidence"
+        for path, content in initial.items():
+            if path != REGISTRY["country-finder"]["state"]:
+                assert final[path] == content, f"Audit changed original {path}"
+        assert {"render-cf", "check-saved"} <= set(operations), operations
+        renders = [r["input"] for t in trace for r in t["reply"]["helpers"] if r["operation"] == "render-cf"]
+        assert renders and all(r.get("format") == "tracks" for r in renders), renders
+        decisions = renders[-1]["decisions"]
+        germany = next(d for d in decisions if "Germany" in d["country"])
+        netherlands = next(d for d in decisions if "Netherlands" in d["country"])
+        assert germany["remote"] in ("Strong", "Moderate"), "Unverified access erased supported opportunity fit"
+        assert germany["tracks"]["remote"]["priority"] == "Investigate next"
+        assert netherlands["remote"] == "not scored (no data)" and netherlands["tracks"]["remote"]["priority"] == "Pending evidence"
+        assert netherlands["sponsorship"] in ("Strong", "Moderate"), "Unknown Remote evidence contaminated Sponsorship"
+        output = final[n["final-results"]]
+        assert "### Remote priorities" in output and "### Relocation priorities" in output
+        assert json.loads(final[REGISTRY["country-finder"]["state"]])["last_completed_step"] == 6
+        checked = False
+        for turn in trace:
+            checkpoint = turn["reply"]["writes"].get(REGISTRY["country-finder"]["state"])
+            if checkpoint and json.loads(checkpoint)["last_completed_step"] == 6:
+                assert checked, "Audit advanced state before saved-output verification returned"
+            checked |= any(r["operation"] == "check-saved" and result["exit_code"] == 0 for r, result in
+                           zip(turn["reply"]["helpers"], turn["helper_results"]))
     elif group in ("jd", "jd-next"):
         response = trace[-1]["reply"]["message"]
         assert response.startswith("[VERDICT]\n"), response
@@ -396,7 +569,7 @@ def run_case(host, case, timeout, previous=None):
                 assert Path(filename).name == filename and isinstance(content, str), filename
                 (workspace / filename).write_text(content, encoding="utf-8")
             for request in reply["helpers"]:
-                assert request["operation"] in {"render-salary", "check-saved", "adjust-check", "compare", "state-check", "resolve-files",
+                assert request["operation"] in {"render-salary", "render-cf", "check-saved", "adjust-check", "compare", "state-check", "resolve-files",
                                                  "workspace-base", "portal-list", "portal-read", "portal-save"}, request
                 result = helper(request["operation"], request["input"], workspace)
                 turn["helper_results"].append(result)

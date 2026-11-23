@@ -27,15 +27,12 @@ These are two stages of country discovery. The saved country scope at the end of
 
 ```mermaid
 flowchart TD
-  Start(["Read your profile and criteria"]) --> List{"Countries specified?"}
-  List -->|Yes| Scope["Expand regions and apply exclusions<br/>Clarify ambiguous boundaries"]
-  List -->|No| Salary{"Saved Salary Calculator country list?"}
-  Salary -->|Yes| Offer["Offer the saved target countries, names only<br/>Wait: keep, edit, replace or choose default"]
-  Offer -->|Keep, edit or replace| Confirm["Save your country choice in criteria"]
+  Start(["Read your profile and criteria"]) --> Restricted{"Search only specified countries?"}
+  Restricted -->|Yes| Scope["Expand regions and apply exclusions<br/>Honor the chosen scope"]
+  Restricted -->|No| Names["Keep preferred countries<br/>Otherwise offer saved salary names or the default"]
+  Names --> Discover["Use current sources to propose other promising markets<br/>Respect exclusions; explain each addition"]
+  Discover --> Confirm["Show the whole proposal<br/>Wait: use, edit, replace or keep starting countries"]
   Confirm --> Scope
-  Offer -->|Default| Default["Show the default list<br/>Wait for your list or approval"]
-  Salary -->|No usable list| Default
-  Default --> Scope
   Scope --> Empty{"Any countries left?"}
   Empty -->|No| Revise(["Ask for a revised list or stop"])
   Empty -->|Yes| Batch["Save the country scope<br/>Split into batches of at most 15"]
@@ -57,11 +54,15 @@ flowchart TD
 
 ## Choosing countries
 
-An explicit include list comes first. Otherwise the agent can offer Salary Calculator's saved research country names, including countries whose salary data was skipped. You can keep, edit, replace or decline that list. Salary research need not be complete, and none of its conclusions transfer with the names.
+An include preference keeps countries you want considered while leaving room for discoveries. For example, **include Germany** keeps Germany in an open search; **search only Germany** closes the scope to that country. Only materially unclear intent needs another question.
 
-If using the default is an option, the full country list is printed by continent before you answer. A question control is not the only place you should be able to inspect it. A clear list you supplied is used directly; uncertain region boundaries need clarification. Exclusions apply after regions have been expanded into countries.
+For an open search, the agent looks for other markets using current role-relevant demand and employer or pathway leads. Each addition comes with a short reason and dated source. This first pass proposes where to investigate; it does not certify a fit, require a complete job offer or claim to cover every country worldwide. Detailed suitability research still checks both tracks after you choose the list.
 
-Once chosen, the scope is saved and retained on resume. An empty result needs revised countries or a stop, not an invented research set.
+Without preferred countries, the agent can offer Salary Calculator's recorded research names, including countries whose salary data was skipped, or the shipped default list. Salary research need not be complete, and none of its conclusions transfer. That names-only offer and any proposed additions are handled in one country-choice question.
+
+The complete proposal appears in chat before you answer. Default countries are printed by continent, with additions identified separately. You can use the proposal, change countries or keep only the starting list. A preferred or starting country is not silently removed for weak preliminary evidence, and an excluded country is not added back. Unclear region boundaries need clarification.
+
+An explicit restricted list needs no further scope approval. Once chosen, the scope is saved and retained on resume, including older runs; a new discovery pass never silently expands it. An empty scope needs revised countries or stop. Without live discovery access, the agent explains the limit and offers supplied evidence or a disclosed starting-list-only search.
 
 ## What gets checked
 

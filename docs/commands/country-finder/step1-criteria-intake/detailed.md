@@ -51,7 +51,7 @@ An optional salary minimum needs an amount, currency and gross/net basis, plus w
 
 Remote uses your maximum time difference, or **no limit**. Sponsorship uses your relocation timeline, including **no rush**. These choices constrain different tracks; a timezone restriction should not become a relocation exclusion. Clarification is needed only when an ambiguity affects eligibility, a comparison or the next step.
 
-State countries or regions to include and exclude, or say none. Clear choices do not need a duplicate confirmation, while vague regions and contradictory boundaries require clarification before they become the candidate scope.
+State countries or regions you would like included and any exclusions, or say none. Preferred countries stay in an open search that can suggest other markets. Say **only these countries** to restrict the scope. Clear intent needs no duplicate question; vague regions or contradictory boundaries need clarification before research.
 
 For example, a preference for Europe does not tell the researcher whether you mean the European Union (EU), the European Economic Area (EEA) or a broader region. Resolving that once is more useful than silently choosing a definition for every later step.
 
@@ -59,7 +59,7 @@ For example, a preference for Europe does not tell the researcher whether you me
 
 The agent saves the criteria and any newly confirmed situational profile, then continues to [Country discovery](../step2-country-discovery.html#choosing-countries).
 
-Your own include list takes precedence. Without one, discovery can offer Salary Calculator's saved country names for your decision before using a default list. That offer transfers names only, not another workflow's salary or eligibility conclusions.
+Discovery keeps your preferred countries and asks you to choose the full list when it proposes additions. Without preferences, it can offer Salary Calculator's saved names before the default list. That offer transfers names only, not another workflow's salary or eligibility conclusions. A confirmed search scope is retained on resume.
 
 Material changes later can require revisiting affected research. Earlier files and decisions are preserved rather than relabeled as if they were produced from the new profile.
 
