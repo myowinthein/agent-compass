@@ -98,7 +98,7 @@ a:not([class]) {
   padding-block: $sp-2;
   color: $body-text-color;
   font-family: $mono-font-family;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.5;
   white-space: nowrap;
@@ -112,11 +112,7 @@ a:not([class]) {
 
 @include mq(md) {
   .site-brand .site-title {
-    font-size: 1.125rem !important;
-  }
-
-  .site-version {
-    margin-inline: 0.375rem;
+    font-size: 1.0625rem !important;
   }
 }
 
