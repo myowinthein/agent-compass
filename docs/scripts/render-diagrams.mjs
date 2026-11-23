@@ -51,6 +51,10 @@ try {
     const output = {};
     for (const [id, source] of Object.entries(diagrams)) {
       const result = await mermaid.render(`diagram-${id}`, source);
+      const svg = new DOMParser().parseFromString(result.svg, 'image/svg+xml').documentElement;
+      const [, , width, height] = svg.getAttribute('viewBox').split(/\s+/).map(Number);
+      svg.setAttribute('width', width);
+      svg.setAttribute('height', height);
       // Embedded SVG media queries inherit the page's selected color-scheme.
       const selector = `#diagram-${id}`;
       const colors = `<style>
@@ -88,7 +92,7 @@ try {
           opacity: 1;
         }
       </style>`;
-      output[id] = result.svg.replace('</svg>', `${colors}</svg>`);
+      output[id] = new XMLSerializer().serializeToString(svg).replace('</svg>', `${colors}</svg>`);
     }
     return output;
   }, diagrams);

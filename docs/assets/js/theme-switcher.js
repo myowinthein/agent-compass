@@ -5,6 +5,20 @@
   let stylesheet = document.getElementById('compass-theme-stylesheet') || document.querySelector('link[rel="stylesheet"]');
   let pendingStylesheet;
   let mode = 'system';
+  let committedMode = mode;
+
+  const updateDiagramLinks = () => {
+    document.querySelectorAll('[data-diagram-full-size]').forEach(link => {
+      const url = new URL(link.href);
+      url.hash = committedMode === 'system' ? '' : `theme-${committedMode}`;
+      link.setAttribute('href', `${url.pathname}${url.search}${url.hash}`);
+    });
+    if (document.documentElement.hasAttribute('data-diagram-viewer')) {
+      const url = new URL(location.href);
+      url.hash = committedMode === 'system' ? '' : `theme-${committedMode}`;
+      history.replaceState(history.state, '', `${url.pathname}${url.search}${url.hash}`);
+    }
+  };
 
   try {
     const saved = localStorage.getItem(storageKey);
@@ -12,6 +26,10 @@
   } catch {
     // Browser storage may be blocked by privacy settings.
   }
+  if (document.documentElement.hasAttribute('data-diagram-viewer') && /^#theme-(light|dark)$/.test(location.hash)) {
+    mode = location.hash.slice(7);
+  }
+  committedMode = mode;
 
   const applyTheme = () => {
     const theme = mode === 'system' ? (systemTheme.matches ? 'dark' : 'light') : mode;
@@ -30,6 +48,8 @@
         stylesheet = next;
         stylesheet.id = 'compass-theme-stylesheet';
         pendingStylesheet = null;
+        committedMode = mode;
+        updateDiagramLinks();
       });
       next.addEventListener('error', () => {
         if (pendingStylesheet !== next) return;
@@ -42,6 +62,10 @@
     }
 
     document.documentElement.style.colorScheme = theme;
+    if (!pendingStylesheet) {
+      committedMode = mode;
+      updateDiagramLinks();
+    }
     const selector = document.getElementById('theme-mode');
     if (selector) selector.value = mode;
   };
@@ -58,6 +82,7 @@
   });
 
   document.addEventListener('DOMContentLoaded', () => {
+    updateDiagramLinks();
     const selector = document.getElementById('theme-mode');
     if (!selector) return;
     selector.value = mode;

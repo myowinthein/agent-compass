@@ -1,0 +1,28 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en' }}" data-diagram-viewer>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, follow">
+    <title>{{ page.title | escape }} | {{ site.title | escape }}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/just-the-docs-default.css' | relative_url }}">
+    <link rel="icon" type="image/svg+xml" href="{{ '/assets/icon.svg' | relative_url }}?v={{ '/assets/icon.svg' | asset_digest }}">
+    <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}?v={{ '/assets/js/theme-switcher.js' | asset_digest }}"></script>
+    <script src="{{ '/assets/js/diagram-viewer.js' | relative_url }}?v={{ '/assets/js/diagram-viewer.js' | asset_digest }}" defer></script>
+  </head>
+  <body class="diagram-viewer">
+    <header class="diagram-viewer__header">
+      <a class="diagram-viewer__back" href="{{ page.guide_url | escape }}" aria-keyshortcuts="Escape">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg>
+        Back to guide
+      </a>
+      <h1 id="diagram-title">{{ page.title | escape }}</h1>
+    </header>
+    <main class="diagram-viewer__canvas" tabindex="0" aria-labelledby="diagram-title">
+      <img class="diagram-viewer__image" src="{{ page.diagram_url | escape }}" width="{{ page.diagram_width | ceil }}" height="{{ page.diagram_height | ceil }}" style="width: {{ page.diagram_width }}px; height: {{ page.diagram_height }}px;" alt="{{ page.title | escape }}">
+    </main>
+  </body>
+</html>

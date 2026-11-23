@@ -299,10 +299,79 @@ a:is([href^="https://"], [href^="http://"]):not(
 .mermaid {
   margin: $sp-4 0;
 
+  figcaption {
+    margin-top: $sp-2;
+    font-size: 0.875rem;
+  }
+
+  [data-diagram-full-size] {
+    display: inline-block;
+    max-width: 100%;
+    padding: $sp-2;
+    text-decoration-skip-ink: none;
+    text-underline-offset: 0.25em;
+  }
+
   img {
     display: block;
     max-width: 100%;
     height: auto;
     margin-inline: auto;
   }
+}
+
+:root .diagram-viewer :focus-visible,
+:root .mermaid [data-diagram-full-size]:focus-visible {
+  outline-offset: -2px;
+}
+
+.diagram-viewer {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  overflow: hidden;
+}
+
+.diagram-viewer__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $sp-4;
+  padding: $sp-3 $sp-4;
+  background: $sidebar-color;
+  border-bottom: 1px solid $border-color;
+
+  h1 {
+    flex: 1 1 8rem;
+    min-width: 0;
+    margin: 0;
+    font-size: 1rem !important;
+    line-height: 1.5;
+  }
+}
+
+.diagram-viewer__back {
+  display: inline-flex;
+  flex-shrink: 0;
+  max-width: 100%;
+  align-items: center;
+  gap: $sp-2;
+  padding: $sp-2 $sp-3;
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.diagram-viewer__canvas {
+  min-height: 0;
+  padding: $sp-4;
+  overflow: auto;
+}
+
+.diagram-viewer__image {
+  display: block;
+  max-width: none;
+  margin-inline: auto;
 }

@@ -20,6 +20,11 @@ const server=createServer(async(request,response)=>{
 });
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 const origin=`http://127.0.0.1:${server.address().port}`;
+const pageUrl=path=>`${origin}/agent-compass/${path}`;
+const background=expected=>page=>page.waitForFunction(expected=>{
+ const color=getComputedStyle(document.body).backgroundColor;
+ return expected==='dark'?color==='rgb(39, 38, 43)':color==='rgb(255, 255, 255)';
+},expected);
 let browser;
 async function createContext(options = {}) {
  const context = await browser.newContext(options);
@@ -64,6 +69,88 @@ try {
    console.log(`PASS ${width}px ${scheme}: one theme stylesheet, no initial index, static diagrams, CLS ${cls.toFixed(3)}, search and theme switching`);
    await context.close();
   }
+ }
+ // Manual appearance travels with full-size links, including blocked storage.
+ for(const system of ['light','dark']) for(const blocked of [false,true]) {
+  const context=await createContext({viewport:{width:390,height:900},colorScheme:system});
+  if(blocked)await context.addInitScript(()=>Object.defineProperty(window,'localStorage',{get(){throw new DOMException('Blocked','SecurityError');}}));
+  const page=await context.newPage();await page.goto(pageUrl('docs/commands/country-finder/detailed.html'));
+  await page.locator('#menu-button').click();const manual=system==='light'?'dark':'light';
+  await page.locator('#theme-mode').selectOption(manual);await background(manual)(page);
+  const link=page.locator('[data-diagram-full-size]').first();
+  assert((await link.getAttribute('href')).endsWith(`#theme-${manual}`));
+  await link.click();await background(manual)(page);
+  assert(await page.locator('.diagram-viewer__image').evaluate(el=>el.complete&&el.naturalWidth>0&&getComputedStyle(el).colorScheme===getComputedStyle(document.documentElement).colorScheme));
+  await page.goBack();
+  if(!await page.locator('#theme-mode').isVisible())await page.locator('#menu-button').click();
+  await page.locator('#theme-mode').selectOption('system');
+  await page.waitForFunction(()=>document.getElementById('theme-mode').value==='system');
+  assert(!(await page.locator('[data-diagram-full-size]').first().getAttribute('href')).includes('#'),'System choice retained a manual diagram override');
+  console.log(`PASS full-size ${manual} on ${system} system${blocked?', storage blocked':''}: manual theme retained and System clears it`);
+  await context.close();
+ }
+ // Full-size viewers center fitting diagrams and return to the exact guide link.
+ for(const width of [320,1280]) for(const scheme of ['light','dark']) {
+  const context=await createContext({viewport:{width,height:900},colorScheme:scheme,reducedMotion:'reduce'});
+  const page=await context.newPage();
+  const guide=pageUrl('docs/commands/country-finder/detailed.html');await page.goto(guide);
+  const figures=page.locator('figure.mermaid');
+  assert.equal(await figures.locator('figcaption a').count(),await figures.count());
+  const figure=figures.nth(Math.min(1,await figures.count()-1));const image=figure.locator('img');const fullSize=figure.getByRole('link',{name:'View full-size diagram',exact:true});
+  const authoredWidth=Number(await image.getAttribute('width'));
+  const source=await image.getAttribute('src');const anchor=await fullSize.getAttribute('id');
+  assert((await image.boundingBox()).width<=authoredWidth+1,'Diagram preview exceeds its authored size');
+  assert.equal(await fullSize.getAttribute('target'),null,'Viewer unexpectedly opens another tab');
+  await fullSize.focus();
+  await page.keyboard.press('Shift+Tab');await page.keyboard.press('Tab');
+  assert(await fullSize.evaluate(el=>el===document.activeElement&&el.matches(':focus-visible')&&getComputedStyle(el).outlineStyle!=='none'),'Full-size link has no keyboard focus indication');
+  await fullSize.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
+  const scroll=await page.evaluate(()=>scrollY);
+  const destination=new URL(await fullSize.getAttribute('href'),page.url()).href;
+  await page.keyboard.press('Enter');await page.waitForURL(destination);
+  const full=page.locator('.diagram-viewer__image');const canvas=page.locator('.diagram-viewer__canvas');const back=page.getByRole('link',{name:'Back to guide',exact:true});
+  assert.equal(await full.getAttribute('src'),source);assert((await full.boundingBox()).width>=authoredWidth-1,'Viewer shrinks labels to fit the phone');
+  await background(scheme)(page);
+  assert.equal(await back.getAttribute('href'),`/agent-compass/docs/commands/country-finder/detailed.html#${anchor}`);
+  const placement=await full.evaluate(el=>{const box=el.getBoundingClientRect(),canvas=el.parentElement,padding=parseFloat(getComputedStyle(canvas).paddingLeft);return {left:box.left,right:box.right,available:canvas.clientWidth,width:box.width,padding};});
+  if(placement.width<=placement.available-2*placement.padding)assert(Math.abs(placement.left-(placement.available-placement.width)/2)<1,'Fitting diagram is not horizontally centered');
+  else assert(Math.abs(placement.left-placement.padding)<1,'Wide diagram clips its left edge');
+  await page.keyboard.press('Tab');assert(await back.evaluate(el=>el===document.activeElement&&el.matches(':focus-visible')));
+  await page.keyboard.press('Tab');assert(await canvas.evaluate(el=>el===document.activeElement&&el.matches(':focus-visible')));
+  await page.keyboard.press('ArrowDown');await page.waitForFunction(()=>document.querySelector('.diagram-viewer__canvas').scrollTop>0);
+  if(placement.width>placement.available){await page.keyboard.press('ArrowRight');await page.waitForFunction(()=>document.querySelector('.diagram-viewer__canvas').scrollLeft>0);}
+  assert((await back.boundingBox()).y>=0,'Return control scrolled out of reach');
+  if(width===320)await page.keyboard.press('Escape');else{await back.focus();await page.keyboard.press('Enter');}
+  await page.waitForURL(guide);await page.waitForFunction(id=>document.activeElement.id===id,anchor);
+  assert(Math.abs(await page.evaluate(()=>scrollY)-scroll)<2,'Return changed the guide scroll position');
+  await page.keyboard.press('Enter');await page.waitForURL(destination);await page.goBack();
+  await page.waitForFunction(id=>document.activeElement.id===id,anchor);
+  assert(Math.abs(await page.evaluate(()=>scrollY)-scroll)<2,'Browser Back changed the guide scroll position');
+  await page.goto(destination);await page.getByRole('link',{name:'Back to guide',exact:true}).click();
+  await page.waitForURL(`${guide}#${anchor}`);await page.waitForFunction(id=>document.activeElement.id===id,anchor);
+  assert.equal(context.pages().length,1);
+  assert.equal(await page.evaluate(()=>Object.keys(localStorage).length),0,'Diagram navigation added stored state');
+  console.log(`PASS ${width}px ${scheme}: native-size viewer, alignment, keyboard panning, Back/Escape, restored scroll/focus and direct-entry fallback`);
+  await context.close();
+ }
+ // Static return links work without JavaScript; larger text keeps them reachable.
+ for(const mode of ['no-js','large-text','legacy-navigation']) {
+  const scripts=mode!=='no-js';
+  const context=await createContext({viewport:{width:320,height:900},javaScriptEnabled:scripts});const page=await context.newPage();
+  if(mode==='legacy-navigation')await context.addInitScript(()=>Object.defineProperty(window,'navigation',{value:undefined}));
+  await page.goto(pageUrl('docs/commands/country-finder/detailed.html'));
+  const link=page.locator('[data-diagram-full-size]').first();const anchor=await link.getAttribute('id');await link.click();
+  await page.waitForURL(/\/diagrams\//);
+  if(mode==='large-text')await page.addStyleTag({content:'html {font-size:32px!important;} * {line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important;}'});
+  const back=page.getByRole('link',{name:'Back to guide',exact:true});const box=await back.boundingBox();
+  assert(box.x>=0&&box.x+box.width<=320&&box.y>=0&&box.y+box.height<=900,'Return link escapes the enlarged viewport');
+  assert(await page.locator('.diagram-viewer__header').evaluate(el=>el.scrollWidth<=el.clientWidth),'Viewer header clips its contents');
+  assert(await page.locator('.diagram-viewer__image').evaluate(el=>el.complete&&el.naturalWidth>0));
+  await back.click();
+  if(mode==='large-text')await page.waitForURL(pageUrl('docs/commands/country-finder/detailed.html'));else await page.waitForURL(`${pageUrl('docs/commands/country-finder/detailed.html')}#${anchor}`);
+  if(scripts)await page.waitForFunction(id=>document.activeElement.id===id,anchor);
+  console.log(`PASS viewer ${mode}: readable image and reachable guide return`);
+  await context.close();
  }
  // The floating arrow appears after scrolling and leaves the article unobscured.
  for(const width of [320,390,800,1280]) for(const scheme of ['light','dark']) {

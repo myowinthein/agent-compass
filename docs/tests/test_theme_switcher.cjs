@@ -44,8 +44,9 @@ function loadSwitcher({ saved = null, dark = false, blockedStorage = false, auto
   vm.runInNewContext(source, {
     URL,
     document: {
-      documentElement: { style },
+      documentElement: { style, hasAttribute: () => false },
       querySelector: () => stylesheets[0],
+      querySelectorAll: () => [],
       getElementById: id => id === 'theme-mode' ? selector : stylesheets.find(sheet => sheet.id === id) || null,
       addEventListener: (name, handler) => { events.ready = handler; }
     },
