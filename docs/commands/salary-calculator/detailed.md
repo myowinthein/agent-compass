@@ -19,6 +19,8 @@ Salary Calculator builds an evidence-based salary framework for your role in sel
 
 ## Flow
 
+The diagrams split one salary search into research and calculation. After validation stores usable country evidence, continue to Step 3 in the second diagram. Viewing saved results ends without new research; a resumed run returns to its next unfinished step.
+
 ### Run selection and research
 
 ```mermaid

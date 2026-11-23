@@ -20,6 +20,8 @@ Calculation applies supported inputs consistently and keeps exact work separate 
 
 ## Flow
 
+These diagrams show calculation followed by review and presentation. The exact results from the first diagram are the starting point for the second. A stop or a lack of usable inputs does not continue to review.
+
 ### Inputs and calculation
 
 ```mermaid

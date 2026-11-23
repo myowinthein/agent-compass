@@ -21,6 +21,8 @@ Discovery establishes the candidate countries and the evidence for each employme
 
 ## Flow
 
+These are two stages of country discovery. The saved country scope at the end of the first diagram becomes the research batches at the start of the second. An empty scope needs revised countries or a stop before research.
+
 ### Country selection
 
 ```mermaid

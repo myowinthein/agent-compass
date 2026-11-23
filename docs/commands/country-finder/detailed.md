@@ -20,6 +20,8 @@ Country Finder helps decide where to spend your application effort. It investiga
 
 ## Flow
 
+The first diagram selects the run and confirms its profile. Fresh runs then start the pipeline in the second diagram; resumed runs return to the next unfinished step. Viewing saved results ends without new research.
+
 ### Run selection and profile
 
 ```mermaid
