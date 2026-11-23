@@ -59,7 +59,7 @@ For example, a well-evidenced lack of a measurable pay difference can support ze
 
 The adjustment file saves estimates, evidence basis, confidence and gaps. Chat gives counts. A specialist may carry out the analysis if you choose one; declining keeps the step on the current model.
 
-[Table calculation](../step4-table-calculation.html#calculation-rules) skips unestimable countries rather than replacing their adjustment with 0%. If every country is unestimable, the parent records the skip-only outcome and offers evidence repair or stop without an unnecessary calculator handoff.
+[Table calculation](../step4-table-calculation.html#calculation-rules) skips unestimable countries rather than replacing their adjustment with 0%. If every country is unestimable, the main conversation records the skip-only outcome and offers evidence repair or stop without an unnecessary calculator handoff.
 
 ## Explore the source
 

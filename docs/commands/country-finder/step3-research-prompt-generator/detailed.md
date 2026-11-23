@@ -52,11 +52,11 @@ Research is collected in separate contexts when the host has the required tools.
 
 ## Countries without an eligible track
 
-Both positive leads and no-evidence findings from [discovery](../step2-country-discovery.html#what-gets-checked) receive deeper investigation. Only an explicit supported exclusion skips a track. A country can therefore have research for one track or both; neither applies only when both are excluded.
+Detailed research follows both positive leads and tracks where [discovery](../step2-country-discovery.html#what-gets-checked) found no evidence. Only an explicit supported exclusion skips a track, so a country can receive research for one track or both.
 
-Neither does not mean the country disappears. Explicit rejection and missing evidence retain their separate reasons. When every track is explicitly excluded, a scope-only record allows later steps to account for those exclusions without manufacturing research or scores.
+Countries with both tracks excluded remain in the final audit with their reasons. Explicit exclusion and missing evidence remain separate outcomes. If both tracks are excluded for every country, the workflow keeps those exclusions available for later steps without inventing research or scores.
 
-If new material contradicts an earlier exclusion, the parent workflow returns for a repair decision. A researcher does not silently widen the selected country set or overwrite the original eligibility choice.
+If new material contradicts an earlier exclusion, the main conversation asks you to choose how to repair the affected work. A researcher does not silently widen the selected country set or overwrite the original eligibility choice.
 
 ## Following up gaps
 

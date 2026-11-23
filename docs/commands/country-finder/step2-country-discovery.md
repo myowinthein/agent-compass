@@ -46,7 +46,7 @@ Each country is checked for role-specific demand, personal fit and hiring access
 
 ## Timezone preference
 
-Unless you specify another period, relevant hubs are checked over the next 12 months, including DST. Partial passes retain conditions; uncertain coverage stays unverified.
+Unless you specify another period, relevant employment hubs are checked over the next 12 months, including daylight saving time changes. Partial passes retain conditions; uncertain coverage stays unverified.
 
 This affects Remote only and is skipped for "no limit".
 

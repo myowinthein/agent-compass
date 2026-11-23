@@ -34,7 +34,9 @@ Both Mainstream and Premium tiers describe local employee gross annual base pay 
 
 This scope is fixed. You do not need to choose between remote work, relocation or sponsorship checks, or confirm a relocation plan. Visa salary rules are researched separately as reference information. Actual cross-border pay while you stay in your current country is outside this calculation's scope.
 
-Each has Low, Realistic and Strong amounts with role/level, geography, hours, pay basis, dated sources and estimation method. Published figures stay distinct from analyst selections. Contractor rates, equity-heavy packages, expat premiums and inflated global/FAANG-only data are excluded.
+Each employer tier has Low, Realistic and Strong amounts, with the role, level, geography, working hours, pay basis, dated sources and estimation method. Published figures stay distinct from analyst selections.
+
+Research excludes contractor rates, equity-heavy packages, expat premiums and inflated global pay figures. It also excludes data drawn only from Facebook, Amazon, Apple, Netflix and Google.
 
 Separate web-research tasks collect the findings. Without suitable access, you receive prompts and wait for results. Missing quantitative local-versus-overseas evidence is recorded for the adjustment step.
 

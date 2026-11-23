@@ -79,7 +79,7 @@ Use compatible [Country Finder Relocation priorities](../country-finder/step6-fi
 
 ## Hard-floor flag
 
-Raw Mainstream pay below a confirmed hard floor is flagged in Summary. Comparison needs matching currency, period and basis, with dated FX where needed. Missing evidence stays unverified. Personal and visa minima never change market estimates.
+Raw Mainstream pay below a confirmed hard floor is flagged in Summary. Comparison needs matching currency, period and pay basis, with dated exchange-rate evidence when conversion is needed. Missing evidence stays unverified. Personal and visa salary minimums never change market estimates.
 
 ## What happens next
 

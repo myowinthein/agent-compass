@@ -19,7 +19,7 @@ Country Finder and Salary Calculator can offer specialists for selected steps. Y
 ```mermaid
 flowchart TD
   Offer["Explain the available role, model, effort and cost"] --> Choose["Use the specialist or keep your current model"]
-  Choose --> Verify["Return the result to the parent for checks"]
+  Choose --> Verify["Return the result to the main conversation for checks"]
 ```
 
 ## Requested models

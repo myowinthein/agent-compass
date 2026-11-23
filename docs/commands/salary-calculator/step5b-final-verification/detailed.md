@@ -44,11 +44,11 @@ flowchart TD
 
 <span id="career-ladder-procedure"></span>
 
-The parent conversation proposes a realistic ladder for the actual IT role, such as engineering, product, design, data or security. It does not assume every candidate follows a backend-engineering path.
+The main conversation proposes a realistic ladder for the actual IT role, such as engineering, product, design, data or security. It does not assume every candidate follows a backend-engineering path.
 
 You review the full ladder and confirm it or request changes before it is saved. A previously confirmed ladder is reused only when it matches this role and target level; file existence alone is insufficient. A material mismatch needs clarification without silently replacing the old evidence.
 
-Saving the ladder completes substep 5a. The final workflow checkpoint waits until the audit is saved and its required checks pass. A calculable search needs this audit whether or not a specialist performs it.
+Saving the ladder completes substep 5a. The final step is complete only after the audit is saved and its required checks pass. A calculable search needs this audit whether or not a specialist performs it.
 
 ## The four checks
 
@@ -56,7 +56,7 @@ Saving the ladder completes substep 5a. The final workflow checkpoint waits unti
 |---|---|
 | Candidate positioning | Does the target level fit the confirmed profile and ladder? |
 | Framework calibration | Are genuine compensation drivers separated from inflated assumptions? |
-| Country verification | Do both segments, recruiter comfort, sponsorship context and evidence support the estimates? |
+| Country verification | Do the evidence and sponsorship context support both segments, and would recruiters consider the targets realistic? |
 | Framework recommendation | Are the segmentation and underlying assumptions appropriate? |
 
 Percentile claims need a comparable published distribution. Without one, a qualitative explanation is more accurate than an invented percentile band.
@@ -69,7 +69,7 @@ Revised targets use the same raw arithmetic and independent display rounding as 
 
 ## Dated evidence
 
-Saved research is a dated snapshot, not a current legal or market verification. When essential current evidence is missing, the parent offers a focused refresh, continuation on the disclosed snapshot, or stop.
+Saved research is a dated snapshot, not a current legal or market verification. When essential current evidence is missing, the main conversation offers a focused refresh, continuation on the disclosed snapshot, or stop.
 
 Approved refresh evidence takes precedence for the same assessed route and is cited in the final report. If a refresh cannot be obtained, you choose snapshot or stop rather than entering an endless retry. Earlier research and calculation files stay intact.
 

@@ -48,25 +48,25 @@ The role definitions supply effort for both hosts and Claude's model choice. Mat
 
 ## Your choice
 
-Before a handoff, the parent checks whether the requested configuration is actually available, names the role, model and effort, and explains extra token use and possible cost or delay. You can accept or keep the step on your current model.
+Before a handoff, the main conversation checks whether the requested configuration is actually available, names the role, model and effort, and explains extra token use and possible cost or delay. You can accept or keep the step on your current model.
 
-Your choice applies to that handoff unless you explicitly choose a wider scope. It does not edit persistent client settings or switch the parent model. Unavailable or unknown settings require an actual alternative choice; substitutions are not silent.
+Your choice applies to that handoff unless you explicitly choose a wider scope. It does not edit persistent client settings or switch the model in your main conversation. Unavailable or unknown settings require an actual alternative choice; substitutions are not silent.
 
-For example, access to a delegation tool does not prove the requested model and effort can be selected together. The parent explains that limit before launch rather than treating a similarly named default as equivalent.
+For example, access to a delegation tool does not prove the requested model and effort can be selected together. The main conversation explains that limit before launch rather than treating a similarly named default as equivalent.
 
 ## What the specialist receives
 
 The task supplies the installed package's runtime and relevant procedure, the selected step and the run workspace containing its inputs. A fresh context is not expected to remember your earlier conversation or invent missing facts.
 
-The parent keeps user questions. For Salary Calculator's final audit, the career ladder is confirmed in the main conversation before handoff and read by the specialist without asking you to approve the same ladder again.
+Questions are handled in the main conversation. For Salary Calculator's final audit, the career ladder is confirmed there before handoff and read by the specialist without asking you to approve the same ladder again.
 
-The specialist returns the result and saved output location. It does not advance the parent's state file. Missing facts, blocked evidence or a failed handoff return to the parent for the appropriate decision rather than a fabricated completion.
+The specialist returns the result and saved output location. Only the main conversation updates saved progress. Missing facts, blocked evidence or a failed handoff return to the main conversation for the appropriate decision rather than a fabricated completion.
 
 ## Calculator versus Python helper
 
-The calculator is an AI reviewer, not the arithmetic engine. Both hosts use the shared Python helper for supported calculations regardless of whether you choose that specialist. The parent prepares inputs and results, and the specialist checks them against saved evidence.
+The calculator is an AI reviewer, not the arithmetic engine. Both hosts use the shared Python helper for supported calculations regardless of whether you choose that specialist. The main conversation prepares inputs and results, and the specialist checks them against saved evidence.
 
-A request for new numeric work returns to the parent; the specialist does not improvise exact calculations or save a partial final table. If execution is unavailable, the [manual-fallback decision](../commands/salary-calculator/step4-table-calculation.html#calculation-runtime) is separate from accepting an AI reviewer.
+A request for new numeric work returns to the main conversation; the specialist does not improvise exact calculations or save a partial final table. If execution is unavailable, the [manual-fallback decision](../commands/salary-calculator/step4-table-calculation.html#calculation-runtime) is separate from accepting an AI reviewer.
 
 ## Continue after a handoff
 

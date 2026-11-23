@@ -27,13 +27,13 @@ flowchart TD
 
 [Confirm or edit a ladder suited to your role](step5b-final-verification/detailed.html#career-ladder-procedure) before it is saved to `salary-calculator-05a-career-ladder.md`. A matching confirmed ladder is reused without another question.
 
-This completes substep 5a; checkpoint 5 waits for the saved, checked final audit.
+Saving the confirmed ladder completes substep 5a. The final step is complete only after the audit is saved and checked.
 
 ## The four checks
 
 1. **Candidate positioning:** price the target role using the confirmed ladder.
 2. **Framework calibration:** separate real compensation drivers from inflated assumptions.
-3. **Country verification:** assess both segments, recruiter comfort, sponsorship and evidence.
+3. **Country verification:** check both segments, sponsorship and evidence, including whether recruiters would consider the targets realistic.
 4. **Framework recommendation:** review segmentation and underlying assumptions.
 
 Percentiles need a comparable published distribution. Without one, the audit remains qualitative rather than inventing a band.

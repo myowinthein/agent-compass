@@ -24,7 +24,7 @@ flowchart TD
 
 ## What each brief covers
 
-Both briefs compare market demand, role match, international access and pay feasibility. Remote research applies to your working location; Sponsorship research adds the employer-sponsored route and candidate-specific conditions. Checked sources and unresolved questions remain visible.
+Both tracks compare market demand, role match, international access and pay feasibility. Remote research applies to your working location; Sponsorship research adds the employer-sponsored route and candidate-specific conditions. Checked sources and unresolved questions remain visible.
 
 Promising tracks with important gaps receive targeted follow-up before collection finishes. Unpublished or inaccessible evidence can remain unknown after substantive checks.
 
@@ -32,7 +32,7 @@ Each brief contains the confirmed role and relevant background directly. Researc
 
 ## Countries without an eligible track
 
-Only an explicit supported [discovery exclusion](step2-country-discovery.html#what-gets-checked) skips a track. Both positive leads and no-evidence findings receive detailed research. With every track excluded, a scope-only record preserves the reasons without inventing research.
+Only an explicit supported [discovery exclusion](step2-country-discovery.html#what-gets-checked) skips a track. Detailed research covers both positive leads and tracks where discovery found no evidence. With every track excluded, the workflow records the exclusions without inventing research.
 
 ## What happens next
 
