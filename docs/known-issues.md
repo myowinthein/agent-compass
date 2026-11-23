@@ -20,6 +20,15 @@ Observations from maintainer testing and use on macOS, alongside documented plat
 
 </details>
 
+<details id="repeated-reviews-may-keep-producing-findings" markdown="block">
+<summary>Repeated reviews may keep producing findings</summary>
+
+**Observed:** Repeating a review in fresh Claude or Codex sessions has produced new findings after earlier fixes.
+
+Studies of specific models report [inconsistent reviews](https://arxiv.org/abs/2502.20747) and [unnecessary corrections](https://link.springer.com/article/10.1007/s10515-026-00638-5). Keep the review scope consistent, require evidence for defects, and separate optional improvements from required fixes. A no-findings result applies only to the checked scope.
+
+</details>
+
 ## Codex CLI
 
 <details id="questions-appear-as-plain-text-in-default-mode" markdown="block">
