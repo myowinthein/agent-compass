@@ -10,6 +10,7 @@ task :docs_test do
   require "html-proofer"
   require "yaml"
   Dir.chdir("docs") { sh "bundle exec jekyll build" }
+  ruby "docs/tests/test_seo.rb"
   ruby "docs/tests/test_guide_views.rb"
   sh "node --test docs/tests/test_setup_redirects.cjs"
   sh "node --test docs/tests/test_site_navigation.cjs"

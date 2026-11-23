@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Privacy Policy
+description: Read how Agent Compass uses profile information, local research files, AI services and browser storage.
 parent: Legal
 nav_order: 1
 permalink: /docs/legal/privacy-policy.html

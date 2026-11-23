@@ -17,8 +17,8 @@ Dir.mktmpdir("repository-docs-") do |temporary|
   docs.join("_layouts").mkpath
   docs.join("_includes").mkpath
   docs.join("_includes/header_custom.html").write(File.read(File.expand_path('../_includes/header_custom.html', __dir__)))
-  docs.join("_layouts/default.html").write('<div class="site-header"><a href="/" class="site-title lh-tight">Fixture</a><button id="menu-button">Menu</button></div><div class="main-header">{% include header_custom.html %}</div>{{ content }}')
-  readme = "---\ntitle: Shared homepage\npermalink: /\n---\n# Shared homepage\n\nOne maintained source.\n"
+  docs.join("_layouts/default.html").write('<head>{% seo %}</head><div class="site-header"><a href="/" class="site-title lh-tight">Fixture</a><button id="menu-button">Menu</button></div><div class="main-header">{% include header_custom.html %}</div>{{ content }}')
+  readme = "---\nlayout: default\ntitle: Shared homepage\npermalink: /\n---\n# Shared homepage\n\nOne maintained source.\n"
   root.join("README.md").write(readme)
   root.join("assets/icon.svg").write('<svg xmlns="http://www.w3.org/2000/svg"></svg>')
   root.join("private.md").write("Must not be published")
@@ -29,12 +29,15 @@ Dir.mktmpdir("repository-docs-") do |temporary|
   docs.join("images/banner.jpg").binwrite("Fixture image")
   site = Jekyll::Site.new(Jekyll.configuration(
     "source" => docs.to_s, "destination" => docs.join("_site").to_s,
-    "plugins_dir" => [], "quiet" => true, "disable_disk_cache" => true
+    "plugins_dir" => [], "quiet" => true, "disable_disk_cache" => true,
+    "title" => "Fixture", "tagline" => "Workflow documentation", "description" => "Fixture workflow documentation", "url" => "https://docs.example.invalid"
   ))
   site.process
   expected = %w[index.html docs/commands/example.html docs/setup/index.html docs/custom/detailed.html sitemap.xml assets/icon.svg docs/images/banner.jpg]
   expected.each { |path| raise "Published path changed: #{path}" unless docs.join("_site", path).file? }
   raise "Private repository content leaked" if docs.join("_site/private.html").exist?
+  homepage = Nokogiri::HTML(docs.join("_site/index.html").read)
+  raise "Homepage SEO still uses the navigation label" unless homepage.at_css('title').text == 'Fixture | Workflow documentation' && homepage.at_css('meta[property="og:title"]')['content'] == 'Fixture'
   raise "Duplicate README page" if docs.join("_site/README.html").exist?
   raise "README content lost" unless docs.join("_site/index.html").read.include?("One maintained source.")
   raise "Source README was changed" unless root.join("README.md").read == readme

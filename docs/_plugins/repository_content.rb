@@ -1,9 +1,19 @@
 require "json"
 require "pathname"
+require "jekyll-seo-tag"
 
 # Website sources live in docs/. Keep public paths and shared inputs
 # stable without copying the plugin's instructions or GitHub README.
 module RepositoryDocs
+  # Keep navigation's Home label separate from the homepage's search metadata.
+  module HomepageSeo
+    def page_title
+      page["seo_title"] ? format_string(page["seo_title"]) : super
+    end
+  end
+
+  Jekyll::SeoTag::Drop.prepend(HomepageSeo)
+
   class Image < Jekyll::StaticFile
     def url
       "/docs#{super}"
@@ -45,6 +55,7 @@ module RepositoryDocs
       homepage = Jekyll::PageWithoutAFile.new(site, site.source, "", "index.md")
       homepage.data.merge!(SafeYAML.load(match[1]))
       homepage.data["title"] = "Home"
+      homepage.data["seo_title"] = site.config["title"]
       homepage.content = match.post_match
       site.pages << homepage
       site.static_files << Jekyll::StaticFile.new(site, root.to_s, "/assets", "icon.svg")
