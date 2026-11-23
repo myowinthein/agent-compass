@@ -65,6 +65,60 @@ try {
    await context.close();
   }
  }
+ // The floating arrow appears after scrolling and leaves the article unobscured.
+ for(const width of [320,390,800,1280]) for(const scheme of ['light','dark']) {
+  const reducedMotion=width===320||width===800?'reduce':'no-preference';
+  const context=await createContext({viewport:{width,height:800},colorScheme:scheme,reducedMotion});
+  const page=await context.newPage();
+  await page.addInitScript(()=>{
+   const scroll=window.scrollTo.bind(window);
+   window.scrollRequests=[];
+   window.scrollTo=(...args)=>{window.scrollRequests.push(args);scroll(...args);};
+  });
+  await page.goto(`${origin}/agent-compass/docs/commands/country-finder/detailed.html`);
+  const button=page.getByRole('button',{name:'Back to top',exact:true,includeHidden:true});
+  assert.equal(await button.count(),1);
+  assert.equal(await page.locator('a#back-to-top').count(),0,'Old footer link remains');
+  assert.equal(await button.isVisible(),false,'Arrow appears before scrolling');
+  await page.evaluate(()=>scrollTo({top:400,behavior:'instant'}));
+  assert.equal(await button.isVisible(),false,'Arrow appears before the scroll threshold');
+  await page.evaluate(()=>scrollTo({top:600,behavior:'instant'}));
+  await button.waitFor({state:'visible'});
+  const box=await button.boundingBox();
+  const content=await page.locator('#main-content').boundingBox();
+  assert(box.width>=44 && box.height>=44,'Arrow has an undersized touch target');
+  assert(box.x>=content.x+content.width+8,'Arrow overlaps the article');
+  assert(box.x+box.width<=width && box.y+box.height<=800,'Arrow is outside the viewport');
+  assert.equal(await button.locator('svg').getAttribute('aria-hidden'),'true');
+  await page.evaluate(()=>scrollTo({top:900,behavior:'instant'}));
+  const scrolledBox=await button.boundingBox();
+  assert.equal(scrolledBox.y,box.y,'Arrow moves with the article');
+  await button.click();
+  await page.waitForFunction(()=>scrollY===0);
+  assert.equal(await button.isVisible(),false,'Arrow remains visible at the top');
+  assert(await page.locator('#main-content h1').evaluate(el=>el===document.activeElement),'Focus did not return to the page heading');
+  assert.equal(await page.evaluate(()=>window.scrollRequests.at(-1)[0].behavior),reducedMotion==='reduce'?'instant':'smooth');
+  await page.evaluate(()=>scrollTo({top:900,behavior:'instant'}));
+  await button.waitFor({state:'visible'});
+  await page.locator('.footer-links a').last().focus();
+  await page.keyboard.press('Tab');
+  assert(await button.evaluate(el=>el===document.activeElement && el.matches(':focus-visible') && getComputedStyle(el).outlineStyle!=='none'),'Arrow has no keyboard focus indicator');
+  await button.press(width===320||width===800?'Enter':'Space');
+  await page.waitForFunction(()=>scrollY===0);
+  assert.equal(await button.isVisible(),false);
+  await page.evaluate(()=>scrollTo({top:900,behavior:'instant'}));
+  await button.waitFor({state:'visible'});
+  await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
+  await button.waitFor({state:'hidden'});
+  await page.evaluate(()=>scrollTo({top:900,behavior:'instant'}));
+  await button.waitFor({state:'visible'});
+  await page.reload();
+  await button.waitFor({state:'visible'});
+  await page.emulateMedia({media:'print'});
+  assert.equal(await button.isVisible(),false,'Arrow appears in print');
+  console.log(`PASS ${width}px ${scheme}: floating arrow, clear article gutter, scroll visibility, pointer/keyboard return, ${reducedMotion} motion, restored scroll and print`);
+  await context.close();
+ }
  // Late image bytes must not move text below the diagram.
  {
   const context=await createContext();const page=await context.newPage();
@@ -100,6 +154,7 @@ try {
   if(fault.startsWith('saved-'))await page.addInitScript(mode=>localStorage.setItem('agent-compass-theme',mode),fault.slice(6));
   if(fault==='dark-css-failed')await page.route('**/just-the-docs-dark.css',route=>route.abort());
   await page.goto(`${origin}/agent-compass/docs/commands/country-finder/detailed.html`);
+  if(fault==='no-js')assert.equal(await page.locator('#back-to-top').isVisible(),false,'Nonfunctional arrow appears without JavaScript');
   const expected=['no-js','saved-light','dark-css-failed'].includes(fault)?'light':'dark';
   await page.waitForFunction(expected=>{
    const color=getComputedStyle(document.body).backgroundColor;

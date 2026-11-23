@@ -46,6 +46,38 @@ a:not([class]) {
   }
 }
 
+.back-to-top {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: $link-color;
+  background: $body-background-color;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba($body-text-color, 0.12);
+
+  &:hover {
+    background: $sidebar-color;
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+// Leave a clear rail beside the article when the outer page margin is narrow.
+@media screen and (max-width: 75rem) {
+  .main-content-wrap {
+    padding-inline-end: calc(56px + max(1rem, env(safe-area-inset-right)));
+  }
+}
+
 :root .search-input:focus-visible {
   outline-offset: -2px;
 }
@@ -218,6 +250,10 @@ a:is([href^="https://"], [href^="http://"]):not(
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .search,
   .search-input-wrap,
   .search-input,
@@ -235,6 +271,10 @@ a:is([href^="https://"], [href^="http://"]):not(
 }
 
 @media print {
+  .back-to-top {
+    display: none;
+  }
+
   .setup-tabs__list {
     display: none;
   }
