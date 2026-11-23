@@ -15,7 +15,9 @@ Dir.mktmpdir("repository-docs-") do |temporary|
   root.join(".claude-plugin").mkpath
   root.join(".claude-plugin/plugin.json").write('{"version":"1.2.3"}')
   docs.join("_layouts").mkpath
-  docs.join("_layouts/default.html").write('<div class="site-header"><a href="/" class="site-title lh-tight">Fixture</a><button id="menu-button">Menu</button></div>{{ content }}')
+  docs.join("_includes").mkpath
+  docs.join("_includes/header_custom.html").write(File.read(File.expand_path('../_includes/header_custom.html', __dir__)))
+  docs.join("_layouts/default.html").write('<div class="site-header"><a href="/" class="site-title lh-tight">Fixture</a><button id="menu-button">Menu</button></div><div class="main-header">{% include header_custom.html %}</div>{{ content }}')
   readme = "---\ntitle: Shared homepage\npermalink: /\n---\n# Shared homepage\n\nOne maintained source.\n"
   root.join("README.md").write(readme)
   root.join("assets/icon.svg").write('<svg xmlns="http://www.w3.org/2000/svg"></svg>')
@@ -47,18 +49,24 @@ Dir.mktmpdir("repository-docs-") do |temporary|
     # The source-relative path is not a public URL after migration.
   end
   rendered = docs.join("_site/docs/commands/example.html").read
-  header = Nokogiri::HTML(rendered).at_css('.site-header .site-brand')
+  document = Nokogiri::HTML(rendered)
+  header = document.at_css('.site-header')
   home = header&.at_css('a.site-title')
-  release = header&.at_css('a.site-version')
+  release = document.at_css('.main-header .header-controls a.site-version')
   raise "Title must retain its homepage destination" unless home && home['href'] == '/' && home.text.strip == 'Fixture'
-  raise "Version must be a separate release link" unless release && release.parent == home.parent && release['href'] == 'https://github.com/myowinthein/agent-compass/releases/tag/v1.2.3' && release.text == 'v1.2.3'
+  raise "Version must follow the theme chooser as a separate release link" unless release && release.previous_element&.at_css('#theme-mode') && release['href'] == 'https://github.com/myowinthein/agent-compass/releases/tag/v1.2.3' && release.text == 'v1.2.3'
+  raise "Version must not remain in the sidebar title" if header.at_css('.site-version')
   raise "Release must use the current tab" if release['target']
   raise "Release needs a meaningful accessible name" unless release['aria-label'] == 'Release v1.2.3 on GitHub'
-  raise "Menu button must remain outside the shared title area" if header.at_css('#menu-button')
+  raise "Menu button must remain outside the title link" if home.at_css('#menu-button')
   root.join(".claude-plugin/plugin.json").write('{"version":"1.2.4"}')
   site.process
   updated = Nokogiri::HTML(docs.join("_site/docs/commands/example.html").read).at_css('.site-version')
   raise "Version and release did not follow the manifest" unless updated.text == 'v1.2.4' && updated['href'].end_with?('/releases/tag/v1.2.4')
+  root.join(".claude-plugin/plugin.json").write('{"version":"1.2<3"}')
+  site.process
+  escaped = Nokogiri::HTML(docs.join("_site/docs/commands/example.html").read).at_css('.site-version')
+  raise "Version label or release path was not escaped" unless escaped.text == 'v1.2<3' && escaped['href'].end_with?('/releases/tag/v1.2%3C3')
   root.join("README.md").unlink
   root.join("README.md").make_symlink(root.join("private.md"))
   begin
@@ -68,15 +76,4 @@ Dir.mktmpdir("repository-docs-") do |temporary|
     # A shared input cannot redirect the build to a different repository file.
   end
 end
-title = '<div class="site-header"><a href="/" class="site-title lh-tight">Fixture</a></div>'
-["<div>No sidebar title</div>", title + title].each do |html|
-  begin
-    RepositoryDocs.version_header(html, "1.2.3")
-    raise "Accepted a theme with #{html.scan('site-title').length} sidebar titles"
-  rescue ArgumentError => error
-    raise unless error.message.include?("Just the Docs theme changed")
-  end
-end
-escaped = Nokogiri::HTML(RepositoryDocs.version_header(title, "1.2<3")).at_css('.site-version')
-raise "Version label or release path was not escaped" unless escaped.text == 'v1.2<3' && escaped['href'].end_with?('/releases/tag/v1.2%3C3')
 puts "Passed docs-root builds, stable public paths, shared homepage/icon bytes and redirected-input rejection."

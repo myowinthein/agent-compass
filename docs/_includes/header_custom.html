@@ -1,8 +1,11 @@
-<div class="theme-switcher" hidden>
-  <label for="theme-mode">Theme</label>
-  <select id="theme-mode">
-    <option value="system">System</option>
-    <option value="light">Light</option>
-    <option value="dark">Dark</option>
-  </select>
+<div class="header-controls">
+  <div class="theme-switcher" hidden>
+    <label for="theme-mode" class="sr-only">Theme</label>
+    <select id="theme-mode">
+      <option value="system">System</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+  </div>
+  <a class="site-version" href="https://github.com/myowinthein/agent-compass/releases/tag/v{{ site.plugin_version | url_encode }}" aria-label="Release v{{ site.plugin_version | escape }} on GitHub">v{{ site.plugin_version | escape }}</a>
 </div>

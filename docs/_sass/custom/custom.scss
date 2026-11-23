@@ -50,51 +50,15 @@ a:not([class]) {
   outline-offset: -2px;
 }
 
-.site-brand {
-  position: relative;
+.header-controls {
   display: flex;
-  flex: 1;
-  align-self: stretch;
+  flex: 0 0 auto;
   align-items: center;
-  min-width: 0;
-
-  &:hover,
-  &:focus-within {
-    background-image: linear-gradient(-90deg, rgba($feedback-color, 1) 0%, rgba($feedback-color, 0.8) 80%, rgba($feedback-color, 0) 100%);
-  }
-
-  .site-title {
-    flex: 0 1 auto;
-    min-width: 0;
-    padding-right: 0;
-
-    &::after {
-      position: absolute;
-      inset: 0;
-      content: "";
-    }
-
-    &:hover {
-      background-image: none;
-    }
-
-    &:focus-visible {
-      outline-offset: -2px;
-    }
-  }
-}
-
-.site-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  padding-right: $sp-4;
 }
 
 .site-version {
-  position: relative;
-  z-index: 1;
   flex: 0 0 auto;
-  margin-inline: $sp-2;
   padding-block: $sp-2;
   color: $body-text-color;
   font-family: $mono-font-family;
@@ -111,7 +75,7 @@ a:not([class]) {
 }
 
 @include mq(md) {
-  .site-brand .site-title {
+  .site-header .site-title {
     font-size: 1.0625rem !important;
   }
 }

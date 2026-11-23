@@ -1,4 +1,3 @@
-require "cgi"
 require "json"
 require "pathname"
 
@@ -17,19 +16,6 @@ module RepositoryDocs
       raise ArgumentError, "Missing or redirected shared website input: #{relative}"
     end
     file
-  end
-
-  def self.version_header(html, version)
-    title = %r{(<div class="site-header">\s*)(<a\b[^>]*class="site-title lh-tight"[^>]*>)(.*?)(</a>)}m
-    unless html.scan(title).length == 1
-      raise ArgumentError, "Just the Docs theme changed: expected one sidebar title"
-    end
-    release = "https://github.com/myowinthein/agent-compass/releases/tag/v#{CGI.escapeURIComponent(version)}"
-    label = %(<a class="site-version" href="#{release}" aria-label="Release v#{CGI.escapeHTML(version)} on GitHub">v#{CGI.escapeHTML(version)}</a>)
-    html.sub(title) do
-      match = Regexp.last_match
-      "#{match[1]}<div class=\"site-brand\">#{match[2]}<span class=\"site-name\">#{match[3].strip}</span>#{match[4]} #{label}</div>"
-    end
   end
 end
 
@@ -71,11 +57,4 @@ module RepositoryDocs
       end
     end
   end
-end
-
-Jekyll::Hooks.register :pages, :post_render do |page|
-  next unless page.output_ext == ".html" && page.data["layout"]
-  next if %w[redirect setup-redirect].include?(page.data["layout"])
-
-  page.output = RepositoryDocs.version_header(page.output, page.site.config.fetch("plugin_version"))
 end
