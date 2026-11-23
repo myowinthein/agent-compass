@@ -154,6 +154,10 @@ figure.highlight > button[aria-busy="true"] {
   padding: $sp-2 $sp-3;
 }
 
+.main-content .known-issue__body {
+  padding-inline: $sp-3;
+}
+
 .main-content ol > li::before {
   color: $body-text-color;
 }

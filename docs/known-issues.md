@@ -14,19 +14,27 @@ Observations from maintainer testing and use on macOS, alongside documented plat
 <details id="instructions-and-workflow-steps-may-not-be-followed-consistently" markdown="block">
 <summary>Instructions and workflow steps may not be followed consistently</summary>
 
-**Observed:** Claude and Codex have sometimes [skipped rules or command steps](https://github.com/anthropics/claude-code/issues/18454), [stopped before completion](https://github.com/openai/codex/issues/36596), or [changed a required output format](https://github.com/openai/codex/issues/25673).
+<div class="known-issue__body" markdown="block">
 
-[Written instructions do not guarantee consistent execution](https://code.claude.com/docs/en/best-practices#deterministic-and-non-deterministic-instructions). Point out the missed requirement and ask the agent to resume from the last verified step. Check the actual result before accepting a completion claim.
+Claude and Codex have sometimes skipped Compass steps, stopped early or changed a required report format. [Written instructions do not guarantee execution](https://code.claude.com/docs/en/best-practices#deterministic-and-non-deterministic-instructions).
 
+**What you can do:** Point out the missed step and ask the agent to resume from the last verified point. Check that research supports the country recommendations, salary targets or portal links, and that screening answers use your confirmed profile.
+
+</div>
 </details>
 
-<details id="repeated-reviews-may-keep-producing-findings" markdown="block">
-<summary>Repeated reviews may keep producing findings</summary>
+<div id="repeated-reviews-may-keep-producing-findings"></div>
 
-**Observed:** Repeating a review in fresh Claude or Codex sessions has produced new findings after earlier fixes.
+<details id="answers-may-vary-between-fresh-runs" markdown="block">
+<summary>Answers may vary between fresh runs</summary>
 
-Studies of specific models report [inconsistent reviews](https://arxiv.org/abs/2502.20747) and [unnecessary corrections](https://link.springer.com/article/10.1007/s10515-026-00638-5). Keep the review scope consistent, require evidence for defects, and separate optional improvements from required fixes. A no-findings result applies only to the checked scope.
+<div class="known-issue__body" markdown="block">
 
+Fresh runs can give different country rankings, salary estimates, portal lists or screening answers, even when you repeat the same profile and answers. [Model responses aren't fully repeatable](https://platform.claude.com/docs/en/about-claude/glossary#temperature), and new research can find different sources.
+
+**What you can do:** Compare the profile, preferences, evidence and reasoning behind meaningful differences. To revisit existing research, choose a saved-result view instead of starting fresh. Job Screener results stay in chat.
+
+</div>
 </details>
 
 ## Codex CLI
@@ -34,10 +42,13 @@ Studies of specific models report [inconsistent reviews](https://arxiv.org/abs/2
 <details id="questions-appear-as-plain-text-in-default-mode" markdown="block">
 <summary>Questions appear as plain text in Default mode</summary>
 
-**Observed:** Compass's questions appeared as plain text in Default mode, requiring a typed reply. Native single-choice selection and custom text replies worked in Plan mode and the desktop app.
+<div class="known-issue__body" markdown="block">
 
-OpenAI describes [Plan mode](https://learn.chatgpt.com/docs/learn/best-practices#plan-first-for-difficult-tasks) as planning before implementation. In Default mode, type your choice or text to continue.
+In maintainer testing, some Compass intake and confirmation questions in Codex CLI Default mode needed a typed reply. Codex's [Default-mode instructions](https://github.com/openai/codex/blob/main/codex-rs/collaboration-mode-templates/templates/default.md) restrict when its question picker is used.
 
+**What you can do:** Type your country, profile correction or choice to continue. You don't need to change modes. An unanswered question or preselected option isn't confirmation.
+
+</div>
 </details>
 
 ## Claude Desktop
@@ -45,17 +56,23 @@ OpenAI describes [Plan mode](https://learn.chatgpt.com/docs/learn/best-practices
 <details id="the-plugin-icon-is-missing" markdown="block">
 <summary>The plugin icon is missing</summary>
 
-**Observed:** Compass's custom icon did not appear in Claude Desktop.
+<div class="known-issue__body" markdown="block">
 
-Claude Code ignores the [manifest icon field](https://code.claude.com/docs/en/plugins-reference#directory-listing-fields), which is used for directory listings. The cause in Chat/Cowork remains unconfirmed.
+Compass includes custom icon metadata for Codex but omits it from the Claude package for Desktop compatibility. A missing icon alone doesn't tell you whether its workflows loaded.
 
+**What you can do:** Find Agent Compass by name and check its enabled state, version and four listed skills: Country Finder, Salary Calculator, Portal Finder and Job Screener.
+
+</div>
 </details>
 
 <details id="code-and-terminal-installations-do-not-appear-in-chatcowork" markdown="block">
 <summary>Code and terminal installations do not appear in Chat/Cowork</summary>
 
-**Observed:** Installing a plugin through the desktop app's **Code** tab or the **terminal** does not add it to the account's **Claude (Chat + Cowork)** plugin library.
+<div class="known-issue__body" markdown="block">
 
-Anthropic documents [one-way plugin sync](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) from Claude (Chat + Cowork) to Claude Code. Code and terminal installs do not sync back.
+Anthropic's [one-way plugin sync](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) runs from the Claude account to Claude Code. Installing Compass in Code or the terminal doesn't add it to Chat/Cowork.
 
+**What you can do:** Install Compass through [Claude's plugin interface]({{ '/docs/setup/claude.html#desktop-install' | relative_url }}). Check that it's enabled and lists four skills, then start a fresh chat.
+
+</div>
 </details>
