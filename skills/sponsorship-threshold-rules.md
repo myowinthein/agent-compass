@@ -27,6 +27,8 @@ Read the situational profile before research. Embed relevant citizenship, reside
 
 Establish the actual pathway/category, age/status conditions and applicable event date. Record category, assumptions, official source and effective date in the existing threshold field or Notes. Never choose the cheapest age category automatically. Respect declined age disclosure; missing material facts leave candidate-specific amounts Unknown, with conditional categories explained. Unknown eligibility is not Blocked.
 
+Country Finder defers missing age questions until an opened official rule establishes a material age-dependent eligibility or salary-category difference for an assessed route. Return the country, source, applicable event date and exact missing fact to the parent, who asks for the least detail needed once under skills/situational-profile-questions.md. Do not request a full birth date when an age or band suffices, or block unrelated research. If age remains unknown/declined, retain conditional categories without selecting a favorable one or claiming an age-related block. Later answers stay run-only unless saving the exact dated note is approved under the shared runtime.
+
 Record each country's:
 
 - Figure or explicit nonnumeric state.

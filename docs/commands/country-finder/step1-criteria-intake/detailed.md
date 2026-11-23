@@ -10,6 +10,7 @@ title_category: Details
 description: "Criteria intake turns your background and preferences into a usable research brief. It separates facts about the candidate from choices about the search, so later findings can explain why each track fits or does not."
 source_files:
   - prompts/country-finder/step1-criteria-intake.md
+  - skills/situational-profile-questions.md
 ---
 
 # Step 1: Criteria intake
@@ -24,15 +25,15 @@ Criteria intake turns your background and preferences into a usable research bri
 flowchart TD
   Start(["Read your resume profile<br/>Clarify target role or seniority if needed"]) --> Existing{"Saved situational profile?"}
   Existing -->|Yes| Reuse["Reuse saved background<br/>Ask only for material missing details"]
-  Existing -->|No| Background["Collect your background<br/>Location, citizenship and known visa issues<br/>Spoken/work languages and work rights/status<br/>Optional monthly minimum: amount and currency<br/>Gross base or net; strict minimum or context<br/>Optional age or date of birth"]
+  Existing -->|No| Background["Reuse confirmed resume facts<br/>Ask only for material missing location, citizenship,<br/>working languages and work rights<br/>Offer an optional pay floor"]
   Background --> BackgroundClear{"Answers clear?"}
   BackgroundClear -->|No| ClarifyBackground["Ask for clarification<br/>Wait for your answer"]
   ClarifyBackground --> BackgroundClear
   BackgroundClear -->|Yes| SaveBackground["Save situational-profile.md"]
 
-  Reuse --> Criteria["Ask about your search<br/>Remote: timezone limit or no limit<br/>Sponsorship: relocation timeline or no rush<br/>Countries/regions to include, or none<br/>Countries/regions to exclude, or none"]
+  Reuse --> Criteria["Reuse settled preferences; ask only for gaps<br/>Remote: timezone limit or no limit<br/>Sponsorship: optional firm deadline<br/>Preferred/excluded countries and open/restricted scope"]
   SaveBackground --> Criteria
-  Criteria --> CriteriaClear{"All criteria answered clearly?"}
+  Criteria --> CriteriaClear{"Required context settled?"}
   CriteriaClear -->|No| ClarifyCriteria["Ask for clarification<br/>Wait for your answer"]
   ClarifyCriteria --> CriteriaClear
   CriteriaClear -->|Yes| Save["Save preferences and target role<br/>country-finder-01-criteria.md<br/>Confirm it was saved"]
@@ -41,15 +42,17 @@ flowchart TD
 
 ## Your background
 
-The confirmed resume profile supplies professional experience, role and seniority. Saved situational facts are reused; the agent asks only for material gaps or ambiguity rather than extracting the same resume repeatedly.
+The confirmed resume profile supplies experience, role and seniority, plus any applicable location, citizenship or language facts it already contains. These are reused even when no separate situational profile exists. A known fact does not need another question merely to populate a new file.
 
-Situational context includes location, citizenship, known immigration issues, languages and existing work rights. A country where you can already work may need different analysis from one where an employer must obtain sponsorship. Unknown status remains unknown instead of becoming assumed eligibility.
+Missing situational context can include location, citizenship, acceptable working languages and existing work rights. Speaking a language does not automatically mean you accept it as your workplace language. A country where you already have independent work rights may need different analysis from one where an employer must sponsor you. Unknown status stays unknown.
 
-An optional salary minimum needs an amount, currency and gross/net basis, plus whether it is a hard floor or context only. An unexplained number cannot support a valid exclusion. Age or birth-date context can help with age-dependent routes, but disclosure may be declined and the resulting limitation must remain visible.
+A salary floor is optional. If you supply one, its amount, currency and gross/net basis are needed for a valid comparison. A contextual preference is preserved without becoming an exclusion; the agent clarifies that distinction only when ambiguous. Leaving the amount unspecified does not create a zero floor or prevent discovery.
+
+The agent researches general immigration restrictions and employer evidence rather than asking you to judge citizenship-related risk. A personal circumstance may need a targeted question when relevant. Age is deferred until an official rule could change an assessed route or salary category; the question explains why it matters and requests only the necessary detail. You may decline, leaving that check conditional.
 
 ## Your preferences
 
-Remote uses your maximum time difference, or **no limit**. Sponsorship uses your relocation timeline, including **no rush**. These choices constrain different tracks; a timezone restriction should not become a relocation exclusion. Clarification is needed only when an ambiguity affects eligibility, a comparison or the next step.
+Remote uses your maximum time difference, or **no limit**. Sponsorship can use an optional firm relocation deadline. For example, a route requiring six months cannot be a Focus recommendation for a confirmed two-month deadline, even if its role match is strong. No fixed deadline or unspecified timing adds no timing penalty. These constraints remain separate: a timezone limit affects Remote, while a relocation deadline affects Relocation.
 
 State countries or regions you would like included and any exclusions, or say none. Preferred countries stay in an open search that can suggest other markets. Say **only these countries** to restrict the scope. Clear intent needs no duplicate question; vague regions or contradictory boundaries need clarification before research.
 
@@ -66,3 +69,5 @@ Material changes later can require revisiting affected research. Earlier files a
 ## Explore the source
 
 For implementation details, read [prompts/country-finder/step1-criteria-intake.md](https://github.com/myowinthein/agent-compass/blob/main/prompts/country-finder/step1-criteria-intake.md).
+
+The shared [situational intake](https://github.com/myowinthein/agent-compass/blob/main/skills/situational-profile-questions.md) defines fact reuse, optional answers and conditional follow-up.

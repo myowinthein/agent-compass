@@ -13,7 +13,7 @@ Settle a materially ambiguous target role or seniority with a targeted question 
 ## CANDIDATE SITUATIONAL PROFILE:
 Read and apply [skills/situational-profile-questions.md](../../skills/situational-profile-questions.md).
 
-Before generating anything, ask me the following questions and wait for my answers. Do not proceed until all are answered.
+Reuse explicit search answers already supplied for this run. Ask only the unresolved questions below whose answers can change research scope, access, fit, priority or a concrete next action. Batch independent questions with the missing situational facts under QM. Wait for required answers; optional pay/timing details may remain "not specified" without blocking discovery. Do not ask merely to fill a field or prepare another command.
 
 ## Phase 1 — Remote track criteria:
 
@@ -21,7 +21,7 @@ Before generating anything, ask me the following questions and wait for my answe
 
 ## Phase 2 — Visa sponsorship track criteria:
 
-1. Is there a timeline or urgency for relocating? (e.g. "within 12 months," "no rush")
+1. Do you have a firm relocation deadline? If so, give the date or timeframe; otherwise say "no fixed deadline". This is optional, not a request to rate urgency. Preserve an existing "no rush" answer; an unanswered deadline stays "not specified".
 
 ## Phase 3 — Country preferences:
 
@@ -34,7 +34,7 @@ An Include list records preferred countries, not an exclusive scope. Honor an ex
 
 Clarify an answer only when its ambiguity affects eligibility, a comparison or the next step in this workflow. Ask for the specific missing value or meaning; do not require an exact number for preferences that need none. Accept clear choices such as "no limit", "no rush", "none" and an explicitly unknown fact where the relevant rule permits it.
 
-Once all questions are answered, save the criteria to country-finder-01-criteria.md in the workspace:
+Once required context is settled, save the criteria to country-finder-01-criteria.md in the workspace, preserving supplied unknown/declined answers and optional omissions:
 
 Remote track:
 - Maximum timezone difference: [answer or "no limit"]

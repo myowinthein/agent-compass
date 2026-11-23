@@ -48,6 +48,8 @@ An official shortage is a useful signal, not proof of personal access. The [ILO 
 
 Each task receives the confirmed role and relevant background directly. Researchers should not need to infer your citizenship, work rights or seniority from a pointer to another private file. Current dated sources support the findings, with missing or conflicting information called out.
 
+If an opened official rule introduces an age-dependent eligibility or salary category, the main conversation can ask for the minimum detail needed to resolve it. Research does not wait for an age by default, and declined disclosure is respected. A supplied firm relocation deadline is compared with researched processing and prerequisites, without treating an estimate as a guaranteed start date.
+
 Research is collected in separate contexts when the host has the required tools. If suitable research access is unavailable, the workflow supplies prompts and waits for manual results. A model's general recollection is not silently substituted for completed research.
 
 ## Countries without an eligible track

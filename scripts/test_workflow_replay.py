@@ -205,6 +205,50 @@ def country_final_files():
 
 def fixture_cases():
     cases = []
+    intake_profile = profiles()["profile.md"] + "Confirmed current location: Bangkok, Thailand. Citizenship: Myanmar.\n"
+    for variant in ("reuse", "gaps"):
+        files = {"profile.md": intake_profile, REGISTRY["country-finder"]["state"]: state(0)}
+        cases.append(dict(id=f"cf-intake-{variant}", group=f"cf-intake-{variant}", workflow="country-finder", files=files,
+                          stop_after_write=REGISTRY["country-finder"]["state"] if variant == "reuse" else None,
+                          user="Execute Step 1 only, then stop before Step 2. The saved profile is confirmed. "
+                          "The authoritative time for this controlled run is 2026-10-28T00:00:00Z. "
+                          "My maximum timezone difference is 4 hours; search only Germany and exclude France. "
+                          "Leave optional pay and relocation deadline details unspecified. " +
+                          ("I accept English as my working language. I hold independent work rights in Thailand and no rights or immigration status in any other country."
+                           if variant == "reuse" else "No other situational answers have been supplied.")))
+    cases.append(dict(id="sc-intake-reuse", group="sc-intake-reuse", workflow="salary-calculator",
+                      files={"profile.md": intake_profile + "Confirmed age: 30 as of 2026-10-28.\n"},
+                      stop_after_write="situational-profile.md",
+                      run_selection="The person's Salary Calculator run is selected and the saved profile is confirmed. "
+                      "Only its initial situational intake is requested, before Step 1 research.",
+                      user="Finish only situational intake and stop before country research. I accept English for work; "
+                      "I hold independent work rights in Thailand and no rights or immigration status in any other country. Salary minimum: not specified. "
+                      "Known citizenship-related immigration context: none known. All other applicable facts are in the confirmed profile."))
+    for variant in ("needed", "declined"):
+        files = country_scope_files("restricted")
+        files["situational-profile.md"] = files["situational-profile.md"].replace("Age 30 as of 2026-10-28.",
+            "Age disclosure declined; do not ask again." if variant == "declined" else "Age unknown; not requested yet.")
+        files[names("country-finder")["candidates"]] = "## Research scope\n- Germany\n\nCountry: Germany\nRemote:\n- Suitable: yes\nSponsorship:\n- Suitable: yes\n"
+        files[REGISTRY["country-finder"]["state"]] = state(2)
+        cases.append(dict(id=f"cf-age-{variant}", group=f"cf-age-{variant}", workflow="country-finder", files=files,
+                          user="Handle only the parent's pending Step 3 factual clarification, then stop before collection or further work. "
+                          "The researcher's returned question cites this controlled opened official source (all facts fictional): "
+                          "https://official.example/germany/age-category, accessed 2026-10-28. "
+                          "Germany's assessed Fictional Skilled Employer Permit has two materially different salary categories: "
+                          "under 30 and 30 or older at filing on 2026-12-01. It needs only the applicable age band to resolve the amount. "
+                          "No age answer is supplied in this message. Use the existing disclosure choice if one was recorded; "
+                          "otherwise handle the missing fact under the bundled instructions."))
+    deadline = country_final_files()
+    deadline[names("country-finder")["criteria"]] = deadline[names("country-finder")["criteria"]].replace(
+        "Relocation timeline: no rush", "Relocation timeline: firm deadline within one month of 2026-10-28")
+    for artifact in ("research", "validated-data"):
+        filename = names("country-finder")[artifact]
+        deadline[filename] = deadline[filename].replace("Processing time: Unknown.",
+            "Processing time: Official source https://official.example/processing (2026-10-28) establishes a mandatory minimum of twelve months after an offer; this cannot meet the confirmed one-month deadline.", 1)
+    cases.append(dict(id="cf-deadline-priority", group="cf-deadline", workflow="country-finder", files=deadline, max_turns=8,
+                      user="Complete Step 6 only from the saved Step 5 checkpoint. Current-model audit is confirmed; "
+                      "no Salary Calculator producer exists. All expected research and follow-up is complete. "
+                      "Use stored fictional evidence only; do not research or rewrite earlier artifacts."))
     for variant, question, answer in (
         ("yes", "Is this profile correct and ready to save to profile.md? Reply yes to save it, or list your corrections.", "yes"),
         ("legacy-yes", "Does this look correct, or would you like to make any changes before I save it?", "yes"),
@@ -258,7 +302,7 @@ There are no other preliminary findings. These are country-suggestion leads, not
                       user="Resume the already-selected unfinished Step 2, same scope. I previously confirmed Germany as the full scope. "
                       "Its saved scope is valid; research has not started yet. Execute Part A only and stop before Part B. "
                       "Do not offer new countries or ask me to confirm that list again.\n" + discovery_evidence))
-    cases.append(dict(id="cf-fit-with-unverified-access", group="cf-final", workflow="country-finder", files=country_final_files(),
+    cases.append(dict(id="cf-fit-with-unverified-access", group="cf-final", workflow="country-finder", files=country_final_files(), max_turns=8,
                       user="Complete Step 6 only from the saved Step 5 checkpoint. All context is confirmed; the user declined "
                       "specialist routing for this run. No Salary Calculator producer exists. Use the stored fictional evidence only. "
                       "All expected initial and targeted research was completed; unavailable facts remain unresolved. "
@@ -426,6 +470,38 @@ def check(case, initial, final, trace):
         assert not writes and not handoffs and not questions and not operations, "Completed replay performed extra actions"
         assert initial[case["final"]].strip() in messages and "complete" in messages.lower(), messages
         assert final == initial, "Completed replay changed bytes"
+    elif group in ("cf-intake-reuse", "cf-intake-gaps", "sc-intake-reuse"):
+        assert not handoffs and set(operations) <= {"resolve-files", "state-check"}, "Intake started research or a specialist"
+        assert final["profile.md"] == initial["profile.md"], "Intake changed the confirmed resume"
+        assert writes <= {"situational-profile.md", names(case["workflow"])["criteria"] if case["workflow"] == "country-finder" else None,
+                          REGISTRY[case["workflow"]]["state"]}, writes
+        if group == "cf-intake-gaps":
+            question_text = " ".join(questions)
+            assert 1 <= len(questions) <= 2 and re.search(r"language", question_text, re.I), questions
+            assert re.search(r"work rights|work authori[sz]|immigration status", question_text, re.I), questions
+            assert not re.search(r"citizenship|current location|where.*based|\bage\b|birth|risk perception|salary|deadline", question_text, re.I), questions
+            assert final[REGISTRY["country-finder"]["state"]] == initial[REGISTRY["country-finder"]["state"]]
+        else:
+            assert not questions, "Known answers or optional omissions triggered another question"
+            situation = final["situational-profile.md"]
+            assert all(word in situation for word in ("Bangkok", "Myanmar", "English")), situation
+            if group == "cf-intake-reuse":
+                criteria = final[names("country-finder")["criteria"]]
+                assert re.search(r"Maximum timezone difference:.*4", criteria), criteria
+                assert re.search(r"Relocation timeline:.*not specified", criteria, re.I), criteria
+                assert "Include: Germany" in criteria and "Exclude: France" in criteria
+                assert json.loads(final[REGISTRY["country-finder"]["state"]])["last_completed_step"] == 1
+            else:
+                assert re.search(r"\b30\b", situation) and "2026-10-28" in situation, situation
+                assert not any(name in writes for name in names("salary-calculator").values()), writes
+    elif group.startswith("cf-age-"):
+        assert not writes and not operations and not handoffs and final == initial, "Age clarification changed research or profiles"
+        if group == "cf-age-needed":
+            assert len(questions) == 1 and "Germany" in messages and "https://official.example/germany/age-category" in messages, messages
+            assert re.search(r"under 30|30 or older|age band", messages, re.I), messages
+            assert not re.search(r"date of birth|birth ?date|\bDOB\b", " ".join(questions), re.I), questions
+        else:
+            assert not questions and re.search(r"unknown|conditional|unresolved|unverified", messages, re.I), messages
     elif group.startswith("profile-"):
         assert set(operations) <= {"resolve-files"} and not handoffs, "Resume intake ran later workflow actions"
         if group == "profile-corrections":
@@ -489,7 +565,7 @@ def check(case, initial, final, trace):
         assert missing_inline or missing_group, "Netherlands has no recorded unscored Remote outcome"
         assert re.search(r"Netherlands[^\n]*(?:\n[^\n]*){0,2}\b(?:Strong|Moderate)\b", sponsorship, re.I), "Unknown Remote evidence contaminated Sponsorship"
         assert json.loads(final[REGISTRY["country-finder"]["state"]])["last_completed_step"] == 5
-    elif group == "cf-final":
+    elif group in ("cf-final", "cf-deadline"):
         n = names("country-finder")
         assert not handoffs and not questions, "Confirmed current-model audit introduced a new choice"
         assert writes <= {n["final-results"], REGISTRY["country-finder"]["state"]}, "Audit overwrote earlier evidence"
@@ -506,6 +582,10 @@ def check(case, initial, final, trace):
         assert germany["tracks"]["remote"]["priority"] == "Investigate next"
         assert netherlands["remote"] == "not scored (no data)" and netherlands["tracks"]["remote"]["priority"] == "Pending evidence"
         assert netherlands["sponsorship"] in ("Strong", "Moderate"), "Unknown Remote evidence contaminated Sponsorship"
+        if group == "cf-deadline":
+            relocation = germany["tracks"]["sponsorship"]
+            assert "Focus" not in relocation["priority"], "A known deadline mismatch still received Focus"
+            assert re.search(r"deadline|timing|twelve months|12 months|one.month", relocation["limitation"], re.I), relocation
         output = final[n["final-results"]]
         assert "### Remote priorities" in output and "### Relocation priorities" in output
         assert json.loads(final[REGISTRY["country-finder"]["state"]])["last_completed_step"] == 6
@@ -660,7 +740,8 @@ def run_case(host, case, timeout, previous=None):
             assert context["state_check_result"]["output"]["result"]["completed"]
         trace = []
         exhausted = False
-        for _ in range(6):
+        max_turns = case.get("max_turns", 6)
+        for _ in range(max_turns):
             prompt = PROTOCOL + "\n" + json.dumps(context, ensure_ascii=False)
             reply, metadata = call_model(host, prompt, workspace, timeout)
             turn = {"reply": reply, "metadata": metadata, "helper_results": []}
@@ -672,6 +753,8 @@ def run_case(host, case, timeout, previous=None):
                 allowed = set(names(case["workflow"]).values()) | {REGISTRY.get(case["workflow"], {}).get("state")}
                 if case["group"].startswith("profile-"):
                     allowed.add("profile.md")
+                if case["group"] in ("cf-intake-reuse", "cf-intake-gaps", "sc-intake-reuse"):
+                    allowed.add("situational-profile.md")
                 assert filename in allowed, filename
                 assert Path(filename).name == filename and isinstance(content, str), filename
                 (workspace / filename).write_text(content, encoding="utf-8")
@@ -694,7 +777,7 @@ def run_case(host, case, timeout, previous=None):
                   "final": final, "initial_sha256": {k: hashlib.sha256(v.encode()).hexdigest() for k, v in initial.items()},
                   "source_sha256": {k: hashlib.sha256(v.encode()).hexdigest() for k, v in context["bundled_resources"].items()}}
         try:
-            assert not exhausted, "Replay did not reach a user question or terminal response within six turns"
+            assert not exhausted, f"Replay did not reach a user question or terminal response within {max_turns} turns"
             check(case, initial, final, trace)
         except AssertionError as error:
             error.replay_result = result

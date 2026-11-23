@@ -31,7 +31,7 @@ Batching rule: score every country's Remote fit first, all the way through, befo
 2. Separately assess personal pay feasibility using comparable local role/level evidence and the confirmed hard-floor/context-only choice. An entire comparable range below a hard floor supports Weak fit and Below floor pay for the assessed opportunity set, not a legal sponsorship exclusion. A low-paying vacancy, a visa threshold, or two salary-tier point targets alone do not establish that the whole relevant range fails. Missing or straddling ranges remain Unverified; no supplied hard floor means Not specified.
 3. Independently classify Sponsorship fit as: Strong / Moderate / Weak when applicable evidence supports it; an unverified informational salary check is not a failed track. If all applicable track evidence is unusable, record "not scored (no data)" with the reason rather than inventing Weak. Note explicitly held rights that may make sponsorship unnecessary without automatically excluding the country.
 4. Assign a confidence level: High / Medium / Low.
-5. Give brief reasoning, referencing the actual stored evidence, not assumption. Consider citizenship-specific friction from the situational profile when assessing confidence.
+5. Give brief reasoning, referencing the actual stored evidence, not assumption. Apply substantiated citizenship restrictions and user-confirmed personal case facts; a reported general perception of immigration friction or employer risk is a research lead, not evidence for lowering fit or confidence.
 
 ## Evidence quality rule (applies to both tracks):
 

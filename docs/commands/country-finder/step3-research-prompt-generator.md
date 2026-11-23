@@ -28,7 +28,7 @@ Both tracks compare market demand, role match, international access and pay feas
 
 Promising tracks with important gaps receive targeted follow-up before collection finishes. Unpublished or inaccessible evidence can remain unknown after substantive checks.
 
-Each brief contains the confirmed role and relevant background directly. Researchers use current dated sources; unknown facts do not become assumed eligibility.
+Each brief contains the confirmed role and relevant background directly. Researchers use current dated sources; unknown facts do not become assumed eligibility. An official age-dependent rule can trigger a targeted question at this point, but missing or declined age leaves that check conditional.
 
 ## Countries without an eligible track
 
