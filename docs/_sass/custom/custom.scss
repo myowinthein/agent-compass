@@ -232,8 +232,15 @@ a:not([class]) {
   }
 }
 
-.site-footer {
-  line-height: 2;
+.side-bar .site-footer {
+  line-height: 1.4;
+
+  // Keep focus padding inside the line box without loosening the whole credit.
+  a:not([class]) {
+    display: inline-block;
+    line-height: 1.25;
+    padding-block: 0.25em 0.4em;
+  }
 }
 
 .back-to-top {
