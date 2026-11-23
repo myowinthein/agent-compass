@@ -22,6 +22,7 @@ await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 const origin=`http://127.0.0.1:${server.address().port}`;
 const pageUrl=path=>`${origin}/agent-compass/${path}`;
 const background=expected=>page=>page.waitForFunction(expected=>{
+ if(!document.body)return false;
  const color=getComputedStyle(document.body).backgroundColor;
  return expected==='dark'?color==='rgb(39, 38, 43)':color==='rgb(255, 255, 255)';
 },expected);
@@ -310,7 +311,9 @@ try {
   assert(await focused.evaluate(el=>el===document.activeElement&&el.checkVisibility()),'Desktop transition lost search focus');
   assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('search-active')),true);
   await query.focus();await query.press('Escape');
-  await page.setViewportSize({width:390,height:900});await page.locator('#menu-button').focus();
+  await page.setViewportSize({width:390,height:900});
+  await page.waitForFunction(()=>document.documentElement.classList.contains('compass-compact'));
+  await page.locator('#menu-button').focus();
   await page.setViewportSize({width:1280,height:900});
   await page.waitForFunction(()=>document.activeElement===document.querySelector('.site-title'));
   console.log('PASS responsive transitions: search, selected-result focus and menu focus remain usable');
