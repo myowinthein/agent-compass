@@ -20,7 +20,7 @@ Guides to using Agent Compass for your job search. Each command page explains ho
 
 ## Where files are saved
 
-Compass saves profiles, research and results in your home directory, grouped by person and search. Claude and Codex share these files on the same OS account.
+Compass saves files in an `Agent Compass` folder in your home directory. Claude and Codex share this folder on the same OS account.
 
 | OS | Folder |
 |---|---|
