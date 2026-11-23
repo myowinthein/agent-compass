@@ -1,0 +1,5 @@
+# From docs/: bundle exec jekyll serve --config _config.yml,_config.local.yml
+url: "http://localhost:4001"
+baseurl: ""
+host: "127.0.0.1"
+port: 4001
