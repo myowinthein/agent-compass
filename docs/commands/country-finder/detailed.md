@@ -20,6 +20,8 @@ Country Finder helps decide where to spend your application effort. It investiga
 
 ## Flow
 
+### Run selection and profile
+
 ```mermaid
 flowchart TD
   Start["Select the chat, person and command"] --> Existing{"Matching run?"}
@@ -38,6 +40,8 @@ flowchart TD
   Check -->|Valid| Steps
   Check -->|Unusable or changed| Repair["Explain the issue; wait for the applicable repair choice"]
 ```
+
+### Research, assessment and ranking
 
 ```mermaid
 flowchart TD

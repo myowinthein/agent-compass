@@ -20,6 +20,8 @@ Calculation applies supported inputs consistently and keeps exact work separate 
 
 ## Flow
 
+### Inputs and calculation
+
 ```mermaid
 flowchart TD
   Inputs["Check salary evidence and supported adjustments"] --> Usable{"Any country has comparable inputs?"}
@@ -32,7 +34,7 @@ flowchart TD
   Choice -->|Stop| Pending["Keep the calculation pending"]
 ```
 
-With usable numeric results, review and presentation continue separately:
+### Review and presentation
 
 ```mermaid
 flowchart TD

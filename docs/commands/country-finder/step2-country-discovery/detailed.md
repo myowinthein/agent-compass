@@ -21,6 +21,8 @@ Discovery establishes the candidate countries and the evidence for each employme
 
 ## Flow
 
+### Country selection
+
 ```mermaid
 flowchart TD
   Start(["Read your profile and criteria"]) --> List{"Countries specified?"}
@@ -37,6 +39,8 @@ flowchart TD
   Empty -->|Yes| Batch["Save the country scope<br/>Split into batches of at most 15"]
   Batch --> Continue["Continue below with the saved country scope"]
 ```
+
+### Research and timezone checks
 
 ```mermaid
 flowchart TD

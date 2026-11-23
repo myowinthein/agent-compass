@@ -19,6 +19,8 @@ Salary Calculator builds an evidence-based salary framework for your role in sel
 
 ## Flow
 
+### Run selection and research
+
 ```mermaid
 flowchart TD
   Start(["Select this chat and person"]) --> Status{"Matching salary search?"}
@@ -33,6 +35,8 @@ flowchart TD
   Stored -->|No| Repair(["Record what is known<br/>Offer evidence repair or stop"])
   Stored -->|Yes| Continue["Continue below with supported country evidence"]
 ```
+
+### Adjustment, calculation and verification
 
 ```mermaid
 flowchart TD
