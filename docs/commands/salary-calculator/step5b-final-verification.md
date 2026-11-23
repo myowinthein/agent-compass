@@ -12,7 +12,7 @@ has_toc: false
 
 {% include guide-depth.html %}
 
-Audit the framework against your target role and saved evidence whenever at least one country was calculated.
+When salary targets have been calculated for at least one country, audit the framework against your target role and saved evidence.
 
 ## Flow
 

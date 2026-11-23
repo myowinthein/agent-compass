@@ -12,7 +12,9 @@ has_toc: false
 
 {% include guide-depth.html %}
 
-Estimate salary targets for your role in selected countries, then audit their realism. Mainstream and Premium describe two employer segments paying local employees in the target country, not remote offers from your home country.
+Estimate salary targets for your role in selected countries, then audit their realism.
+
+Mainstream covers mid-size or mainstream local-market employers; Premium covers premium, international or remote-first employers. Both estimate base pay for employees working in the target country, not cross-border remote offers from your home country.
 
 ## Flow
 

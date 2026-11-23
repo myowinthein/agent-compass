@@ -55,7 +55,7 @@ flowchart TD
 
 ## Start the command
 
-Run salary-calculator for the selected person and confirm the resume profile when needed. Situational facts such as current location, citizenship, work rights and any salary minimum are reused when already confirmed, with missing material context clarified before research.
+Run salary-calculator for the selected person. If no confirmed resume profile is available, provide a resume and confirm the extracted profile. Situational facts such as current location, citizenship, work rights and any salary minimum are reused when already confirmed, with missing material context clarified before research.
 
 New chats start fresh. The same chat can view a completed search, resume an unfinished one or start a separate fresh run. Earlier profiles and outputs remain preserved rather than being replaced with whichever result is newest.
 
@@ -65,7 +65,7 @@ New chats start fresh. The same chat can view a completed search, resume an unfi
 
 [Research](step1-research-prompt-generator.html) confirms the country list. Compatible final Country Finder results are optional input; without them, you can name targets directly. There is no remote-versus-relocation scope question: both salary segments describe employees paid locally in the target country.
 
-Mainstream and Premium are distinct employer markets, not lower and upper points of one generic range. Research collects gross annual base-pay benchmarks, supporting sources and a separately identified visa salary rule. A local salary estimate does not establish cross-border Remote pay or an employer's willingness to sponsor you.
+Mainstream covers mid-size or mainstream local-market employers, while Premium covers premium, international or remote-first employers. They are researched separately rather than treated as lower and upper points of one generic range. Research collects gross annual base-pay benchmarks, supporting sources and a separately identified visa salary rule. A local salary estimate does not establish cross-border Remote pay or an employer's willingness to sponsor you.
 
 ### Preserve evidence and assess the adjustment
 

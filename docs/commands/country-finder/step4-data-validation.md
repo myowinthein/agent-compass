@@ -32,7 +32,7 @@ Generated blocks use top-level `Country:` delimiters. Ambiguous boundaries need 
 
 ## What you see
 
-One report accounts for stored countries, rejected blocks and missing results. Retained duplicates are not missing countries. Helpers preserve accepted bytes; manual processing needs explicit approval when execution is unavailable.
+One report accounts for stored countries, rejected blocks and missing results. Retained duplicates are not missing countries. Helpers save accepted research exactly as supplied. If helpers cannot run, manual processing needs your explicit approval.
 
 ## What happens next
 

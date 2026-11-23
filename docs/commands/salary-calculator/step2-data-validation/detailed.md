@@ -38,7 +38,7 @@ flowchart TD
 
 ## Required data
 
-Each country needs both employer tiers with their required amounts and sources. A figure in an unrelated example or another section cannot silently fill a missing tier field. Clear older labels receive semantic review rather than mechanical rejection based only on their spelling.
+Each country needs both employer tiers with their required amounts and sources. A figure in an unrelated example or another section cannot silently fill a missing tier field. When older labels are clear, the agent checks their meaning rather than rejecting them for different wording.
 
 Missing visa-rule information or an evidence grade does not automatically reject otherwise usable salary data. An absent grade stays not provided; an unknown rule stays a limitation for later comparison.
 
@@ -46,9 +46,9 @@ Malformed or incomplete blocks are skipped with reasons. Duplicates preserve the
 
 ## Country boundaries
 
-Generated input uses top-level `Country:` fields. If the boundary between countries is ambiguous, clarify it before ingestion instead of attaching a paragraph to whichever country appears closest.
+Generated input uses top-level `Country:` fields. If the boundary between countries is ambiguous, clarify it before saving instead of attaching a paragraph to whichever country appears closest.
 
-Accepted bytes are preserved. The helper performs structural checks and saving; commentary and validation status stay outside the source blocks. Failed or partial saves leave the checkpoint pending until actual state is reconciled.
+Accepted research is saved exactly as supplied. The helper checks required fields and saves the data; commentary and validation status stay outside the original research blocks. If saving fails or finishes only partly, progress stays paused until the agent checks which files were saved and resolves the failure.
 
 For example, a country can have complete salary tiers but no usable adjustment evidence. Validation can accept that research; the later adjustment step must still decide whether a numeric reduction is supported. Acceptance here does not authorize an assumed zero.
 

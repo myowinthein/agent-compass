@@ -38,7 +38,7 @@ flowchart TD
 
 ## Start the command
 
-Use a dedicated chat, run job-screener and confirm the resume extraction if the selected person has no profile yet. Once setup is ready, paste one job description or application question at a time.
+Use a dedicated chat and run job-screener. If the selected person has no profile yet, provide a resume and confirm the extracted profile. Once setup is ready, paste one job description or application question at a time.
 
 A new chat or a different person gets a separate run. A replacement resume or a different profile version starts a fresh run while preserving the earlier profile. Ordinary follow-up questions about a job stay in the selected run instead of restarting intake.
 

@@ -45,7 +45,7 @@ You can keep, edit or replace the proposed names. Draft, mismatched or uncertain
 
 ## What gets researched
 
-Mainstream and Premium both describe gross annual base pay for local employees working in the target country. Each receives its own Low, Realistic and Strong amounts, role and level, geography, working-hours basis, dated sources and selection method.
+Mainstream represents mid-size or mainstream local-market employers; Premium represents premium, international or remote-first employers. Both describe gross annual base pay for local employees working in the target country. Each receives its own Low, Realistic and Strong amounts, role and level, geography, working-hours basis, dated sources and selection method.
 
 Premium needs actual employer-segment evidence. It is not a percentage uplift applied to Mainstream, and a high compensation package dominated by equity is not automatically a comparable base-pay benchmark. Contractor rates, expat premiums and inflated global-only figures are excluded from the intended comparison.
 

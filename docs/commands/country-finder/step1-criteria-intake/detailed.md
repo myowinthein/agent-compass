@@ -53,7 +53,7 @@ Remote uses your maximum time difference, or **no limit**. Sponsorship uses your
 
 State countries or regions to include and exclude, or say none. Clear choices do not need a duplicate confirmation, while vague regions and contradictory boundaries require clarification before they become the candidate scope.
 
-For example, a preference for Europe does not tell the researcher whether you mean the EU, the EEA or a broader region. Resolving that once is more useful than silently choosing a definition for every later step.
+For example, a preference for Europe does not tell the researcher whether you mean the European Union (EU), the European Economic Area (EEA) or a broader region. Resolving that once is more useful than silently choosing a definition for every later step.
 
 ## What happens next
 

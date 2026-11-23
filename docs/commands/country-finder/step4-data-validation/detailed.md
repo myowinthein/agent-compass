@@ -48,11 +48,11 @@ Malformed, incomplete, duplicate and unlisted blocks are skipped with reasons. A
 
 ## What you see
 
-The validation report distinguishes accepted data, rejected input and expected results that were never supplied. Accepted bytes remain unchanged. Corrections or validation commentary belong outside the original research blocks.
+The validation report distinguishes accepted data, rejected input and expected results that were never supplied. Accepted research is saved exactly as supplied. Corrections or validation commentary belong outside the original research blocks.
 
 This is structural validation. A complete field containing an outdated immigration claim can pass this step and still fail the later evidence audit. Successful saving is also distinct from factual correctness.
 
-Helpers handle preservation and ingestion when execution is available. If it is not, manual processing needs explicit approval of the actual fallback, including its limits. Failed saves leave progress pending rather than advancing to scoring as though the data had been stored.
+When helpers can run, they save accepted research without changing it. Otherwise, manual processing needs your explicit approval of the proposed method and its limits. Failed saves leave progress pending rather than advancing to scoring as though the data had been stored.
 
 For example, retaining one valid original and rejecting its later duplicate should produce one stored country, not a new missing-country warning. Rejecting the only incomplete result for an eligible country should retain a visible evidence gap.
 

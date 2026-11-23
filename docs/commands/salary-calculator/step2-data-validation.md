@@ -26,11 +26,11 @@ flowchart TD
 
 Each country needs both employer tiers and their sources. Other sections or quoted examples cannot supply missing tier fields.
 
-Missing visa rules or evidence grades do not reject a country; an absent grade stays "not provided". Malformed/incomplete blocks are reported and skipped. Duplicates preserve stored originals; clear legacy labels receive semantic review.
+Missing visa rules or evidence grades do not reject a country; an absent grade stays "not provided". Malformed/incomplete blocks are reported and skipped. Duplicates preserve stored originals. The agent checks older labels for equivalent meaning.
 
 ## Country boundaries
 
-Generated blocks use top-level `Country:` fields. Ambiguity needs clarification. Helpers preserve accepted bytes and check coverage; failed or partial saves leave the checkpoint pending until reconciled.
+Generated blocks use top-level `Country:` fields. Ambiguity needs clarification. Helpers save accepted research exactly as supplied and check for missing countries. If saving fails or finishes only partly, progress stays paused until the agent checks which files were saved and resolves the failure.
 
 ## What happens next
 

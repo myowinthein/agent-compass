@@ -30,7 +30,7 @@ Only when no final exists can a ready [Step 5 result](../country-finder/step5-sc
 
 ## What gets researched
 
-Both Mainstream and Premium tiers describe local employee gross annual base pay for work in the target country. Premium uses its own employer evidence, not a generic uplift.
+The Mainstream tier covers mid-size or mainstream local-market employers. The Premium tier covers premium, international or remote-first employers. Both describe gross annual base pay for employees working in the target country. Premium uses evidence from its own employer group, not a generic increase applied to Mainstream.
 
 This scope is fixed. You do not need to choose between remote work, relocation or sponsorship checks, or confirm a relocation plan. Visa salary rules are researched separately as reference information. Actual cross-border pay while you stay in your current country is outside this calculation's scope.
 
