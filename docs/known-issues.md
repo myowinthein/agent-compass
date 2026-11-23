@@ -2,7 +2,7 @@
 title: Known issues
 nav_exclude: true
 permalink: /docs/known-issues.html
-description: Review observed Agent Compass limitations in Claude and Codex, including instruction following, question handling, plugin display and installation behavior.
+description: Problems you may see when using Agent Compass in Claude or Codex, and what you can do about them.
 ---
 
 # Known issues
@@ -12,13 +12,13 @@ Observations from maintainer testing and use on macOS, alongside documented plat
 ## Across agents
 
 <details id="instructions-and-workflow-steps-may-not-be-followed-consistently" markdown="block">
-<summary>Instructions and workflow steps may not be followed consistently</summary>
+<summary>The agent may skip steps or stop early</summary>
 
 <div class="known-issue__body" markdown="block">
 
-Claude and Codex have sometimes skipped Compass steps, stopped early or changed a required report format. [Written instructions do not guarantee execution](https://code.claude.com/docs/en/best-practices#deterministic-and-non-deterministic-instructions).
+Claude and Codex sometimes skip Compass steps, stop too soon or give reports in the wrong format. [Instructions alone cannot prevent this](https://code.claude.com/docs/en/best-practices#deterministic-and-non-deterministic-instructions).
 
-**What you can do:** Point out the missed step and ask the agent to resume from the last verified point. Check that research supports the country recommendations, salary targets or portal links, and that screening answers use your confirmed profile.
+**What you can do:** Tell the agent which step it missed and ask it to continue from the last step you checked. Check the sources behind country suggestions, salary estimates and job-site links. Make sure Job Screener uses the profile you confirmed.
 
 </div>
 </details>
@@ -26,13 +26,13 @@ Claude and Codex have sometimes skipped Compass steps, stopped early or changed 
 <div id="repeated-reviews-may-keep-producing-findings"></div>
 
 <details id="answers-may-vary-between-fresh-runs" markdown="block">
-<summary>Answers may vary between fresh runs</summary>
+<summary>Starting again can give different answers</summary>
 
 <div class="known-issue__body" markdown="block">
 
-Fresh runs can give different country rankings, salary estimates, portal lists or screening answers, even when you repeat the same profile and answers. [Model responses aren't fully repeatable](https://platform.claude.com/docs/en/about-claude/glossary#temperature), and new research can find different sources.
+Starting Compass again can give different country rankings, salary estimates, job-site lists or Job Screener answers, even with the same profile and answers. [AI answers can vary](https://platform.claude.com/docs/en/about-claude/glossary#temperature), and a new search may find different sources.
 
-**What you can do:** Compare the profile, preferences, evidence and reasoning behind meaningful differences. To revisit existing research, choose a saved-result view instead of starting fresh. Job Screener results stay in chat.
+**What you can do:** Check that both runs used the same profile and preferences, then compare their sources and reasons. Choose the option to view saved results to see earlier research. Job Screener's answers stay in the chat.
 
 </div>
 </details>
@@ -40,13 +40,13 @@ Fresh runs can give different country rankings, salary estimates, portal lists o
 ## Codex CLI
 
 <details id="questions-appear-as-plain-text-in-default-mode" markdown="block">
-<summary>Questions appear as plain text in Default mode</summary>
+<summary>You may need to type your answers</summary>
 
 <div class="known-issue__body" markdown="block">
 
-In maintainer testing, some Compass intake and confirmation questions in Codex CLI Default mode needed a typed reply. Codex's [Default-mode instructions](https://github.com/openai/codex/blob/main/codex-rs/collaboration-mode-templates/templates/default.md) restrict when its question picker is used.
+In our testing with Codex in a terminal, some Compass questions appeared as chat messages without answer buttons. Its [Default-mode instructions](https://github.com/openai/codex/blob/main/codex-rs/collaboration-mode-templates/templates/default.md) limit when those buttons appear.
 
-**What you can do:** Type your country, profile correction or choice to continue. You don't need to change modes. An unanswered question or preselected option isn't confirmation.
+**What you can do:** Type your country, a correction to your profile or your choice to continue. You don't need to switch modes. An option shown as selected, or a question you haven't answered, does not count as your confirmation.
 
 </div>
 </details>
@@ -58,21 +58,21 @@ In maintainer testing, some Compass intake and confirmation questions in Codex C
 
 <div class="known-issue__body" markdown="block">
 
-Compass includes custom icon metadata for Codex but omits it from the Claude package for Desktop compatibility. A missing icon alone doesn't tell you whether its workflows loaded.
+Compass supplies an icon for Codex. Its Claude package leaves out the icon setting so it can be installed in Claude Desktop. A missing icon alone does not mean Compass failed to load.
 
-**What you can do:** Find Agent Compass by name and check its enabled state, version and four listed skills: Country Finder, Salary Calculator, Portal Finder and Job Screener.
+**What you can do:** Find Agent Compass by name in the plugin list. Check that it is turned on, shows the expected version and lists four skills: Country Finder, Salary Calculator, Portal Finder and Job Screener.
 
 </div>
 </details>
 
 <details id="code-and-terminal-installations-do-not-appear-in-chatcowork" markdown="block">
-<summary>Code and terminal installations do not appear in Chat/Cowork</summary>
+<summary>Installing in Code or the terminal does not add it to Chat/Cowork</summary>
 
 <div class="known-issue__body" markdown="block">
 
-Anthropic's [one-way plugin sync](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) runs from the Claude account to Claude Code. Installing Compass in Code or the terminal doesn't add it to Chat/Cowork.
+Claude [copies plugins one way](https://support.claude.com/en/articles/13837440-use-plugins-in-claude), from your Claude account to Claude Code. Installing Compass in the Code tab or a terminal does not add it to Chat/Cowork.
 
-**What you can do:** Install Compass through [Claude's plugin interface]({{ '/docs/setup/claude.html#desktop-install' | relative_url }}). Check that it's enabled and lists four skills, then start a fresh chat.
+**What you can do:** Install Compass through [the plugin menu in Claude]({{ '/docs/setup/claude.html#desktop-install' | relative_url }}). Make sure it is turned on and shows four skills, then start a new chat.
 
 </div>
 </details>
