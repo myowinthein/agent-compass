@@ -50,7 +50,7 @@ The report distinguishes a substantial core mismatch, an ordinary gap, an unknow
 
 A missing tool, unexplained visa status or unclear language level is not automatically a blocker. The 🚫 marker needs both an explicit mandatory condition and a confirmed candidate fact showing it cannot be met.
 
-For example, a posting that strictly requires existing local work authorization can be a blocker when the confirmed profile says the candidate lacks it. Silence about sponsorship alone does not establish that conclusion. Unknowns should stay visible and influence the verdict without being presented as facts.
+For example, a posting that strictly requires existing local work authorization can be a blocker when the candidate is confirmed unable to meet that requirement. Silence about sponsorship alone does not establish that conclusion. Unknowns should stay visible and influence the verdict without being presented as facts.
 
 [Match analysis](step1-match-analysis.html#hard-blockers) explains the verdict and blocker rules, including how role fit, relevant strengths and uncertainty are balanced.
 

@@ -62,7 +62,7 @@ The assistant names the source and shows every country before asking whether to 
 
 This is a names-only choice. Excluded, rejected, missing and skipped countries remain in the offered scope. Research need not be complete, and no market fit, salary or visa conclusion transfers. Missing scope leaves own/default choices available; ambiguous sources or country labels need clarification rather than guessed history.
 
-Legacy Step 1 criteria with an unseen default or unresolved list use this same choice here. Already confirmed lists need no repeated approval. An older unfinished preference for open discovery without a confirmed scope still needs its repair choice. Resumes preserve their recorded scope and source; an empty selection needs revised countries or stop.
+Legacy Step 1 criteria with an unseen default or unresolved list use this same choice here. Already confirmed lists need no repeated approval. An older unfinished preference for open discovery without a confirmed scope still needs its repair choice. A resumed search preserves its recorded scope and source; an empty selection needs revised countries or stop.
 
 ## What gets checked
 

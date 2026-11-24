@@ -33,7 +33,7 @@ For a fresh search without a supplied list, the assistant can offer the previous
 
 You see every proposed country above a short question: **Reuse this list / Choose other countries / Use the default list**. Long lists use readable groups or short lines instead of crowding the question panel. The assistant waits for your answer before researching each country's suitability.
 
-You can provide a replacement list or edit the proposed names directly. The default list is also shown in full before acceptance or editing. Missing prior scope leaves your own list or the default available. Clear supplied or already confirmed lists need no second approval; ambiguous region boundaries do. Resumes keep the saved scope.
+You can provide a replacement list or edit the proposed names directly. The default list is also shown in full before acceptance or editing. Missing prior scope leaves your own list or the default available. Clear supplied or already confirmed lists need no second approval; ambiguous region boundaries do. A resumed search keeps its saved scope.
 
 ## What gets checked
 

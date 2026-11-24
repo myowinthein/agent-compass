@@ -44,7 +44,7 @@ The saved section contains two tables: Remote priorities and Relocation prioriti
 | 🎗️ Deprioritize | Spend little application effort on this track's Weak or Excluded fit. |
 | Pending evidence | The track remains unscored; resolve the named research gap. |
 
-Focus, Selective and Monitor require Strong/Moderate fit with supported access and pay feasibility, or no hard salary floor. Investigate next retains a supported fit while important conditions remain unverified. These are effort priorities, not offer probabilities.
+Focus, Selective and Monitor require Strong/Moderate fit and supported access. If a hard salary floor applies, they also require supported pay feasibility. Investigate next retains a supported fit while important conditions remain unverified. These are effort priorities, not offer probabilities.
 
 Fictional track examples:
 
