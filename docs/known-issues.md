@@ -58,13 +58,13 @@ Compass's icon is missing in Claude Desktop.
 </details>
 
 <details id="code-and-terminal-installations-do-not-appear-in-chatcowork" markdown="block">
-<summary>Installing in Code or the terminal does not add it to Chat/Cowork</summary>
+<summary>Chat/Cowork needs a separate install</summary>
 
 <div class="known-issue__body" markdown="block">
 
-Claude [copies plugins one way](https://support.claude.com/en/articles/13837440-use-plugins-in-claude), from your Claude account to Claude Code. Installing Compass in the Code tab or a terminal does not add it to Chat/Cowork.
+Installing Compass in the Code tab or terminal won't add it to Chat/Cowork, because [plugins only copy from Chat/Cowork to Code](https://support.claude.com/en/articles/13837440-use-plugins-in-claude).
 
-**What you can do:** Install Compass through [the plugin menu in Claude]({{ '/docs/setup/claude.html#desktop-install' | relative_url }}). Make sure it is turned on and shows four skills, then start a new chat.
+**What you can do:** Install Compass through [Claude Desktop's Chat/Cowork plugin menu]({{ '/docs/setup/claude.html#desktop-install' | relative_url }}). Start a new chat and check its commands in the chat input menu.
 
 </div>
 </details>
