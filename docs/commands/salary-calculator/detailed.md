@@ -64,7 +64,7 @@ New chats start fresh. The same chat can view a completed search, resume an unfi
 
 ### Choose countries and collect local benchmarks
 
-[Research](step1-research-prompt-generator.html) confirms the country list. Your supplied list is used exactly. Otherwise, the previous CF/SC search for this person in this chat can supply its full country scope, with own/default-list alternatives. Excluded or skipped countries remain available because this reuses names rather than conclusions. There is no remote-versus-relocation scope question: both salary segments describe employees paid locally in the target country.
+[Research](step1-research-prompt-generator.html) confirms the country list. Your supplied list is used exactly. Otherwise, the previous Country Finder or Salary Calculator search for this person in this chat can supply its full list, alongside your own countries or the default. Excluded or skipped countries remain available because this reuses names rather than conclusions. There is no remote-versus-relocation scope question: both salary segments describe employees paid locally in the target country.
 
 Mainstream covers mid-size or mainstream local-market employers, while Premium covers premium, international or remote-first employers. They are researched separately rather than treated as lower and upper points of one generic range. Research collects gross annual base-pay benchmarks, supporting sources and a separately identified visa salary rule. A local salary estimate does not establish cross-border Remote pay or an employer's willingness to sponsor you.
 

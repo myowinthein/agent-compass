@@ -36,7 +36,7 @@ Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). 
 ## What to expect
 
 1. [Criteria intake](country-finder/step1-criteria-intake.html): confirm your background, timezone preference, relocation timeline and country preferences.
-2. [Country discovery](country-finder/step2-country-discovery.html): research your supplied countries, or review and edit the default list. No extra countries are automatically added.
+2. [Country discovery](country-finder/step2-country-discovery.html): use your exact list, reuse countries from the previous Country Finder or Salary Calculator search for you in this chat, or review the default. No extra countries are automatically added.
 3. [Research](country-finder/step3-research-prompt-generator.html): investigate non-excluded tracks, including discovery gaps, with separate research tasks and targeted follow-up. Without suitable research access, you receive prompts and wait for manual results.
 4. [Validation](country-finder/step4-data-validation.html): preserve accepted research and report skips.
 5. [Scoring](country-finder/step5-scoring.html): assess market demand, personal fit, access, pay and confidence independently.

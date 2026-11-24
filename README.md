@@ -40,7 +40,7 @@ When I’m deciding where to focus my job search, I use Country Finder to [find 
 Codex → $country-finder    Claude → /country-finder
 ```
 
-It confirms my profile and search criteria, then researches remote work and sponsorship separately. I can supply the exact countries to research or review and edit the default list. Saved Salary Calculator country names remain available on request. It audits the evidence and ranks Remote and Relocation priorities independently in two tables, showing fit and limitations. Missing evidence stays visible.
+It confirms my profile and criteria, then researches remote work and sponsorship separately. I can supply exact countries, reuse a previous Country Finder or Salary Calculator list for me in this chat, or review the default. It audits the evidence and ranks Remote and Relocation independently in two tables, showing fit and limitations. Missing evidence stays visible.
 
 ### Portal Finder
 
@@ -50,7 +50,7 @@ Once I have a country in mind, I use Portal Finder to [find verified job portals
 Codex → $portal-finder    Claude → /portal-finder
 ```
 
-It works with one country at a time, without a resume or earlier country search. If a saved report exists, I can view it or run a fresh search. Fresh searches verify tech coverage on the portals’ own sites, group official links by type and mark starting picks, with access and verification limits disclosed. Each completed search saves a separate report, preserving earlier results.
+It verifies current IT coverage on portals’ own sites and groups links as Global, Local & regional, or IT & tech niche. Aggregators are excluded; stars mark the strongest starting points. I can view a saved report or request fresh research without a resume. Completed searches save separate reports. Unverified portals are omitted, and genuine coverage limits remain visible.
 
 ### Salary Calculator
 
@@ -60,7 +60,7 @@ Before discussing salary expectations, I use Salary Calculator to [estimate loca
 Codex → $salary-calculator    Claude → /salary-calculator
 ```
 
-It confirms my profile and countries, optionally using Country Finder’s results for the same person in this chat as a starting list I can change. It researches two employer tiers, checks supported adjustments and audits annual and monthly targets. These estimate local employee base pay, rather than cross-border remote offers. Missing evidence and visa salary requirements remain separate from the targets.
+It confirms my profile and countries, using my list, my previous Country Finder or Salary Calculator list from this chat, or the default. It researches two employer tiers and audits annual and monthly local-employee base-pay targets, not cross-border remote offers. Unsupported overseas adjustments leave labelled local benchmark references. Visa salary rules stay separate. It continues with available evidence without asking me to provide research or repeat the search.
 
 ### Job Screener
 
@@ -70,7 +70,7 @@ When I find an interesting job, I use Job Screener to [compare its requirements 
 Codex → $job-screener    Claude → /job-screener
 ```
 
-I run it once in a dedicated chat, confirm my profile and paste jobs one at a time. Each report gives Apply, Maybe or Skip, with strengths, gaps and confirmed blockers. Unknown facts stay unknown. If the format drifts, I rerun it and choose Continue screening. I can also request application drafts; nothing is submitted automatically.
+I run it once in a dedicated chat, confirm my profile and paste jobs one at a time. Each report explains Apply, Maybe or Skip through relevant experience, important gaps and confirmed blockers. Unknown facts stay unknown. If the format drifts, I rerun it and choose Continue screening. I can also request application drafts; nothing is submitted automatically.
 
 See [Examples](https://myowinthein.github.io/agent-compass/docs/examples/) for optional guides to my Obsidian setup and daily job search routine.
 

@@ -30,7 +30,7 @@ These are two stages of country discovery. The saved country scope at the end of
 flowchart TD
   Start["Read the country scope settled during intake"] --> Confirmed{"Full list already confirmed?"}
   Confirmed -->|Yes| Scope["Keep the exact scope"]
-  Confirmed -->|No| Offer["Show previous CF/SC countries or the default<br/>Or ask for your own list"]
+  Confirmed -->|No| Offer["Show previous countries or the default<br/>Or ask for your own list"]
   Offer --> Confirm["Wait for the country choice or edits"]
   Confirm --> Scope
   Scope --> Empty{"Any countries left?"}
@@ -56,7 +56,7 @@ flowchart TD
 
 Step 1 normally settles the full country list, so discovery starts with that scope. **Germany** means Germany only; the assistant does not append defaults or other markets. Regions are expanded before removals, with clarification when their boundaries matter.
 
-For a fresh search without supplied countries, the previous CF or SC search for the same person in this chat can supply its complete scope. Repeating CF can therefore reuse its earlier list, just as CF can reuse SC's list. The source is retained before a fresh run replaces its active baseline. No other person's or another chat's history is searched automatically.
+For a fresh search without supplied countries, the previous Country Finder or Salary Calculator search for the same person in this chat can supply its full list. This works when switching commands or repeating either one. Starting fresh preserves that earlier list and its results. Another person’s or another chat’s history is not searched automatically.
 
 The assistant names the source and shows every country before asking whether to reuse the list, choose other countries or use the default. Long lists stay outside the question panel, grouped where useful. You can also enter a replacement or request edits directly. An explicit default request takes precedence over a previous-list offer, and the full default is shown before its acceptance.
 

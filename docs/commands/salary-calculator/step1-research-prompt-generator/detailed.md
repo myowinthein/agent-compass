@@ -25,7 +25,7 @@ Salary research establishes comparable local benchmarks before any adjustment is
 
 ```mermaid
 flowchart TD
-  Start(["Read or collect your situational profile<br/>Settle any unclear role or level"]) --> Countries["Use supplied countries, previous CF/SC scope or default"]
+  Start(["Read or collect your situational profile<br/>Settle any unclear role or level"]) --> Countries["Use your own countries, a previous list or the default"]
   Countries --> Confirm["Show every proposed country<br/>Wait for any required choice or edits"]
   Confirm --> Scope["Use local-employee salary benchmarks<br/>Research visa salary rules as a separate reference"]
   Scope --> Brief["One self-contained brief per country<br/>Two employer tiers, sources and visa salary rules"]
@@ -47,13 +47,13 @@ General immigration restrictions and employer behavior come from research. A con
 
 ## Choosing countries
 
-An explicit list defines the exact research scope. Otherwise, a fresh SC search can offer the preceding CF or SC scope for the same person in this chat. The complete list transfers, including countries that CF excluded or whose salary data SC could not calculate. A country need not have a Strong or Moderate fit to be included in this names-only choice.
+An explicit list defines the exact research scope. Otherwise, a fresh salary search can offer the preceding Country Finder or Salary Calculator list for the same person in this chat. The complete list transfers, including countries previously excluded or missing usable salary data. A weak fit in Country Finder does not remove a country from this names-only choice.
 
 The assistant identifies the source and displays all its countries before asking whether to reuse them, choose other countries or use the default. Long lists appear in readable groups or short lines above the question. You can supply a replacement or request additions/removals directly. If no usable prior list exists, the same own/default choice remains available. Defaults are shown in full before acceptance; requesting an unseen default does not confirm its contents.
 
-Repeating SC with Start fresh can reuse its immediately preceding scope while preserving all earlier files. The latest applicable invocation comes from this chat's association, not file timestamps or another person's history. Ambiguous source choices need clarification. Resuming an unfinished search retains its recorded list and source without offering a newer list.
+Choosing Start fresh can reuse the preceding country list while preserving earlier files. If the chat does not clearly establish which previous search to use, you choose the source. Resuming an unfinished search keeps its recorded list instead of offering newer countries.
 
-Country names establish neither producer completion nor compatible conclusions. A selected CF source can supply presentation order only after its final is separately checked for readiness and compatibility; otherwise calculation uses alphabetical order. No CF completion is needed merely to reuse its country names.
+Reusing country names does not require a completed search or adopt its conclusions. A completed Country Finder result may also order the salary table by Relocation priority when it matches the current profile and scope; otherwise the table uses alphabetical order.
 
 ## What gets researched
 
@@ -73,7 +73,7 @@ Keep the original amount and period, or an explicit nonnumeric state. A monthly 
 
 ## What happens next
 
-Separate research tasks collect the initial findings. Each scheduled task ends with a collected, missing or failed outcome. Unavailable access and failed collection remain visible gaps; successful findings stay preserved. The workflow proceeds with obtained evidence rather than requesting manual results or another evidence search. It records the full country scope, including countries with missing or rejected data, for later CF/SC reuse.
+Separate research tasks collect the initial findings. Each scheduled task ends with a collected, missing or failed outcome. Unavailable access and failed collection remain visible gaps; successful findings stay preserved. The workflow proceeds with obtained evidence rather than requesting manual results or another evidence search. It records the full country scope, including countries with missing or rejected data, for later country or salary searches.
 
 After coverage checks, [Data validation](../step2-data-validation.html) checks structure and preserves accepted evidence. Research remains a dated source snapshot, not an offer or an immigration eligibility determination.
 

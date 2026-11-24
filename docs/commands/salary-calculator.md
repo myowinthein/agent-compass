@@ -37,7 +37,7 @@ Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). 
 
 ## What to expect
 
-1. [Research](salary-calculator/step1-research-prompt-generator.html): choose your countries, a previous CF/SC scope or the displayed default, then collect two-tier local salary evidence and reference visa salary rules. There is no remote, relocation or sponsorship scope question. Country Finder is optional.
+1. [Research](salary-calculator/step1-research-prompt-generator.html): choose your own countries, reuse the previous Country Finder or Salary Calculator list for you in this chat, or review the default. Research covers two local employer tiers and separate visa salary rules.
 2. [Validation](salary-calculator/step2-data-validation.html): store accepted research unchanged.
 3. [Adjustment](salary-calculator/step3-international-adjustment.html): apply a supported reduction, or retain local benchmarks with the overseas adjustment explicitly unverified.
 4. [Calculation](salary-calculator/step4-table-calculation.html): prepare annual targets and monthly references.

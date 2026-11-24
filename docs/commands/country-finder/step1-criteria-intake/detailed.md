@@ -32,7 +32,7 @@ flowchart TD
   ClarifyBackground --> BackgroundClear
   BackgroundClear -->|Yes| SaveBackground["Save situational-profile.md"]
 
-  Reuse --> Criteria["Reuse settled preferences; ask only for gaps<br/>Remote: timezone limit or no limit<br/>Sponsorship: optional firm deadline<br/>Own countries, previous CF/SC scope or default list"]
+  Reuse --> Criteria["Reuse settled preferences; ask only for gaps<br/>Remote: timezone limit or no limit<br/>Sponsorship: optional firm deadline<br/>Your own countries, a previous list or the default"]
   SaveBackground --> Criteria
   Criteria --> CriteriaClear{"Required context settled?"}
   CriteriaClear -->|No| ClarifyCriteria["Ask for clarification<br/>Wait for your answer"]
@@ -57,7 +57,7 @@ The agent researches general immigration restrictions and employer evidence rath
 
 Remote uses your maximum time difference, or **no limit**. Sponsorship can use an optional firm relocation deadline. For example, a route requiring six months cannot be a Focus recommendation for a confirmed two-month deadline, even if its role match is strong. No fixed deadline or unspecified timing adds no timing penalty. These constraints remain separate: a timezone limit affects Remote, while a relocation deadline affects Relocation.
 
-One question asks which countries the search should cover. A supplied answer such as **Germany** means Germany only, with no extra suggestions. Without supplied countries, intake can offer the previous CF/SC scope for the same person in this chat, or your own/default list. Every proposed country appears before the reuse choice, with long lists outside the question panel. Exclusions are removals from that list, not a separate questionnaire. Clear supplied lists need no duplicate approval; ambiguous region boundaries need clarification.
+One question asks which countries the search should cover. A supplied answer such as **Germany** means Germany only, with no extra suggestions. Without supplied countries, intake can offer countries from the previous Country Finder or Salary Calculator search for the same person in this chat, or your own list or the default. Every proposed country appears before the reuse choice, with long lists outside the question panel. Exclusions are removals from that list, not a separate questionnaire. Clear supplied lists need no duplicate approval; ambiguous region boundaries need clarification.
 
 For example, a preference for Europe does not tell the researcher whether you mean the European Union (EU), the European Economic Area (EEA) or a broader region. Resolving that once is more useful than silently choosing a definition for every later step.
 
@@ -65,7 +65,7 @@ For example, a preference for Europe does not tell the researcher whether you me
 
 The agent saves the criteria and any newly confirmed situational profile, then continues to [Country discovery](../step2-country-discovery.html#choosing-countries).
 
-Discovery uses the chosen scope and researches both tracks without repeating a settled country question. A previous CF or SC list transfers names only, including countries later excluded or skipped. Choosing the default shows its full list for acceptance or editing. A confirmed search scope and its source are retained on resume.
+Discovery uses the chosen scope and researches both tracks without repeating a settled country question. A previous list transfers names only, including countries later excluded or skipped. Choosing the default shows its full list for acceptance or editing. A confirmed search scope and its source are retained on resume.
 
 Material changes later can require revisiting affected research. Earlier files and decisions are preserved rather than relabeled as if they were produced from the new profile.
 

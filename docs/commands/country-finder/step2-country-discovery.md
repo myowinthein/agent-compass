@@ -19,7 +19,7 @@ Check which countries have evidence of remote hiring or employer-sponsored reloc
 ```mermaid
 flowchart TD
   Scope{"Country scope already confirmed?"} -->|Yes| Research["Research both tracks for exactly those countries"]
-  Scope -->|No| Offer["Show the previous CF/SC scope or default<br/>Or accept your own countries"]
+  Scope -->|No| Offer["Show the previous country list or default<br/>Or accept your own countries"]
   Offer --> Confirm["Reuse this list, choose other countries or use the default"]
   Confirm --> Research
   Research --> Save["Save findings, timezone conditions and evidence gaps"]

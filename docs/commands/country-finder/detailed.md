@@ -73,9 +73,9 @@ A new chat starts a fresh search. In the same chat, a completed matching search 
 
 ### Confirm the criteria and country scope
 
-[Criteria intake](step1-criteria-intake.html) clarifies role, accepted working languages, timezone tolerance and any firm relocation deadline. The [shared country choice](step2-country-discovery.html#choosing-countries) uses your supplied countries exactly, or offers the preceding CF/SC scope for this person in this chat with own/default-list alternatives. Every proposed country is shown before the choice, including countries later excluded or skipped by the source search. No extra countries are automatically suggested.
+[Criteria intake](step1-criteria-intake.html) clarifies role, accepted working languages, timezone tolerance and any firm relocation deadline. The [shared country choice](step2-country-discovery.html#choosing-countries) uses your supplied countries exactly, or offers the preceding Country Finder or Salary Calculator list for this person in this chat, alongside your own list or the default. Every proposed country is shown before the choice, including countries later excluded or skipped by the source search. No extra countries are automatically suggested.
 
-Previous CF and SC scopes transfer names only: an unfinished search, an exclusion or a skipped salary estimate does not remove countries from the offered list. No salary or eligibility conclusions are inherited, and a resumed run keeps its chosen scope.
+Previous lists transfer names only: an unfinished search, an exclusion or a skipped salary estimate does not remove countries from the offered list. No salary or eligibility conclusions are inherited, and a resumed run keeps its chosen scope.
 
 ### Investigate the two tracks independently
 
@@ -97,7 +97,7 @@ For example, a close role match and recurring hiring can justify Investigate nex
 
 Only explicit exclusions skip detailed research. Incomplete tasks need recovery; completed searches can still finish with documented unresolved findings. Fully excluded tracks remain accounted for, and an empty country list needs a revised scope or a stop.
 
-The final Summary records the audited fits. Salary Calculator can use compatible results for its own country selection; [Portal Finder](../portal-finder.html) can help find job boards for one chosen country. Neither follow-up happens automatically.
+The final Summary records the audited fits. Salary Calculator can offer the full country list for a new salary search without inheriting these fit conclusions; [Portal Finder](../portal-finder.html) can help find job boards for one chosen country. Neither follow-up happens automatically.
 
 ## Explore the source
 
