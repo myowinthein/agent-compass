@@ -28,10 +28,10 @@ Precede the unchanged report with its saved/evidence dates, verification kind an
 After the final source audit, invoke `portal-save` with JSON stdin:
 
 ```json
-{"schema_version":1,"country":"Germany","evidence_date":"2026-11-17","verification":"live","coverage":"partial","sources":["https://example.com/jobs/germany/software"],"report":"<exact complete grouped report and coverage notes>"}
+{"schema_version":1,"country":"Germany","evidence_date":"2026-11-17","verification":"live","coverage":"partial","sources":["https://example.com/jobs/germany/software"],"report":"<exact completed report with its concise overall coverage status>"}
 ```
 
-The example date and URL are illustrative. Supply actual evidence dates and opened official source URLs. `verification` is `live`, `supplied`, `mixed` or `unverified`; `coverage` is `complete`, `partial` or `none`. These are parent assessments, not helper certification. Preserve individual dates in reports using supplied evidence from several dates. No verified results needs an explicit explanation, never an empty success.
+The example date and URL are illustrative. Supply actual evidence dates and official source URLs: opened pages for live checks, or the supplied source identities for an explicitly requested non-live assessment. `verification` is `live`, `supplied`, `mixed` or `unverified`; `coverage` is `complete`, `partial` or `none`. These are parent assessments, not helper certification. Preserve individual dates in reports using supplied evidence from several dates. New reports use the research prompt's three groups and a concise overall coverage status, without excluded-site warning lists. No verified results needs an explicit explanation, never an empty success. Historical reports replay unchanged, including older group labels or warning notes.
 
 The helper creates the fixed base when needed, writes exact report bytes and digest-bound metadata in a new private folder, and reads them back before returning the summary. Check its country, dates, assessments, sources and digest against the submitted data. Show the same final report in chat with the actual saved path. No extra save approval or checkpoint is added.
 

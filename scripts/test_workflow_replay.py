@@ -651,15 +651,12 @@ def check(case, initial, final, trace):
         assert Path(saved["path"]).read_text(encoding="utf-8").strip() in messages, "Final report differs from saved report"
         assert saved["path"] in messages, "Missing saved report location"
         if group == "portal":
-            assert "PublicTech" in messages and "Tech-specific boards" in messages and "2026-10-28" in messages, messages
-            assert re.search(r"⭐[^\n]*PublicTech", messages), messages
+            assert "PublicTech" in messages and "IT & tech niche job boards" in messages and "2026-10-28" in messages, messages
             assert "https://publictech.example/de/software" in messages, messages
-            assert re.search(r"limit|login|two|2", messages, re.I), messages
-            for name in ("HomeOnly", "LoginBoard"):
-                lines = [line for line in messages.splitlines() if name in line]
-                assert lines and all("⭐" not in line for line in lines), lines
-                assert all(re.search(r"⚠|coverage|timeout|inaccess|robot|login|403", line, re.I) for line in lines), lines
-            assert not re.search(r"\b(?:HomeOnly|LoginBoard)\b[^\n]*(?:is|are|:)\s+(?:dead|inactive|unsuitable)\b", messages, re.I), messages
+            assert saved["coverage"] == "partial" and "partial" in messages.lower(), messages
+            assert all(name not in messages for name in ("HomeOnly", "LoginBoard")), "Excluded sites became a warning list"
+            assert "⚠" not in messages, "Partial verification produced portal warning entries"
+
         else:
             assert "user-supplied; not live verified" in messages.lower() and "2026-10-20" in messages, messages
             assert "SuppliedTech" in messages and "⭐" not in messages, messages

@@ -318,8 +318,11 @@ assert.call(scoring.include?('never numerical scores, percentages, or a combined
 # actual replies against these boundaries.
 {
   "portal-finder/step1-portal-research.md" => [
-    "Homepage-only evidence, including IT marketing banners or category links, does not pass",
-    "move the entry out of the verified groups into a coverage note"
+    "A homepage, marketing claim or search snippet alone does not establish current jobs",
+    "omit the portal from the live list",
+    "Explicitly exclude Indeed and its country editions",
+    "Add no recruitment-agency, community, government, remote or other fourth group",
+    "There is no fixed star count or 2–3-per-group quota"
   ],
   "job-screener/step1-match-analysis.md" => [
     "No relocation support is not inability to relocate",

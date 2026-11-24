@@ -18,32 +18,32 @@ Verify portals on their own sites for the chosen country's IT/tech roles.
 
 ```mermaid
 flowchart TD
-  Research["Open official country-relevant portal pages"] --> Verify["Keep verified coverage and explain access limits"]
+  Research["Open official country-relevant portal pages"] --> Verify["Keep country-relevant original-listing sources<br/>Omit unqualified candidates quietly"]
   Verify --> Present["Group links and mark useful starting picks"]
   Present --> Save["Save a new dated report and show its location"]
 ```
 
 ## Groups
 
-Each portal appears once by type:
+Every portal first needs current IT/tech jobs relevant to the searched country. Qualifying portals appear once, in this order:
 
-1. General job boards.
-2. Tech-specific boards.
-3. Professional & community networks.
+1. Global job boards.
+2. Local & regional job boards.
+3. IT & tech niche job boards.
 
-Geographic scope is noted per entry; remote-first boards follow their subject focus. Genuine exceptions can have another group. Empty groups need no filler. Government employment-service portals are excluded.
+Specialist boards go in Niche regardless of reach; remaining multi-career boards are Global or Local & regional. Remote and community job sections follow the same rules. No extra group is added. Discovery covers tech careers broadly rather than specializing in your own role. Aggregation-focused services and Indeed are excluded.
 
 ## What you receive
 
-Each entry gives an official link, country/global scope and one-line strength. Country/category/search links support verification beyond a homepage.
+Each entry gives an official link, geographic scope and one concise practical strength. Country/category/search/job pages establish actual coverage; a homepage or search snippet alone is insufficient.
 
-⭐ marks 2–3 verified starting picks per group, or fewer when fewer qualify. Live results carry a verification date. ⚠️ flags restrictions, deprecated sites, shared ownership or access limits; account access and job eligibility are separate.
+⭐ marks the strongest evidence-supported starting point in each group, with comparable peers allowed. Coverage, freshness, useful search/filtering and working job/application routes matter within the portal's focus. There is no star quota, and a sole verified entry does not receive a star automatically.
 
 ## Partial or unavailable access
 
-Failed access becomes a coverage note, not a dead-site claim or verified recommendation. Homepage marketing alone cannot qualify an entry when deeper pages cannot be checked. Other verified results remain usable.
+If one relevant official page fails, another public page on the same domain may establish coverage. Otherwise the portal is omitted quietly, without a failed-site warning list or an unsupported claim that it is inactive. Ordinary sign-in to apply does not automatically disqualify an otherwise usable board.
 
-Without browsing, wait for access or supplied evidence. Supplied results are dated and labelled **user-supplied; not live verified**, separate from verified picks. No verified portals means an explicit limitation, not an empty success.
+Live reports have a verification date and, when needed, one concise overall partial-coverage status. No qualifying portals means a clear no-verified-results statement. Unavailable browsing retains the access/supplied-evidence route; explicitly requested non-live assessments keep their dates and **user-supplied; not live verified** label, without live-recommendation stars.
 
 ## Saving the result
 

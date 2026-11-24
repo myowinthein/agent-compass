@@ -1,6 +1,6 @@
 # portal-finder
 
-Find verified job portals for IT/tech roles in a specified country, grouped by type.
+Find usable country-relevant IT/tech portals in exactly three groups: Global job boards, Local & regional job boards, and IT & tech niche job boards. Apply the research prompt's aggregator exclusion and evidence-based star criteria; omit problematic/unverified candidates without warning lists.
 
 ## Before starting
 

@@ -46,10 +46,12 @@ Each completed search saves a separate report under your home directory’s `Age
 
 ## Your result
 
-Portals are grouped into general job boards, tech-specific boards, and professional or community networks. Each entry includes an official link, geographic scope and a short description.
+Portals appear in three groups: **Global job boards**, **Local & regional job boards**, and **IT & tech niche job boards**. Every entry must have current IT/tech jobs relevant to your country. A global specialist board with jobs only elsewhere is omitted.
 
-⭐ marks verified starting picks. ⚠️ highlights access limits or other important caveats. A blocked or login-only site is not called dead merely because it could not be checked.
+Each entry gives an official link, geographic scope and one compact practical strength. Discovery covers tech careers broadly, including infrastructure, QA, security, data and design, rather than following your own occupation. Aggregation-focused services and Indeed are excluded.
 
-The command shows the report in chat with its saved location, then stops. Partial results keep their coverage notes. No profile or checkpoint is created.
+⭐ marks the strongest supported starting point within a group; genuinely comparable alternatives can share a star. There is no per-group quota. Problematic or unverified portals and failed-site warning lists are omitted. A brief overall status identifies genuinely partial coverage.
+
+The command shows the completed report with its saved location, then stops. No profile or checkpoint is created.
 
 See [Step 1: Portal research](portal-finder/step1-portal-research.html) for verification and partial-result handling.

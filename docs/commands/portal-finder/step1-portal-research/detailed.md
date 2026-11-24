@@ -30,41 +30,45 @@ flowchart TD
   Check --> Access{"Country-relevant coverage verifiable?"}
   Access -->|No| Retry["Try another relevant public page<br/>On the same official domain"]
   Retry --> Verified{"Now verified?"}
-  Verified -->|No| Note["Keep out of verified groups<br/>Name the access or coverage limit"]
+  Verified -->|No| Note["Keep out of verified groups<br/>Omit quietly; preserve other verified results"]
   Verified -->|Yes| Keep
   Access -->|Yes| Keep["Keep useful official links and verification date<br/>Deduplicate redirects and rebrands"]
-  Keep --> Group["Group verified portals by type<br/>Star useful starting picks"]
+  Keep --> Group["Classify into the three groups<br/>Star supported standouts or comparable peers"]
   Note --> Result
-  Group --> Result["Complete the report with coverage notes"]
+  Group --> Result["Complete the three-group report<br/>Use a concise overall coverage status"]
   Supplied --> Result
   Result --> Save(["Save a separate dated report<br/>Show the result and its saved location"])
 ```
 
 ## Groups
 
-The result uses three types: **General job boards**, **Tech-specific boards**, and **Professional & community networks**. Each portal appears once. Country-only versus global coverage is noted per entry, not used as a competing group.
+Country relevance is required before grouping. Every included portal must show current IT/tech jobs for the searched country. A fresh global board with no jobs for that country is omitted, even if it is tech-specialist. Remote work counts only where the country is an eligible work location.
 
-A remote-first board belongs under General or Tech-specific according to its focus. A genuine exception may have a clearly named additional group. Empty groups do not need filler, and government employment-service portals are excluded from this workflow.
+The groups are **Global job boards**, **Local & regional job boards**, and **IT & tech niche job boards**. Specialization takes precedence: a worldwide software board or a country-specific UX/UI job community belongs in Niche. Remaining multi-career boards are split by their actual geographical reach. A local edition of a worldwide board stays Global.
 
-Redirects and rebrands of the same portal are deduplicated. Distinct boards are not merged merely because a parent company owns both.
+There is no fourth group. Remote boards, professional/community job sections, recruitment-agency job pages and public employment-service boards can fit the existing groups when they meet the same listing and access checks. A promotional service or community homepage without usable jobs does not qualify.
+
+Discovery includes software, infrastructure, DevOps, QA, databases, security, data, support, product and design where suitable sources exist. It does not read your profile or prioritize development because that is your occupation. A niche board can focus on one specialty.
+
+Aggregation-focused services and Indeed are excluded. The aim is useful posting ecosystems rather than repeated collections of other sources. An external application button, ATS feed or an employer posting the same vacancy elsewhere does not alone establish aggregation. Redirects and rebrands of the same portal are deduplicated; distinct boards are not merged merely because they share an owner.
 
 ## What you receive
 
-Each entry includes its official URL, geographic scope and a short explanation of its practical strength. The researcher opens official country, category, search or job pages to establish current local tech coverage. A homepage, marketing banner or search-engine snippet alone does not pass.
+Each entry has its official URL, scope and one compact explanation of its practical strength. Official country/category/search/job pages establish current coverage. Homepage marketing, an IT category link or a search-engine snippet alone cannot support inclusion.
 
-The live result includes a verification date. Within each group, ⭐ marks two or three useful starting picks, or fewer if fewer qualify. Picks follow observed coverage and usable access, not reputation or invented numerical rankings.
+Stars identify the strongest supported starting points within the group. The comparison considers observed current country coverage, useful depth within the board's focus, freshness, search/location filters and working job-detail/application routes. Niche boards are assessed within their specialties rather than penalized for not serving every tech career.
 
-A specific caveat can be marked with ⚠️, such as restricted access, deprecated service or shared ownership. Account access and eligibility for an individual job remain different facts.
+Start with a clear standout and allow joint stars when observed strengths are genuinely comparable. There is no two-or-three-star quota, and being the only verified entry is not enough by itself. A single current vacancy can establish limited coverage without establishing a top recommendation. Descriptions convey the useful strength without a separate score or ranking explanation.
 
 ## Partial or unavailable access
 
-If one official page fails, another relevant public page on the same domain may establish useful coverage. If it still cannot be checked, move the portal out of the verified groups and explain the access limitation. Adding a caveat does not make an otherwise unverified entry a verified pick.
+An alternate public page on the same official domain may resolve a failed check. If it does not, leave the portal out of the live list. Do not claim it is dead, or include it merely by attaching a caveat. Broken, expired-only or unverified sources and a catalogue of failed candidates are omitted from the user-facing report.
 
-For example, a working homepage with a login-only job search does not prove current openings. An accessible search page with limited visible listings can support that observed coverage, with the limit stated.
+Normal registration to apply or save a role does not itself make a portal unusable when relevant public jobs and an application route can be established. Account requirements are separate from legal eligibility, and one vacancy's sponsorship condition does not characterize the portal as a whole.
 
-If browsing is unavailable, wait for access or supplied evidence. User-supplied material retains its date and the label **user-supplied; not live verified**, separate from live-verified recommendations. It cannot receive a star that implies live checking.
+Keep successful results and use a brief overall partial-coverage status when access genuinely limited research. Intentional exclusions such as aggregators are normal filtering. If nothing qualifies, state the overall limitation clearly rather than returning an empty success.
 
-Preserve successful partial results. When nothing can be verified, explain the specific gap rather than returning an empty success.
+When browsing is unavailable, the existing access/supplied-evidence route remains. An explicitly requested assessment of provided material keeps its evidence date and **user-supplied; not live verified** label. It cannot acquire a star or a claim of live verification merely through user confirmation.
 
 ## Saving the result
 
