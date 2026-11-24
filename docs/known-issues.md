@@ -34,9 +34,9 @@ Running commands such as country-finder or salary-calculator in separate session
 
 <div class="known-issue__body" markdown="block">
 
-In our testing with Codex in a terminal, some Compass questions appeared as chat messages without answer buttons. Its [Default-mode instructions](https://github.com/openai/codex/blob/main/codex-rs/collaboration-mode-templates/templates/default.md) limit when those buttons appear.
+Compass uses [Claude's](https://code.claude.com/docs/en/tools-reference#askuserquestion-tool-behavior) and [Codex's](https://github.com/openai/codex/blob/main/codex-rs/core/src/tools/handlers/request_user_input_spec.rs) tools for choices and answers. Codex CLI couldn't show them in testing and used the [Default-mode text fallback](https://github.com/openai/codex/blob/main/codex-rs/collaboration-mode-templates/templates/default.md).
 
-**What you can do:** Type your country, a correction to your profile or your choice to continue. You don't need to switch modes. An option shown as selected, or a question you haven't answered, does not count as your confirmation.
+**What you can do:** Type your choice from the colored bullets, or write your own answer.
 
 </div>
 </details>
