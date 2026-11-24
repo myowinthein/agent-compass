@@ -56,8 +56,8 @@ flowchart TD
   Research --> Data["4. Validate and store accepted research without rewriting it"]
   Data --> Saved{"Required outputs saved and checked?"}
   Saved -->|No| Hold["Preserve results; reconcile failure without advancing"]
-  Saved -->|Yes| Assess["5. Assess fit/confidence per track; optional specialist"]
-  Assess --> Audit["6. Audit every candidate, exclusions and gaps; optional specialist"]
+  Saved -->|Yes| Assess["5. Assess fit/confidence per track"]
+  Assess --> Audit["6. Audit every candidate, exclusions and gaps"]
   Audit --> Final["Save the audit; show separate Remote and Relocation priorities"]
 ```
 
@@ -87,7 +87,7 @@ Remote evidence must apply to hiring someone in your actual working location. A 
 
 [Validation](step4-data-validation.html) checks structure and preserves accepted research unchanged. It does not certify the truth of every claim. [Scoring](step5-scoring.html) assigns categorical fit and confidence independently to each supported track.
 
-The [final audit](step6-final-ranking.html) checks missing candidates, confidence and misuse of evidence before assigning priorities. Optional specialists can perform scoring or the audit; declining one leaves the required work on the current model.
+The [final audit](step6-final-ranking.html) checks missing candidates, confidence and misuse of evidence before assigning priorities. Scoring and the audit stay on your current model and effort. The workflow continues directly between these steps unless it needs a material clarification or repair decision.
 
 ## Your result
 

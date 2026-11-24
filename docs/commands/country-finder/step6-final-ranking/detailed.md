@@ -23,7 +23,7 @@ The final step checks whether the evidence supports the assessments, then produc
 
 ```mermaid
 flowchart TD
-  Start["Use the current model or optional specialist"] --> Audit["Check confidence, candidate coverage and evidence use"]
+  Start["Audit on your current model and effort"] --> Audit["Check confidence, candidate coverage and evidence use"]
   Audit --> Missing{"Expected research not performed?"}
   Missing -->|Yes| Repair["Return for scoped recovery; preserve saved evidence"]
   Missing -->|No| Fits["Confirm supported fits, access and pay conditions"]

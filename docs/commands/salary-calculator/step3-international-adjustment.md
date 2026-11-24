@@ -44,4 +44,4 @@ Supported zero is valid. Unsupported percentages become **Adjustment not estimab
 
 ## What happens next
 
-The assistant saves estimates, confidence and gaps to `salary-calculator-03-adjustments.md`; chat shows counts. An optional [specialist]({{ '/docs/specialist-agents.html' | relative_url }}) can run the step before [Table calculation](step4-table-calculation.html).
+The assistant saves estimates, confidence and gaps to `salary-calculator-03-adjustments.md`; chat shows counts. The analysis runs on your current model and effort before [Table calculation](step4-table-calculation.html).

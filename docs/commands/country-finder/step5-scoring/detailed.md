@@ -23,7 +23,7 @@ Scoring turns usable research into a fit assessment for each track. It keeps opp
 
 ```mermaid
 flowchart TD
-  Start(["Offer the optional deep-reasoner<br/>Or use your current model"]) --> Carry["Read all Step 2 countries<br/>Carry explicit exclusions with their reasons"]
+  Start(["Assess on your current model and effort"]) --> Carry["Read all Step 2 countries<br/>Carry explicit exclusions with their reasons"]
   Carry --> Remote["Assess all Remote tracks first<br/>Missing or unusable evidence stays not scored"]
   Remote --> Floor{"Whole comparable range below a hard floor?"}
   Floor -->|Yes| Exclude["Exclude Remote<br/>Record the exact shortfall"]
@@ -61,7 +61,7 @@ Salary Calculator estimates local-employee targets. Those targets cannot be reus
 
 The saved assessment retains the evidence, fit, confidence, exclusions and gaps for each track. Chat shows brief counts rather than replacing the report with an unexplained ranking.
 
-An optional specialist can perform this step, but declining leaves the assessment on your current model. [Final ranking](../step6-final-ranking.html) always follows for the nonempty candidate scope and audits the assumptions before assigning application priorities.
+The assessment runs on your current model and effort without a model-selection question. [Final ranking](../step6-final-ranking.html) always follows for the nonempty candidate scope and audits the assumptions before assigning application priorities.
 
 A later contradiction of an early exclusion returns for a repair decision. The scoring step does not silently rewrite the source research or change the original country scope.
 

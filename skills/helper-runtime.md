@@ -7,7 +7,7 @@ description: Execution, shared formatting contract and explicit fallback for the
 
 Read bundled `data/output-contracts.json` as data when a step needs presentation tokens or mechanical bounds. It is the single source for those literals, including during an approved manual run. Semantic decisions remain in the step prompts. Do not copy the contract into an adapter or create another constants file.
 
-Check an available Python 3.11+ interpreter in the current environment. The desktop, terminal and specialist may differ. `python3` is an example; use an available `python` or `py -3` on Windows if appropriate. Never install Python/tzdata, change permissions or switch models automatically.
+Check an available Python 3.11+ interpreter in the current environment. Desktop and terminal environments may differ. `python3` is an example; use an available `python` or `py -3` on Windows if appropriate. Never install Python/tzdata, change permissions or switch models automatically.
 
 Invoke the resolved installed `helpers/compass.py` path with `-I -B` and one subcommand. Send JSON through stdin, not shell-interpolated candidate text. Every request includes `schema_version: 1`; other fields are defined in the relevant reference. Success returns `{schema_version, input, result}`. Check echoed inputs against the original sources. Do not save the transient JSON in the workspace or installation.
 
@@ -28,7 +28,7 @@ Read only the applicable interface:
 - Country Finder/Salaries rendering and saved-output checks: `skills/output-helper.md`.
 - Existing per-country salary arithmetic: `skills/salary-calculation-helper.md`.
 
-`ingest` writes only existing research/report and stored-data files; `run-start` creates the fixed base when absent, new run metadata and optional profile copies. `portal-save` writes a new country report and its metadata under the same base. `workspace-base` writes only with `create: true`, creating that base directory. The parent invokes these writes. Other operations are read-only; the parent normally runs them too. A specialist with execution may use a read-only operation, except Salary Calculator's numeric preparation still belongs to the parent. A specialist without execution returns the exact pending helper request to the parent, never guesses, asks the user or saves a partial final deliverable. Continue the approved assignment under the shared runtime's pending-request rule.
+`ingest` writes only existing research/report and stored-data files; `run-start` creates the fixed base when absent, new run metadata and optional profile copies. `portal-save` writes a new country report and its metadata under the same base. `workspace-base` writes only with `create: true`, creating that base directory. The parent invokes these writes. Other operations are read-only and are also run by the parent. Resolve unavailable execution through the failure rules below; never guess a result or save a partial final deliverable.
 
 `run-list` also supports Job Screener under the registry's profile-only workflows. Its `ready`/`profile_missing` status checks only nonempty profile presence; it never establishes human confirmation or completion and never reads/writes a JS checkpoint. Do not pass JS to `state-check` or `resolve-files`; its profile names stay unchanged.
 

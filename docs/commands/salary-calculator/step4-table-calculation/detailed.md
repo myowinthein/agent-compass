@@ -40,10 +40,8 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  Exact["Exact results ready"] --> Specialist{"Use the optional AI reviewer?"}
-  Specialist -->|Yes| Review["Review source inputs and numeric results"]
-  Specialist -->|No| Compare["Compare visa rules and personal floors without raising targets"]
-  Review --> Compare
+  Exact["Exact results ready"] --> Review["Review source inputs and numeric results on your current model"]
+  Review --> Compare["Compare visa rules and personal floors without raising targets"]
   Compare --> Format["Round each display independently and order the rows"]
   Format --> Save{"Saved table checks pass?"}
   Save -->|No| Hold["Keep the result unverified and resolve the gap"]
@@ -52,11 +50,11 @@ flowchart TD
 
 ## Calculation runtime
 
-Both hosts use the bundled standard-library Python helpers, requiring Python 3.11 or later. The main conversation prepares all eligible rows and obtains their exact calculations and formatted table together, before any optional AI calculator review. It does not need separate calculation calls for every country first. The saved table still receives an independent check against those inputs before the step completes.
+Both hosts use the bundled standard-library Python helpers, requiring Python 3.11 or later. The main conversation prepares all eligible rows and obtains their exact calculations and formatted table together, then reviews them against saved sources. It does not need separate calculation calls for every country first. The saved table still receives an independent check against those inputs before the step completes.
 
 These are fixed helpers shipped with Compass. The agent does not generate a wrapper or arithmetic program during the search. Research quality, visa comparability, skipped countries and any evidence-supported revision remain decisions for the agent to assess and explain.
 
-If execution is unavailable, you choose repair or a disclosed manual fallback. Invalid data still needs clarification or a skip; missing package files need repair. Choosing an AI specialist is a separate decision and does not establish that the Python calculation ran.
+If execution is unavailable, you choose repair or a disclosed manual fallback. Invalid data still needs clarification or a skip; missing package files need repair. The saved work identifies which calculation method actually ran.
 
 ## Calculation rules
 

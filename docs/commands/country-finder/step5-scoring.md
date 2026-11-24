@@ -38,4 +38,4 @@ Sponsorship can use an optional compatible Salary Calculator [visa-pay compariso
 
 ## What happens next
 
-The assistant saves `country-finder-05-assessment.md` and shows brief counts. An optional [specialist]({{ '/docs/specialist-agents.html' | relative_url }}) can run the step; [Final ranking](step6-final-ranking.html) always follows.
+The assistant saves `country-finder-05-assessment.md` and shows brief counts. The step runs on your current model and effort; [Final ranking](step6-final-ranking.html) always follows.

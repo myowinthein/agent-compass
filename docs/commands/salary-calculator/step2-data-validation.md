@@ -39,4 +39,4 @@ Generated blocks use top-level `Country:` fields. Ambiguity needs clarification.
 
 The report retains rejection and missing-country reasons. A duplicate with a retained original is not a failed country.
 
-With stored countries, continue to [International adjustment](step3-international-adjustment.html). Otherwise, offer evidence repair or stop before specialists or career-ladder intake.
+With stored countries, continue to [International adjustment](step3-international-adjustment.html). Otherwise, offer evidence repair or stop before career-ladder intake.

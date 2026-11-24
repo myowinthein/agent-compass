@@ -40,7 +40,7 @@ module CompassValidation
     workflows, skills = validate_entry_points(root)
     validate_question_mechanism(root, workflows)
     validate_skills(root, skills)
-    validate_agents(root)
+    validate_execution(root)
     validate_references(root, contract)
     validate_docs_frontmatter(root)
     true
@@ -192,24 +192,9 @@ module CompassValidation
     end
   end
 
-  def validate_agents(root)
-    # Runtime routing selects these files dynamically, outside literal link checks.
-    %w[calculator deep-reasoner].each { |role| resource(root, "agents/#{role}.md") }
-    root.glob("agents/*.md").each do |agent|
-      role = agent.basename(".md").to_s
-      metadata = frontmatter(agent)
-      check(metadata["name"] == role, "Agent name must match its shared role: #{role}")
-      check(metadata["model"].is_a?(String) && !metadata["model"].empty?,
-            "Missing Claude specialist model: #{role}")
-      check(%w[high max].include?(metadata["effort"]),
-            "Specialist must declare an explicit shared high/max effort: #{role}")
-      procedure = resource(root, "prompts/shared/#{role}.md")
-      check(read(agent).include?("${CLAUDE_PLUGIN_ROOT}/prompts/shared/runtime.md"),
-            "Agent must load shared routing and step boundaries: #{role}")
-      check(read(agent).include?("${CLAUDE_PLUGIN_ROOT}/prompts/shared/#{role}.md"),
-            "Agent must reference its shared procedure: #{role}")
-      check(!read(agent).include?(read(procedure).strip), "Agent duplicates specialist procedure: #{role}")
-    end
+  def validate_execution(root)
+    check(root.glob("agents/**/*.md").empty?,
+          "Keep analysis and audits on the current agent; do not bundle model-selecting agents")
   end
 
   def validate_references(root, contract)
@@ -238,7 +223,7 @@ module CompassValidation
       workspace = Pathname(temp).join("candidate workspace")
       installation.mkpath
       workspace.mkpath
-      %w[.claude-plugin .codex-plugin workflows prompts skills agents helpers data assets].each do |component|
+      %w[.claude-plugin .codex-plugin workflows prompts skills helpers data assets].each do |component|
         FileUtils.cp_r(Pathname(root).join(component), installation)
       end
       Dir.chdir(workspace) { validate(installation) }

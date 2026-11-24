@@ -42,7 +42,7 @@ Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). 
 5. [Scoring](country-finder/step5-scoring.html): assess market demand, personal fit, access, pay and confidence independently.
 6. [Final ranking](country-finder/step6-final-ranking.html): audit the evidence and assign separate Remote and Relocation priorities.
 
-Scoring and ranking can use an optional [specialist]({{ '/docs/specialist-agents.html' | relative_url }}). Declining keeps the required step on your current model.
+Scoring and the final audit run on your current model and effort, continuing without model-selection prompts. See [Model and effort]({{ '/docs/specialist-agents.html' | relative_url }}).
 
 ## Your result
 

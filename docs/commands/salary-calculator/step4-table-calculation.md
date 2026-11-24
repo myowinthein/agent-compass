@@ -27,7 +27,7 @@ flowchart TD
 
 Both hosts use bundled Python 3.11+ helpers without extra packages. One calculation handles the eligible rows and formats their table together; the saved file is checked separately. Helpers check supplied inputs, arithmetic and saved formatting, not market evidence or legal eligibility.
 
-Unavailable execution needs your choice to repair it or use disclosed manual processing. Invalid data still needs correction; missing package files need repair. Choosing an [AI calculator specialist]({{ '/docs/specialist-agents.html' | relative_url }}#calculator-versus-python-helper) is separate from this arithmetic method.
+Unavailable execution needs your choice to repair it or use disclosed manual processing. Invalid data still needs correction; missing package files need repair. Your current agent reviews the helper inputs and results against saved evidence.
 
 ## Calculation rules
 

@@ -22,7 +22,7 @@ International adjustment estimates a supported reduction from local benchmarks f
 
 ```mermaid
 flowchart TD
-  Start(["Read stored salary evidence and confirmed profiles<br/>Clarify material missing context"]) --> Model["Offer the optional deep-reasoner<br/>Or use your current model"]
+  Start(["Read stored salary evidence and confirmed profiles<br/>Clarify material missing context"]) --> Model["Analyse on your current model and effort"]
   Model --> Review["Review each country's evidence<br/>Use the confirmed employment path and actual status"]
   Review --> Basis{"One common percentage supported for both tiers?"}
   Basis -->|Yes| Estimate["State the range, typical reduction and evidence basis<br/>Assign label and confidence"]
@@ -57,9 +57,9 @@ For example, a well-evidenced lack of a measurable pay difference can support ze
 
 ## What happens next
 
-The adjustment file saves estimates, evidence basis, confidence and gaps. Chat gives counts. A specialist may carry out the analysis if you choose one; declining keeps the step on the current model.
+The adjustment file saves estimates, evidence basis, confidence and gaps. Chat gives counts. The analysis runs on your current model and effort without a model-selection question.
 
-[Table calculation](../step4-table-calculation.html#calculation-rules) skips countries whose adjustment cannot be estimated rather than substituting 0%. If no country's adjustment can be estimated, the main conversation records the skip-only outcome and offers evidence repair or stop without an unnecessary calculator handoff.
+[Table calculation](../step4-table-calculation.html#calculation-rules) skips countries whose adjustment cannot be estimated rather than substituting 0%. If no country's adjustment can be estimated, the main conversation records the skip-only outcome and offers evidence repair or stop before career-ladder intake.
 
 ## Explore the source
 

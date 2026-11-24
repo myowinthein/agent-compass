@@ -13,7 +13,7 @@ Use the runtime/workflow **Question points** maps for questions in their support
 | **Input** | Missing candidate facts, intent, country names, evidence, explanation or feedback. | Exact missing facts and why needed; include units/format or known candidates when useful, never fabricated alternatives. |
 | **Review** | Confirmation of a shown profile, career ladder, repair plan or persistent edit. | Concrete content/paths/targets/effects and the workflow's exact approve/revise/partial/decline choices. |
 
-Follow-ups preserve separate decisions: Single → Input for custom values, Multi → Review for repairs requiring approval, Review → Input for corrections. Selection authorizes only what the workflow and shown action explicitly cover. Country selection never confirms candidate facts, completed research or overwrites. Preserve profile-save, ladder, specialist and repair gates.
+Follow-ups preserve separate decisions: Single → Input for custom values, Multi → Review for repairs requiring approval, Review → Input for corrections. Selection authorizes only what the workflow and shown action explicitly cover. Country selection never confirms candidate facts, completed research or overwrites. Preserve profile-save, ladder and repair gates.
 
 ## Route once, then ask
 

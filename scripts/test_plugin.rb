@@ -61,17 +61,16 @@ end
 
 Dir.mktmpdir("compass-icon-check-") do |temp|
   installation = Pathname(temp)
-  %w[.claude-plugin .codex-plugin workflows prompts skills agents helpers data assets].each do |component|
+  %w[.claude-plugin .codex-plugin workflows prompts skills helpers data assets].each do |component|
     FileUtils.cp_r(root.join(component), installation)
   end
-  %w[calculator deep-reasoner].each do |role|
-    agent = installation.join("agents/#{role}.md")
-    original_agent = agent.binread
-    agent.delete
-    rejected = rejected_with.call(installation, ->(message) { message.start_with?("Missing packaged resource:") && message.end_with?("agents/#{role}.md") }) { agent.binwrite(original_agent) }
-    assert.call(rejected, "Validator accepted a package without the #{role} specialist")
-    assert.call(CompassValidation.validate(installation), "Restored #{role} package must validate")
-  end
+  # Bundled model-selecting agents would reintroduce a separate configuration.
+  agent = installation.join("agents/legacy-reviewer.md")
+  agent.dirname.mkpath
+  agent.write("---\nname: legacy-reviewer\nmodel: opus\neffort: high\n---\n")
+  rejected = rejected_with.call(installation, "Keep analysis and audits on the current agent; do not bundle model-selecting agents") { agent.delete }
+  assert.call(rejected, "Validator accepted a bundled model-selecting agent")
+  assert.call(CompassValidation.validate(installation), "Current-agent package must validate")
   # Broken/relocated installations must not silently drop QM or regain
   # host-specific question instructions. These checks exercise packaging,
   # not native rendering or model compliance with the Markdown contract.

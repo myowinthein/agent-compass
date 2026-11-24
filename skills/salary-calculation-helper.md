@@ -9,11 +9,11 @@ Use this procedure for newly calculated Step 4 targets and any newly rendered St
 
 Read skills/helper-runtime.md for execution and the shared run-scoped fallback. Step 4's prompt owns the semantic calculation procedure; data/output-contracts.json owns the literal formatting and mechanical bounds. Both hosts reuse `helpers/salary_targets.py` for arithmetic. The shared `render-salary` operation in helpers/compass.py calls that same implementation and renders the canonical table under skills/output-helper.md. Neither researches, chooses visa states or interprets eligibility.
 
-## Execution and handoff
+## Execution and review
 
-The parent reads the required workspace inputs and normally calls `render-salary` once for all eligible rows under skills/output-helper.md. That call already returns each country's exact `calculations` and the canonical table; do not first run a separate per-country calculation for the same rows. Give any optional calculator specialist that request and its actual results as task context, not a new workspace file. The specialist checks echoed inputs against the original files and applies the table rules. No eligible rows means the existing skip-only path, without numeric/rendering calls.
+The parent reads the required workspace inputs and normally calls `render-salary` once for all eligible rows under skills/output-helper.md. That call already returns each country's exact `calculations` and the canonical table; do not first run a separate per-country calculation for the same rows. Check the echoed inputs against the original files and apply the table rules on the current agent; keep requests/results transient. No eligible rows means the existing skip-only path, without numeric/rendering calls.
 
-For new calculations discovered during an audit, a specialist returns a pending calculation request to the parent, with the country, exact raw inputs and evidence-backed reason for any revision. It does not save an unfinished final result, ask the user or advance state. The parent runs the helper and continues the approved assignment under the pending-request rule in `prompts/shared/runtime.md`. When running without a specialist, the parent does both tasks.
+For new calculations discovered during an audit, identify the country, exact raw inputs and evidence-backed reason for any revision, then run the helper and review its results before finalising. Do not save an unfinished final result or advance state while numeric work is pending.
 
 Execution, paths, Python availability and the run-scoped manual choice follow skills/helper-runtime.md; reuse that resolution in the same execution environment. For isolated arithmetic when complete rendering inputs are not ready, the retained v1 CLI accepts one country:
 

@@ -56,7 +56,7 @@ For example, a country can have complete salary tiers but no usable adjustment e
 
 The validated-data file holds accepted research. The original research file retains the raw findings and separate Validation report, including rejected inputs and missing-country reasons.
 
-With stored countries, continue to [International adjustment](../step3-international-adjustment.html). If none remain usable, the workflow offers evidence repair or stop before specialist questions, career-ladder intake or an empty final table.
+With stored countries, continue to [International adjustment](../step3-international-adjustment.html). If none remain usable, the workflow offers evidence repair or stop before career-ladder intake or an empty final table.
 
 Structural validation does not verify market claims, select salary targets or establish visa eligibility. Those require their later evidence and calculation steps.
 

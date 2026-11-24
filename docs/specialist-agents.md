@@ -1,44 +1,43 @@
 ---
 layout: default
-title: Specialist agents
+title: Model and effort
 nav_exclude: true
 permalink: /docs/specialist-agents.html
-description: Learn when Country Finder and Salary Calculator can offer optional specialists, how model and effort choices work and which steps they support.
+description: Compass uses your current model and effort for analysis and audits, with separate research tasks and shared Python arithmetic helpers.
 detailed: /docs/specialist-agents/detailed.html
 has_toc: false
 ---
 
-# Specialist agents
+# Model and effort
 
 {% include guide-depth.html %}
 
-Country Finder and Salary Calculator can offer specialists for selected steps. You can accept or stay on your current model.
+Country Finder and Salary Calculator use your current model and reasoning effort for analysis, calculation review and final audits. Choose those settings in your client; Compass continues without asking you to select another model between steps.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Offer["Explain the available role, model, effort and cost"] --> Choose["Use the specialist or keep your current model"]
-  Choose --> Verify["Return the result to the main conversation for checks"]
+  Evidence["Collect and validate evidence"] --> Analyse["Analyse on your current model and effort"]
+  Analyse --> Audit["Run the required final audit and saved-output checks"]
+  Audit --> Results["Present the results"]
 ```
 
-## Requested models
+<span id="specialist-agents"></span>
+<span id="requested-models"></span>
 
-| Specialist | Claude | Codex | Steps |
-|---|---|---|---|
-| `deep-reasoner` | Opus, high effort | `gpt-6.1-sol`, high effort | Country scoring/ranking; salary adjustment/final audit. |
-| `calculator` | Opus, max effort | `gpt-6.1-sol`, max effort | Salary input and table review. |
+## Your model and effort
 
-Availability varies. Matching effort labels do not imply equal capability or token use.
+Compass does not prescribe a higher model or effort. Your selection leaves the required research, analysis and audits in place.
 
 ## Your choice
 
-The offer names the model and effort, and explains extra token use and possible cost or delay. Approval covers that step unless you choose wider scope. Unavailable settings or failed handoffs need your choice; substitutions are never silent.
+The workflow still asks for necessary candidate facts, scope decisions and confirmations. Salary Calculator's career ladder needs your confirmation before its audit; ordinary step transitions need no model approval.
 
-Declining still completes the step on your current model without changing persistent settings.
+<span id="calculator-versus-python-helper"></span>
 
-## Calculator versus Python helper
+## Calculations and research
 
-The calculator is an AI reviewer. Shared Python helpers perform arithmetic with or without it. The main conversation prepares results; the specialist checks saved inputs and returns any further calculation request.
+Shared Python helpers calculate exact salary amounts. Your current agent checks their inputs and results against saved evidence. Unavailable execution needs the existing [manual-fallback choice]({{ '/docs/commands/salary-calculator/step4-table-calculation.html#calculation-runtime' | relative_url }}).
 
-Unavailable execution needs an explicit [manual-fallback choice]({{ '/docs/commands/salary-calculator/step4-table-calculation.html#calculation-runtime' | relative_url }}). Research tasks are separate and do not inherit specialist model settings.
+Research can use separate tasks to keep each brief isolated. These inherit your current model and effort where supported; otherwise the workflow uses its existing manual-research fallback. Compass does not offer a different research configuration.

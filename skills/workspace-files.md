@@ -17,7 +17,7 @@ Before accessing Country Finder or Salary Calculator artifacts, apply `skills/he
 
 Use `salary-calculator` for that workflow. Do not wrap `state-check` with a redundant `resolve-files` call for the same unchanged workspace/workflow. Reuse a resolution only while its run, registry and relevant file metadata remain unchanged; recheck before writes and after a resume. Resolve a producer separately before an optional cross-workflow read; one workflow's naming never controls the other. Filename resolution alone establishes no completion, profile compatibility or permission to overwrite anything.
 
-The result contains `files` keyed by artifact (`research`, `validated-data`, `final-results`, etc., plus `state`), `existing_outputs`, and `naming` (`current`, `legacy` or `mixed`). Prefix each returned filename with the selected workspace path. If paths changed since a handoff, stop and reconcile before saving. Pass specialists the resolved absolute input/output paths and this rule, not just canonical names. Completion messages name the actual saved file.
+The result contains `files` keyed by artifact (`research`, `validated-data`, `final-results`, etc., plus `state`), `existing_outputs`, and `naming` (`current`, `legacy` or `mixed`). Prefix each returned filename with the selected workspace path. If paths changed since a handoff, stop and reconcile before saving. Use the resolved absolute input/output paths throughout the workflow, not just canonical names. Completion messages name the actual saved file.
 
 ## Resolution policy
 

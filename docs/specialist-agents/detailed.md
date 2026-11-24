@@ -1,79 +1,69 @@
 ---
-title: "Specialist agents"
+title: "Model and effort"
 nav_exclude: true
 has_toc: false
 overview: /docs/specialist-agents.html
 permalink: /docs/specialist-agents/detailed.html
 title_category: Details
-description: "Specialists are optional assistants for selected reasoning or calculation-review steps. The main conversation keeps your questions, routing decisions and progress control, then checks the returned work before continuing."
+description: "How your selected model carries out Compass analysis and audits, while research isolation and exact arithmetic keep their separate roles."
 source_files:
-  - prompts/shared/deep-reasoner.md
-  - prompts/shared/calculator.md
+  - prompts/shared/runtime.md
+  - skills/salary-calculation-helper.md
 ---
 
-# Specialist agents
+# Model and effort
 
 {% include guide-depth.html %}
 
-Specialists are optional assistants for selected reasoning or calculation-review steps. The main conversation keeps your questions, routing decisions and progress control, then checks the returned work before continuing.
+Your current model and reasoning effort carry through Country Finder's scoring and final ranking, and Salary Calculator's adjustment, calculation review and final audit. There is no separate AI reviewer to choose or configure at those steps.
 
 ## Flow
 
 ```mermaid
 flowchart TD
-  Start(["A step offers a specialist"]) --> Available{"Requested model and effort selectable?"}
-  Available -->|Yes| Offer["Name the role, model and effort<br/>Explain extra tokens and possible cost or time"]
-  Offer --> Choice{"Use the specialist?"}
-  Choice -->|No| Current["Complete the step on your current model"]
-  Choice -->|Yes| Task["Run only the approved step"]
-  Available -->|No| Alternative["Explain the limit<br/>Wait for your choice of available settings"]
-  Alternative -->|Current model| Current
-  Alternative -->|Available specialist| Task
-  Task --> Success{"Handoff succeeds?"}
-  Success -->|No| Retry["Report failure<br/>Wait for retry or another choice"]
-  Retry --> Choice
-  Success -->|Yes| Return["Return the output to the main conversation"]
-  Current --> Check["Check the result and continue the workflow"]
-  Return --> Check
+  Evidence["Read the saved evidence and confirmed candidate facts"] --> Analyse["Complete the analysis on your current model and effort"]
+  Analyse --> Required{"Required clarification or confirmation?"}
+  Required -->|Yes| Answer["Wait for your answer"]
+  Answer --> Analyse
+  Required -->|No| Check["Run the required checks and save the output"]
+  Check --> Next["Continue to the next step or present the final result"]
 ```
 
-## Requested models
+<span id="specialist-agents"></span>
+<span id="requested-models"></span>
 
-| Role | Claude request | Codex request | Typical work |
-|---|---|---|---|
-| deep-reasoner | Opus, high effort | gpt-6.1-sol, high effort | Country scoring and ranking; salary adjustment and final audit. |
-| calculator | Opus, max effort | gpt-6.1-sol, max effort | Salary input, numeric-result and table review. |
+## Your model and effort
 
-The role definitions supply effort for both hosts and Claude's model choice. Matching effort labels describe intent, not equivalent capability, token use or cost. Research collection uses separate tasks and does not inherit these specialist settings.
+Choose the model and effort in your client to suit your needs. Compass does not switch settings or recommend a separate configuration halfway through the workflow. The same step instructions, evidence standards and output checks apply to the configuration you choose.
+
+For example, Country Finder finishes scoring, checks the saved assessment and proceeds to the final audit on the current agent. It does not pause to offer a second model for ranking. The audit still reads the saved sources and challenges unsupported conclusions.
 
 ## Your choice
 
-Before a handoff, the main conversation checks whether the requested configuration is actually available, names the role, model and effort, and explains extra token use and possible cost or delay. You can accept or keep the step on your current model.
+Removing model-selection prompts leaves the decisions that need your input intact. Missing material facts, repairs to incompatible saved work and Salary Calculator's career-ladder confirmation can still pause the workflow. Once those decisions are settled, it continues until the next required question or completion.
 
-Your choice applies to that handoff unless you explicitly choose a wider scope. It does not edit persistent client settings or switch the model in your main conversation. Unavailable or unknown settings require an actual alternative choice; substitutions are not silent.
+<span id="what-the-specialist-receives"></span>
 
-For example, access to a delegation tool does not prove the requested model and effort can be selected together. The main conversation explains that limit before launch rather than treating a similarly named default as equivalent.
+## Research context
 
-## What the specialist receives
+Separate research tasks receive self-contained country briefs and use live sources without the main conversation or unrelated country results. This helps keep evidence collection scoped to the assigned question. The main conversation collects the findings, checks coverage and controls saved progress.
 
-The task supplies the installed package's runtime and relevant procedure, the selected step and the run workspace containing its inputs. A fresh context is not expected to remember your earlier conversation or invent missing facts.
+Where the host supports inheritance of your current model and effort, research tasks use it. If matching those settings cannot be established, Compass presents its existing manual research prompts instead of selecting another configuration. Missing browsing or isolated-context capabilities use that same fallback.
 
-Questions are handled in the main conversation. For Salary Calculator's final audit, the career ladder is confirmed there before handoff and read by the specialist without asking you to approve the same ladder again.
+<span id="calculator-versus-python-helper"></span>
 
-The specialist returns the result and saved output location. Only the main conversation updates saved progress. Missing facts, blocked evidence or a failed handoff return to the main conversation for the appropriate decision rather than a fabricated completion.
+## Exact arithmetic and review
 
-## Calculator versus Python helper
+The shared Python helper remains the arithmetic engine. The current agent prepares the inputs, checks echoed values against saved sources and reviews the returned calculations and table. A successful calculation does not establish that the research or transcribed inputs are correct.
 
-The calculator is an AI reviewer, not the arithmetic engine. Both hosts use the shared Python helper for supported calculations regardless of whether you choose that specialist. The main conversation prepares inputs and results, and the specialist checks them against saved evidence.
+If the final audit supports a numeric revision, the agent runs the helper for the affected values before saving the final result. Earlier research and the pre-audit table remain preserved. Unavailable execution uses the existing [manual-fallback decision](../commands/salary-calculator/step4-table-calculation.html#calculation-runtime), with the chosen method disclosed in the saved work.
 
-A request for new numeric work returns to the main conversation; the specialist does not improvise exact calculations or save a partial final table. If execution is unavailable, the [manual-fallback decision](../commands/salary-calculator/step4-table-calculation.html#calculation-runtime) is separate from accepting an AI reviewer.
+<span id="continue-after-a-handoff"></span>
 
-## Continue after a handoff
+## Completion
 
-Declining a specialist does not skip the required step. A failed accepted handoff needs your choice of retry, another available configuration or the current model before continuation. A successful return is checked against the step's output and completion rules.
-
-The current declarations are in the [deep-reasoner definition](https://github.com/myowinthein/agent-compass/blob/main/agents/deep-reasoner.md) and [calculator definition](https://github.com/myowinthein/agent-compass/blob/main/agents/calculator.md). The [routing policy](https://github.com/myowinthein/agent-compass/blob/main/prompts/shared/runtime.md#specialist-routing) describes the host-specific controls for readers exploring implementation detail.
+A step completes only after its required outputs, confirmations and checks succeed. Removing a separate reviewer does not remove Country Finder's independent Remote and Relocation tables or Salary Calculator's final verification. Completed runs continue to replay their saved finals.
 
 ## Explore the source
 
-For implementation details, read [prompts/shared/deep-reasoner.md](https://github.com/myowinthein/agent-compass/blob/main/prompts/shared/deep-reasoner.md), [prompts/shared/calculator.md](https://github.com/myowinthein/agent-compass/blob/main/prompts/shared/calculator.md).
+Read the [model and effort policy](https://github.com/myowinthein/agent-compass/blob/main/prompts/shared/runtime.md#model-and-effort) and [salary calculation procedure](https://github.com/myowinthein/agent-compass/blob/main/skills/salary-calculation-helper.md) for the implementation contracts.

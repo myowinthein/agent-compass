@@ -43,7 +43,7 @@ Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). 
 4. [Calculation](salary-calculator/step4-table-calculation.html): prepare annual targets and monthly references.
 5. [Final verification](salary-calculator/step5b-final-verification.html): confirm the career ladder, then audit positioning and calibration.
 
-Optional [specialists]({{ '/docs/specialist-agents.html' | relative_url }}) do not change the required steps or shared arithmetic.
+Adjustment, calculation review and the final audit use your current model and effort. Shared Python helpers perform the arithmetic. See [Model and effort]({{ '/docs/specialist-agents.html' | relative_url }}).
 
 ## Your result
 

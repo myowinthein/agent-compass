@@ -34,7 +34,7 @@ Do not use native tools. Instead return one JSON object with these fields:
 message: the actual user-facing response, with its prescribed format;
 writes: object mapping workspace-relative filenames to their complete new text;
 helpers: list of {operation, input} requests for the parent to execute;
-handoffs: list of specialist roles to request;
+handoffs: list of analysis/calculation agent roles to request (none are bundled);
 questions: list of actual user questions, also present in message.
 Empty objects/lists mean no such operations. Do not report operations as completed
 before their results are returned. The driver executes requested helpers and
@@ -246,7 +246,7 @@ def fixture_cases():
         deadline[filename] = deadline[filename].replace("Processing time: Unknown.",
             "Processing time: Official source https://official.example/processing (2026-10-28) establishes a mandatory minimum of twelve months after an offer; this cannot meet the confirmed one-month deadline.", 1)
     cases.append(dict(id="cf-deadline-priority", group="cf-deadline", workflow="country-finder", files=deadline, max_turns=8,
-                      user="Complete Step 6 only from the saved Step 5 checkpoint. Current-model audit is confirmed; "
+                      user="Complete Step 6 only from the saved Step 5 checkpoint. Candidate context is confirmed; "
                       "no Salary Calculator producer exists. All expected research and follow-up is complete. "
                       "Use stored fictional evidence only; do not research or rewrite earlier artifacts."))
     for variant, question, answer in (
@@ -316,8 +316,7 @@ def fixture_cases():
                       "Its saved scope is valid; research has not started yet. Execute Part A only and stop before Part B. "
                       "Do not offer new countries or ask me to confirm that list again."))
     cases.append(dict(id="cf-fit-with-unverified-access", group="cf-final", workflow="country-finder", files=country_final_files(), max_turns=8,
-                      user="Complete Step 6 only from the saved Step 5 checkpoint. All context is confirmed; the user declined "
-                      "specialist routing for this run. No Salary Calculator producer exists. Use the stored fictional evidence only. "
+                      user="Complete Step 6 only from the saved Step 5 checkpoint. All context is confirmed. No Salary Calculator producer exists. Use the stored fictional evidence only. "
                       "All expected initial and targeted research was completed; unavailable facts remain unresolved. "
                       "Do not conduct new research or rewrite earlier artifacts."))
     scoring = country_final_files()
@@ -325,7 +324,7 @@ def fixture_cases():
     scoring[REGISTRY["country-finder"]["state"]] = state(4)
     cases.append(dict(id="cf-scoring-with-unverified-access", group="cf-scoring", workflow="country-finder", files=scoring,
                       user="Execute Step 5 scoring only, then stop before Step 6 as requested. Candidate context is confirmed, "
-                      "specialist routing was declined, no Salary Calculator producer exists and all expected research and "
+                      "no Salary Calculator producer exists and all expected research and "
                       "targeted follow-up is complete. Use only the saved fictional evidence; do not perform new research."))
     cases.append(dict(id="jd-independent-blockers", group="jd", workflow="job-screener", files=profiles(), user="""Profile loading already completed. Screen this single JD:
 ExampleCo, Senior Python backend engineer. Requires Python, SQL, Linux and APIs.
@@ -363,7 +362,7 @@ global tech board; pasted page contains three Germany Python listings dated
     for variant in ("annual", "incomparable", "pending"):
         files = salary_files()
         cases.append(dict(id=f"visa-refresh-{variant}", group=f"visa-{variant}", workflow="salary-calculator", files=files,
-                          user="Run the Step 5b audit; ladder and current-model execution already confirmed. " + {
+                          user="Run the Step 5b audit; ladder already confirmed. " + {
                               "annual": """Parent-approved visa-only evidence refresh: same candidate, route,
 annual gross base eligibility and 12-payment basis; new threshold EUR 65000/yr,
 effective 2026-10-28, source https://immigration.example/new, accessed/as of
@@ -378,8 +377,8 @@ ordinary monthly pay plus a mandatory component whose base-salary-equivalent
 cannot be isolated; the definition cannot be represented as annual base / 12.
 No market evidence changed. No manual arithmetic fallback approved.
 """,
-                              "pending": """The Step 5b specialist has returned a blocked request: current route
-status is essential and the stored source no longer establishes it. The parent
+                              "pending": """The Step 5b audit is blocked: current route status is essential
+and the stored source no longer establishes it. The parent
 has not asked the user to choose refresh, dated snapshot, or stop yet. No new
 evidence or helper result is available. Continue as the parent.
 """,
@@ -394,7 +393,7 @@ evidence or helper result is available. Continue as the parent.
         if variant == "resume-step4":
             files[n["adjustments"]] = "Germany: Adjustment not estimable. Missing quantitative local-versus-overseas evidence; generic sponsorship difficulty does not quantify pay.\n"
         cases.append(dict(id=f"no-adjustment-{variant}", group="no-adjustment", workflow="salary-calculator", files=files,
-                          user="Continue Salary Calculator from the saved checkpoint. All relevant candidate facts are confirmed. User declined specialist delegation for this run; use the current model. No additional quantitative adjustment evidence is available."))
+                          user="Continue Salary Calculator from the saved checkpoint. All relevant candidate facts are confirmed. No additional quantitative adjustment evidence is available."))
     return cases
 
 
@@ -486,7 +485,7 @@ def check(case, initial, final, trace):
         assert initial[case["final"]].strip() in messages and "complete" in messages.lower(), messages
         assert final == initial, "Completed replay changed bytes"
     elif group in ("cf-intake-reuse", "cf-intake-gaps", "sc-intake-reuse"):
-        assert not handoffs and set(operations) <= {"resolve-files", "state-check"}, "Intake started research or a specialist"
+        assert not handoffs and set(operations) <= {"resolve-files", "state-check"}, "Intake started research or a delegated analysis"
         assert final["profile.md"] == initial["profile.md"], "Intake changed the confirmed resume"
         assert writes <= {"situational-profile.md", names(case["workflow"])["criteria"] if case["workflow"] == "country-finder" else None,
                           REGISTRY[case["workflow"]]["state"]}, writes
@@ -544,7 +543,7 @@ def check(case, initial, final, trace):
                 assert not re.search(r"(?:your|person|candidate|group)\s+(?:name|label)", questions[0], re.I), questions
     elif group.startswith("cf-scope"):
         n = names("country-finder")
-        assert not handoffs, "Country selection invented a specialist handoff"
+        assert not handoffs, "Country selection invented an analysis handoff"
         assert writes <= {n["criteria"], n["candidates"]}, "Part A advanced state or wrote research before approval"
         assert final[REGISTRY["country-finder"]["state"]] == initial[REGISTRY["country-finder"]["state"]]
         assert not ({"batch-partition", "research-scan", "ingest", "render-cf"} & set(operations)), "Part A ran country research mechanics"
@@ -595,7 +594,7 @@ def check(case, initial, final, trace):
         assert json.loads(final[REGISTRY["country-finder"]["state"]])["last_completed_step"] == 5
     elif group in ("cf-final", "cf-deadline"):
         n = names("country-finder")
-        assert not handoffs and not questions, "Confirmed current-model audit introduced a new choice"
+        assert not handoffs and not questions, "Audit introduced an unnecessary choice"
         assert writes <= {n["final-results"], REGISTRY["country-finder"]["state"]}, "Audit overwrote earlier evidence"
         for path, content in initial.items():
             if path != REGISTRY["country-finder"]["state"]:
@@ -667,7 +666,7 @@ def check(case, initial, final, trace):
             assert saved["verification"] == "supplied", saved
     elif group.startswith("visa"):
         n = names("salary-calculator")
-        assert not handoffs, "Current-model execution was already chosen"
+        assert not handoffs, "Analysis and audits must stay on the current agent"
         assert all(final.get(k) == v for k, v in initial.items()
                    if k != REGISTRY["salary-calculator"]["state"]), "Audit rewrote an earlier artifact"
         if group == "visa-pending":
@@ -708,7 +707,7 @@ def check(case, initial, final, trace):
                             assert row["visa"]["state"] == "Unknown" and "visa" not in row["calculation"].get("comparisons", {}), row
     else:
         n = names("salary-calculator")
-        assert not handoffs and not ({"render-salary", "adjust-check", "check-saved"} & set(operations)), "Unestimable route invoked specialist or numeric/output helper"
+        assert not handoffs and not ({"render-salary", "adjust-check", "check-saved"} & set(operations)), "Unestimable route delegated analysis or invoked numeric/output helper"
         assert "Adjustment not estimable" in final[n["adjustments"]], final
         assert not re.search(r"^\s*(?:[-*]\s*)?(?:Typical midpoint(?: adjustment)?|International candidate adjustment range|Adjustment(?: percentage| percent| range)?)\s*(?:\(%\))?\s*[:=]\s*\d", final[n["adjustments"]], re.I | re.M), "Unestimable adjustment acquired a numeric estimate"
         output = final[n["salary-table"]]

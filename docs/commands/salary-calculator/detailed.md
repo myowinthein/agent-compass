@@ -79,7 +79,7 @@ Mainstream covers mid-size or mainstream local-market employers, while Premium c
 
 [Calculation](step4-table-calculation.html) applies the supported inputs consistently, produces annual and monthly references, and reports visa-pay comparisons separately. Targets are not inflated to clear a visa rule or your personal minimum.
 
-Before the [final audit](step5b-final-verification.html), you review the career ladder suited to the role. The audit then checks level positioning, the two segments, adjustments, arithmetic and evidence. Specialist routing is optional; a calculable search still needs that final verification.
+Before the [final audit](step5b-final-verification.html), you review the career ladder suited to the role. The audit then checks level positioning, the two segments, adjustments, arithmetic and evidence. Adjustment, calculation review and the final audit run on your current model and effort without model-selection prompts. A calculable search still needs that final verification.
 
 ## Your result
 

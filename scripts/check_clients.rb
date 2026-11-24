@@ -28,14 +28,14 @@ Dir.mktmpdir("compass-client-check-") do |temp|
                           "Claude exposes missing or duplicate workflows: #{output}")
   roles = output.scan(/^\s+Agents \((\d+)\)\s*([^\n]*)/)
   expected_roles = root.glob("agents/*.md").map { |file| file.basename(".md").to_s }.sort
-  CompassValidation.check(roles.length == 1 && roles[0][0].to_i == expected_roles.length && roles[0][1].split(", ").sort == expected_roles,
-                          "Claude exposes missing or duplicate specialists: #{output}")
+  CompassValidation.check(roles.sum { |count, _| count.to_i } == expected_roles.length && roles.flat_map { |count, entries| count.to_i.zero? ? [] : entries.split(", ") }.sort == expected_roles,
+                          "Claude exposes unexpected agents: #{output}")
   unless installed
     validation = run.call({}, "claude", "plugin", "validate", root.join(".claude-plugin/plugin.json").to_s)
     CompassValidation.check(!validation.match?(/Unknown field|unrecognized keys|No command files/i),
                             "Claude reports manifest compatibility warnings: #{validation}")
   end
-  puts "Claude: exactly four shared skills and two specialists.#{installed ? '' : ' No manifest compatibility warnings.'}"
+  puts "Claude: exactly four shared skills and no bundled agents.#{installed ? '' : ' No manifest compatibility warnings.'}"
 
   env = installed ? {} : { "CODEX_HOME" => File.join(temp, "codex") }
   unless installed

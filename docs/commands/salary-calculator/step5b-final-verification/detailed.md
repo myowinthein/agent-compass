@@ -26,8 +26,7 @@ flowchart TD
   Start(["Draft the career ladder for your actual role<br/>Or reuse a matching confirmed ladder"]) --> Confirm{"Confirmed for this target?"}
   Confirm -->|No| Edit["Show the ladder<br/>Wait for your confirmation or edits"]
   Edit --> Confirm
-  Confirm -->|Yes| Model["Offer the optional deep-reasoner<br/>Or use your current model"]
-  Model --> Audit["Audit candidate positioning, framework calibration,<br/>each country and framework recommendations"]
+  Confirm -->|Yes| Audit["Audit candidate positioning, framework calibration,<br/>each country and framework recommendations"]
   Audit --> Current{"Essential current visa evidence missing?"}
   Current -->|Yes| Choice["Wait for your choice<br/>Refresh evidence, use the dated snapshot or stop"]
   Choice -->|Approved evidence or snapshot| Verdict
@@ -48,7 +47,7 @@ The main conversation proposes a realistic ladder for the actual IT role, such a
 
 You review the full ladder and confirm it or request changes before it is saved. A previously confirmed ladder is reused only when it matches this role and target level; file existence alone is insufficient. A material mismatch needs clarification without silently replacing the old evidence.
 
-Saving the ladder completes substep 5a. The final step is complete only after the audit is saved and its required checks pass. A calculable search needs this audit whether or not a specialist performs it.
+Saving the ladder completes substep 5a. The final step is complete only after the audit is saved and its required checks pass. A calculable search needs this audit, which runs on your current model and effort.
 
 ## The four checks
 
@@ -77,7 +76,7 @@ Approved refresh evidence takes precedence for the same assessed route and is ci
 
 The saved final file contains the checks, verdict, caption, table and Summary, including skipped countries and their reasons. Chat shows the final table and audited outcome with material limits visible.
 
-Step 4 remains the pre-audit record. A completed run replays its saved result rather than silently migrating old output or conducting fresh research. Specialist routing changes who performs a step, not the standards needed to call it complete.
+Step 4 remains the pre-audit record. A completed run replays its saved result rather than silently migrating old output or conducting fresh research. The audit continues directly after ladder confirmation; required evidence and output checks still determine completion.
 
 ## Explore the source
 
