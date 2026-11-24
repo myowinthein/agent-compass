@@ -57,7 +57,9 @@ flowchart TD
 
 ## Start the command
 
-Run salary-calculator for the selected person. If no confirmed resume profile is available, provide a resume and confirm the extracted profile. Situational facts such as current location, citizenship, work rights and any salary minimum are reused when already confirmed, with missing material context clarified before research.
+Run salary-calculator for the selected person. If no confirmed resume profile is available, provide a resume and confirm the extracted profile. Situational facts such as current location, citizenship, working languages and work rights are reused when already confirmed, including applicable answers from Country Finder. Only missing material context needs clarification.
+
+A personal pay minimum is optional. If you supply one, its currency, pay basis and whether it is firm or contextual matter for the later comparison; it does not set either market target. Leaving it unspecified allows the salary research to proceed.
 
 New chats start fresh. The same chat can view a completed search, resume an unfinished one or start a separate fresh run. Earlier profiles and outputs remain preserved rather than being replaced with whichever result is newest.
 

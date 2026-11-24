@@ -22,6 +22,10 @@ flowchart TD
   Research --> Save["Check coverage and save sourced findings"]
 ```
 
+## Starting information
+
+The assistant reuses confirmed location, passport nationality, working languages and work rights from your profile or earlier answers. A personal pay minimum is optional and does not determine the researched targets. You are not asked to judge general immigration risk; age is requested only when a specific official visa rule makes it relevant, and you may decline.
+
 ## Choosing countries
 
 A completed compatible Country Finder result can suggest countries with a Strong or Moderate track, using its [post-audit Summary](../country-finder/step6-final-ranking.html#using-the-result). Keep, edit or replace that list.

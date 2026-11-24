@@ -37,7 +37,7 @@ flowchart TD
 
 Observed local-versus-overseas offers are useful when they are relevant and comparable. A clearly labelled inference can also be supported by suitable evidence. General hiring difficulty or the cost of sponsorship alone does not quantify a percentage reduction.
 
-The assessment uses actual location, work rights and intended employment context without charging twice for the same disadvantage. Race, ethnicity and passport prestige are not pricing factors. Formal degree recognition remains a process caveat rather than a salary penalty.
+The assessment uses actual location, work rights and intended employment context without charging twice for the same disadvantage. Language fit concerns actual role workplaces; a country's official language alone does not establish a mismatch. A reported immigration concern is a research lead rather than evidence for a pay reduction. Race, ethnicity and passport prestige are not pricing factors. Formal degree recognition remains a process caveat rather than a salary penalty.
 
 The result distinguishes observed evidence from inference and explains confidence. An estimate should not sound more precise than the underlying research allows.
 

@@ -33,7 +33,7 @@ New chats start fresh. In the same chat, a matching completed search offers View
 Codex → $salary-calculator    Claude → /salary-calculator
 ```
 
-Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). The workflow asks for countries, loads or confirms your resume profile, and collects or reuses situational facts before research.
+Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). The workflow loads or confirms your resume profile, reuses relevant situational facts and confirms countries before research. A personal pay minimum is optional; you do not need to know your expected salary first.
 
 ## What to expect
 

@@ -2,7 +2,7 @@ If salary-calculator-05a-career-ladder.md already exists in the workspace, check
 
 Otherwise, draft the realistic career ladder for my role as stated in profile.md. Assume I work in the IT/tech industry, but do not assume a specific sub-field like backend — infer the ladder from my actual role, which could be any IT role (software engineering, data, DevOps/SRE, QA, security, product, design, IT management, and so on), and use the level and title conventions real to that role.
 
-Show it to me, and wait for my confirmation or edits.
+Show the full proposed ladder and ask: "Does this career ladder match your target role and level?" Wait for my confirmation or edits.
 
 Once confirmed, save it to salary-calculator-05a-career-ladder.md in the workspace.
 

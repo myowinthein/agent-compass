@@ -10,6 +10,8 @@ title_category: Details
 description: "Salary research establishes comparable local benchmarks before any adjustment is calculated. It records how figures were chosen, which employer segment they describe and what the evidence cannot establish."
 source_files:
   - prompts/salary-calculator/step1-research-prompt-generator.md
+  - skills/situational-profile-questions.md
+  - skills/sponsorship-threshold-rules.md
 ---
 
 # Step 1: Research prompt generator
@@ -25,7 +27,7 @@ flowchart TD
   Start(["Read or collect your situational profile<br/>Settle any unclear role or level"]) --> CF{"Usable Country Finder result?"}
   CF -->|Yes| Offer["Offer countries with a final Strong or Moderate fit<br/>Use the post-audit Summary"]
   CF -->|No| ManualList["Ask for your target countries<br/>Explain any draft or incompatible source"]
-  Offer --> Confirm["Wait for your country choice<br/>Use, add, remove or start fresh"]
+  Offer --> Confirm["Wait for your country choice<br/>Use, add, remove or choose a new list"]
   ManualList --> Confirm
   Confirm --> Scope["Use local-employee salary benchmarks<br/>Research visa salary rules as a separate reference"]
   Scope --> Brief["One self-contained brief per country<br/>Two employer tiers, sources and visa salary rules"]
@@ -36,6 +38,14 @@ flowchart TD
   Manual --> Collect
   Collect --> Next(["Save salary-calculator-01-research.md<br/>Continue to Step 2"])
 ```
+
+## Starting information
+
+Your confirmed resume and applicable situational answers supply the candidate context. A profile reused from Country Finder does not need another full questionnaire. Location and work rights help distinguish an overseas applicant from someone already able to work in the target market; accepted working languages matter to actual role opportunities. The role and seniority need clarification only when the target is unclear.
+
+You can leave your personal pay minimum unspecified. If supplied, it is a comparison against the researched targets, with its currency, gross/net basis and firm-versus-context meaning kept clear. It is not an expected salary you must invent before the command can help you.
+
+General immigration restrictions and employer behavior come from research. A concrete personal circumstance may need clarification, but you are not asked to estimate citizenship-related hiring risk. Age is requested only when an official rule could change the relevant visa category or salary requirement. An age band can be enough; declining leaves that check conditional without preventing salary research.
 
 ## Choosing countries
 
@@ -67,4 +77,4 @@ After coverage checks, [Data validation](../step2-data-validation.html) checks s
 
 ## Explore the source
 
-For implementation details, read [prompts/salary-calculator/step1-research-prompt-generator.md](https://github.com/myowinthein/agent-compass/blob/main/prompts/salary-calculator/step1-research-prompt-generator.md).
+For implementation details, read the [research prompt](https://github.com/myowinthein/agent-compass/blob/main/prompts/salary-calculator/step1-research-prompt-generator.md), [shared intake](https://github.com/myowinthein/agent-compass/blob/main/skills/situational-profile-questions.md) and [visa salary rules](https://github.com/myowinthein/agent-compass/blob/main/skills/sponsorship-threshold-rules.md).
