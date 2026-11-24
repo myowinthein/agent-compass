@@ -18,7 +18,7 @@ Observations from maintainer testing and use on macOS, alongside documented plat
 
 <div class="known-issue__body" markdown="block">
 
-Starting Compass again can give different country rankings, salary estimates, job-site lists or Job Screener answers, even with the same profile and answers. [AI answers can vary](https://platform.claude.com/docs/en/about-claude/glossary#temperature), and a new search may find different sources.
+Running commands such as country-finder in separate sessions can produce [different results](https://platform.claude.com/docs/en/about-claude/glossary#temperature), even with the same profile and answers.
 
 **What you can do:** Check that both runs used the same profile and preferences, then compare their sources and reasons. Choose the option to view saved results to see earlier research. Job Screener's answers stay in the chat.
 
