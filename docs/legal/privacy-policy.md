@@ -9,7 +9,7 @@ permalink: /docs/legal/privacy-policy.html
 
 # Privacy Policy
 
-**Last updated:** 2026-11-13
+**Last updated:** 2026-11-24
 
 Agent Compass is an open source career research plugin for Claude and Codex, maintained by Myo Win Thein. This notice explains information used by the plugin, its documentation site and the maintainer's contact channels.
 
@@ -17,7 +17,9 @@ Agent Compass is an open source career research plugin for Claude and Codex, mai
 
 The workflows use the information you provide to research countries, compare salaries, find job portals and screen job descriptions. This can include your resume, work history, skills, location, citizenship, work rights, languages, salary preferences and an optional age or date of birth for visa checks.
 
-The assistant can save profiles, research, results and progress files in an `Agent Compass` folder in your home directory on the computer running its file tools. Each search or screening session has its own run folder, grouped by chat and person. A run's metadata records the person label you confirm, a run identifier, a hashed chat identifier, the creation time and any run it replaced. A confirmed profile can be copied into a new run for the same person in the same chat. Only provide another person's information if you are entitled to share it.
+The assistant can save profiles, research, results and progress files in an `Agent Compass` folder in your home directory on the computer running its file tools. Country Finder and Salary Calculator searches, and Job Screener sessions, each have their own run folder, grouped by chat and person. A run's metadata records the person label you confirm, a run identifier, a hashed chat identifier, the creation time and any run it replaced. A confirmed profile can be copied into a new run for the same person in the same chat. Only provide another person's information if you are entitled to share it.
+
+[Portal Finder](../commands/portal-finder.html#saved-reports) saves separate reports by country, without a profile, person or chat association, or checkpoint. Each saved report includes its country, save time, evidence date, source URLs, verification kind and coverage information. Earlier reports remain available.
 
 The Python helpers perform local calculations and file operations; they do not include a maintainer-operated telemetry or candidate-data upload endpoint.
 
