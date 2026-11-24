@@ -1213,14 +1213,18 @@ class CompassCLI(unittest.TestCase):
             payload = {"workspace": directory, "workflow": "salary-calculator", "expected": ["Germany"]}
             scan = research.scan(payload)
             request = {**payload, "source_hash": scan["source_hash"], "stored_hash": scan["stored_hash"], "decisions": [{"index": 0, "accept": True}]}
-            original_replace = research.replace
-            def fail_report(path, raw):
-                if path.name == "sc-step1-salary-research.md":
+            original_replace = research.os.replace
+            def fail_report(source, target):
+                if Path(target).name == "sc-step1-salary-research.md":
                     raise PermissionError("DUMMY second-write failure")
-                original_replace(path, raw)
-            with patch.object(research, "replace", side_effect=fail_report), self.assertRaises(Problem) as failure:
+                original_replace(source, target)
+            with patch.object(research.os, "replace", side_effect=fail_report), self.assertRaises(Problem) as failure:
                 research.ingest(request)
             self.assertEqual(failure.exception.details["written_paths"], ["sc-step2-salary-data.md"])
+            self.assertEqual(Path(directory, "sc-step1-salary-research.md").read_bytes(), self.salary_block())
+            self.assertEqual(Path(directory, "sc-step2-salary-data.md").read_bytes(), self.salary_block())
+            self.assertEqual({path.name for path in Path(directory).iterdir()},
+                             {"sc-step1-salary-research.md", "sc-step2-salary-data.md"})
             after = research.scan(payload)
             request.update(source_hash=after["source_hash"], stored_hash=after["stored_hash"])
             research.ingest(request)
@@ -1850,6 +1854,28 @@ class PortalReports(unittest.TestCase):
         with self.assertRaises(ValueError):
             portals.list_reports({'country': 'Germany'})
         self.assertEqual(self.snapshot(), before)
+
+    def test_corrupt_report_metadata_is_rejected_without_fallback_or_writes(self):
+        older = portals.save_report(self.request())
+        latest = portals.save_report(self.request(report='New German result.'))
+        self.assertEqual(portals.list_reports({'country': 'Germany'})['latest']['report_id'], latest['report_id'])
+        metadata = Path(latest['path']).with_name('report.json')
+        original = metadata.read_bytes()
+        record = json.loads(original)
+        for field, value in [('report_id', older['report_id']), ('country_key', 'france'),
+                             ('country', 'France'), ('saved_at', '2026-10-28T00:00:00')]:
+            with self.subTest(field=field):
+                try:
+                    metadata.write_text(json.dumps({**record, field: value}), encoding='utf-8')
+                    before = self.snapshot()
+                    with self.assertRaises(ValueError):
+                        portals.list_reports({'country': 'Germany'})
+                    with self.assertRaises(ValueError):
+                        portals.read_report({'country': 'Germany', 'report_id': latest['report_id'],
+                                             'expected_sha256': latest['report_sha256']})
+                    self.assertEqual(self.snapshot(), before)
+                finally:
+                    metadata.write_bytes(original)
 
     def test_invalid_payloads_create_no_store(self):
         for changes in [{'report': ''}, {'evidence_date': 'yesterday'}, {'verification': 'verified'},
