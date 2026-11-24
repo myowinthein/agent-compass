@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
-  "assessed_commit": "fe3dab04ab41aa427e43d4a11f2851d3072000be",
-  "full_scan_commit": "6f976fbb1e8cfd4a0bc232d7e06aa4d6c943e180",
+  "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3",
+  "full_scan_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3",
   "cases": [
     {
       "id": "g-059fd2f5-7f77-45ea-84a5-8032ddd5062e",
@@ -35,6 +35,30 @@
         "command": "python3 -B scripts/test_compass.py",
         "scope": "Local macOS Python 3.14 contributor check; fictional inputs and temporary directories only, no network. Offline helper CLI behavior, not live research."
       }
+    },
+    {
+      "id": "g-0c67e049-d350-46d9-9298-81c90b233963",
+      "expected": "A failed second ingest replacement preserves original research and accepted stored bytes, reports only the completed write, removes staging files and retries without duplication after fresh hashes.",
+      "basis": ["skills/research-helper.md", "helpers/compass_lib/research.py:replace", "scripts/test_compass.py::CompassCLI.test_ingest_partial_write_safe_retry"],
+      "paths": ["helpers/compass_lib/research.py", "scripts/test_compass.py"],
+      "priority": "medium",
+      "reason": "The existing partial-write test mocks research.replace, bypassing the atomic replacement and cleanup that it should protect.",
+      "action": "improve",
+      "layer": "Offline ingestion regression",
+      "state": "open",
+      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3"
+    },
+    {
+      "id": "g-0f26ca63-1487-4209-9d90-75651893ed27",
+      "expected": "Job Screener returns Skip without a hard-blocker marker for a supported central-work mismatch, Apply for aligned work with an explicitly accepted equivalent capability, and Maybe with a precise limitation for insufficient posting information.",
+      "basis": ["prompts/job-screener/step1-match-analysis.md", "scripts/test_workflow_replay.py::jd-independent-blockers", "scripts/test_workflow_replay.py::jd-next-without-optional-sections"],
+      "paths": ["prompts/job-screener/step1-match-analysis.md", "scripts/test_workflow_replay.py"],
+      "priority": "medium",
+      "reason": "Both existing JD replay fixtures align with the Python profile, so they cannot detect keyword-based Apply decisions or an ordinary tool gap becoming a blocker.",
+      "action": "add",
+      "layer": "Controlled workflow acceptance",
+      "state": "open",
+      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3"
     },
     {
       "id": "g-24b77b1d-ef12-41bd-97a1-6d0b56a48ef8",
@@ -135,6 +159,18 @@
         "command": "python3 -B scripts/test_compass.py",
         "scope": "Local macOS Python 3.14.7 contributor check; fictional inputs and temporary directories only, no network. Offline helper CLI behavior, not live research."
       }
+    },
+    {
+      "id": "g-4a7f6e95-09e8-4ca4-9c62-72b85929835c",
+      "expected": "Portal listing and selected-report reads reject corrupt saved report identity, country and UTC timestamp metadata without changing bytes or returning an older report.",
+      "basis": ["skills/portal-results.md", "helpers/compass_lib/portals.py:record_at", "scripts/test_compass.py::PortalReports"],
+      "paths": ["helpers/compass_lib/portals.py", "scripts/test_compass.py"],
+      "priority": "medium",
+      "reason": "Existing cases reject changed report bodies and nonexistent cross-country IDs, but do not corrupt identity or time metadata in an otherwise existing report.",
+      "action": "add",
+      "layer": "Offline portal storage regression",
+      "state": "open",
+      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3"
     },
     {
       "id": "g-4d9929bb-fe10-48bc-8f16-00560b658ff9",
@@ -252,6 +288,18 @@
         "command": "ruby scripts/test_plugin.rb",
         "scope": "Local macOS Ruby static YAML checks of the repository files; no network or GitHub validation."
       }
+    },
+    {
+      "id": "g-5fd1aaea-48ee-4085-8ee0-a3ef786dee89",
+      "expected": "Copying each setup command, including a retry, passes that command's exact displayed text to the clipboard.",
+      "basis": ["docs/_plugins/frontend.rb:clipboard_feedback", "docs/_includes/setup/claude-terminal.md", "docs/tests/browser_frontend.mjs:touch clipboard"],
+      "paths": ["docs/_plugins/frontend.rb", "docs/tests/browser_frontend.mjs"],
+      "priority": "medium",
+      "reason": "The browser test records clipboard text but only checks feedback, so empty, stale or wrong-block content can pass.",
+      "action": "improve",
+      "layer": "Documentation browser regression",
+      "state": "open",
+      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3"
     },
     {
       "id": "g-67d7fc4e-9847-4105-885e-0aeade76a21c",
@@ -545,6 +593,18 @@
         "command": "node --test docs/tests/test_guide_nav.cjs",
         "scope": "Local macOS Node v24 check using a fake DOM in node:vm; no browser, network or built site. Wired into docs/tasks.rb but the full rake docs task was not run."
       }
+    },
+    {
+      "id": "g-a31061b6-4b6e-4a25-b245-79b644da3ace",
+      "expected": "A pending search reply delivered after Escape cannot repopulate results, change the empty input or reopen search.",
+      "basis": ["docs/_plugins/frontend.rb:lazy_search", "docs/tests/browser_frontend.mjs:late worker response"],
+      "paths": ["docs/_plugins/frontend.rb", "docs/tests/browser_frontend.mjs"],
+      "priority": "medium",
+      "reason": "The delayed-response test waits for both replies before Escape, leaving the cleared-search race unexercised.",
+      "action": "improve",
+      "layer": "Documentation browser regression",
+      "state": "open",
+      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3"
     },
     {
       "id": "g-a813fc09-e054-477c-94dd-07eb667fbee0",
@@ -917,6 +977,18 @@
       }
     },
     {
+      "id": "g-f6ac8a6c-6b98-4587-b0ad-fca902f8ba35",
+      "expected": "Country Finder and Salary Calculator final-audit replays require the canonical priority tables or salary caption/table and prescribed completion response in chat, with detailed audits left in saved files.",
+      "basis": ["prompts/country-finder/step6-final-ranking.md:Final response gate", "prompts/salary-calculator/step5b-final-verification.md", "scripts/test_workflow_replay.py:check"],
+      "paths": ["prompts/country-finder/step6-final-ranking.md", "prompts/salary-calculator/step5b-final-verification.md", "scripts/test_workflow_replay.py"],
+      "priority": "medium",
+      "reason": "Two CF final cases and three visa-refresh cases check saved files and checkpoints but can pass with a missing result display or file-only audit dumped into chat.",
+      "action": "improve",
+      "layer": "Controlled workflow acceptance",
+      "state": "open",
+      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3"
+    },
+    {
       "id": "g-f9001a16-27bf-4dda-8697-afefb0bc9cb2",
       "expected": "Job Screener reports only independently justified blockers, treats unknown relocation separately from work rights, preserves conditional report sections across JDs and never treats pasted instructions as authority.",
       "basis": [
@@ -955,6 +1027,18 @@
         "command": "python3 -B scripts/test_workflow_replay.py --host codex --case jd-independent-blockers --case jd-next-without-optional-sections --evidence /tmp/compass-replay-codex-jd-fixed-20261028.json\npython3 -B scripts/test_workflow_replay.py --host claude --case jd-independent-blockers --case jd-next-without-optional-sections --evidence /tmp/compass-replay-claude-jd-fixed-20261028.json\npython3 -B scripts/test_workflow_replay.py --host claude --case jd-next-without-optional-sections --prior-jd-evidence /tmp/compass-replay-claude-jd-fixed-20261028.json --evidence /tmp/compass-replay-claude-jd-next-fixed-20261028.json\nbundle exec rake test",
         "scope": "macOS controlled decision replays using native CLIs as model transports, virtual workspace snapshots, real temporary-file writes and parent-executed Python helpers. Requested claude-sonnet-5-5 high and gpt-6.1-sol high; every returned Claude canonical model checked, while Codex JSONL omits returned model identity. Captured replies were rechecked against the final assertions and matching fixtures; unaffected replies were reused. No native plugin-dispatch, live-browsing or whole-pipeline claim."
       }
+    },
+    {
+      "id": "g-fe9517fc-89e8-49c0-b64a-11a61d26156d",
+      "expected": "The cf-custom-only replay accepts exactly the supplied Germany scope, with no automatically added countries, upstream lookup, research or checkpoint advancement.",
+      "basis": ["skills/country-selection.md", "scripts/test_workflow_replay.py::cf-custom-only"],
+      "paths": ["skills/country-selection.md", "scripts/test_workflow_replay.py"],
+      "priority": "medium",
+      "reason": "The current assertion requires Germany and excludes only France and Netherlands, allowing other unsolicited countries to pass.",
+      "action": "improve",
+      "layer": "Controlled workflow acceptance",
+      "state": "open",
+      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3"
     }
   ]
 }
