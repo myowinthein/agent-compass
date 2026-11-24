@@ -11,18 +11,6 @@ Observations from maintainer testing and use on macOS, alongside documented plat
 
 ## Across agents
 
-<details id="instructions-and-workflow-steps-may-not-be-followed-consistently" markdown="block">
-<summary>The agent may skip steps or stop early</summary>
-
-<div class="known-issue__body" markdown="block">
-
-Claude and Codex [may not follow every instruction](https://code.claude.com/docs/en/best-practices#deterministic-and-non-deterministic-instructions), so they can skip Compass steps, stop early or give reports in the wrong format.
-
-**What you can do:** Point out what was missed and ask the agent to resume. See the [command overviews]({{ '/docs/commands.html' | relative_url }}) for the workflow steps.
-
-</div>
-</details>
-
 <div id="repeated-reviews-may-keep-producing-findings"></div>
 
 <details id="answers-may-vary-between-fresh-runs" markdown="block">
