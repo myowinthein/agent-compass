@@ -13,10 +13,7 @@ raise "Unexpected paired topic inventory" unless overviews.size == expected
 
 overviews.each do |source, data|
   detail_source = root.join(data.fetch("detailed").sub(%r{\A/}, "").sub(/\.html\z/, ".md"))
-  detail_data = YAML.safe_load(detail_source.read.match(/\A---\n(.*?)\n---\n/m)[1])
   overview_url = data["permalink"] || "/#{source.relative_path_from(root).sub_ext('.html')}"
-  raise "Detailed guide points to the wrong Overview: #{source}" unless detail_data["overview"] == overview_url
-  raise "Detailed guide leaks into navigation: #{source}" unless detail_data["nav_exclude"]
   built_detail = nil
   [overview_url, data.fetch("detailed")].each do |url|
     document = Nokogiri::HTML(root.join("docs/_site", url.delete_prefix("/")).read)

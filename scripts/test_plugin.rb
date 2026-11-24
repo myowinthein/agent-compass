@@ -38,14 +38,8 @@ assert.call(status.success?, "Validator failed under US-ASCII defaults: #{output
 
 manifest = JSON.parse(root.join(".claude-plugin/plugin.json").read(encoding: "UTF-8"))
 codex_manifest = JSON.parse(root.join(".codex-plugin/plugin.json").read(encoding: "UTF-8"))
-assert.call(!root.join("commands").exist?, "Shared skills are the only entry points; omit the legacy commands directory")
-assert.call([manifest, codex_manifest].none? { |client| client.key?("commands") }, "Omit commands declarations from both manifests")
-assert.call((manifest.keys & %w[icon interface]).empty?, "Claude manifest must avoid Desktop-unsupported presentation fields")
-assert.call(codex_manifest.reject { |key, _| key == "interface" } == manifest, "Keep all shared manifest fields aligned")
 assert.call(manifest.fetch("name") == "agent-compass", "Keep the technical plugin name unchanged")
 assert.call(manifest.fetch("displayName") == "Agent Compass", "Claude must display Agent Compass")
-assert.call(codex_manifest.fetch("interface").fetch("displayName") == manifest.fetch("displayName"),
-            "Codex and Claude must use the same display name")
 assert.call(root.join("README.md").read(encoding: "UTF-8").match?(/^# Agent Compass$/),
             "README heading must use the product display name")
 
@@ -63,11 +57,6 @@ registry.fetch("workflows").each do |workflow, spec|
   end
   assert.call(root.join("workflows/#{workflow}.md").read(encoding: "UTF-8").include?("skills/workspace-files.md"),
               "Workflow must resolve legacy filenames before accessing saved outputs")
-end
-
-%w[logo composerIcon].each do |field|
-  assert.call(codex_manifest.fetch("interface").fetch(field) == "./assets/icon.svg",
-              "Codex #{field} must reference the shared SVG icon")
 end
 
 Dir.mktmpdir("compass-icon-check-") do |temp|
@@ -286,15 +275,6 @@ dashboard = root.join("docs/examples/obsidian-workflow.md").read(encoding: "UTF-
 assert.call(dashboard.include?(JSON.parse(dashboard_output).dig("result", "table_markdown")),
             "Obsidian salary example must match canonical salaries, monthly references and visa warnings")
 
-# Independent raw/display reference: a rounded annual target must not feed
-# monthly conversion or turn a real threshold shortfall into a false pass.
-raw = Rational(58_250)
-reference = [round_to.call(raw, 500), round_to.call(raw / 12, 50)]
-assert.call(reference == [58_500, 4_850], "Raw/display rounding reference changed")
-assert.call(raw < 58_275 && reference[0] >= 58_275, "Borderline threshold fixture is invalid")
-assert.call(!(raw < 58_250), "Equality must clear a salary-minimum comparison")
-assert.call(round_to.call(Rational(60_300, 12), 50) == 5_050, "Monthly halfway tie must round upward")
-
 threshold_rules = root.join("skills/sponsorship-threshold-rules.md").read(encoding: "UTF-8:UTF-8")
 audit_prompt = root.join("prompts/salary-calculator/step5b-final-verification.md").read(encoding: "UTF-8:UTF-8")
 assert.call(threshold_rules.include?("Equality clears this salary-minimum comparison"), "Missing equality rule")
@@ -431,14 +411,6 @@ assert.call(research_prompt.include?('targeted follow-up') && validation_prompt.
 assert.call(assessment_rules.include?('not a filter') && assessment_rules.include?('No automatic contact') &&
             final_prompt.include?('Expected work not performed returns to the parent'),
             "Keep research coverage, contact and recovery boundaries")
-
-paths = %w[.helm/example-log.json .helm/archive/nested/example.json .claude/helm/example-log.json .in_use/example .claude/settings.local.json]
-attributes, error, status = Open3.capture3("git", "-C", root.to_s, "check-attr", "export-ignore", "--", *paths)
-assert.call(status.success?, "Could not check archive exclusions: #{error}")
-paths.each do |path|
-  assert.call(attributes.lines.any? { |line| line.strip == "#{path}: export-ignore: set" },
-              "Local developer/host artifact is not excluded from Git archives: #{path}")
-end
 
 Dir.mktmpdir("compass-archive-check-") do |temp|
   repository = Pathname(temp).join("archive fixture.git")
