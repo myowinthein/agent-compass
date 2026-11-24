@@ -31,8 +31,8 @@ flowchart TD
   Scope --> Brief["One self-contained brief per country<br/>Two employer tiers, sources and visa salary rules"]
   Brief --> Cap{"Separate research context<br/>with web access available?"}
   Cap -->|Yes| Tasks["Research each country separately"]
-  Cap -->|No| Manual["Show prompts<br/>Wait for manual results"]
-  Tasks --> Collect["Save scope and country findings<br/>Resolve missing results"]
+  Cap -->|No| Manual["Record the collection limitation<br/>Use any available findings"]
+  Tasks --> Collect["Save findings and every task outcome<br/>Disclose missing coverage"]
   Manual --> Collect
   Collect --> Next(["Save salary-calculator-01-research.md<br/>Continue to Step 2"])
 ```
@@ -73,7 +73,7 @@ Keep the original amount and period, or an explicit nonnumeric state. A monthly 
 
 ## What happens next
 
-Separate research tasks collect the findings. Without suitable access, you receive prompts and the workflow waits for results. It records the full confirmed country scope even if some later data is rejected, preserving names for later CF/SC searches.
+Separate research tasks collect the initial findings. Each scheduled task ends with a collected, missing or failed outcome. Unavailable access and failed collection remain visible gaps; successful findings stay preserved. The workflow proceeds with obtained evidence rather than requesting manual results or another evidence search. It records the full country scope, including countries with missing or rejected data, for later CF/SC reuse.
 
 After coverage checks, [Data validation](../step2-data-validation.html) checks structure and preserves accepted evidence. Research remains a dated source snapshot, not an offer or an immigration eligibility determination.
 

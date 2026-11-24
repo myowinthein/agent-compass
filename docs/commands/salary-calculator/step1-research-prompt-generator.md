@@ -42,7 +42,7 @@ Each employer tier has Low, Realistic and Strong amounts, with the role, level, 
 
 Research excludes contractor rates, equity-heavy packages, expat premiums and inflated global pay figures. It also excludes data drawn only from Facebook, Amazon, Apple, Netflix and Google.
 
-Separate web-research tasks collect the findings. Without suitable access, you receive prompts and wait for results. Missing quantitative local-versus-overseas evidence is recorded for the adjustment step.
+Separate web-research tasks collect the findings. If collection is unavailable or a task fails, the missing coverage is recorded and the workflow uses what was obtained, without asking you for manual research or another search. Missing quantitative local-versus-overseas evidence is recorded for the adjustment step.
 
 ## Visa salary research
 

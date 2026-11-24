@@ -27,10 +27,8 @@ flowchart TD
   Confirm -->|No| Edit["Show the ladder<br/>Wait for your confirmation or edits"]
   Edit --> Confirm
   Confirm -->|Yes| Audit["Audit candidate positioning, framework calibration,<br/>each country and framework recommendations"]
-  Audit --> Current{"Essential current visa evidence missing?"}
-  Current -->|Yes| Choice["Wait for your choice<br/>Refresh evidence, use the dated snapshot or stop"]
-  Choice -->|Approved evidence or snapshot| Verdict
-  Current -->|No| Verdict{"Market revision supported?"}
+  Audit --> Limits["Record dated limitations<br/>Keep unsupported current visa evidence Unknown"]
+  Limits --> Verdict{"Market revision supported?"}
   Verdict -->|Yes| Recal["Revise affected targets from evidence<br/>Recheck visa rules and your salary floor"]
   Verdict -->|No| Keep["Keep valid targets<br/>Distinguish supported from inconclusive"]
   Recal --> Final["Render and check the final table<br/>Record any approved visa-only update separately"]
@@ -68,9 +66,9 @@ Revised targets use the same raw arithmetic and independent display rounding as 
 
 ## Dated evidence
 
-Saved research is a dated snapshot, not a current legal or market verification. When essential current evidence is missing, the main conversation offers a focused refresh, continuation on the disclosed snapshot, or stop.
+Saved research is a dated snapshot, not a current legal or market verification. The audit continues with supported findings and discloses unresolved evidence rather than asking you to provide sources or approve another search. Unestablished current visa states or amounts remain Unknown; an unsupported salary revision is not invented.
 
-Approved refresh evidence takes precedence for the same assessed route and is cited in the final report. If a refresh cannot be obtained, you choose snapshot or stop rather than entering an endless retry. Earlier research and calculation files stay intact.
+An evidence update you initiate is assessed and cited for the same route, with earlier files preserved. Unadjusted benchmark countries retain their missing overseas-adjustment limitation in the saved audit and a short notice before the caption/table, so they are distinguishable from adjusted estimates.
 
 ## Your result
 

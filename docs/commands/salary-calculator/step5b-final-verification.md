@@ -46,9 +46,9 @@ Revised targets follow the same [calculation rules](step4-table-calculation.html
 
 ## Dated evidence
 
-Saved evidence is not a fresh legal or market check. Essential missing current status prompts a choice: refresh specific evidence, retain a disclosed dated snapshot, or stop.
+The audit uses saved dated evidence without requesting a new search or manual sources. Supported dated facts keep their limits; unestablished current visa rules remain Unknown and missing market calibration remains inconclusive. A user-initiated evidence update is cited and assessed while earlier files stay intact.
 
-Approved refreshes take precedence for the same assessed route, including during recalibration, and are cited in the final audit. Earlier files remain intact.
+Countries using unadjusted local benchmarks are named in a brief notice before the standard caption and table. Their overseas adjustment remains explicitly unverified; preserving a benchmark is not evidence for a zero discount.
 
 ## Your result
 

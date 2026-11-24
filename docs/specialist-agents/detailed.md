@@ -48,7 +48,7 @@ Removing model-selection prompts leaves the decisions that need your input intac
 
 Separate research tasks receive self-contained country briefs and use live sources without the main conversation or unrelated country results. This helps keep evidence collection scoped to the assigned question. The main conversation collects the findings, checks coverage and controls saved progress.
 
-Where the host supports inheritance of your current model and effort, research tasks use it. If matching those settings cannot be established, Compass presents its existing manual research prompts instead of selecting another configuration. Missing browsing or isolated-context capabilities use that same fallback.
+Where the host supports inheritance of your current model and effort, research tasks use it. If matching settings, browsing or isolated context cannot be established, Salary Calculator records the collection limitation and proceeds with obtained evidence. Country Finder retains its existing manual-research fallback. Neither workflow silently selects a different model configuration.
 
 <span id="calculator-versus-python-helper"></span>
 

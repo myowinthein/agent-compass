@@ -27,9 +27,9 @@ These diagrams show calculation followed by review and presentation. The exact r
 ```mermaid
 flowchart TD
   Inputs["Check salary evidence and supported adjustments"] --> Usable{"Any country has comparable inputs?"}
-  Usable -->|No| Skips["Explain skipped countries; offer evidence repair or stop"]
+  Usable -->|No| Skips["Save the no-usable-benchmarks outcome; end"]
   Usable -->|Yes| Runtime{"Shared Python calculation available?"}
-  Runtime -->|Yes| Calculate["Calculate exact targets and retain raw work"]
+  Runtime -->|Yes| Calculate["Calculate adjusted targets or benchmark references<br/>Retain exact raw work"]
   Runtime -->|No| Choice{"Repair, disclosed manual fallback or stop?"}
   Choice -->|Repair| Runtime
   Choice -->|Manual fallback| Calculate
@@ -65,7 +65,7 @@ Annual Target = Realistic amount × (1 − typical Adjustment %)
 Monthly Reference = unrounded Annual Target ÷ 12
 ```
 
-Both tiers need comparable data and a supported numeric adjustment, including a supported zero. The workflow skips a country if required data is missing, inputs are not comparable or its adjustment cannot be estimated. It explains the skip instead of showing a partial row. Mainstream being higher than Premium is not automatically corrected to force a preferred ordering.
+Both tiers need comparable salary benchmarks. A supported numeric adjustment, including a supported zero, produces adjusted estimates. If that adjustment is not estimable, the researched Realistic amounts continue unchanged as local-market references. Their overseas adjustment remains unverified. Only unusable salary data causes a skip; the workflow does not invent a tier or ask for manual evidence or another research attempt.
 
 Displayed annual values round to the nearest 500 and monthly references to the nearest 50, halfway upward. Both come independently from raw values. For a fictional Realistic amount of 80,000 and adjustment of 7%, the raw annual target is 74,400 and monthly reference is 6,200; their displays are 74,500 and 6,200. Dividing the displayed annual figure would produce a different monthly calculation.
 
@@ -99,7 +99,7 @@ A raw Mainstream target below a confirmed personal hard floor is flagged in Summ
 
 The saved record includes raw work, independently rounded displays, calculated/skipped counts and every known target's outcome. Chat shows counts at this step; [Final verification](../step5b-final-verification.html) presents the audited table.
 
-If nothing can be calculated, save the skip-only outcome and offer repair or stop. Do not route an empty table to a calculator or ask for a career ladder.
+If no comparable salary benchmark can be calculated, save the skip-only outcome and end without requesting more evidence. Do not present an empty table or ask for a career ladder.
 
 ## Explore the source
 

@@ -53,13 +53,13 @@ One supported typical reduction applies independently to both employer tiers. It
 
 A value above 10% needs concrete evidence. Low salary evidence caps confidence at Medium, while a missing grade remains disclosed. A supported zero is valid, but it needs support just as a positive reduction does.
 
-For example, a well-evidenced lack of a measurable pay difference can support zero. An absence of local-versus-overseas data instead produces **Adjustment not estimable**, with reasons. Those outcomes must not be collapsed to make every country calculable.
+For example, a well-evidenced lack of a measurable pay difference can support zero. An absence of local-versus-overseas data instead produces **Adjustment not estimable**, with reasons. The missing adjustment stays unverified even when Step 4 can present the researched local benchmarks as references.
 
 ## What happens next
 
 The adjustment file saves estimates, evidence basis, confidence and gaps. Chat gives counts. The analysis runs on your current model and effort without a model-selection question.
 
-[Table calculation](../step4-table-calculation.html#calculation-rules) skips countries whose adjustment cannot be estimated rather than substituting 0%. If no country's adjustment can be estimated, the main conversation records the skip-only outcome and offers evidence repair or stop before career-ladder intake.
+[Table calculation](../step4-table-calculation.html#calculation-rules) continues with each comparable tier's researched Realistic amount when the adjustment is not estimable. These are unadjusted local-market references, not verified overseas offers or a supported 0% discount. The workflow does not ask for more research; countries lacking comparable salary benchmarks are still skipped with reasons.
 
 ## Explore the source
 

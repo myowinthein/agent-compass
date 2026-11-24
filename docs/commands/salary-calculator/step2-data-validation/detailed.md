@@ -33,7 +33,7 @@ flowchart TD
   Skip --> Save
   Save --> Usable{"Any country stored?"}
   Usable -->|Yes| Next(["Show consolidated counts and reasons<br/>Continue to Step 3"])
-  Usable -->|No| Repair(["Record the validation outcome<br/>Offer missing-evidence repair or stop"])
+  Usable -->|No| Repair(["Record the no-usable-benchmarks outcome<br/>End without requesting more evidence"])
 ```
 
 ## Required data
@@ -56,7 +56,7 @@ For example, a country can have complete salary tiers but no usable adjustment e
 
 The validated-data file holds accepted research. The original research file retains the raw findings and separate Validation report, including rejected inputs and missing-country reasons.
 
-With stored countries, continue to [International adjustment](../step3-international-adjustment.html). If none remain usable, the workflow offers evidence repair or stop before career-ladder intake or an empty final table.
+With stored countries, continue to [International adjustment](../step3-international-adjustment.html). If none remain usable, the workflow saves the no-result outcome and ends without requesting more evidence, career-ladder intake or an empty final table.
 
 Structural validation does not verify market claims, select salary targets or establish visa eligibility. Those require their later evidence and calculation steps.
 

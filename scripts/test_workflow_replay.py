@@ -377,10 +377,10 @@ ordinary monthly pay plus a mandatory component whose base-salary-equivalent
 cannot be isolated; the definition cannot be represented as annual base / 12.
 No market evidence changed. No manual arithmetic fallback approved.
 """,
-                              "pending": """The Step 5b audit is blocked: current route status is essential
-and the stored source no longer establishes it. The parent
-has not asked the user to choose refresh, dated snapshot, or stop yet. No new
-evidence or helper result is available. Continue as the parent.
+                              "pending": """Current route status cannot be established from the saved source.
+No new evidence or helper result is available. Complete the audit using the
+saved salary data and disclose the visa uncertainty; do not ask me to research,
+supply evidence or approve another search.
 """,
                           }[variant]))
     for variant in ("fresh-step3", "resume-step4"):
@@ -392,8 +392,8 @@ evidence or helper result is available. Continue as the parent.
         files.pop(n["adjustments"])
         if variant == "resume-step4":
             files[n["adjustments"]] = "Germany: Adjustment not estimable. Missing quantitative local-versus-overseas evidence; generic sponsorship difficulty does not quantify pay.\n"
-        cases.append(dict(id=f"no-adjustment-{variant}", group="no-adjustment", workflow="salary-calculator", files=files,
-                          user="Continue Salary Calculator from the saved checkpoint. All relevant candidate facts are confirmed. No additional quantitative adjustment evidence is available."))
+        cases.append(dict(id=f"no-adjustment-{variant}", group="no-adjustment", workflow="salary-calculator", files=files, max_turns=8,
+                          user="Continue Salary Calculator through Step 4 only, then stop before career-ladder intake as requested. All relevant candidate facts are confirmed. No additional quantitative adjustment evidence is available."))
     return cases
 
 
@@ -669,56 +669,62 @@ def check(case, initial, final, trace):
         assert not handoffs, "Analysis and audits must stay on the current agent"
         assert all(final.get(k) == v for k, v in initial.items()
                    if k != REGISTRY["salary-calculator"]["state"]), "Audit rewrote an earlier artifact"
-        if group == "visa-pending":
-            assert not writes and not operations and questions, messages
-            assert all(word in messages.lower() for word in ("refresh", "snapshot", "stop")), messages
-        else:
-            output = final[n["final-results"]]
-            assert writes <= {n["final-results"], REGISTRY["salary-calculator"]["state"]}, writes
-            assert {"render-salary", "check-saved"} <= set(operations), operations
-            assert "60,000" in output and "84,000" in output and "5,000" in output and "7,000" in output, output
-            assert json.loads(final[REGISTRY["salary-calculator"]["state"]])["last_completed_step"] == 5
-            assert not questions and re.search(r"(?:no|not|unchanged)[^\n]*recalibr|recalibr[^\n]*(?:not|none|unchanged)", output, re.I), output
-            rendered = checked = False
+        output = final[n["final-results"]]
+        assert writes <= {n["final-results"], REGISTRY["salary-calculator"]["state"]}, writes
+        assert {"render-salary", "check-saved"} <= set(operations), operations
+        assert "60,000" in output and "84,000" in output and "5,000" in output and "7,000" in output, output
+        assert json.loads(final[REGISTRY["salary-calculator"]["state"]])["last_completed_step"] == 5
+        assert not questions and re.search(r"(?:no|not|unchanged)[^\n]*recalibr|recalibr[^\n]*(?:not|none|unchanged)", output, re.I), output
+        rendered = checked = False
+        for turn in trace:
+            if n["final-results"] in turn["reply"]["writes"]:
+                assert rendered, "Audit saved while its rendering request was pending"
+            checkpoint = turn["reply"]["writes"].get(REGISTRY["salary-calculator"]["state"])
+            if checkpoint and json.loads(checkpoint)["last_completed_step"] == 5:
+                assert checked, "Audit completed before saved-output verification returned"
+            for request, result in zip(turn["reply"]["helpers"], turn["helper_results"]):
+                if result["exit_code"] == 0:
+                    rendered |= request["operation"] == "render-salary"
+                    checked |= request["operation"] == "check-saved"
+        if group == "visa-annual":
+            assert "65,000/yr ⚠️" in output and "https://immigration.example/new" in output, output
+            assert "2026-10-28" in output and re.search(r"5,?000", output), output
             for turn in trace:
-                if n["final-results"] in turn["reply"]["writes"]:
-                    assert rendered, "Audit saved while its rendering request was pending"
-                checkpoint = turn["reply"]["writes"].get(REGISTRY["salary-calculator"]["state"])
-                if checkpoint and json.loads(checkpoint)["last_completed_step"] == 5:
-                    assert checked, "Audit completed before saved-output verification returned"
-                for request, result in zip(turn["reply"]["helpers"], turn["helper_results"]):
-                    if result["exit_code"] == 0:
-                        rendered |= request["operation"] == "render-salary"
-                        checked |= request["operation"] == "check-saved"
-            if group == "visa-annual":
-                assert "65,000/yr ⚠️" in output and "https://immigration.example/new" in output, output
-                assert "2026-10-28" in output and re.search(r"5,?000", output), output
-                for turn in trace:
-                    for request in turn["reply"]["helpers"]:
-                        if request["operation"] == "render-salary":
-                            row = request["input"]["rows"][0]
-                            assert row["visa"]["amount"] == "65000" and row["visa"]["period"] == "annual", row
-            else:
-                assert "Unknown" in output and "https://immigration.example/monthly" in output, output
-                for turn in trace:
-                    for request in turn["reply"]["helpers"]:
-                        if request["operation"] == "render-salary":
-                            row = request["input"]["rows"][0]
-                            assert row["visa"]["state"] == "Unknown" and "visa" not in row["calculation"].get("comparisons", {}), row
+                for request in turn["reply"]["helpers"]:
+                    if request["operation"] == "render-salary":
+                        row = request["input"]["rows"][0]
+                        assert row["visa"]["amount"] == "65000" and row["visa"]["period"] == "annual", row
+        elif group == "visa-incomparable":
+            assert "Unknown" in output and "https://immigration.example/monthly" in output, output
+            for turn in trace:
+                for request in turn["reply"]["helpers"]:
+                    if request["operation"] == "render-salary":
+                        row = request["input"]["rows"][0]
+                        assert row["visa"]["state"] == "Unknown" and "visa" not in row["calculation"].get("comparisons", {}), row
+        else:
+            assert "Unknown" in output and not questions, output
+            assert "https://immigration.example/old" in output, "Audit lost dated source provenance"
     else:
         n = names("salary-calculator")
-        assert not handoffs and not ({"render-salary", "adjust-check", "check-saved"} & set(operations)), "Unestimable route delegated analysis or invoked numeric/output helper"
+        assert not handoffs and not questions and "adjust-check" not in operations, "Missing adjustment triggered delegation, another question or numeric adjustment"
+        assert {"render-salary", "check-saved"} <= set(operations), operations
         assert "Adjustment not estimable" in final[n["adjustments"]], final
         assert not re.search(r"^\s*(?:[-*]\s*)?(?:Typical midpoint(?: adjustment)?|International candidate adjustment range|Adjustment(?: percentage| percent| range)?)\s*(?:\(%\))?\s*[:=]\s*\d", final[n["adjustments"]], re.I | re.M), "Unestimable adjustment acquired a numeric estimate"
         output = final[n["salary-table"]]
-        assert "Germany" in output and re.search(r"Countries calculated:\s*0", output, re.I), output
-        assert re.search(r"Countries skipped:\s*1", output, re.I) and "estimable" in output.lower(), output
-        assert "|" not in output and n["final-results"] not in final and n["career-ladder"] not in final, final
-        assert questions and "repair" in messages.lower() and "stop" in messages.lower(), messages
+        assert "Germany" in output and re.search(r"Countries calculated:\s*1", output, re.I), output
+        assert re.search(r"Countries skipped:\s*0", output, re.I) and "benchmark" in output.lower(), output
+        assert "62,500" in output and "87,500" in output, output
+        assert n["final-results"] not in final and n["career-ladder"] not in final, final
         assert json.loads(final[REGISTRY["salary-calculator"]["state"]])["last_completed_step"] == 4
+        for turn in trace:
+            for request in turn["reply"]["helpers"]:
+                if request["operation"] == "render-salary":
+                    segments = request["input"]["rows"][0]["calculation"]["segments"]
+                    assert segments == {"mainstream": {"raw_annual_target": "62500"}, "premium": {"raw_annual_target": "87500"}}, segments
         for filename, value in initial.items():
             if filename != REGISTRY["salary-calculator"]["state"]:
                 assert final[filename] == value, f"Overwrote original {filename}"
+
 
 
 def run_case(host, case, timeout, previous=None):

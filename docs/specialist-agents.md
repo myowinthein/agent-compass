@@ -40,4 +40,4 @@ The workflow still asks for necessary candidate facts, scope decisions and confi
 
 Shared Python helpers calculate exact salary amounts. Your current agent checks their inputs and results against saved evidence. Unavailable execution needs the existing [manual-fallback choice]({{ '/docs/commands/salary-calculator/step4-table-calculation.html#calculation-runtime' | relative_url }}).
 
-Research can use separate tasks to keep each brief isolated. These inherit your current model and effort where supported; otherwise the workflow uses its existing manual-research fallback. Compass does not offer a different research configuration.
+Research can use separate tasks to keep each brief isolated, inheriting your current model and effort where supported. When collection is unavailable, Salary Calculator records the gap and uses obtained evidence; Country Finder retains its manual-research fallback. Compass does not offer a different research configuration.

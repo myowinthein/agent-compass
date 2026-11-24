@@ -33,4 +33,4 @@ Persist this same consolidated report under `## Validation report` in salary-cal
 
 When `ingest` has written that report, persistence is already complete: read it back but do not append another review, alter its bounded generated section or write anything after its closing marker. Present the consolidated inventory in chat without creating a second report.
 
-This data is saved to salary-calculator-02-validated-data.md, which Step 3 will use next. Step complete. Follow the step-completion rule in prompts/shared/runtime.md. If no country was stored, apply the workflow's no-usable-estimates stop before Step 3; the empty stored artifact and Validation report remain valid records, not a completed salary result.
+This data is saved to salary-calculator-02-validated-data.md, which Step 3 will use next. Step complete. Follow the step-completion rule in prompts/shared/runtime.md. If no country was stored, save the no-usable-benchmarks outcome and end before Step 3 without asking for manual research or another evidence search; the empty stored artifact and Validation report remain valid records, not a completed salary result.

@@ -33,7 +33,7 @@ flowchart TD
   Profile --> S1["1. Confirm countries<br/>Research local salaries and reference visa salary rules"]
   S1 --> S2["2. Validate and store research"]
   S2 --> Stored{"Any country stored?"}
-  Stored -->|No| Repair(["Record what is known<br/>Offer evidence repair or stop"])
+  Stored -->|No| NoData(["Save the no-usable-benchmarks outcome<br/>End without a research-retry question"])
   Stored -->|Yes| Continue["Continue below with supported country evidence"]
 ```
 
@@ -41,17 +41,14 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  S3["3. Estimate supported international adjustments"]
-  S3 --> S4["4. Calculate comparable salary targets<br/>Record skipped countries"]
+  S3["3. Estimate supported adjustments or record the gap"]
+  S3 --> S4["4. Calculate adjusted estimates or benchmark references<br/>Record unusable salary data"]
   S4 --> Usable{"Any country calculated?"}
-  Usable -->|No| Repair(["Save the skip-only outcome<br/>Offer evidence repair or stop"])
+  Usable -->|No| NoTargets(["Save the skip-only outcome<br/>End without a research-retry question"])
   Usable -->|Yes| Ladder["5a. Draft or reuse the matching career ladder<br/>Wait for confirmation if needed"]
   Ladder --> Audit["5b. Audit the salary framework<br/>Revise only when evidence supports it"]
-  Audit --> Fresh{"Essential evidence needs refresh?"}
-  Fresh -->|Yes| Choice["Wait: refresh evidence, retain a disclosed snapshot or stop"]
-  Choice -->|Evidence or approved snapshot| Final["Save and check the full audit"]
-  Choice -->|Stop or still blocked| Pending["Preserve earlier outputs; keep the final audit unfinished"]
-  Fresh -->|No| Final
+  Audit --> Limits["Keep supported dated evidence<br/>Disclose unverified adjustments and visa conditions"]
+  Limits --> Final["Save and check the full audit"]
   Final --> End(["Show the final salary table and audit outcome"])
 ```
 
@@ -75,7 +72,7 @@ Mainstream covers mid-size or mainstream local-market employers, while Premium c
 
 [Validation](step2-data-validation.html) checks required content and stores accepted research unchanged. Missing or rejected country data is explained, and original duplicates are retained.
 
-[International adjustment](step3-international-adjustment.html) estimates a defensible reduction from local benchmarks for this candidate's position in that market. Without enough evidence, it records that the adjustment cannot be estimated instead of assuming 0%. A well-supported zero and a lack of information have different implications.
+[International adjustment](step3-international-adjustment.html) uses a supported reduction when evidence permits. Otherwise, comparable local benchmarks continue unchanged as references, with the overseas adjustment explicitly unverified. This preserves useful salary information without inventing a discount or treating missing evidence as a supported zero.
 
 ### Calculate and verify the framework
 
@@ -89,7 +86,7 @@ Chat shows local-currency annual and monthly targets for both segments and the V
 
 A salary rule is only one part of immigration eligibility. A higher target does not prove sponsorship, and a range that crosses a threshold cannot be reported as entirely below it. Currency, gross/net basis, pay period and source dates must be comparable before drawing those conclusions.
 
-If no country has usable estimates, the workflow saves the required outcome and offers evidence repair or stop. It does not ask for a career ladder or manufacture an empty final table. If an audit needs fresh evidence, you choose refresh, a dated-snapshot continuation with limitations, or stop.
+The workflow continues with obtained evidence rather than asking you to supply missing research or approve another search. Missing visa or market evidence stays unverified. If no country has comparable salary benchmarks, it saves a no-result outcome and ends without an empty table or career-ladder question.
 
 The final figures are role-specific estimates grounded in the cited snapshot, not guaranteed offers. Country Finder may later offer the saved research country names without inheriting these conclusions. See [calculation runtime](step4-table-calculation.html#calculation-runtime) for the execution and fallback requirements.
 

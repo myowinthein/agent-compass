@@ -537,6 +537,23 @@ class CompassCLI(unittest.TestCase):
         self.assertIn("| 🇩🇪 Germany (EUR) | 58,275/yr ⚠️ | 58,500 | 74,500 | 4,850 | 6,200 |\n", result["markdown"])
         self.assertEqual(result["calculations"][0]["segments"]["mainstream"]["raw_annual"], "58250")
 
+    def test_salary_benchmark_references_render_without_an_adjustment(self):
+        payload = self.salary_request()
+        payload["rows"][0]["calculation"]["segments"] = {
+            "mainstream": {"raw_annual_target": "62500"}, "premium": {"raw_annual_target": "80000"}}
+        result = self.invoke("render-salary", payload)["result"]
+        work = result["calculations"][0]
+        self.assertEqual(work["input"]["segments"], payload["rows"][0]["calculation"]["segments"])
+        self.assertEqual(work["segments"]["mainstream"]["raw_annual"], "62500")
+        self.assertEqual(work["segments"]["mainstream"]["raw_monthly"], "15625/3")
+        self.assertIn("| 62,500 | 80,000 | 5,200 | 6,650 |", result["table_markdown"])
+        with tempfile.TemporaryDirectory() as directory:
+            filename = "salary-calculator-05b-final-results.md"
+            Path(directory, filename).write_text(
+                "Germany uses unadjusted local-market benchmarks; overseas adjustment unverified.\n\n" + result["markdown"], encoding="utf-8")
+            self.assertTrue(self.invoke("check-saved", {"workspace": directory, "file": filename,
+                            "kind": "salary", "render_input": payload})["result"]["valid"])
+
     def test_salary_rows_follow_priority_aliases_then_alphabetic_extras(self):
         payload = {"rows": [], "priority_order": ["NL", "DE"], "aliases": {"NL": "Netherlands", "DE": "Germany"}}
         for country, display in (("Germany", "Germany 🇩🇪"), ("France", "France 🇫🇷"),

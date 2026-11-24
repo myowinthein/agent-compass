@@ -19,7 +19,7 @@ Store accepted salary research unchanged, without verifying market claims or cal
 ```mermaid
 flowchart TD
   Check["Check country blocks and both salary tiers"] --> Save["Store accepted research without rewriting it"]
-  Save --> Next["Continue with usable data or offer repair"]
+  Save --> Next["Continue with usable data or save the no-result outcome"]
 ```
 
 ## Required data
@@ -39,4 +39,4 @@ Generated blocks use top-level `Country:` fields. Ambiguity needs clarification.
 
 The report retains rejection and missing-country reasons. A duplicate with a retained original is not a failed country.
 
-With stored countries, continue to [International adjustment](step3-international-adjustment.html). Otherwise, offer evidence repair or stop before career-ladder intake.
+With stored countries, continue to [International adjustment](step3-international-adjustment.html). If none remain usable, save the no-result outcome and end without a research-retry, manual-evidence or career-ladder question.

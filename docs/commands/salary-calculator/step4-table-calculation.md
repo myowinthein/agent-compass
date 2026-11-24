@@ -38,7 +38,7 @@ Annual Target = Realistic amount × (1 − Adjustment %)
 Monthly Reference = unrounded Annual Target ÷ 12
 ```
 
-The workflow skips a country if required data is missing, inputs are not comparable or its adjustment cannot be estimated. It explains the skip rather than showing a partial row or assuming 0%.
+With an unsupported adjustment, each researched Realistic amount becomes an unadjusted local-market reference. The overseas adjustment remains unverified rather than being set to 0%. Countries are skipped only when salary data cannot support both comparable tiers, with the missing information explained.
 
 Display annual values to the nearest 500 and monthly references to the nearest 50, halfway upward, each from raw values. Dividing displayed annual pay may give a different monthly number. Monthly references are not necessarily payslips; no automatic salary ranges are generated.
 
@@ -85,4 +85,4 @@ Raw Mainstream pay below a confirmed hard floor is flagged in Summary. Compariso
 
 `salary-calculator-04-salary-table.md` saves work, table and calculated/skipped counts. Every known target has a row or its actual skip reason; unknown coverage is disclosed.
 
-Chat shows counts. With calculated countries, the workflow continues to [Final verification](step5b-final-verification.html). Otherwise, the assistant offers evidence repair or stop.
+Chat shows counts. With calculated countries, the workflow continues to [Final verification](step5b-final-verification.html). With no usable salary benchmarks, it saves the no-result outcome and ends without asking for more evidence.
