@@ -6,7 +6,7 @@ has_toc: false
 overview: /docs/commands/job-screener.html
 permalink: /docs/commands/job-screener/detailed.html
 title_category: Details
-description: "Job Screener compares one opportunity at a time with a confirmed candidate profile. It gives a compact Apply, Maybe or Skip report and can help draft application answers without inventing experience or submitting anything."
+description: "Job Screener compares one opportunity at a time with a confirmed candidate profile. It explains an Apply, Maybe or Skip decision through relevant experience, gaps and unknowns, and can help draft application answers."
 source_files:
   - workflows/job-screener.md
 ---
@@ -15,7 +15,7 @@ source_files:
 
 {% include guide-depth.html %}
 
-Job Screener compares one opportunity at a time with a confirmed candidate profile. It gives a compact Apply, Maybe or Skip report and can help draft application answers without inventing experience or submitting anything.
+Job Screener compares one opportunity at a time with a confirmed candidate profile. It explains an Apply, Maybe or Skip decision through relevant experience, gaps and unknowns. It can also help draft application answers without inventing experience or submitting anything.
 
 ## Flow
 
@@ -44,9 +44,11 @@ A new chat or a different person gets a separate run. A replacement resume or a 
 
 ## Your result
 
-The report gives a verdict, pros, cons and missing information. Salary and the application method are included only when stated. The format stays compact so repeated screening remains easy to compare.
+The report gives a verdict, pros, cons and missing information. Salary and the application method are included only when stated. Each important strength or gap connects the job's actual work to your confirmed experience, so you can see why it matters rather than receiving a list of matching keywords. The same sections keep repeated screening easy to compare.
 
-The important distinction is between a mismatch and a confirmed hard blocker. A missing tool, unexplained visa status or unclear language level is not automatically a blocker. The 🚫 marker needs both an explicit mandatory condition and a confirmed candidate fact showing it cannot be met.
+The report distinguishes a substantial core mismatch, an ordinary gap, an unknown and a confirmed hard blocker. A role whose central work is not demonstrated in your profile may receive Skip even when some supporting tools match. An accepted alternative or comparable experience can resolve a named-tool gap. Your explicit exclusions remain preferences rather than claims that you cannot do the work.
+
+A missing tool, unexplained visa status or unclear language level is not automatically a blocker. The 🚫 marker needs both an explicit mandatory condition and a confirmed candidate fact showing it cannot be met.
 
 For example, a posting that strictly requires existing local work authorization can be a blocker when the confirmed profile says the candidate lacks it. Silence about sponsorship alone does not establish that conclusion. Unknowns should stay visible and influence the verdict without being presented as facts.
 

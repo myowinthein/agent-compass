@@ -22,9 +22,9 @@ Match analysis uses the current job description and confirmed candidate facts to
 
 ```mermaid
 flowchart TD
-  Start(["Read one job description<br/>Compare with confirmed profile facts"]) --> Block{"Confirmed hard blocker?"}
+  Start(["Read one job description<br/>Compare with confirmed profile facts"]) --> Block{"Confirmed blocker, substantial core mismatch<br/>Or explicit user exclusion?"}
   Block -->|Yes| Skip["Skip"]
-  Block -->|No| Gaps{"Two or more required gaps<br/>Or too uncertain to judge?"}
+  Block -->|No| Gaps{"Two or more independent required gaps<br/>Or insufficient information to judge?"}
   Gaps -->|Yes| Maybe["Maybe"]
   Gaps -->|No| Most{"Most required qualifications met?"}
   Most -->|Yes| Apply["Apply"]
@@ -41,12 +41,16 @@ Apply the first supported rule in this order:
 
 | Verdict | Condition |
 |---|---|
-| ❌ Skip | At least one confirmed hard blocker. |
-| ⚠️ Maybe | No blocker, but at least two required qualifications are unmet, or uncertainty prevents a useful judgment. |
-| ✅ Apply | No blocker and most required qualifications are met. |
+| ❌ Skip | A confirmed hard blocker, substantial core mismatch or your explicit exclusion. |
+| ⚠️ Maybe | No Skip basis, but essential role information is missing, at least two independent required qualifications are unmet, or material uncertainty prevents a useful judgment. |
+| ✅ Apply | No Skip basis, core work aligns and most required qualifications are met. |
 | ⚠️ Maybe | Fit remains unclear otherwise. |
 
-Preferred qualifications are not required gaps. Unknown requirements are identified as unknown instead of being silently treated as failures. The report does not invent a numeric match percentage.
+The comparison starts with the work and expected outputs. Related requirements are grouped into capabilities rather than counting several tools as separate gaps. A title or familiar supporting tool does not outweigh a substantial mismatch in the main work. Conversely, comparable experience can establish a capability even when a named example tool is absent; accepted alternatives and explicit training paths matter.
+
+A substantial core mismatch means that several central capabilities or a substantial part of the required work are not demonstrated in the confirmed profile. It is a judgment about documented fit, not a claim that you have never done anything omitted from your resume. A limited gap or unclear proficiency can remain Maybe. Your explicit role preferences are assessed separately and are never inferred from your resume alone.
+
+Preferred qualifications are not required gaps. Unknown requirements are identified as unknown instead of being silently treated as failures. A short but informative posting can be assessed; a title and company benefits without meaningful duties may lead to Maybe because the role cannot be judged. Missing salary alone does not make a posting insufficient. The report does not invent a numeric match percentage.
 
 ## Output format
 
@@ -57,15 +61,17 @@ Every job uses the same literal bracketed headers, starting directly with `[VERD
 | `[VERDICT]` | One-line decision. |
 | `[APPLICATION METHOD]` | The route stated in the posting; omitted when unstated. |
 | `[SALARY]` | Explicit pay with currency, period and components; omitted when unstated. |
-| `[PROS]` | Evidence of relevant strengths in bullets. |
-| `[CONS]` | Actual gaps and uncertainties in bullets; 🚫 only for confirmed blockers. |
+| `[PROS]` | Important requirements connected to confirmed relevant experience. |
+| `[CONS]` | Important gaps or uncertainties, with their practical effect on fit; 🚫 only for confirmed blockers. |
 | `[MISSING INFORMATION]` | Unstated items from the fixed checklist. |
+
+Pros and Cons explain the decision through specific comparisons rather than reproducing the whole resume or posting. Overlapping strengths are combined, while each deciding gap makes its evidence and consequence clear. There is no separate score or extra explanation section.
 
 The missing-information checklist covers salary, sponsorship, relocation support, Remote policy, work authorization, working-hours overlap and employment type. An unstated item belongs here, not in Cons solely because it is absent. If the checklist is complete, the report says so.
 
 ## Hard blockers
 
-Every 🚫 needs an explicit mandatory requirement and a confirmed candidate fact establishing inability to meet it. Rights, language, clearance, certification, hiring jurisdiction, mandatory hours or the role's core technology can qualify when both sides of that comparison are known.
+Every 🚫 needs an explicit mandatory requirement and a confirmed candidate fact establishing inability to meet it. Rights, language, clearance, certification, hiring jurisdiction, mandatory hours or a mandatory technology condition can qualify when both sides of that comparison are known. A supported core mismatch can determine Skip without 🚫; missing resume mention alone does not establish inability.
 
 Missing resume mention is not inability. A different city does not establish unwillingness or inability to relocate. Consider an explicit sponsorship or obtain-by-start path without promising that it will succeed. Each blocker is checked independently; one work-rights blocker does not manufacture an additional location blocker.
 

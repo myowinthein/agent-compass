@@ -33,7 +33,7 @@ Use the prefix from [Setup]({{ '/docs/setup/' | relative_url }}#run-a-command). 
 
 ## Your result
 
-Each report gives a verdict, pros, cons and missing information. Salary and application method appear only when stated. 🚫 marks [confirmed hard blockers](job-screener/step1-match-analysis.html#hard-blockers), not every profile gap.
+Each report gives a verdict, evidence-linked pros and cons, and missing information. It explains how your experience fits the actual work and which gaps matter. Salary and application method appear only when stated. 🚫 marks [confirmed hard blockers](job-screener/step1-match-analysis.html#hard-blockers), not every profile gap. A substantial core mismatch or your explicit exclusion can also lead to Skip.
 
 Saved situational facts are reused without requiring new intake. Drafts use confirmed facts and compact English; nothing is submitted automatically.
 
