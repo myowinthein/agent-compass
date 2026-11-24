@@ -117,7 +117,23 @@ try {
  // A late response must not replace newer results or reopen cleared search.
  {
   const context=await createContext();const page=await context.newPage();
-  await page.addInitScript(()=>{const Native=Worker;window.workerReplies=[];window.Worker=class extends Native{constructor(...args){super(...args);this.addEventListener('message',({data})=>{if(data.type==='results')workerReplies.push(data.id);});}};});
+  await page.addInitScript(()=>{
+   const Native=Worker;window.workerReplies=[];window.holdSearchReply=false;
+   window.Worker=class extends Native{
+    constructor(...args){
+     super(...args);
+     this.addEventListener('message',event=>{
+      if(event.data.type!=='results')return;
+      if(window.holdSearchReply){
+       event.stopImmediatePropagation();
+       window.heldSearchReply={worker:this,data:event.data};
+       return;
+      }
+      workerReplies.push(event.data.id);
+     });
+    }
+   };
+  });
   await context.route('**/search-worker.js?v=*',async route=>{const response=await route.fetch();await route.fulfill({response,body:(await response.text())+"\nconst send=self.postMessage.bind(self);self.postMessage=data=>{if(data.type==='results'&&data.id===1)setTimeout(()=>send(data),250);else send(data);};"});});
   await page.goto(pageUrl('docs/commands/country-finder.html'));const query=page.locator('#search-input');
   await query.fill('country');await page.waitForFunction(()=>!document.getElementById('search-input').hasAttribute('aria-busy'));
@@ -127,7 +143,20 @@ try {
   assert.equal(await page.locator('#search-results > ul').count(),1,'Late worker results appended an obsolete list');
   assert.equal((await page.locator('#search-results a').evaluateAll((links,length)=>links.slice(0,length).map(a=>a.href),latest.length)).join('|'),latest.join('|'),'Late worker results replaced the latest query');
   await query.press('Escape');assert.equal(await page.locator('#search-results a').count(),0);assert.equal(await query.inputValue(),'');
-  console.log('PASS search worker: out-of-order replies keep the latest results and Escape clears them');await context.close();
+  await page.evaluate(()=>{window.holdSearchReply=true;});
+  await query.fill('portal');await page.waitForFunction(()=>window.heldSearchReply);
+  assert(await page.evaluate(()=>window.heldSearchReply.data.results.length>0),'Held query had no results to repopulate search');
+  await query.press('Escape');
+  await page.evaluate(()=>{
+   window.holdSearchReply=false;
+   const {worker,data}=window.heldSearchReply;
+   worker.dispatchEvent(new MessageEvent('message',{data}));
+  });
+  await page.waitForFunction(()=>workerReplies.includes(3));
+  assert.equal(await query.inputValue(),'','Late reply restored the cleared query');
+  assert.equal(await page.locator('#search-results a').count(),0,'Late reply repopulated cleared results');
+  assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('search-active')),false,'Late reply reopened search');
+  console.log('PASS search worker: out-of-order replies keep the latest results and a reply after Escape cannot reopen search');await context.close();
  }
  // Startup failure and a later crash retain an explicit retry with one UI binding.
  for(const failure of ['startup','query']) {
@@ -568,22 +597,28 @@ try {
   await page.clock.install();await page.clock.pauseAt(new Date());
   const blocks=page.locator('div.highlighter-rouge:visible');const first=blocks.nth(0);const second=blocks.nth(1);
   const button=first.locator('button');const status=first.locator('.copy-status');const other=second.locator('.copy-status');
+  const firstText=await first.locator('code').innerText();const secondText=await second.locator('code').innerText();
+  assert(firstText.trim()&&secondText.trim(),'Clipboard fixtures need nonempty commands');
+  assert.notEqual(firstText,secondText,'Clipboard fixtures need different commands to detect stale text');
   assert.equal(await button.evaluate(el=>getComputedStyle(el).opacity),'1','Touch copy control needs hover');
   await button.click();await button.evaluate(el=>el.click());
   assert.equal(await page.evaluate(()=>window.copyWrites.length),1,'Pending copies were duplicated');
+  assert.equal(await page.evaluate(()=>window.copyWrites[0].text),firstText,'Copy sent the wrong first command');
   assert.equal(await first.locator('use').getAttribute('xlink:href'),'#svg-copy');
   await page.clock.runFor(2500);assert.equal(await status.textContent(),'Copying…');
   await page.evaluate(()=>window.copyWrites[0].resolve());assert.equal(await status.textContent(),'Copied');
   await second.locator('button').click();assert.equal(await status.textContent(),'Copied','A pending write cleared another success');
+  assert.equal(await page.evaluate(()=>window.copyWrites[1].text),secondText,'Copy sent stale or incorrect second-command text');
   await page.evaluate(()=>window.copyWrites[1].reject(new Error('Clipboard denied')));
   assert.match(await other.textContent(),/Try again or select the code/);assert.equal(await status.textContent(),'Copied','A failed write cleared another success');
   await second.locator('button').click();assert.equal(await other.textContent(),'','A new attempt retained stale copy error');
+  assert.equal(await page.evaluate(()=>window.copyWrites[2].text),secondText,'Retry sent the wrong command');
   await page.evaluate(()=>window.copyWrites[2].resolve());assert.equal(await status.textContent(),'');assert.equal(await other.textContent(),'Copied');
   await page.clock.runFor(1999);assert.equal(await other.textContent(),'Copied');
   await page.clock.runFor(1);assert.equal(await other.textContent(),'');assert.deepEqual(errors,[]);
   await second.locator('button').focus();await page.keyboard.press('Tab');await page.keyboard.press('Shift+Tab');
   assert(await second.locator('button').evaluate(el=>el===document.activeElement&&el.matches(':focus-visible')&&getComputedStyle(el).outlineStyle!=='none'));
-  console.log(`PASS ${scheme} touch clipboard: visible control, pending deduplication, confirmed success, recoverable failure, latest confirmation and two-second timer`);await context.close();
+  console.log(`PASS ${scheme} touch clipboard: exact command text, visible control, pending deduplication, confirmed success, recoverable failure, latest confirmation and two-second timer`);await context.close();
  }
  // Enlarged text and off-screen anchors must keep recovery inside the viewport.
  for(const kind of ['copy','theme','search']) {
