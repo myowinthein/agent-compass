@@ -18,9 +18,9 @@ Observations from maintainer testing and use on macOS, alongside documented plat
 
 <div class="known-issue__body" markdown="block">
 
-Running commands such as country-finder in separate sessions can produce [different results](https://platform.claude.com/docs/en/about-claude/glossary#temperature), even with the same profile and answers.
+Running commands such as country-finder or salary-calculator in separate sessions can produce [different results](https://platform.claude.com/docs/en/about-claude/glossary#temperature), even with the same profile and answers.
 
-**What you can do:** Check that both runs used the same profile and preferences, then compare their sources and reasons. Choose the option to view saved results to see earlier research. Job Screener's answers stay in the chat.
+**What you can do:** Choose a more capable model with higher reasoning effort, and give clear, specific answers to the agent's questions.
 
 </div>
 </details>
