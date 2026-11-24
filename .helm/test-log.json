@@ -45,8 +45,18 @@
       "reason": "The existing partial-write test mocks research.replace, bypassing the atomic replacement and cleanup that it should protect.",
       "action": "improve",
       "layer": "Offline ingestion regression",
-      "state": "open",
-      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3"
+      "state": "resolved",
+      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3",
+      "tests": ["scripts/test_compass.py::CompassCLI.test_ingest_partial_write_safe_retry"],
+      "closure": {
+        "reason": "tested",
+        "refs": ["scripts/test_compass.py::CompassCLI.test_ingest_partial_write_safe_retry", "helpers/compass_lib/research.py:replace"],
+        "method": "runtime",
+        "outcome": "The focused case and all 138 helper tests passed. The stored-data replacement succeeds, failure at the report's os.replace preserves both files' exact bytes and reports only the stored-data write, no staging file remains, and retry with fresh hashes produces no duplicates. The combined full project suite also passed.",
+        "commit": "4581afa3b03d92a466a9c53adc0745133a26a846",
+        "command": "python3 -B scripts/test_compass.py CompassCLI.test_ingest_partial_write_safe_retry PortalReports.test_corrupt_report_metadata_is_rejected_without_fallback_or_writes\npython3 -B scripts/test_compass.py",
+        "scope": "Local macOS offline helper tests with fictional temporary workspaces and a controlled os.replace failure; no model calls or live research."
+      }
     },
     {
       "id": "g-0f26ca63-1487-4209-9d90-75651893ed27",
@@ -169,8 +179,18 @@
       "reason": "Existing cases reject changed report bodies and nonexistent cross-country IDs, but do not corrupt identity or time metadata in an otherwise existing report.",
       "action": "add",
       "layer": "Offline portal storage regression",
-      "state": "open",
-      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3"
+      "state": "resolved",
+      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3",
+      "tests": ["scripts/test_compass.py::PortalReports.test_corrupt_report_metadata_is_rejected_without_fallback_or_writes"],
+      "closure": {
+        "reason": "tested",
+        "refs": ["scripts/test_compass.py::PortalReports.test_corrupt_report_metadata_is_rejected_without_fallback_or_writes", "helpers/compass_lib/portals.py:record_at"],
+        "method": "runtime",
+        "outcome": "The focused case and all 138 helper tests passed. Four metadata variants (report ID, country key, country label and timezone-free saved_at) each make listing and selected reading reject without fallback or byte changes. The combined full project suite also passed.",
+        "commit": "4581afa3b03d92a466a9c53adc0745133a26a846",
+        "command": "python3 -B scripts/test_compass.py CompassCLI.test_ingest_partial_write_safe_retry PortalReports.test_corrupt_report_metadata_is_rejected_without_fallback_or_writes\npython3 -B scripts/test_compass.py",
+        "scope": "Local macOS offline helper tests using an older valid report and a newer corrupted synthetic report in a disposable home; no real user data or network."
+      }
     },
     {
       "id": "g-4d9929bb-fe10-48bc-8f16-00560b658ff9",
@@ -298,8 +318,18 @@
       "reason": "The browser test records clipboard text but only checks feedback, so empty, stale or wrong-block content can pass.",
       "action": "improve",
       "layer": "Documentation browser regression",
-      "state": "open",
-      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3"
+      "state": "resolved",
+      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3",
+      "tests": ["docs/tests/browser_frontend.mjs: light/dark touch clipboard"],
+      "closure": {
+        "reason": "tested",
+        "refs": ["docs/tests/browser_frontend.mjs: light/dark touch clipboard"],
+        "method": "runtime",
+        "outcome": "The full project suite passed, including Chrome assertions that first-command, second-command and retry writes equal their respective displayed commands in light and dark touch contexts. Existing pending deduplication, success/failure feedback, focus and two-second confirmation assertions remain passing.",
+        "commit": "40b0f7f3f5ba7376a79ad32846bf37a1ac92ce6d",
+        "command": "BUNDLE_GEMFILE=docs/Gemfile bundle exec rake test",
+        "scope": "Local macOS isolated source copy matching the committed test tree; built Jekyll site on loopback and installed headless Chrome with synthetic clipboard promises, no system clipboard writes. All 138 Python, 463 plugin, 464 salary and 57 Node tests/checks passed, plus browser checks and HTML-Proofer on 93 files and 346 internal links. No live research or model calls."
+      }
     },
     {
       "id": "g-67d7fc4e-9847-4105-885e-0aeade76a21c",
@@ -603,8 +633,18 @@
       "reason": "The delayed-response test waits for both replies before Escape, leaving the cleared-search race unexercised.",
       "action": "improve",
       "layer": "Documentation browser regression",
-      "state": "open",
-      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3"
+      "state": "resolved",
+      "assessed_commit": "06a7a85fb760c7563dc4ce88d51ed618b1be25d3",
+      "tests": ["docs/tests/browser_frontend.mjs: late worker response after Escape"],
+      "closure": {
+        "reason": "tested",
+        "refs": ["docs/tests/browser_frontend.mjs: late worker response after Escape"],
+        "method": "runtime",
+        "outcome": "The full project suite passed. A nonempty real worker result is held at delivery, Escape clears the query, then releasing the result leaves the input and results empty and search inactive. Existing out-of-order latest-query checks remain passing.",
+        "commit": "40b0f7f3f5ba7376a79ad32846bf37a1ac92ce6d",
+        "command": "BUNDLE_GEMFILE=docs/Gemfile bundle exec rake test",
+        "scope": "Local macOS isolated source copy matching the committed test tree; real search worker and built site on loopback in installed headless Chrome, with a controlled message-delivery hold. Complete browser and internal-link checks passed; no general accessibility or cross-browser certification."
+      }
     },
     {
       "id": "g-a813fc09-e054-477c-94dd-07eb667fbee0",
