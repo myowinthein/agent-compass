@@ -50,9 +50,9 @@ Compass uses [Claude's](https://code.claude.com/docs/en/tools-reference#askuserq
 
 <div class="known-issue__body" markdown="block">
 
-Compass supplies an icon for Codex. Its Claude package leaves out the icon setting so it can be installed in Claude Desktop. A missing icon alone does not mean Compass failed to load.
+Compass's icon is missing in Claude Desktop.
 
-**What you can do:** Find Agent Compass by name in the plugin list. Check that it is turned on, shows the expected version and lists four skills: Country Finder, Salary Calculator, Portal Finder and Job Screener.
+**What you can do:** Find Agent Compass by name and check its commands in the [chat input menu]({{ '/docs/setup/claude.html#desktop-install' | relative_url }}). We haven't found a fix for the icon.
 
 </div>
 </details>
