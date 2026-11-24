@@ -362,9 +362,9 @@ assert.call(intake.include?('A supplied list is the exact scope') &&
             discovery.include?('Older criteria recording an open-discovery preference'),
             "Scope selection must combine list edits, omit automatic additions and preserve legacy intent")
 situational = root.join("skills/situational-profile-questions.md").read(encoding: "UTF-8")
-assert.call(situational.include?('Which language(s) are you willing and able to use as the main working language?') &&
+assert.call(situational.include?('Which languages are you willing and able to work in?') &&
             situational.include?('not a separate spoken-language inventory') &&
-            situational.include?('citizenship / passport nationality') && situational.include?('any known work conditions'),
+            situational.include?('citizenship or passport nationality') && situational.include?('any known work conditions'),
             "Intake must combine working-language questions while separating nationality and country-specific status")
 assert.call(salary_intake.include?('one country per bullet line') && salary_intake.include?('do not shrink this list to the salary table'),
             "Salary research must retain a reusable full confirmed country scope")

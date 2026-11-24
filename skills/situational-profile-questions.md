@@ -7,15 +7,23 @@ description: Reuse confirmed candidate facts and collect material missing situat
 
 If situational-profile.md exists in the selected run, reuse it without restarting intake. Otherwise read the confirmed profile.md and this person's explicit answers in the selected run. Reuse applicable location, citizenship, languages, status and preferences; ask only for material missing or conflicting facts. Do not infer current facts from stale history, work rights from residence/citizenship, or acceptable working languages from spoken ability.
 
-Use these questions only for unresolved context needed by the caller. Batch independent missing facts within QM limits rather than asking one at a time:
+Use these short questions only for unresolved context needed by the caller. Batch independent missing facts within QM limits. Keep the answer-handling instructions below agent-facing; add only a brief hint when needed for a usable answer.
 
 For Country Finder, location, citizenship, working languages and relevant work rights/status are core context. Ask once for missing core answers before proceeding; an omission is not an explicit unknown or declined answer. Accept an actual unknown/decline without repeating the question or inventing the fact.
 
-1. Where are you currently based? Request a city/timezone only when needed for a location or timezone comparison.
-2. What is your citizenship / passport nationality? Reuse any citizenship already confirmed; this is the nationality context for applicable immigration research.
-3. Which language(s) are you willing and able to use as the main working language? Ask this once, not a separate spoken-language inventory. Preserve spoken languages already in the resume; the answer establishes the accepted working languages and self-reported ability, not an invented proficiency level. Clarify proficiency only when it could materially affect the assessment.
-4. In which countries do you currently hold relevant citizenship, permanent residence or a visa/immigration status? Give the country, status and any known work conditions, or "none" / "unknown". Reuse citizenship already supplied as that status fact where relevant, without asking it again; do not turn the status label alone into unrestricted work permission. Keep this separate from passport nationality and do not re-ask established residence.
-5. Country Finder: do you have a minimum monthly pay you would not accept less than? This is optional; "not specified" skips floor filtering. Only for a supplied floor, collect its amount, currency and gross base versus net/take-home basis. If an existing or volunteered minimum is ambiguous, clarify hard floor versus context only before applying it; retain context-only answers without exclusions or asking permission to construct a local-market midpoint. Salary Calculator retains its minimum-salary question with amount/currency/pay basis and hard-floor versus context-only choice, including permission to use a recruiter-friendly local-market midpoint instead.
+1. Where are you currently based?
+2. What is your citizenship or passport nationality?
+3. Which languages are you willing and able to work in?
+4. What work rights or immigration status do you hold, and where? (country + status)
+5. Do you have a minimum monthly pay requirement? (optional)
+
+## Answer handling
+
+Request a city/timezone only when needed for a comparison. Citizenship supplies the nationality context for immigration research; reuse confirmed citizenship as that status fact where relevant, without asking twice. For country-specific status, retain citizenship, permanent residence, visas and any known work conditions; accept "none" / "unknown". A status label does not alone establish unrestricted permission. Keep nationality and status distinct and do not re-ask established residence.
+
+Use the language answer for accepted main working languages and self-reported ability, not a separate spoken-language inventory or invented proficiency level. Preserve resume languages; clarify proficiency only when material.
+
+Country Finder's pay question is optional; "not specified" skips floor filtering. For a supplied floor, collect amount, currency and gross base versus net/take-home basis. Clarify hard floor versus context only when ambiguous; retain context-only answers without exclusions or asking permission to construct a local-market midpoint. Salary Calculator retains its amount/currency/pay-basis and hard-floor/context-only question, including permission to use a recruiter-friendly local-market midpoint instead.
 
 ## Conditional context
 
