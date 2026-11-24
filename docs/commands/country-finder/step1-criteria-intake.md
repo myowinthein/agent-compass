@@ -24,7 +24,7 @@ flowchart TD
 
 ## Your background
 
-The assistant reuses confirmed resume and situational facts, asking only for relevant gaps in location, citizenship, languages or work rights. It researches general immigration restrictions itself. You can supply a salary floor; only then are its currency and pay basis needed. Age is asked later only if a specific official rule makes it relevant, and you may decline.
+The assistant reuses confirmed facts, asking only for relevant gaps. Citizenship/passport nationality and existing country-specific status or work rights are separate. One language question asks which languages you are willing and able to use at work. A salary floor is optional; its currency and pay basis are needed only when supplied. Age is asked later only if a specific official rule makes it relevant, and you may decline.
 
 Only unclear target roles, seniority or material facts need clarification.
 
@@ -32,9 +32,9 @@ Only unclear target roles, seniority or material facts need clarification.
 
 - Remote: maximum time difference, or "no limit".
 - Sponsorship: an optional firm relocation deadline; "no fixed deadline" is valid.
-- Preferred countries/regions and exclusions, or "none". Say **only these countries** to restrict the search; otherwise other promising markets can be suggested.
+- Countries/regions to research, or the default list. A supplied list is used exactly; removals are handled as list edits rather than a separate exclusion question.
 
-Settled answers are reused. Optional salary and deadline details can remain unspecified; clarification is needed only when it changes a comparison, eligibility or what happens next. [Step 2](step2-country-discovery.html#choosing-countries) confirms additions for open searches. Without preferred countries, it can offer saved Salary Calculator names before the default list.
+Settled answers are reused. Optional salary and deadline details can remain unspecified. [Step 2](step2-country-discovery.html#choosing-countries) shows the full default list for acceptance or editing when no countries are supplied; clear custom lists need no second approval. Saved Salary Calculator names are available on explicit request.
 
 ## What happens next
 

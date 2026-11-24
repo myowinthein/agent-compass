@@ -23,12 +23,11 @@ Reuse explicit search answers already supplied for this run. Ask only the unreso
 
 1. Do you have a firm relocation deadline? If so, give the date or timeframe; otherwise say "no fixed deadline". This is optional, not a request to rate urgency. Preserve an existing "no rush" answer; an unanswered deadline stays "not specified".
 
-## Phase 3 — Country preferences:
+## Phase 3 — Countries to research:
 
-1. Are there any countries or regions you would particularly like included? (list them, or say "none") I will also look for other promising countries unless you say to search only your list.
-2. Are there any countries or regions you want excluded entirely? (list them, or say "none")
+1. Which countries should this job search cover? Provide your own countries or regions, or use the default list. If you have no countries in mind, Step 2 will show the complete default list for you to accept or edit.
 
-An Include list records preferred countries, not an exclusive scope. Honor an explicit "only these countries" or other clear restriction; clarify scope only when the answer is materially ambiguous. A bare list answering the preference question remains open to other suggestions. If Include is "none", leave it as "none" here; Step 2 can offer Salary Calculator's saved country names before the default list. Do not treat "none" as approval to import countries.
+A supplied list is the exact scope: "Germany" means Germany only, without extra suggestions or default countries. Do not ask a separate exclusion question; apply removals or additions the user supplies with the list or while editing the displayed default. A clear supplied list needs no duplicate approval. No preference or a default request records that intent, not silent approval of an unseen list; silence is not a default choice. Step 2 displays the default before its country-choice question. Salary Calculator's saved names are used only on explicit request, not offered automatically in place of the default.
 
 ## Clarifying criteria
 
@@ -46,7 +45,7 @@ Country preferences:
 - Include: [list or "none"]
 - Exclude: [list or "none"]
 
-Record open discovery or the user's explicit restriction as prose after these existing fields, preserving the original preferred countries. Step 2 confirms any proposed additions; this note does not pre-confirm a country list or change an older run's scope.
+Keep the existing Include/Exclude labels: Include holds supplied countries or "none" for a default request; Exclude holds volunteered removals or "none". Record custom/default intent and any already confirmed full list as prose after these fields. This does not change an older run's scope or pre-confirm an unseen default list.
 
 Tell me in one line that this was saved to country-finder-01-criteria.md — no need to repeat the criteria back, since I just gave them to you.
 

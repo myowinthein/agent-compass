@@ -18,27 +18,21 @@ Check which countries have evidence of remote hiring or employer-sponsored reloc
 
 ```mermaid
 flowchart TD
-  Scope{"Search only your list?"} -->|Yes| Research["Research both tracks for the chosen countries"]
-  Scope -->|No| Start["Keep preferred countries or offer saved/default names"]
-  Start --> Discover["Look for other promising markets"]
-  Discover --> Offer["Show the full proposal and confirm countries"]
+  Scope{"Your own countries supplied?"} -->|Yes| Research["Research both tracks for exactly those countries"]
+  Scope -->|No| Offer["Show the default list; accept, edit or replace"]
   Offer --> Research
   Research --> Save["Save findings, timezone conditions and evidence gaps"]
 ```
 
 ## Choosing countries
 
-Countries you would like included are preferences. The assistant keeps them and looks for other markets with relevant demand or hiring leads. Saying **only these countries** restricts the search to your list.
+Your supplied countries are the exact scope: **Germany** means Germany only. No extra countries are automatically suggested or added.
 
-For an open search, you see the proposed additions and their reasons before choosing the full research list. Keep, edit or replace the proposal, or use only the starting countries. The assistant waits for your answer before researching each country's suitability.
+With no countries in mind, you see the full default list grouped by continent before choosing to use, edit or replace it. The assistant waits for your answer before researching each country's suitability. Remove countries or add your own within this choice; there is no separate exclusion question. The default does not claim worldwide coverage.
 
-Without preferred countries, [Salary Calculator](../salary-calculator/step1-research-prompt-generator.html#what-happens-next)'s saved research scope can supply starting names before the default list. Source reuse and the proposed scope share one country-choice question.
+You can explicitly request [Salary Calculator](../salary-calculator/step1-research-prompt-generator.html#what-happens-next)'s saved research scope. Salary research need not be complete: only country names are reused, including targets whose salary data was skipped. No salary or visa conclusions transfer. Missing scope leaves your own list or the default available.
 
-Salary research need not be complete: only country names are reused, including targets whose salary data was skipped. No salary or visa conclusions transfer. Missing scope leaves your own list or the default available.
-
-When offering the default, the assistant first prints every country grouped by continent in chat, with any additions shown separately. The default is a starting list, not a claim that other countries lack potential.
-
-Regions expand before exclusions apply, and excluded countries are never added back as suggestions. Clear restricted or already confirmed lists need no second approval; ambiguous boundaries do. Resumes keep the saved scope. If live discovery is unavailable, you can supply evidence or choose a disclosed starting-list-only search.
+Regions expand before requested removals apply. Clear supplied or already confirmed lists need no second approval; ambiguous boundaries do. Resumes keep the saved scope.
 
 ## What gets checked
 

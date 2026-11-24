@@ -129,7 +129,7 @@ Not a measured effect of citizenship. Salary evidence grade Medium.
     return files
 
 
-def country_scope_files(intent="open"):
+def country_scope_files(intent="custom"):
     n = names("country-finder")
     files = profiles()
     files[n["criteria"]] = (
@@ -137,8 +137,8 @@ def country_scope_files(intent="open"):
         "Sponsorship track:\n- Relocation timeline: no rush\n\n"
         "Country preferences:\n- Include: Germany\n- Exclude: France\n\n"
         "Confirmed target: Senior Python backend engineer. "
-        + ("Country selection is open discovery; Germany is preferred, not exclusive.\n"
-           if intent == "open" else "The user explicitly restricted the search to Germany only.\n")
+        + ("Legacy country selection is open discovery; Germany is preferred, not exclusive.\n"
+           if intent == "open" else "Country selection is a supplied exact list: Germany.\n")
     )
     files[REGISTRY["country-finder"]["state"]] = state(1)
     return files
@@ -148,7 +148,7 @@ def country_final_files():
     n = names("country-finder")
     files = country_scope_files("restricted")
     files[n["criteria"]] = files[n["criteria"]].replace("Include: Germany", "Include: Germany, Netherlands").replace(
-        "Germany only", "Germany and Netherlands only")
+        "exact list: Germany.", "exact list: Germany, Netherlands.")
     files[n["criteria"]] += "Confirmed country display labels: 🇩🇪 Germany; 🇳🇱 Netherlands.\n"
     files[n["candidates"]] = "## Research scope\n- Germany\n- Netherlands\n\n" + "\n".join(
         f"Country: {country}\nRemote:\n- Suitable: yes\n- Reason: fictional role leads\n"
@@ -282,26 +282,39 @@ def fixture_cases():
             files[REGISTRY[workflow]["state"]] = state(final_step)
             cases.append(dict(id=f"completed-{workflow}-{family}", group="replay", workflow=workflow,
                               files=files, user=f"Run {workflow}.", final=n["final-results"]))
-    discovery_evidence = """Controlled opened-source transcript, all facts fictional, as of 2026-10-28:
-open('https://official.example/nl/backend') -> Netherlands occupation outlook names recurring senior Python demand.
-open('https://employer.example/nl/remote') -> Dutch employer seeks senior Python/SQL engineers for cross-border remote hiring.
-open('https://official.example/fr/backend') -> France has a similar lead, but France is explicitly excluded.
-There are no other preliminary findings. These are country-suggestion leads, not completed suitability research.
-"""
-    cases.append(dict(id="cf-preferred-open", group="cf-scope-open", workflow="country-finder",
-                      files=country_scope_files(), user="Continue Step 2 Part A only. Germany is preferred, and other promising countries are welcome. "
-                      "No Salary Calculator producer exists. Use the supplied opened-source transcript for the preliminary proposal; "
-                      "ask me to choose the country list, then wait before Part B. No answer to that question is supplied.\n" + discovery_evidence))
-    cases.append(dict(id="cf-restricted-only", group="cf-scope-restricted", workflow="country-finder",
-                      files=country_scope_files("restricted"), user="Execute Step 2 Part A only, then stop before Part B as requested. "
-                      "I explicitly want Germany only. Do not ask me to approve the same scope again. "
-                      "No new research or country additions are requested.\n" + discovery_evidence))
+    cases.append(dict(id="cf-custom-only", group="cf-scope-custom", workflow="country-finder",
+                      files=country_scope_files(), stop_after_write=names("country-finder")["candidates"],
+                      user="Execute Step 2 Part A only, then stop before Part B. "
+                      "My answer to the country question was Germany. A Salary Calculator list also exists, but I have not requested it."))
+    default_files = country_scope_files()
+    default_files[names("country-finder")["criteria"]] = default_files[names("country-finder")["criteria"]].replace(
+        "Include: Germany", "Include: none").replace("Exclude: France", "Exclude: none").replace(
+        "Country selection is a supplied exact list: Germany.", "No country preference; default requested but its full list has not been shown or confirmed.")
+    cases.append(dict(id="cf-default-offer", group="cf-scope-default", workflow="country-finder", files=default_files,
+                      user="Execute Step 2 Part A only. I have no countries in mind. The default list has not been shown; "
+                      "no answer to its country choice is supplied. A Salary Calculator list exists but I have not requested it."))
+    cases.append(dict(id="cf-default-edited", group="cf-scope-edited", workflow="country-finder", files=default_files,
+                      stop_after_write=names("country-finder")["candidates"],
+                      user="Execute Step 2 Part A only and stop before Part B. I have now reviewed the full default list in chat. "
+                      "Use that list without France and add Brazil. This is my confirmed exact scope."))
+    salary_source = {**default_files, names("salary-calculator")["research"]:
+                     "## Research scope\n- Germany\n- Netherlands\n- Canada\n\n## Research status\nSalary data not yet collected.\n"}
+    cases.append(dict(id="cf-salary-scope-request", group="cf-scope-source", workflow="country-finder", files=salary_source,
+                      run_selection="The Country Finder consumer workspace and person are selected. For names-only reuse, "
+                      "the user explicitly selected the same person's legacy Salary Calculator research file in this virtual workspace; "
+                      "producer selection is settled and no different source is needed.",
+                      user="Execute Step 2 Part A only. Use the countries recorded in that Salary Calculator research file. "
+                      "I have not seen its full country list or answered its scope question yet. Stop before Part B."))
+    cases.append(dict(id="cf-legacy-open-choice", group="cf-scope-legacy", workflow="country-finder", files=country_scope_files("open"),
+                      user="Resume Step 2 Part A from these older criteria. The previous intake recorded Germany as a preference "
+                      "and promised to propose other countries, but I have not confirmed a full research scope. "
+                      "No answer to the existing scope-repair choice is supplied. Stop before Part B."))
     resumed = country_scope_files()
     resumed[names("country-finder")["candidates"]] = "## Research scope\n- Germany\n"
     cases.append(dict(id="cf-resume-keeps-scope", group="cf-scope-resume", workflow="country-finder", files=resumed,
                       user="Resume the already-selected unfinished Step 2, same scope. I previously confirmed Germany as the full scope. "
                       "Its saved scope is valid; research has not started yet. Execute Part A only and stop before Part B. "
-                      "Do not offer new countries or ask me to confirm that list again.\n" + discovery_evidence))
+                      "Do not offer new countries or ask me to confirm that list again."))
     cases.append(dict(id="cf-fit-with-unverified-access", group="cf-final", workflow="country-finder", files=country_final_files(), max_turns=8,
                       user="Complete Step 6 only from the saved Step 5 checkpoint. All context is confirmed; the user declined "
                       "specialist routing for this run. No Salary Calculator producer exists. Use the stored fictional evidence only. "
@@ -392,6 +405,8 @@ def sources(workflow):
     paths.update(str(p.relative_to(ROOT)) for p in (ROOT / "skills").glob("*.md"))
     paths.update(str(p.relative_to(ROOT)) for p in (ROOT / "prompts" / workflow).glob("*.md"))
     paths.add("prompts/shared/resume-extraction-prompt.md")
+    if workflow == "country-finder":
+        paths.add("data/default-preferred-countries.md")
     return {path: (ROOT / path).read_text(encoding="utf-8") for path in sorted(paths)}
 
 
@@ -479,7 +494,9 @@ def check(case, initial, final, trace):
             question_text = " ".join(questions)
             assert 1 <= len(questions) <= 2 and re.search(r"language", question_text, re.I), questions
             assert re.search(r"work rights|work authori[sz]|immigration status", question_text, re.I), questions
-            assert not re.search(r"citizenship|current location|where.*based|\bage\b|birth|risk perception|salary|deadline", question_text, re.I), questions
+            assert not re.search(r"(?:what|which)\s+(?:(?:is|are)\s+)?your\s+(?:citizenship|passport nationality|nationality)|(?:what|which)\s+citizenships?\b|current location|where.*based|\bage\b|birth|risk perception|salary|deadline", question_text, re.I), questions
+            assert sum(bool(re.search(r"language", question, re.I)) for question in questions) == 1, "Working language was split into separate questions"
+            assert not re.search(r"which languages do you speak|what languages do you speak", question_text, re.I), questions
             assert final[REGISTRY["country-finder"]["state"]] == initial[REGISTRY["country-finder"]["state"]]
         else:
             assert not questions, "Known answers or optional omissions triggered another question"
@@ -531,24 +548,35 @@ def check(case, initial, final, trace):
         assert writes <= {n["criteria"], n["candidates"]}, "Part A advanced state or wrote research before approval"
         assert final[REGISTRY["country-finder"]["state"]] == initial[REGISTRY["country-finder"]["state"]]
         assert not ({"batch-partition", "research-scan", "ingest", "render-cf"} & set(operations)), "Part A ran country research mechanics"
-        if group == "cf-scope-open":
-            assert len(questions) == 1 and "Germany" in messages and "Netherlands" in messages, messages
+        if group in ("cf-scope-default", "cf-scope-source"):
+            assert len(questions) == 1, messages
             visible_text = " ".join(re.sub(r"[*_`]", "", messages).casefold().split())
-            question_lead = " ".join(re.sub(r"[*_`]", "", questions[0].split("?", 1)[0]).casefold().split())
+            question_lead = " ".join(re.sub(r"[*_`]", "", re.split(r"[?:]", questions[0], maxsplit=1)[0]).casefold().split())
             assert question_lead in visible_text, "Scope question is not shown in the user-facing message"
             before_question = visible_text[:visible_text.index(question_lead)]
-            assert "germany" in before_question and "netherlands" in before_question, "Country list was hidden inside the scope question"
-            assert "- Include: Germany" in final[n["criteria"]] and "- Exclude: France" in final[n["criteria"]]
-            assert "https://official.example/nl/backend" in messages or "https://employer.example/nl/remote" in messages, messages
+            countries = (re.findall(r"^- (.+)$", (ROOT / "data/default-preferred-countries.md").read_text(), re.M)
+                         if group == "cf-scope-default" else ["Germany", "Netherlands", "Canada"])
+            assert all(country.casefold() in before_question for country in countries), "Full default list was not visible before the question"
+            if group == "cf-scope-default":
+                assert "research-scope" not in operations, "Unrequested Salary Calculator source displaced the default"
+            else:
+                assert "research-scope" in operations, "Requested salary names were not read through the shared interface"
             assert n["candidates"] not in final, "Unapproved proposal became confirmed research scope"
-            assert "2026-10-28" in messages, "Country addition has no evidence date"
+        elif group == "cf-scope-legacy":
+            assert questions and final == initial, "Unconfirmed legacy preference was silently narrowed or expanded"
         else:
-            assert not questions, "Restricted or resumed scope was needlessly reopened"
+            assert not questions, "Supplied, edited or resumed scope was needlessly reopened"
             if group == "cf-scope-resume":
                 assert final[n["candidates"]] == initial[n["candidates"]], "Resume changed confirmed scope"
-            else:
+            elif group == "cf-scope-custom":
                 assert "## Research scope" in final[n["candidates"]] and "Germany" in final[n["candidates"]]
                 assert "Netherlands" not in final[n["candidates"]] and "France" not in final[n["candidates"]]
+                assert "research-scope" not in operations, "Custom selection triggered an unrequested upstream list"
+            else:
+                expected = set(re.findall(r"^- (.+)$", (ROOT / "data/default-preferred-countries.md").read_text(), re.M)) - {"France"} | {"Brazil"}
+                selected = {re.sub(r"[\U0001F1E6-\U0001F1FF\ufe0f]", "", label).strip().casefold()
+                            for label in re.findall(r"^- (.+)$", final[n["candidates"]], re.M)}
+                assert selected == {label.casefold() for label in expected}, "Edited default lost requested countries or added automatic suggestions"
     elif group == "cf-scoring":
         n = names("country-finder")
         assert not handoffs and not questions, "Confirmed scoring introduced a new choice"
@@ -759,7 +787,7 @@ def run_case(host, case, timeout, previous=None):
                 assert Path(filename).name == filename and isinstance(content, str), filename
                 (workspace / filename).write_text(content, encoding="utf-8")
             for request in reply["helpers"]:
-                assert request["operation"] in {"render-salary", "render-cf", "check-saved", "adjust-check", "compare", "state-check", "resolve-files",
+                assert request["operation"] in {"render-salary", "render-cf", "check-saved", "adjust-check", "compare", "state-check", "resolve-files", "research-scope",
                                                  "workspace-base", "portal-list", "portal-read", "portal-save"}, request
                 result = helper(request["operation"], request["input"], workspace)
                 turn["helper_results"].append(result)

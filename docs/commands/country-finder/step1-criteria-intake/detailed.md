@@ -31,7 +31,7 @@ flowchart TD
   ClarifyBackground --> BackgroundClear
   BackgroundClear -->|Yes| SaveBackground["Save situational-profile.md"]
 
-  Reuse --> Criteria["Reuse settled preferences; ask only for gaps<br/>Remote: timezone limit or no limit<br/>Sponsorship: optional firm deadline<br/>Preferred/excluded countries and open/restricted scope"]
+  Reuse --> Criteria["Reuse settled preferences; ask only for gaps<br/>Remote: timezone limit or no limit<br/>Sponsorship: optional firm deadline<br/>Countries to research or default list"]
   SaveBackground --> Criteria
   Criteria --> CriteriaClear{"Required context settled?"}
   CriteriaClear -->|No| ClarifyCriteria["Ask for clarification<br/>Wait for your answer"]
@@ -44,7 +44,9 @@ flowchart TD
 
 The confirmed resume profile supplies experience, role and seniority, plus any applicable location, citizenship or language facts it already contains. These are reused even when no separate situational profile exists. A known fact does not need another question merely to populate a new file.
 
-Missing situational context can include location, citizenship, acceptable working languages and existing work rights. Speaking a language does not automatically mean you accept it as your workplace language. A country where you already have independent work rights may need different analysis from one where an employer must sponsor you. Unknown status stays unknown.
+Missing situational context can include location, passport nationality and country-specific status or work rights. Citizenship, permanent residence and visas are recorded with relevant work conditions; a status label does not automatically mean unrestricted work permission. Known citizenship is reused without asking for it twice. Unknown conditions stay unknown.
+
+One question asks which languages you are willing and able to use as the main working language. It avoids a separate inventory of every spoken language, while retaining those already in the resume. Proficiency needs clarification only when it can change the assessment. Research checks actual workplaces; a country's official language alone is not a reason to exclude it.
 
 A salary floor is optional. If you supply one, its amount, currency and gross/net basis are needed for a valid comparison. A contextual preference is preserved without becoming an exclusion; the agent clarifies that distinction only when ambiguous. Leaving the amount unspecified does not create a zero floor or prevent discovery.
 
@@ -54,7 +56,7 @@ The agent researches general immigration restrictions and employer evidence rath
 
 Remote uses your maximum time difference, or **no limit**. Sponsorship can use an optional firm relocation deadline. For example, a route requiring six months cannot be a Focus recommendation for a confirmed two-month deadline, even if its role match is strong. No fixed deadline or unspecified timing adds no timing penalty. These constraints remain separate: a timezone limit affects Remote, while a relocation deadline affects Relocation.
 
-State countries or regions you would like included and any exclusions, or say none. Preferred countries stay in an open search that can suggest other markets. Say **only these countries** to restrict the scope. Clear intent needs no duplicate question; vague regions or contradictory boundaries need clarification before research.
+One question asks which countries the search should cover. A supplied answer such as **Germany** means Germany only, with no extra suggestions. If you have no countries in mind, discovery shows the full default list for acceptance or editing. Exclusions are removals from that list, not a separate questionnaire. Clear supplied lists need no duplicate approval; ambiguous region boundaries need clarification.
 
 For example, a preference for Europe does not tell the researcher whether you mean the European Union (EU), the European Economic Area (EEA) or a broader region. Resolving that once is more useful than silently choosing a definition for every later step.
 
@@ -62,7 +64,7 @@ For example, a preference for Europe does not tell the researcher whether you me
 
 The agent saves the criteria and any newly confirmed situational profile, then continues to [Country discovery](../step2-country-discovery.html#choosing-countries).
 
-Discovery keeps your preferred countries and asks you to choose the full list when it proposes additions. Without preferences, it can offer Salary Calculator's saved names before the default list. That offer transfers names only, not another workflow's salary or eligibility conclusions. A confirmed search scope is retained on resume.
+Discovery uses the chosen scope and researches both tracks. The displayed default can be accepted, edited or replaced before research starts. Salary Calculator's saved country names remain available on explicit request, without transferring salary or eligibility conclusions. A confirmed search scope is retained on resume.
 
 Material changes later can require revisiting affected research. Earlier files and decisions are preserved rather than relabeled as if they were produced from the new profile.
 

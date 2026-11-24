@@ -73,9 +73,9 @@ A new chat starts a fresh search. In the same chat, a completed matching search 
 
 ### Confirm the criteria and country scope
 
-[Criteria intake](step1-criteria-intake.html) clarifies role, timezone tolerance, relocation timing and country preferences. Preferred countries stay included while [Country discovery](step2-country-discovery.html#choosing-countries) proposes other promising markets for your decision. An explicit only-list keeps the search restricted. Without preferences, saved Salary Calculator names or the default list can supply the starting countries.
+[Criteria intake](step1-criteria-intake.html) clarifies role, accepted working languages, timezone tolerance and any firm relocation deadline. One country question chooses the scope: your own countries are used exactly, while no preference leads to the displayed, editable default list in [Country discovery](step2-country-discovery.html#choosing-countries). No extra countries are automatically suggested.
 
-That optional transfer uses names only. An unfinished salary search or a skipped salary estimate does not remove a country from the offer, and salary conclusions are not silently inherited.
+You can explicitly request Salary Calculator's saved country names instead. That transfer uses names only: an unfinished salary search or a skipped estimate does not remove requested countries, and salary conclusions are not inherited.
 
 ### Investigate the two tracks independently
 

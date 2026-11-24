@@ -27,11 +27,10 @@ These are two stages of country discovery. The saved country scope at the end of
 
 ```mermaid
 flowchart TD
-  Start(["Read your profile and criteria"]) --> Restricted{"Search only specified countries?"}
-  Restricted -->|Yes| Scope["Expand regions and apply exclusions<br/>Honor the chosen scope"]
-  Restricted -->|No| Names["Keep preferred countries<br/>Otherwise offer saved salary names or the default"]
-  Names --> Discover["Use current sources to propose other promising markets<br/>Respect exclusions; explain each addition"]
-  Discover --> Confirm["Show the whole proposal<br/>Wait: use, edit, replace or keep starting countries"]
+  Start(["Read your profile and criteria"]) --> Custom{"Countries supplied?"}
+  Custom -->|Yes| Scope["Expand regions and apply requested edits<br/>Use only the chosen countries"]
+  Custom -->|No| Default["Show the complete default list<br/>Saved salary names only on explicit request"]
+  Default --> Confirm["Wait: use, edit or replace the displayed list"]
   Confirm --> Scope
   Scope --> Empty{"Any countries left?"}
   Empty -->|No| Revise(["Ask for a revised list or stop"])
@@ -54,15 +53,13 @@ flowchart TD
 
 ## Choosing countries
 
-An include preference keeps countries you want considered while leaving room for discoveries. For example, **include Germany** keeps Germany in an open search; **search only Germany** closes the scope to that country. Only materially unclear intent needs another question.
+A supplied list fixes the scope. For example, **Germany** means Germany only; it does not mean Germany plus the default list or automatically discovered alternatives. The same rule applies to a longer custom list. Region names are expanded, with clarification when their boundaries matter.
 
-For an open search, the agent looks for other markets using current role-relevant demand and employer or pathway leads. Each addition comes with a short reason and dated source. This first pass proposes where to investigate; it does not certify a fit, require a complete job offer or claim to cover every country worldwide. Detailed suitability research still checks both tracks after you choose the list.
+With no preference, the agent displays every default country grouped by continent. You can accept the list, remove countries, add others yourself or replace it. A request for the default before seeing it is not approval of an unseen list. Once reviewed and confirmed, it needs no duplicate question. A selected country is not silently removed because preliminary evidence is weak.
 
-Without preferred countries, the agent can offer Salary Calculator's recorded research names, including countries whose salary data was skipped, or the shipped default list. Salary research need not be complete, and none of its conclusions transfer. That names-only offer and any proposed additions are handled in one country-choice question.
+Saved Salary Calculator names remain an explicit alternative. If you request them, the agent offers the full recorded research scope, including targets whose salary data was skipped. Salary completion is unnecessary because only names transfer. Missing or declined source data leaves custom/default selection available; no salary or eligibility conclusions are inherited.
 
-The complete proposal appears in chat before you answer. Default countries are printed by continent, with additions identified separately. You can use the proposal, change countries or keep only the starting list. A preferred or starting country is not silently removed for weak preliminary evidence, and an excluded country is not added back. Unclear region boundaries need clarification.
-
-An explicit restricted list needs no further scope approval. Once chosen, the scope is saved and retained on resume, including older runs; a new discovery pass never silently expands it. An empty scope needs revised countries or stop. Without live discovery access, the agent explains the limit and offers supplied evidence or a disclosed starting-list-only search.
+The confirmed scope is saved and retained on resume, including older runs. An older unfinished preference for open discovery without a confirmed full list needs a repair choice before the scope rule changes. Saved research is preserved. An empty selection needs revised countries or a stop before research.
 
 ## What gets checked
 
