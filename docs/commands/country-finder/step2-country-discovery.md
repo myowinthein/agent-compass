@@ -18,9 +18,10 @@ Check which countries have evidence of remote hiring or employer-sponsored reloc
 
 ```mermaid
 flowchart TD
-  Scope{"Your own countries supplied?"} -->|Yes| Research["Research both tracks for exactly those countries"]
-  Scope -->|No| Offer["Show the default list; accept, edit or replace"]
-  Offer --> Research
+  Scope{"Country scope already confirmed?"} -->|Yes| Research["Research both tracks for exactly those countries"]
+  Scope -->|No| Offer["Show the previous CF/SC scope or default<br/>Or accept your own countries"]
+  Offer --> Confirm["Reuse this list, choose other countries or use the default"]
+  Confirm --> Research
   Research --> Save["Save findings, timezone conditions and evidence gaps"]
 ```
 
@@ -28,11 +29,11 @@ flowchart TD
 
 Your supplied countries are the exact scope: **Germany** means Germany only. No extra countries are automatically suggested or added.
 
-With no countries in mind, you see the full default list grouped by continent before choosing to use, edit or replace it. The assistant waits for your answer before researching each country's suitability. Remove countries or add your own within this choice; there is no separate exclusion question. The default does not claim worldwide coverage.
+For a fresh search without a supplied list, the assistant can offer the previous Country Finder or Salary Calculator scope for the same person in this chat. This works in either direction and when repeating the same command. All recorded countries remain available, including those later excluded or skipped; only country names are reused.
 
-You can explicitly request [Salary Calculator](../salary-calculator/step1-research-prompt-generator.html#what-happens-next)'s saved research scope. Salary research need not be complete: only country names are reused, including targets whose salary data was skipped. No salary or visa conclusions transfer. Missing scope leaves your own list or the default available.
+You see every proposed country above a short question: **Reuse this list / Choose other countries / Use the default list**. Long lists use readable groups or short lines instead of crowding the question panel. The assistant waits for your answer before researching each country's suitability.
 
-Regions expand before requested removals apply. Clear supplied or already confirmed lists need no second approval; ambiguous boundaries do. Resumes keep the saved scope.
+You can provide a replacement list or edit the proposed names directly. The default list is also shown in full before acceptance or editing. Missing prior scope leaves your own list or the default available. Clear supplied or already confirmed lists need no second approval; ambiguous region boundaries do. Resumes keep the saved scope.
 
 ## What gets checked
 

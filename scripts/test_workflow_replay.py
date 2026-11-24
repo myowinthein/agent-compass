@@ -291,7 +291,7 @@ def fixture_cases():
         "Include: Germany", "Include: none").replace("Exclude: France", "Exclude: none").replace(
         "Country selection is a supplied exact list: Germany.", "No country preference; default requested but its full list has not been shown or confirmed.")
     cases.append(dict(id="cf-default-offer", group="cf-scope-default", workflow="country-finder", files=default_files,
-                      user="Execute Step 2 Part A only. I have no countries in mind. The default list has not been shown; "
+                      user="Execute Step 2 Part A only. Use the default country list. The default list has not been shown; "
                       "no answer to its country choice is supplied. A Salary Calculator list exists but I have not requested it."))
     cases.append(dict(id="cf-default-edited", group="cf-scope-edited", workflow="country-finder", files=default_files,
                       stop_after_write=names("country-finder")["candidates"],
@@ -557,7 +557,7 @@ def check(case, initial, final, trace):
                          if group == "cf-scope-default" else ["Germany", "Netherlands", "Canada"])
             assert all(country.casefold() in before_question for country in countries), "Full default list was not visible before the question"
             if group == "cf-scope-default":
-                assert "research-scope" not in operations, "Unrequested Salary Calculator source displaced the default"
+                assert "research-scope" not in operations, "An explicit default request triggered a prior-scope lookup"
             else:
                 assert "research-scope" in operations, "Requested salary names were not read through the shared interface"
             assert n["candidates"] not in final, "Unapproved proposal became confirmed research scope"

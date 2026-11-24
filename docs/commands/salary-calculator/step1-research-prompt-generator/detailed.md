@@ -9,6 +9,7 @@ permalink: /docs/commands/salary-calculator/step1-research-prompt-generator/deta
 title_category: Details
 description: "Salary research establishes comparable local benchmarks before any adjustment is calculated. It records how figures were chosen, which employer segment they describe and what the evidence cannot establish."
 source_files:
+  - skills/country-selection.md
   - prompts/salary-calculator/step1-research-prompt-generator.md
   - skills/situational-profile-questions.md
   - skills/sponsorship-threshold-rules.md
@@ -24,11 +25,8 @@ Salary research establishes comparable local benchmarks before any adjustment is
 
 ```mermaid
 flowchart TD
-  Start(["Read or collect your situational profile<br/>Settle any unclear role or level"]) --> CF{"Usable Country Finder result?"}
-  CF -->|Yes| Offer["Offer countries with a final Strong or Moderate fit<br/>Use the post-audit Summary"]
-  CF -->|No| ManualList["Ask for your target countries<br/>Explain any draft or incompatible source"]
-  Offer --> Confirm["Wait for your country choice<br/>Use, add, remove or choose a new list"]
-  ManualList --> Confirm
+  Start(["Read or collect your situational profile<br/>Settle any unclear role or level"]) --> Countries["Use supplied countries, previous CF/SC scope or default"]
+  Countries --> Confirm["Show every proposed country<br/>Wait for any required choice or edits"]
   Confirm --> Scope["Use local-employee salary benchmarks<br/>Research visa salary rules as a separate reference"]
   Scope --> Brief["One self-contained brief per country<br/>Two employer tiers, sources and visa salary rules"]
   Brief --> Cap{"Separate research context<br/>with web access available?"}
@@ -49,9 +47,13 @@ General immigration restrictions and employer behavior come from research. A con
 
 ## Choosing countries
 
-You can provide targets directly or use compatible Country Finder results. A completed final Summary supplies countries with a Strong or Moderate fit on either track. The Relocation priorities table can supply their presentation order; older results use the combined table. Only when no final exists can a ready Step 5 result provide a clearly labelled pre-audit list.
+An explicit list defines the exact research scope. Otherwise, a fresh SC search can offer the preceding CF or SC scope for the same person in this chat. The complete list transfers, including countries that CF excluded or whose salary data SC could not calculate. A country need not have a Strong or Moderate fit to be included in this names-only choice.
 
-You can keep, edit or replace the proposed names. Draft, mismatched or uncertain upstream evidence needs an explicit reuse choice. No Country Finder result is required, and an empty list needs revised targets or stop rather than resurrecting older ratings.
+The assistant identifies the source and displays all its countries before asking whether to reuse them, choose other countries or use the default. Long lists appear in readable groups or short lines above the question. You can supply a replacement or request additions/removals directly. If no usable prior list exists, the same own/default choice remains available. Defaults are shown in full before acceptance; requesting an unseen default does not confirm its contents.
+
+Repeating SC with Start fresh can reuse its immediately preceding scope while preserving all earlier files. The latest applicable invocation comes from this chat's association, not file timestamps or another person's history. Ambiguous source choices need clarification. Resuming an unfinished search retains its recorded list and source without offering a newer list.
+
+Country names establish neither producer completion nor compatible conclusions. A selected CF source can supply presentation order only after its final is separately checked for readiness and compatibility; otherwise calculation uses alphabetical order. No CF completion is needed merely to reuse its country names.
 
 ## What gets researched
 
@@ -71,10 +73,12 @@ Keep the original amount and period, or an explicit nonnumeric state. A monthly 
 
 ## What happens next
 
-Separate research tasks collect the findings. Without suitable access, you receive prompts and the workflow waits for results. It records the full confirmed country scope even if some later data is rejected, preserving names for Country Finder's optional scope offer.
+Separate research tasks collect the findings. Without suitable access, you receive prompts and the workflow waits for results. It records the full confirmed country scope even if some later data is rejected, preserving names for later CF/SC searches.
 
 After coverage checks, [Data validation](../step2-data-validation.html) checks structure and preserves accepted evidence. Research remains a dated source snapshot, not an offer or an immigration eligibility determination.
 
 ## Explore the source
 
 For implementation details, read the [research prompt](https://github.com/myowinthein/agent-compass/blob/main/prompts/salary-calculator/step1-research-prompt-generator.md), [shared intake](https://github.com/myowinthein/agent-compass/blob/main/skills/situational-profile-questions.md) and [visa salary rules](https://github.com/myowinthein/agent-compass/blob/main/skills/sponsorship-threshold-rules.md).
+
+The shared [country-selection rules](https://github.com/myowinthein/agent-compass/blob/main/skills/country-selection.md) define the common previous-list, own-list and default choices.

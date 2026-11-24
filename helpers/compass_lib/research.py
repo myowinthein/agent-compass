@@ -33,7 +33,8 @@ def scope(payload):
     fields(payload, ("workspace", "workflow"), ("aliases",))
     root = workspace(payload["workspace"])
     layout = resolve(root, payload["workflow"])
-    path = named(root, layout["files"]["research"])
+    artifact = "candidates" if payload["workflow"] == "country-finder" else "research"
+    path = named(root, layout["files"][artifact])
     result = {"source": path.name, "naming": layout["naming"], "countries": [],
               "human_confirmation_checked": False}
     if not path.exists():

@@ -68,4 +68,4 @@ Order is independent in each table. Supported opportunity determines order withi
 
 ## Using the result
 
-The post-audit Summary owns final fits. [Salary Calculator](../salary-calculator/step1-research-prompt-generator.html#choosing-countries) selects eligible countries from that Summary and uses Relocation priorities for ordering, with legacy combined-table support. [Portal Finder](../portal-finder.html) can investigate job boards for a country you choose.
+The post-audit Summary owns final fits. [Salary Calculator](../salary-calculator/step1-research-prompt-generator.html#choosing-countries) can reuse the full researched country scope without inheriting those fits. A separately verified compatible final can supply Relocation priorities for presentation order, with legacy combined-table support. [Portal Finder](../portal-finder.html) can investigate job boards for a country you choose.

@@ -307,7 +307,8 @@ assert.call(final_prompt.include?('including candidates in its separate missing-
             "The final table must account for candidates with wholly missing research")
 assert.call(final_prompt.include?('do not migrate or rewrite an older four-column result'),
             "Completed results must not be silently reformatted")
-assert.call(final_prompt.include?('uses the Relocation priorities row order') && final_prompt.include?("Priority Table's row order"),
+assert.call(final_prompt.include?('separately verified compatible CF final') &&
+            final_prompt.include?('Relocation priorities row order') && final_prompt.include?("Priority Table's row order"),
             "Salary Calculator ordering handoff must remain explicit")
 scoring = root.join("prompts/country-finder/step5-scoring.md").read(encoding: "UTF-8:UTF-8")
 assert.call(scoring.include?('never numerical scores, percentages, or a combined priority formula'),
@@ -338,24 +339,25 @@ end
 discovery = root.join("prompts/country-finder/step2-country-discovery.md").read(encoding: "UTF-8:UTF-8")
 runtime = root.join("prompts/shared/runtime.md").read(encoding: "UTF-8:UTF-8")
 salary_intake = root.join("prompts/salary-calculator/step1-research-prompt-generator.md").read(encoding: "UTF-8:UTF-8")
-assert.call(discovery.index('A supplied country list is the exact scope') < discovery.index('read data/default-preferred-countries.md') &&
-            discovery.index('read data/default-preferred-countries.md') < discovery.index('Explicitly requested Salary Calculator names'),
-            "Country selection must use supplied names or the default, with salary names only on request")
-assert.call(discovery.include?('before country-specific suitability research') &&
-            discovery.include?('needs no repeated approval') && discovery.include?('before asking which countries to use'),
-            "Unseen default/source lists must be shown for choice without re-approving confirmed lists")
-assert.call(discovery.include?('Do not infer the selected list from salary rows, Country blocks or the final salary table') &&
-            discovery.include?('missing, rejected or skipped'),
-            "Salary-country suggestions must preserve requested countries without selecting from calculated subsets")
-assert.call(discovery.include?('Never import salary amounts, visa flags or salary conclusions') &&
-            runtime.include?('does not require salary completion or a valid salary checkpoint'),
-            "Names-only reuse must remain independent of completed salary conclusions")
-assert.call(discovery.include?('Preserve the original Include/Exclude answers') &&
-            discovery.include?('Do not change Salary Calculator files or checkpoints') &&
-            discovery.include?('For same-scope recovery of an unfinished Step 2'),
-            "Accepted countries must persist only in Country Finder, preserving resumed scopes")
 intake = root.join("prompts/country-finder/step1-criteria-intake.md").read(encoding: "UTF-8")
-assert.call(intake.include?('A supplied list is the exact scope') &&
+selection = root.join("skills/country-selection.md").read(encoding: "UTF-8")
+assert.call(selection.index('A supplied country list is the exact scope') < selection.index('Otherwise offer') &&
+            [intake, salary_intake].all? { |body| body.include?('skills/country-selection.md') },
+            "Both commands must share country selection, with explicit names taking precedence")
+assert.call(selection.include?('Print every country in ordinary chat before the question') &&
+            selection.include?('requesting an unseen default does not confirm') && selection.include?('need no duplicate approval'),
+            "Full source/default lists must precede choice without re-approving confirmed lists")
+assert.call(selection.include?('including countries later excluded, rejected, missing or skipped') &&
+            selection.include?('Do not select names from fit ratings, priorities, salary rows or Country blocks'),
+            "Country suggestions must preserve the full source scope, not successful subsets")
+assert.call(selection.include?('Names transfer no market fits, salary figures, visa conclusions or readiness') &&
+            runtime.include?('does not require producer completion or a valid producer checkpoint'),
+            "Names-only reuse must remain independent of producer conclusions and completion")
+assert.call(discovery.include?('Preserve the original Include/Exclude answers') &&
+            discovery.include?('Do not change source files or checkpoints') &&
+            discovery.include?('For same-scope recovery of an unfinished Step 2'),
+            "Accepted countries must persist only in the consumer, preserving resumed scopes")
+assert.call(selection.include?('A supplied country list is the exact scope') &&
             intake.include?('Do not ask a separate exclusion question') &&
             discovery.include?('There is no automatic additional-country discovery') &&
             discovery.include?('Older criteria recording an open-discovery preference'),
@@ -367,13 +369,13 @@ assert.call(situational.include?('Which languages are you willing and able to wo
             "Intake must combine working-language questions while separating nationality and country-specific status")
 assert.call(salary_intake.include?('one country per bullet line') && salary_intake.include?('do not shrink this list to the salary table'),
             "Salary research must retain a reusable full confirmed country scope")
-assert.call(salary_intake.include?('select countries exclusively from its post-audit Summary') &&
-            salary_intake.include?('at least one final track is Strong or Moderate'),
-            "The existing Country Finder to Salary Calculator selection must stay unchanged")
+assert.call(['CF → SC', 'CF → CF', 'SC → CF', 'SC → SC'].all? { |pair| selection.include?(pair) } &&
+            salary_intake.include?('never filter this names-only choice by Country Finder fit ratings or final salary rows'),
+            "All four country-list pairings must use names without transferring fit filters")
 assert.call(root.join("skills/research-helper.md").read(encoding: "UTF-8:UTF-8").include?('Under explicitly approved manual fallback'),
             "Saved-country reuse must retain the shared manual-fallback path")
 discovery_docs = root.join("docs/commands/country-finder/step2-country-discovery.md").read(encoding: "UTF-8:UTF-8")
-assert.call(discovery_docs.include?('Scope -->|No| Offer') && discovery_docs.include?('waits for your answer before researching') &&
+assert.call(discovery_docs.include?('Reuse this list') && discovery_docs.include?('waits for your answer before researching') &&
             discovery_docs.include?('only country names are reused'),
             "Country discovery docs and diagram must explain confirmed, names-only salary reuse")
 

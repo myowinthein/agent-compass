@@ -32,9 +32,9 @@ Only unclear target roles, seniority or material facts need clarification.
 
 - Remote: maximum time difference, or "no limit".
 - Sponsorship: an optional firm relocation deadline; "no fixed deadline" is valid.
-- Countries/regions to research, or the default list. A supplied list is used exactly; removals are handled as list edits rather than a separate exclusion question.
+- Countries/regions to research, a previous CF/SC list, or the default list. A supplied list is used exactly; removals are handled as list edits rather than a separate exclusion question.
 
-Settled answers are reused. Optional salary and deadline details can remain unspecified. [Step 2](step2-country-discovery.html#choosing-countries) shows the full default list for acceptance or editing when no countries are supplied; clear custom lists need no second approval. Saved Salary Calculator names are available on explicit request.
+Settled answers are reused. Optional salary and deadline details can remain unspecified. The [shared country choice](step2-country-discovery.html#choosing-countries) offers the previous CF/SC scope for this person in this chat when you have not supplied countries, with own/default-list alternatives. Every proposed country is shown before the choice; clear supplied or confirmed lists need no second approval in Step 2.
 
 ## What happens next
 

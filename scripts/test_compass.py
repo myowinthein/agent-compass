@@ -121,6 +121,29 @@ class CompassCLI(unittest.TestCase):
                 self.assertFalse(result["human_confirmation_checked"])
                 self.assertEqual(self.snapshot(root), before)
 
+    def test_research_scope_reads_full_source_for_both_workflows(self):
+        registry = json.loads((ROOT / "data/workspace-files.json").read_text())["workflows"]
+        for workflow in ("country-finder", "salary-calculator"):
+            artifact = "candidates" if workflow == "country-finder" else "research"
+            spec = registry[workflow]["artifacts"]
+            for family in ("current", "legacy"):
+                with self.subTest(workflow=workflow, family=family), tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    source = spec[artifact][family]
+                    root.joinpath(source).write_text(
+                        "## Research scope\n- Germany\n- France\n- Canada\n\n"
+                        "## Findings\nFrance excluded; Canada missing or skipped.\n", encoding="utf-8")
+                    root.joinpath(spec["final-results"][family]).write_text("DUMMY final: Germany only", encoding="utf-8")
+                    if workflow == "country-finder":
+                        root.joinpath(spec["research"][family]).write_text(
+                            "## Research scope\n- Germany\n", encoding="utf-8")
+                    before = self.snapshot(root)
+                    result = self.invoke("research-scope", {"workspace": directory, "workflow": workflow})["result"]
+                    self.assertEqual((result["status"], result["source"], result["countries"]),
+                                     ("available", source, ["Germany", "France", "Canada"]))
+                    self.assertFalse(result["human_confirmation_checked"])
+                    self.assertEqual(self.snapshot(root), before)
+
     def test_research_scope_normalizes_legacy_lists_without_rewriting_them(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory, "sc-step1-salary-research.md")

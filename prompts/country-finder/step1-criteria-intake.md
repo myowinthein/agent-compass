@@ -27,9 +27,7 @@ This asks for a constraint, not an urgency rating. Preserve an existing "no rush
 
 ## Phase 3 — Countries to research:
 
-1. Which countries should we research? List countries/regions, or choose the default list.
-
-A supplied list is the exact scope: "Germany" means Germany only, without extra suggestions or default countries. Do not ask a separate exclusion question; apply removals or additions the user supplies with the list or while editing the displayed default. A clear supplied list needs no duplicate approval. No preference or a default request leads to Step 2's full displayed list for acceptance or editing, not silent approval of an unseen list; silence is not a default choice. Salary Calculator's saved names are used only on explicit request, not offered automatically in place of the default.
+Read and apply [skills/country-selection.md](../../skills/country-selection.md). Use its standard question for an exact supplied list, the preceding CF/SC search's full scope or the displayed default. Resolve this once during intake; Step 2 reuses the confirmed list rather than asking again. Do not ask a separate exclusion question or automatically add countries.
 
 ## Clarifying criteria
 
@@ -47,7 +45,7 @@ Country preferences:
 - Include: [list or "none"]
 - Exclude: [list or "none"]
 
-Keep the existing Include/Exclude labels: Include holds supplied countries or "none" for a default request; Exclude holds volunteered removals or "none". Record custom/default intent and any already confirmed full list as prose after these fields. This does not change an older run's scope or pre-confirm an unseen default list.
+Keep the existing Include/Exclude labels: Include holds supplied countries or "none" when choosing a previous/default list; Exclude holds volunteered removals or "none". Record custom/default/previous-list intent, the confirmed full list and any source command/run/path as prose after these fields under the shared country-selection rule. This does not change an older run's scope or pre-confirm an unseen default list.
 
 Tell me in one line that this was saved to country-finder-01-criteria.md — no need to repeat the criteria back, since I just gave them to you.
 

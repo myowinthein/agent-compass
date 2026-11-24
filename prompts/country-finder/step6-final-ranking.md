@@ -88,7 +88,7 @@ Choose each track's order independently. Sort priority buckets in contract order
 
 The helper checks coverage, exact early reasons and consistency of typed decisions. It does not judge source truth. Save the returned Summary and both tables verbatim, retaining audit notes with the three checks. If a later audit invalidates required support, revise the affected fit/access/pay/priority together; do not retain a Focus recommendation on unusable evidence.
 
-Salary Calculator still selects countries exclusively from the post-audit Summary. For new results it uses the Relocation priorities row order for local-employee salary presentation; legacy compatible outputs use the Priority Table's row order. Missing ordering remains an alphabetical fallback, never a reason to block calculation. Do not select countries from priority labels or treat Investigate next as confirmed eligibility.
+Salary Calculator's fresh country choice under skills/country-selection.md can reuse the full Step 2 scope as names only, regardless of fits or priorities. A separately verified compatible CF final may supply Relocation priorities row order for local-employee salary presentation; legacy compatible outputs use the Priority Table's row order. Missing ordering remains an alphabetical fallback, never a reason to block calculation. Reused names and Investigate next never establish confirmed eligibility.
 
 ## Effort Allocation
 

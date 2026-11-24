@@ -71,7 +71,7 @@ Country Finder's [assessment framework](https://github.com/myowinthein/agent-com
 
 ## Using the result
 
-[Salary Calculator](../../salary-calculator/step1-research-prompt-generator.html#choosing-countries) still selects compatible countries from the post-audit Summary. It uses the new Relocation table for local-employee salary ordering, or the combined table in a legacy result. Missing ordering never blocks a standalone calculation. Portal Finder can investigate job boards for a selected country.
+[Salary Calculator](../../salary-calculator/step1-research-prompt-generator.html#choosing-countries) can reuse the full country scope, including countries rated Weak or excluded, because that choice transfers names only. Reusing names does not establish a compatible final: only a separately verified CF result can supply Relocation priorities for local-employee salary ordering, or the combined table in a legacy result. Missing ordering uses alphabetical order and never blocks a standalone calculation. Portal Finder can investigate job boards for a selected country.
 
 ## Explore the source
 

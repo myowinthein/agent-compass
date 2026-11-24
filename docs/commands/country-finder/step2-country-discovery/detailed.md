@@ -9,6 +9,7 @@ permalink: /docs/commands/country-finder/step2-country-discovery/detailed.html
 title_category: Details
 description: "Discovery establishes the candidate countries and the evidence for each employment track. It identifies useful leads, constraints and gaps while preserving the difference between an explicit exclusion and information that has not been found."
 source_files:
+  - skills/country-selection.md
   - skills/country-assessment-rules.md
   - prompts/country-finder/step2-country-discovery.md
 ---
@@ -27,14 +28,14 @@ These are two stages of country discovery. The saved country scope at the end of
 
 ```mermaid
 flowchart TD
-  Start(["Read your profile and criteria"]) --> Custom{"Countries supplied?"}
-  Custom -->|Yes| Scope["Expand regions and apply requested edits<br/>Use only the chosen countries"]
-  Custom -->|No| Default["Show the complete default list<br/>Saved salary names only on explicit request"]
-  Default --> Confirm["Wait: use, edit or replace the displayed list"]
+  Start["Read the country scope settled during intake"] --> Confirmed{"Full list already confirmed?"}
+  Confirmed -->|Yes| Scope["Keep the exact scope"]
+  Confirmed -->|No| Offer["Show previous CF/SC countries or the default<br/>Or ask for your own list"]
+  Offer --> Confirm["Wait for the country choice or edits"]
   Confirm --> Scope
   Scope --> Empty{"Any countries left?"}
   Empty -->|No| Revise(["Ask for a revised list or stop"])
-  Empty -->|Yes| Batch["Save the country scope<br/>Split into batches of at most 15"]
+  Empty -->|Yes| Batch["Save the full country scope<br/>Split into batches of at most 15"]
   Batch --> Continue["Continue below with the saved country scope"]
 ```
 
@@ -53,13 +54,15 @@ flowchart TD
 
 ## Choosing countries
 
-A supplied list fixes the scope. For example, **Germany** means Germany only; it does not mean Germany plus the default list or automatically discovered alternatives. The same rule applies to a longer custom list. Region names are expanded, with clarification when their boundaries matter.
+Step 1 normally settles the full country list, so discovery starts with that scope. **Germany** means Germany only; the assistant does not append defaults or other markets. Regions are expanded before removals, with clarification when their boundaries matter.
 
-With no preference, the agent displays every default country grouped by continent. You can accept the list, remove countries, add others yourself or replace it. A request for the default before seeing it is not approval of an unseen list. Once reviewed and confirmed, it needs no duplicate question. A selected country is not silently removed because preliminary evidence is weak.
+For a fresh search without supplied countries, the previous CF or SC search for the same person in this chat can supply its complete scope. Repeating CF can therefore reuse its earlier list, just as CF can reuse SC's list. The source is retained before a fresh run replaces its active baseline. No other person's or another chat's history is searched automatically.
 
-Saved Salary Calculator names remain an explicit alternative. If you request them, the agent offers the full recorded research scope, including targets whose salary data was skipped. Salary completion is unnecessary because only names transfer. Missing or declined source data leaves custom/default selection available; no salary or eligibility conclusions are inherited.
+The assistant names the source and shows every country before asking whether to reuse the list, choose other countries or use the default. Long lists stay outside the question panel, grouped where useful. You can also enter a replacement or request edits directly. An explicit default request takes precedence over a previous-list offer, and the full default is shown before its acceptance.
 
-The confirmed scope is saved and retained on resume, including older runs. An older unfinished preference for open discovery without a confirmed full list needs a repair choice before the scope rule changes. Saved research is preserved. An empty selection needs revised countries or a stop before research.
+This is a names-only choice. Excluded, rejected, missing and skipped countries remain in the offered scope. Research need not be complete, and no market fit, salary or visa conclusion transfers. Missing scope leaves own/default choices available; ambiguous sources or country labels need clarification rather than guessed history.
+
+Legacy Step 1 criteria with an unseen default or unresolved list use this same choice here. Already confirmed lists need no repeated approval. An older unfinished preference for open discovery without a confirmed scope still needs its repair choice. Resumes preserve their recorded scope and source; an empty selection needs revised countries or stop.
 
 ## What gets checked
 
@@ -93,3 +96,5 @@ The candidate file records scope, track findings, reasons, timezone conditions a
 For implementation details, read [prompts/country-finder/step2-country-discovery.md](https://github.com/myowinthein/agent-compass/blob/main/prompts/country-finder/step2-country-discovery.md).
 
 The shared [assessment framework](https://github.com/myowinthein/agent-compass/blob/main/skills/country-assessment-rules.md) defines the evidence factors and verification distinctions.
+
+The shared [country-selection rules](https://github.com/myowinthein/agent-compass/blob/main/skills/country-selection.md) define the common previous-list, own-list and default choices.

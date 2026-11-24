@@ -28,9 +28,9 @@ The assistant reuses confirmed location, passport nationality, working languages
 
 ## Choosing countries
 
-A completed compatible Country Finder result can suggest countries with a Strong or Moderate track, using its [post-audit Summary](../country-finder/step6-final-ranking.html#using-the-result). Keep, edit or replace that list.
+A supplied country list is used exactly. Otherwise, the assistant can offer the previous Country Finder or Salary Calculator scope for the same person in this chat, including when repeating SC. All recorded countries remain available, including those later excluded or skipped; no fits, salary values or visa conclusions transfer.
 
-Only when no final exists can a ready [Step 5 result](../country-finder/step5-scoring.html#fit-and-confidence) supply a labelled pre-audit list. Draft, unclear or mismatched results need an explicit reuse choice. You can always provide your own countries; an empty selection needs new targets or stop.
+The complete list appears above **Reuse this list / Choose other countries / Use the default list**. Long lists stay outside the question panel. You can enter your own replacement or edits directly. With no usable prior scope, provide countries or choose the default; its full list is shown before acceptance. A resumed search keeps its confirmed scope without another country question.
 
 ## What gets researched
 
@@ -52,6 +52,6 @@ Rules retain their original amount/period or explicit nonnumeric state. Monthly 
 
 ## What happens next
 
-`salary-calculator-01-research.md` saves the full confirmed scope, findings and evidence grades. Targets remain recorded even if their data is later skipped, allowing [Country Finder's names-only offer](../country-finder/step2-country-discovery.html#choosing-countries).
+`salary-calculator-01-research.md` saves the full confirmed scope, findings and evidence grades. Targets remain recorded even if their data is later skipped, allowing [later CF/SC searches to reuse the names](../country-finder/step2-country-discovery.html#choosing-countries).
 
 After coverage checks and a brief count, continue to [Data validation](step2-data-validation.html).
