@@ -301,8 +301,12 @@ a:not([class]) {
 }
 
 @include mq(md) {
-  :root:not(.compass-compact) {
+  :root:not(.compass-compact):not(:has(.main-header :focus)) {
     scroll-padding-top: var(--compass-header-height, 3.75rem);
+  }
+
+  :root:not(.compass-compact).search-active .main {
+    position: relative;
   }
 
   .main-header {

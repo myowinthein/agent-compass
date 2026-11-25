@@ -45,6 +45,8 @@ function searchLoaded(index, docs) {
   var currentInput;
   function update() {
     var input = searchInput.value;
+      window.scroll(0, -1);
+      setTimeout(function(){ window.scroll(0, 0); }, 0);
     currentSearchIndex++;
 
     if (input === currentInput) return;
@@ -126,6 +128,7 @@ worker = nil
 lazy = CompassFrontend.lazy_search(source) { |body| worker = body }
 raise 'Search still starts before interaction' unless lazy.include?('addEventListener("focus", initSearch)')
 raise 'Typing during worker initialization would be lost' unless lazy.include?("dispatchEvent(new Event('docs-search-ready'))")
+raise 'Desktop search can still force the page to the top' unless lazy.include?("if (getComputedStyle(searchInput.closest('.search')).position === 'fixed') {")
 raise 'Index/query work remained on the page thread' if lazy.include?('lunr(') || lazy.include?('lunr.tokenizer')
 raise 'Worker did not retain the theme index/query rules' unless worker.include?('index = lunr(') && worker.include?('editDistance:') && worker.include?('metadataWhitelist')
 begin

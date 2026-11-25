@@ -47,6 +47,24 @@ try {
   try {
    await page.goto(pageUrl(''));
    if(await page.locator('#menu-button').isVisible())await openCompactMenu(page);
+   if(await page.locator('#main-header').evaluate(el=>getComputedStyle(el).position==='sticky')) {
+    await page.evaluate(()=>scrollTo({top:600,behavior:'instant'}));
+    const readingPosition=await page.evaluate(()=>scrollY);
+    const selector=await page.locator('#theme-mode').boundingBox();
+    await page.mouse.click(selector.x+selector.width/2,selector.y+selector.height/2);
+    await page.keyboard.press('Escape');await page.waitForTimeout(100);
+    assert.equal(await page.evaluate(()=>scrollY),readingPosition,'Opening the sticky theme dropdown moved the page');
+    const field=await page.locator('#search-input').boundingBox();
+    await page.mouse.click(field.x+field.width/2,field.y+field.height/2);await page.waitForTimeout(100);
+    assert.equal(await page.evaluate(()=>scrollY),readingPosition,'Opening sticky search moved the page');
+    await page.locator('#search-input').fill('salary');
+    await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);await page.waitForTimeout(100);
+    assert.equal(await page.evaluate(()=>scrollY),readingPosition,'Typing in sticky search moved the page');
+    await page.locator('#search-input').press('Escape');await page.waitForTimeout(100);
+    assert.equal(await page.evaluate(()=>scrollY),readingPosition,'Closing sticky search moved the page');
+    await page.locator('#search-input').evaluate(el=>el.blur());
+    await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
+   }
    const target=scheme==='light'?'dark':'light';
    await page.route(`**/just-the-docs-${target}.css?v=*`,async route=>{await download;await route.abort();});
    await page.locator('#theme-mode').selectOption(target);
