@@ -126,8 +126,27 @@ try {
    await checkThemeColors(page, scheme);
    const query=page.locator('#search-input');
    if(width===390)await page.locator('#menu-button').click();
+   const searchAppearance=()=>query.evaluate(input=>({
+    textLeft:input.getBoundingClientRect().left+parseFloat(getComputedStyle(input).paddingLeft),
+    iconLeft:document.querySelector('.search-icon').getBoundingClientRect().left,
+    background:getComputedStyle(input).backgroundColor
+   }));
+   const initialSearch=await searchAppearance();
+   let releaseIndex;
+   const indexDownload=new Promise(resolve=>{releaseIndex=resolve;});
+   await page.route('**/search-data.json?v=*',async route=>{await indexDownload;await route.continue();});
+   try {
+    await query.click();
+    await page.waitForFunction(()=>document.getElementById('search-status').textContent==='Loading search…');
+    assert.equal(await query.getAttribute('aria-busy'),'true','Search index was not held pending');
+    assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('search-active')),false,'Empty first focus opened the search overlay');
+    assert.deepEqual(await searchAppearance(),initialSearch,'First search focus moved the icon/text or flashed its background');
+   } finally {releaseIndex();}
+   await page.waitForFunction(()=>!document.getElementById('search-input').hasAttribute('aria-busy'));
+   assert.deepEqual(await searchAppearance(),initialSearch,'Search readiness changed the empty field appearance');
    await query.fill('salary');
    await page.waitForFunction(()=>document.querySelectorAll('#search-results a').length>0);
+   if(width>=800)assert.deepEqual(await searchAppearance(),initialSearch,'Desktop results moved the search icon/text or changed its background');
    assert.equal(requests.filter(url=>url.includes('search-data.json')).length,1,'Search initialized multiple times');
    assert(/^[0-9a-f]{16}$/.test(new URL(requests.find(url=>url.includes('search-data.json'))).searchParams.get('v')||''),'Search index has no content version');
    await query.evaluate(input => input.blur());

@@ -163,7 +163,7 @@ module CompassFrontend
           const search = searchInput.closest('.search');
           // Keep the search field and recovery reachable before the index is ready.
           const showSearchShell = () => {
-            if (!compassSearchReady) document.documentElement.classList.add('search-active');
+            if (!compassSearchReady && searchInput.value !== '') document.documentElement.classList.add('search-active');
           };
           search.addEventListener('focusin', showSearchShell);
           search.addEventListener('focusout', event => {
