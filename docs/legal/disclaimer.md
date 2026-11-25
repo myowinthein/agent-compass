@@ -2,8 +2,6 @@
 layout: default
 title: Disclaimer
 description: Read the limitations of Agent Compass career research, salary estimates and AI-generated results.
-parent: Legal
-nav_order: 3
 permalink: /docs/legal/disclaimer.html
 ---
 
