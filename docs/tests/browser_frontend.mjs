@@ -39,6 +39,33 @@ async function openCompactMenu(page) {
 }
 try {
  browser=await chromium.launch({executablePath:process.env.COMPASS_DOCS_CHROME||(process.platform==='darwin'?'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome':'/usr/bin/google-chrome'),headless:true});
+ // Short theme feedback fits its text and sits close to the dropdown itself.
+ for(const width of [390,800,1280]) for(const scheme of ['light','dark']) {
+  const context=await createContext({viewport:{width,height:900},colorScheme:scheme});
+  const page=await context.newPage();let release;
+  const download=new Promise(resolve=>{release=resolve;});
+  try {
+   await page.goto(pageUrl(''));
+   if(await page.locator('#menu-button').isVisible())await openCompactMenu(page);
+   const target=scheme==='light'?'dark':'light';
+   await page.route(`**/just-the-docs-${target}.css?v=*`,async route=>{await download;await route.continue();});
+   await page.locator('#theme-mode').selectOption(target);
+   await page.waitForFunction(()=>document.getElementById('theme-status').textContent==='Loading theme…');
+   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));
+   const layout=await page.locator('#theme-status').evaluate(el=>{
+    const box=el.getBoundingClientRect(),field=document.getElementById('theme-mode').getBoundingClientRect();
+    const style=getComputedStyle(el),range=document.createRange();range.selectNodeContents(el);
+    const padding=parseFloat(style.paddingLeft)+parseFloat(style.paddingRight);
+    const border=parseFloat(style.borderLeftWidth)+parseFloat(style.borderRightWidth);
+    return {extra:box.width-range.getBoundingClientRect().width-padding-border,gap:box.top-field.bottom,expectedGap:parseFloat(getComputedStyle(document.documentElement).fontSize)/4};
+   });
+   assert(Math.abs(layout.extra)<1,'Theme loading box reserves unused width');
+   assert(Math.abs(layout.gap-layout.expectedGap)<1,'Theme loading box is detached from the dropdown');
+   release();await background(target)(page);
+   assert.equal(await page.locator('#theme-status').textContent(),'');
+   console.log(`PASS ${width}px ${scheme}: content-sized theme loading box with a consistent dropdown gap`);
+  } finally {release();await context.close();}
+ }
  for(const width of [1280,390]) {
   for(const scheme of ['light','dark']) {
    const context=await createContext({viewport:{width,height:900},colorScheme:scheme});
