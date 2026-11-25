@@ -320,6 +320,17 @@ a:not([class]) {
   overflow-wrap: anywhere;
 }
 
+.site-header .site-title {
+  gap: $sp-2;
+  padding-inline-end: $sp-2;
+}
+
+.site-title-icon {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+}
+
 .site-version {
   flex: 0 0 auto;
   padding: $sp-2;
