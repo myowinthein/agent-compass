@@ -296,7 +296,15 @@ a:not([class]) {
 }
 
 @include mq(md) {
+  :root:not(.compass-compact) {
+    scroll-padding-top: var(--compass-header-height, 3.75rem);
+  }
+
   .main-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: $body-background-color;
     container-type: inline-size;
     flex-wrap: wrap;
     height: auto;
@@ -403,6 +411,7 @@ a:not([class]) {
     }
 
     .side-bar + .main .main-header {
+      position: static;
       display: none;
       container-type: normal;
     }

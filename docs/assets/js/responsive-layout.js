@@ -14,6 +14,7 @@
       const wasCompact = root.classList.contains('compass-compact');
       const focused = document.activeElement;
       root.classList.toggle('compass-compact', compact);
+      root.style.setProperty('--compass-header-height', compact || !header ? '0px' : `${header.getBoundingClientRect().height}px`);
       if (compact && !wasCompact && (navigation.contains(focused) || header.contains(focused))) {
         // Keep focused controls visible without a click dismissing active search.
         [menu, navigation, header].forEach(element => element.classList.add('nav-open'));
@@ -25,7 +26,9 @@
     updateLayout();
     window.addEventListener('resize', updateLayout);
     desktop.addEventListener('change', updateLayout);
-    new ResizeObserver(updateLayout).observe(document.querySelector('.site-header'));
+    const layoutObserver = new ResizeObserver(updateLayout);
+    layoutObserver.observe(document.querySelector('.site-header'));
+    if (header) layoutObserver.observe(header);
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialize, { once: true });
