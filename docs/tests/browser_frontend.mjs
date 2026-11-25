@@ -48,7 +48,7 @@ try {
    await page.goto(pageUrl(''));
    if(await page.locator('#menu-button').isVisible())await openCompactMenu(page);
    const target=scheme==='light'?'dark':'light';
-   await page.route(`**/just-the-docs-${target}.css?v=*`,async route=>{await download;await route.continue();});
+   await page.route(`**/just-the-docs-${target}.css?v=*`,async route=>{await download;await route.abort();});
    await page.locator('#theme-mode').selectOption(target);
    await page.waitForFunction(()=>document.getElementById('theme-status').textContent==='Loading theme…');
    await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));
@@ -61,9 +61,28 @@ try {
    });
    assert(Math.abs(layout.extra)<1,'Theme loading box reserves unused width');
    assert(Math.abs(layout.gap-layout.expectedGap)<1,'Theme loading box is detached from the dropdown');
-   release();await background(target)(page);
+   await page.evaluate(()=>scrollTo(0,8));
+   await page.waitForFunction(()=>scrollY===8);
+   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));
+   assert(await page.locator('#theme-status').evaluate(el=>Math.abs(el.getBoundingClientRect().top-document.getElementById('theme-mode').getBoundingClientRect().bottom-parseFloat(getComputedStyle(document.documentElement).fontSize)/4)<1),'Theme feedback detached while its dropdown scrolled');
+   for(const message of ['Loading theme…','Theme unavailable. Choose a theme to try again.']) {
+    if(message.startsWith('Theme unavailable')) {
+     release();
+     await page.waitForFunction(()=>document.getElementById('theme-status').textContent==='Theme unavailable. Choose a theme to try again.');
+    }
+    await page.evaluate(()=>scrollTo(0,document.getElementById('theme-mode').getBoundingClientRect().bottom+scrollY+50));
+    await page.waitForFunction(()=>document.getElementById('theme-mode').getBoundingClientRect().bottom<=0);
+    await page.locator('#theme-status').waitFor({state:'hidden'});
+    assert.equal(await page.locator('#theme-status').textContent(),message,'Scrolling cleared the theme result');
+    await page.evaluate(()=>scrollTo(0,0));
+    await page.locator('#theme-status').waitFor({state:'visible'});
+    assert(await page.locator('#theme-status').evaluate(el=>Math.abs(el.getBoundingClientRect().top-document.getElementById('theme-mode').getBoundingClientRect().bottom-parseFloat(getComputedStyle(document.documentElement).fontSize)/4)<1),'Theme feedback did not return beside the dropdown');
+   }
+   await page.unroute(`**/just-the-docs-${target}.css?v=*`);
+   await page.locator('#theme-mode').selectOption(target);
+   await background(target)(page);
    assert.equal(await page.locator('#theme-status').textContent(),'');
-   console.log(`PASS ${width}px ${scheme}: content-sized theme loading box with a consistent dropdown gap`);
+   console.log(`PASS ${width}px ${scheme}: content-sized theme feedback follows its dropdown on scroll, hides offscreen and returns`);
   } finally {release();await context.close();}
  }
  for(const width of [1280,390]) {
@@ -647,7 +666,7 @@ try {
   assert(await second.locator('button').evaluate(el=>el===document.activeElement&&el.matches(':focus-visible')&&getComputedStyle(el).outlineStyle!=='none'));
   console.log(`PASS ${scheme} touch clipboard: exact command text, visible control, pending deduplication, confirmed success, recoverable failure, latest confirmation and two-second timer`);await context.close();
  }
- // Enlarged text and off-screen anchors must keep recovery inside the viewport.
+ // Enlarged feedback fits the viewport; attached theme feedback needs its control in view.
  for(const kind of ['copy','theme','search']) {
   const context=await createContext({viewport:{width:320,height:844},hasTouch:true,isMobile:true,colorScheme:'light'});const page=await context.newPage();
   if(kind==='copy')await page.addInitScript(()=>Object.defineProperty(navigator,'clipboard',{value:{writeText:()=>Promise.reject(new Error('Denied'))}}));
@@ -661,6 +680,7 @@ try {
    if(kind==='theme'){await page.route('**/just-the-docs-dark.css?v=*',route=>route.abort());await page.selectOption('#theme-mode','dark');}
    else await page.locator('#search-input').fill('country');
   }
+  if(kind==='theme')await page.locator('#theme-mode').scrollIntoViewIfNeeded();
   const selector=kind==='copy'?'.copy-status:not(:empty)':`#${kind}-status`;
   await page.waitForFunction(selector=>{
    const el=document.querySelector(selector);if(!el?.textContent.trim())return false;
@@ -668,6 +688,7 @@ try {
   },selector);
   const status=page.locator(selector);
   await page.setViewportSize({width:390,height:600});
+  if(kind==='theme')await page.locator('#theme-mode').scrollIntoViewIfNeeded();
   await page.waitForFunction(selector=>{const box=document.querySelector(selector).getBoundingClientRect();return box.x>=0&&box.right<=innerWidth&&box.y>=0&&box.bottom<=innerHeight;},selector);
   assert(await status.isVisible());
   console.log(`PASS enlarged ${kind} feedback: viewport containment before and after resize`);await context.close();

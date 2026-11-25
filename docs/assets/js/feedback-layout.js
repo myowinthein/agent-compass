@@ -26,6 +26,14 @@
       const rightEdge = leftEdge + (viewport?.width || innerWidth) - 2 * margin;
       const bottomEdge = topEdge + (viewport?.height || innerHeight) - 2 * margin;
       const field = anchor.getBoundingClientRect();
+      // Attached theme feedback leaves the screen with its dropdown.
+      if (theme) {
+        const offscreen = !anchor.getClientRects().length ||
+          field.bottom <= topEdge - margin || field.top >= bottomEdge + margin ||
+          field.right <= leftEdge - margin || field.left >= rightEdge + margin;
+        status.style.visibility = offscreen ? 'hidden' : '';
+        if (offscreen) return;
+      }
       status.style.width = copy || theme ? 'max-content' : `${Math.min(field.width, rightEdge - leftEdge)}px`;
       status.style.maxWidth = `${Math.min(rightEdge - leftEdge, copy || theme ? 24 * rem : field.width)}px`;
       const style = getComputedStyle(status);
