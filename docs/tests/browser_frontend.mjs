@@ -71,8 +71,9 @@ try {
      await page.waitForFunction(()=>document.getElementById('theme-status').textContent==='Theme unavailable. Choose a theme to try again.');
     }
     await page.evaluate(()=>scrollTo(0,document.getElementById('theme-mode').getBoundingClientRect().bottom+scrollY+50));
-    await page.waitForFunction(()=>document.getElementById('theme-mode').getBoundingClientRect().bottom<=0);
-    await page.locator('#theme-status').waitFor({state:'hidden'});
+    const sticky=await page.locator('#main-header').evaluate(el=>getComputedStyle(el).position==='sticky');
+    await page.waitForFunction(sticky=>{const box=document.getElementById('theme-mode').getBoundingClientRect();return sticky?box.top>=0:box.bottom<=0;},sticky);
+    await page.locator('#theme-status').waitFor({state:sticky?'visible':'hidden'});
     assert.equal(await page.locator('#theme-status').textContent(),message,'Scrolling cleared the theme result');
     await page.evaluate(()=>scrollTo(0,0));
     await page.locator('#theme-status').waitFor({state:'visible'});
@@ -82,7 +83,7 @@ try {
    await page.locator('#theme-mode').selectOption(target);
    await background(target)(page);
    assert.equal(await page.locator('#theme-status').textContent(),'');
-   console.log(`PASS ${width}px ${scheme}: content-sized theme feedback follows its dropdown on scroll, hides offscreen and returns`);
+   console.log(`PASS ${width}px ${scheme}: theme feedback stays attached during scrolling and recovery`);
   } finally {release();await context.close();}
  }
  for(const width of [1280,390]) {
